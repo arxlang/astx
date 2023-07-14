@@ -2,15 +2,19 @@
 name = "arx-ast"
 version = "0.1.0"  # semantic-release
 description = "OSL Python Package contains all the boilerplate you need to create a Python package."
-authors = ["Roronoa Zoro <ivan.ogasawara@gmail.com>"]
+authors = ["Ivan Ogasawara <ivan.ogasawara@gmail.com>"]
 license = "BSD 3 Clause"
 exclude = [
   ".git/*",
   ".env*",
 ]
+packages = [
+  {include = "arxast", from="src"},
+]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
+atpublic = "^4.0"
 
 [tool.poetry.dev-dependencies]
 urllib3 = "<2"  # fix poetry issues
