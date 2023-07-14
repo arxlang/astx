@@ -1,0 +1,9 @@
+name: arx-ast
+channels:
+  - nodefaults
+  - conda-forge
+dependencies:
+  - python <3.11
+  - poetry
+  - nodejs  # used by semantic-release
+  - shellcheck

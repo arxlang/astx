@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "arx-ast"
+version = "0.1.0"  # semantic-release
+description = "OSL Python Package contains all the boilerplate you need to create a Python package."
+authors = ["Roronoa Zoro <ivan.ogasawara@gmail.com>"]
+license = "BSD 3 Clause"
+exclude = [
+  ".git/*",
+  ".env*",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+
+[tool.poetry.dev-dependencies]
+urllib3 = "<2"  # fix poetry issues
+pytest = "^7.3.2"
+pytest-cov = "^4.1.0"
+coverage = "^7.2.7"
+black = "^23.3.0"
+pre-commit = "^3.3.2"
+ruff = "^0.0.272"
+mypy = "^1.3.0"
+bandit = "^1.7.5"
+vulture = "^2.7"
+mccabe = "^0.6.1"
+ipython = "<8"
+ipykernel = ">=6.0.0"
+Jinja2 = "^3.1.2"
+mkdocs = "^1.4.3"
+mkdocs-exclude = "^1.0.2"
+mkdocs-jupyter = "^0.24.1"
+mkdocs-literate-nav = "^0.6.0"
+mkdocs-macros-plugin = ">=0.7.0,<1"
+mkdocs-material = "^9.1.15"
+mkdocstrings = "^0.21.2"
+mkdocstrings-python = "^1.1.2"
+
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+
+[tool.black]
+line-length = 79
+target-version = ["py38"]
+force-exclude = '''(?x)(
+    docs/*
+  | .*\\.egg-info
+)'''  # TOML's single-quoted strings do not require escaping backslashes
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+targets = "src/arxast"
+
+[tool.vulture]
+exclude = ["tests"]
+ignore_decorators = []
+ignore_names = []
+make_whitelist = true
+min_confidence = 80
+paths = ["src/arxast"]
+sort_by_size = true
+verbose = false
+
+[tool.ruff]
+line-length = 79
+force-exclude = true
+src = ["src/arxast"]
+exclude = [
+  'docs',
+]
+select = [
+  "F",   # pyflakes
+]
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+
+[tool.mypy]
+no_strict_optional = false

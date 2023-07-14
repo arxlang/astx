@@ -1,0 +1,67 @@
+default_stages:
+  - commit
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: end-of-file-fixer
+
+  - repo: local
+    hooks:
+    - id: black
+      name: black
+      entry: black
+      language: system
+      pass_filenames: true
+      types:
+        - python
+
+    - id: mypy
+      name: mypy
+      entry: mypy
+      language: system
+      files: "src/arxast"
+      pass_filenames: true
+      types:
+        - python
+
+    - id: shellcheck
+      name: shellcheck
+      entry: shellcheck
+      language: system
+      types_or:
+        - sh
+        - shell
+        - ash
+        - bash
+        - bats
+        - dash
+        - ksh
+
+    - id: bandit
+      name: bandit
+      entry: bandit
+      language: system
+      args: ['--configfile', 'pyproject.toml', '-iii', '-lll']
+      pass_filenames: true
+      types:
+        - python
+
+    - id: vulture
+      name: vulture
+      entry: vulture
+      language: system
+      files: "src/arxast"
+      description: Find unused Python code.
+      pass_filenames: true
+      types:
+        - python
+
+    - id: mccabe
+      name: mccabe
+      entry: python -m mccabe --min 10
+      language: system
+      files: "src/arxast"
+      pass_filenames: true
+      types:
+        - python
