@@ -26,7 +26,7 @@ jobs:
           mamba-version: "1.*"
           environment-file: conda/dev.yaml
           channels: conda-forge,nodefaults
-          activate-environment: arx-ast
+          activate-environment: astx
           use-mamba: true
           miniforge-variant: Mambaforge
 

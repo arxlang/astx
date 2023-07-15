@@ -1,13 +1,13 @@
 # mypy: disable-error-code="attr-defined"
-"""Arx-AST."""
+"""AstX."""
 from importlib import metadata as importlib_metadata
 
-from arxast import base
-from arxast import blocks
-from arxast import callables
-from arxast import datatypes
-from arxast import operators
-from arxast import statements
+from astx import base
+from astx import blocks
+from astx import callables
+from astx import datatypes
+from astx import operators
+from astx import statements
 
 
 def get_version() -> str:

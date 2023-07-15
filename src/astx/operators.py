@@ -1,4 +1,4 @@
-from arxast.base import OperatorType, ASTKind, Expr, SourceLocation
+from astx.base import OperatorType, ASTKind, Expr, SourceLocation
 
 
 class UnaryOp(OperatorType):

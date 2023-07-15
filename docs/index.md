@@ -1,11 +1,11 @@
 ![LOGO](/images/logo.png)
 
-# Arx-AST
+# AstX
 
 OSL Python Package contains all the boilerplate you need to create a Python package.
 
 * License: BSD 3 Clause
-* Documentation: https://arx-ast.github.io
+* Documentation: https://astx.github.io
 
 ## Features
 

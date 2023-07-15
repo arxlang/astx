@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "arx-ast"
+name = "astx"
 version = "0.1.0"  # semantic-release
 description = "OSL Python Package contains all the boilerplate you need to create a Python package."
 authors = ["Ivan Ogasawara <ivan.ogasawara@gmail.com>"]
@@ -9,7 +9,7 @@ exclude = [
   ".env*",
 ]
 packages = [
-  {include = "arxast", from="src"},
+  {include = "astx", from="src"},
 ]
 
 [tool.poetry.dependencies]
@@ -59,7 +59,7 @@ force-exclude = '''(?x)(
 
 [tool.bandit]
 exclude_dirs = ["tests"]
-targets = "src/arxast"
+targets = "src/astx"
 
 [tool.vulture]
 exclude = ["tests"]
@@ -67,14 +67,14 @@ ignore_decorators = []
 ignore_names = []
 make_whitelist = true
 min_confidence = 80
-paths = ["src/arxast"]
+paths = ["src/astx"]
 sort_by_size = true
 verbose = false
 
 [tool.ruff]
 line-length = 79
 force-exclude = true
-src = ["src/arxast"]
+src = ["src/astx"]
 exclude = [
   'docs',
 ]

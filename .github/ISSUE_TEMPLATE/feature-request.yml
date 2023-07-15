@@ -7,7 +7,7 @@ body:
 - type: markdown
   attributes:
     value: >
-      **Thank you for wanting to suggest a feature for Arx-AST!**
+      **Thank you for wanting to suggest a feature for AstX!**
 
 
       ⚠
@@ -17,7 +17,7 @@ body:
       already be implemented in a development release.
 
 
-      [issue search]: https://github.com/Arx-AST/issues?q=is%3Aopen+is%3Aissue+label%3Afeat%2Fenhancement
+      [issue search]: https://github.com/AstX/issues?q=is%3Aopen+is%3Aissue+label%3Afeat%2Fenhancement
 
 
 - type: textarea
@@ -45,7 +45,7 @@ body:
       If there are external references or other GitHub Issues that are related
       please link them here as well.
     placeholder: >-
-      I am trying to do X with Arx-AST version x.y.z and I think that implementing
+      I am trying to do X with AstX version x.y.z and I think that implementing
       new feature Y would be very helpful for me and every other user because of Z.
   validations:
     required: true
@@ -71,9 +71,9 @@ body:
   attributes:
     label: Code of Conduct
     description: |
-      Read the [`Arx-AST` Code of Conduct][CoC] first.
+      Read the [`AstX` Code of Conduct][CoC] first.
 
-      [CoC]: https://github.com/arx-ast/coc/CODE_OF_CONDUCT.md
+      [CoC]: https://github.com/astx/coc/CODE_OF_CONDUCT.md
     options:
     - label: I agree to follow the Code of Conduct
       required: true

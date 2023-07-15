@@ -1,7 +1,7 @@
-from arxast.blocks import Block
-from arxast.statements import IfStmt, ForStmt
-from arxast.operators import BinaryOp
-from arxast.datatypes import Int32Literal
+from astx.blocks import Block
+from astx.statements import IfStmt, ForStmt
+from astx.operators import BinaryOp
+from astx.datatypes import Int32Literal
 
 
 def test_if_stmt():

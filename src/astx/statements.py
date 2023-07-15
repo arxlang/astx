@@ -1,7 +1,7 @@
 from typing import List, Tuple, Optional
 
-from arxast.base import StatementType, Expr, SourceLocation, ASTKind
-from arxast.blocks import Block
+from astx.base import StatementType, Expr, SourceLocation, ASTKind
+from astx.blocks import Block
 
 
 class IfStmt(StatementType):

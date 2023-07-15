@@ -1,4 +1,4 @@
-name: arx-ast
+name: astx
 channels:
   - nodefaults
   - conda-forge

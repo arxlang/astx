@@ -1,7 +1,7 @@
-from arxast.blocks import Block
-from arxast.callables import Call, Function, FunctionPrototype, Return
-from arxast.datatypes import Variable, Int32
-from arxast.modifiers import ScopeKind, VisibilityKind
+from astx.blocks import Block
+from astx.callables import Call, Function, FunctionPrototype, Return
+from astx.datatypes import Variable, Int32
+from astx.modifiers import ScopeKind, VisibilityKind
 
 
 def test_function_creation_with_no_modifiers():

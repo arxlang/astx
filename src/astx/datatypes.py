@@ -1,4 +1,4 @@
-from arxast.base import DataType, ASTKind, SourceLocation, Expr, ExprType
+from astx.base import DataType, ASTKind, SourceLocation, Expr, ExprType
 
 
 class Number(DataType):

@@ -1,6 +1,6 @@
-from arxast.blocks import Block, Module
-from arxast.operators import BinaryOp
-from arxast.datatypes import Variable, Int32
+from astx.blocks import Block, Module
+from astx.operators import BinaryOp
+from astx.datatypes import Variable, Int32
 
 
 def test_block():

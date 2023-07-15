@@ -1,9 +1,9 @@
-# Arx-AST
+# AstX
 
 OSL Python Package contains all the boilerplate you need to create a Python package.
 
 * Free software: BSD 3 Clause
-* Documentation: https://arx-ast.readthedocs.io.
+* Documentation: https://astx.readthedocs.io.
 
 ## Features
 

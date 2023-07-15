@@ -1,7 +1,7 @@
 """
-Tests for arxast package.
+Tests for astx package.
 """
-from arxast.base import Expr
+from astx.base import Expr
 
 
 def test_base():
