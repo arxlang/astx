@@ -11,7 +11,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    timeout-minutes: 10  
+    timeout-minutes: 10
 
     defaults:
       run:
@@ -37,7 +37,7 @@ jobs:
         if: ${{ github.event_name != 'workflow_dispatch' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: make release-dry
+        run: makim release.dry
 
       - name: Release command
         if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -46,7 +46,7 @@ jobs:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
           poetry config pypi-token.pypi ${PYPI_TOKEN}
-          make release-ci
+          makim release.ci
 
       - name: Generate documentation with changes from semantic-release
         if: ${{ github.event_name == 'workflow_dispatch' }}
