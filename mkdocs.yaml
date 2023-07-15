@@ -1,6 +1,6 @@
-site_name: Arx-AST
-site_url: https://arxlang.github.io/arx-ast
-repo_url: https://github.com/arxlang/arx-ast
+site_name: ASTx
+site_url: https://arxlang.github.io/astx
+repo_url: https://github.com/arxlang/astx
 docs_dir: ./docs
 site_dir: ./build
 # extra_css:
@@ -123,7 +123,7 @@ markdown_extensions:
   - tables
   - toc
 extra:
-  project_name: "Arx-AST"
+  project_name: "ASTx"
   team:
     - name: "Active maintainers"
       members:
@@ -135,11 +135,11 @@ extra:
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/xmnlab
     - icon: fontawesome/brands/github
-      link: https://github.com/arxlang/arx-ast
+      link: https://github.com/arxlang/astx
   support_levels:
     supported:
       icon: :material-check-decagram:{ .verified }
-      description: Tested in CI. If this doesn't work for you, please [file an issue](https://github.com/arxlang/arx-ast/issues/new).
+      description: Tested in CI. If this doesn't work for you, please [file an issue](https://github.com/arxlang/astx/issues/new).
     bug:
       icon: :material-bug:{ .bug }
       description: Should work but doesn't because upstream is broken. Supported on a best-effort basis.
@@ -147,4 +147,4 @@ extra:
       icon: :material-cancel:{ .cancel }
       description: Unlikely to ever be supported or no upstream support.
 
-copyright: "Copyright &copy; 2022, Arx-AST Team"
+copyright: "Copyright &copy; 2022, ASTx Team"

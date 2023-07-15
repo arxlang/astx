@@ -1,5 +1,5 @@
-from arxast.datatypes import Int32, Int32Literal, Variable
-from arxast.operators import BinaryOp
+from astx.datatypes import Int32, Int32Literal, Variable
+from astx.operators import BinaryOp
 
 
 def test_variable_i32():

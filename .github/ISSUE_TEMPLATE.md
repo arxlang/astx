@@ -1,4 +1,4 @@
-* Arx-AST version:
+* ASTx version:
 * Python version:
 * Operating System:
 

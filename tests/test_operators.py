@@ -1,5 +1,5 @@
-from arxast.datatypes import Int32Literal
-from arxast.operators import BinaryOp, UnaryOp
+from astx.datatypes import Int32Literal
+from astx.operators import BinaryOp, UnaryOp
 
 
 def test_binary_op():

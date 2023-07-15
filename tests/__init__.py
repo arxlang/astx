@@ -1,1 +1,1 @@
-"""Unit test package for arx-ast."""
+"""Unit test package for astx."""

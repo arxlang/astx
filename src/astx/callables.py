@@ -1,15 +1,15 @@
 from typing import List
 
-from arxast.base import (
+from astx.base import (
     ASTKind,
     SourceLocation,
     Expr,
     ExprType,
     StatementType,
 )
-from arxast.blocks import Block
-from arxast.datatypes import Variable
-from arxast.modifiers import ScopeKind, VisibilityKind
+from astx.blocks import Block
+from astx.datatypes import Variable
+from astx.modifiers import ScopeKind, VisibilityKind
 
 
 class Call(Expr):

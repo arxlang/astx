@@ -3,7 +3,7 @@
 In order to be able to contribute, it is important that you understand
 the project layout.
 This project uses the *src layout*, which means that the package code is located
-at `./src/arxast`.
+at `./src/astx`.
 
 For my information, check the official documentation:
 https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/
@@ -25,7 +25,7 @@ You can contribute in many ways:
 
 ### Report Bugs
 
-Report bugs at https://github.com/arxlang/arx-ast/issues.
+Report bugs at https://github.com/arxlang/astx/issues.
 
 If you are reporting a bug, please include:
 
@@ -47,14 +47,14 @@ it.
 
 ### Write Documentation
 
-Arx-AST could always use more documentation,
-whether as part of the official Arx-AST docs,
+ASTx could always use more documentation,
+whether as part of the official ASTx docs,
 in docstrings, or even on the web in blog posts, articles, and such.
 
 ### Submit Feedback
 
 The best way to send feedback is to file an issue at
-https://github.com/arxlang/arx-ast/issues.
+https://github.com/arxlang/astx/issues.
 
 If you are proposing a feature:
 
@@ -66,20 +66,20 @@ If you are proposing a feature:
 
 ## Get Started!
 
-Ready to contribute? Here’s how to set up `arx-ast` for local development.
+Ready to contribute? Here’s how to set up `astx` for local development.
 
-1.  Fork the `arx-ast` repo on GitHub.
+1.  Fork the `astx` repo on GitHub.
 
 2.  Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/arx-ast.git
+    $ git clone git@github.com:your_name_here/astx.git
 
 3.  Install your local copy into a virtualenv. Assuming you have
     virtualenvwrapper installed, this is how you set up your fork for
     local development::
 
-    $ mkvirtualenv arx-ast
-    $ cd arx-ast/
+    $ mkvirtualenv astx
+    $ cd astx/
     $ python setup.py develop
 
 4.  Create a branch for local development::

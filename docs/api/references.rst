@@ -1,8 +1,8 @@
 API references
 ==============
 
-.. automodule:: arxast
+.. automodule:: astx
     :members:
 
-.. automodule:: arxast.arxast
+.. automodule:: astx.astx
     :members:
