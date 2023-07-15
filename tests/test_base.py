@@ -5,4 +5,4 @@ from arxast.base import Expr
 
 
 def test_base():
-    expr = base.Expr()
+    expr = Expr()
