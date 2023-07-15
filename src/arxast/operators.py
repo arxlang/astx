@@ -22,14 +22,14 @@ class BinaryOp(OperatorType):
 
     def __init__(
         self,
-        op: str,
+        op_code: str,
         lhs: Expr,
         rhs: Expr,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the BinaryOp instance."""
         self.loc = loc
-        self.op = op
+        self.op_code = op_code
         self.lhs = lhs
         self.rhs = rhs
         self.kind = ASTKind.BinaryOpKind

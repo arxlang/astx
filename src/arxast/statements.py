@@ -1,32 +1,32 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
-from arxast.base import StatementType, Expr, SourceLocation
+from arxast.base import StatementType, Expr, SourceLocation, ASTKind
 from arxast.blocks import Block
 
 
-class IfStmtAST(StatementType):
+class IfStmt(StatementType):
     """AST class for `if` statement."""
 
-    cond: Expr
-    then_: Block
-    else_: Block
+    condition: Expr
+    then: Block
+    else_: Optional[Block]
 
     def __init__(
         self,
-        cond: Expr,
-        then_: Block,
-        else_: Block,
+        condition: Expr,
+        then: Block,
+        else_: Optional[Block] = None,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
-        """Initialize the IfStmtAST instance."""
+        """Initialize the IfStmt instance."""
         self.loc = loc
-        self.cond = cond
-        self.then_ = then_
+        self.condition = condition
+        self.then = then
         self.else_ = else_
         self.kind = ASTKind.IfKind
 
 
-class ForStmtAST(StatementType):
+class ForStmt(StatementType):
     """AST class for `For` statement."""
 
     var_name: str
@@ -44,7 +44,7 @@ class ForStmtAST(StatementType):
         body: Block,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
-        """Initialize the ForStmtAST instance."""
+        """Initialize the ForStmt instance."""
         self.loc = loc
         self.var_name = var_name
         self.start = start

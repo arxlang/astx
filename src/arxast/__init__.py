@@ -2,6 +2,13 @@
 """Arx-AST."""
 from importlib import metadata as importlib_metadata
 
+from arxast import base
+from arxast import blocks
+from arxast import callables
+from arxast import datatypes
+from arxast import operators
+from arxast import statements
+
 
 def get_version() -> str:
     """Return the program version."""

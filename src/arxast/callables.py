@@ -40,8 +40,8 @@ class FunctionPrototype(StatementType):
     def __init__(
         self,
         name: str,
-        return_type: ExprType,
         args: List[Variable],
+        return_type: ExprType,
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = SourceLocation(0, 0),
@@ -49,7 +49,7 @@ class FunctionPrototype(StatementType):
         """Initialize the FunctionPrototype instance."""
         self.name = name
         self.args = args
-        self.type_name = type_name
+        self.return_type = return_type
         self.line = loc.line
         self.kind = ASTKind.PrototypeKind
         self.scope = scope
@@ -73,17 +73,17 @@ class Return(StatementType):
 class Function(StatementType):
     """AST class for function definition."""
 
-    proto: FunctionPrototype
+    prototype: FunctionPrototype
     body: Block
 
     def __init__(
         self,
-        proto: FunctionPrototype,
+        prototype: FunctionPrototype,
         body: Block,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the Function instance."""
         self.loc = loc
-        self.proto = proto
+        self.prototype = prototype
         self.body = body
         self.kind = ASTKind.FunctionKind
