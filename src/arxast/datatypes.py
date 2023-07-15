@@ -8,16 +8,6 @@ class Number(DataType):
 class Integer(Number):
     """Integer number data type expression."""
 
-    value: int
-
-    def __init__(self, value: int):
-        self.value = value
-
-    @classmethod
-    @property
-    def name(cls) -> str:
-        return cls.__name__.lower()
-
 
 class SignedInteger(Integer):
     """Signed integer number data type expression."""
@@ -42,16 +32,6 @@ class Int64(SignedInteger):
 class Floating(Number):
     """AST for the literal float number."""
 
-    value: float
-
-    def __init__(
-        self, val: float, loc: SourceLocation = SourceLocation(0, 0)
-    ) -> None:
-        """Initialize the FloatAST instance."""
-        self.loc = loc
-        self.value = val
-        self.kind = ASTKind.FloatDTKind
-
 
 class Float16(Floating):
     """Float16 data type expression."""
@@ -64,20 +44,40 @@ class Float32(Floating):
 class Float64(Floating):
     """Float64 data type expression."""
 
+
 class Boolean(DataType):
     """Boolean data type expression."""
 
-    value: bool
 
-    def __init__(self, value: bool):
+class Literal(DataType):
+    """Literal Data type."""
+
+    type_: ExprType
+    loc: SourceLocation
+
+
+class Int32Literal(Literal):
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = SourceLocation(0, 0)
+    ) -> None:
         self.value = value
+        self.type_ = Int32
+        self.loc = loc
+
 
 class Variable(Expr):
     """AST class for the variable usage."""
 
     type_: ExprType
 
-    def __init__(self, name: str, type_: ExprType, loc: SourceLocation) -> None:
+    def __init__(
+        self,
+        name: str,
+        type_: ExprType,
+        loc: SourceLocation = SourceLocation(0, 0),
+    ) -> None:
         """Initialize the Variable instance."""
         super().__init__(loc)
         self.name = name

@@ -30,9 +30,7 @@ jobs:
       run: poetry install
 
     - name: Run tests
-      run: make test
+      run: makim tests.unittest
 
     - name: Run style checks
-      run: |
-        pre-commit install
-        make lint
+      run: makim tests.linter

@@ -1,8 +1,8 @@
 site_name: Arx-AST
 site_url: https://arxlang.github.io/arx-ast
 repo_url: https://github.com/arxlang/arx-ast
-docs_dir: ./
-site_dir: ../build
+docs_dir: ./docs
+site_dir: ./build
 # extra_css:
 #   - stylesheets/extra.css
 # Page tree
@@ -45,7 +45,7 @@ plugins:
       handlers:
         python:
           paths: [../src]
-          
+
           import:
             - https://docs.python.org/3/objects.inv
           options:

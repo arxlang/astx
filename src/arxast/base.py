@@ -1,6 +1,6 @@
 """AST classes and functions."""
 from enum import Enum
-from typing import List, Tuple
+from typing import List, Tuple, TypeAlias, Type
 
 
 class SourceLocation:
@@ -76,18 +76,14 @@ class AST:
 class Expr(AST):
     """AST main expression class."""
 
+    def __str__(self) -> str:
+        return self.__repr__()
 
-class ExprType(AST):
-    """Type"""
+    def __repr__(self) -> str:
+        return self.__class__.__name__
 
-    name: str
 
-    def __init__(
-        self, name: str, loc: SourceLocation = SourceLocation(0, 0)
-    ) -> None:
-        """Initialize the AST instance."""
-        self.loc = loc
-        self.name = name
+ExprType: TypeAlias = Type[Expr]
 
 
 class DataType(Expr):
