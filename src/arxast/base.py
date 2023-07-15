@@ -1,6 +1,6 @@
 """AST classes and functions."""
 from enum import Enum
-from typing import List, Tuple, TypeAlias, Type
+from typing import TypeAlias, Type
 
 
 class SourceLocation:
@@ -61,7 +61,12 @@ class ASTKind(Enum):
     Decimal256DTKind = -121
 
 
-class AST:
+class ASTMeta(type):
+    def __str__(cls):
+        return cls.__name__
+
+
+class AST(metaclass=ASTMeta):
     """AST main expression class."""
 
     loc: SourceLocation
@@ -72,15 +77,15 @@ class AST:
         self.kind = ASTKind.GenericKind
         self.loc = loc
 
-
-class Expr(AST):
-    """AST main expression class."""
-
     def __str__(self) -> str:
         return self.__repr__()
 
     def __repr__(self) -> str:
         return self.__class__.__name__
+
+
+class Expr(AST):
+    """AST main expression class."""
 
 
 ExprType: TypeAlias = Type[Expr]
