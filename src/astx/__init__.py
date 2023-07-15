@@ -1,5 +1,5 @@
 # mypy: disable-error-code="attr-defined"
-"""AstX."""
+"""ASTx."""
 from importlib import metadata as importlib_metadata
 
 from astx import base

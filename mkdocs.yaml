@@ -1,4 +1,4 @@
-site_name: AstX
+site_name: ASTx
 site_url: https://arxlang.github.io/astx
 repo_url: https://github.com/arxlang/astx
 docs_dir: ./docs
@@ -123,7 +123,7 @@ markdown_extensions:
   - tables
   - toc
 extra:
-  project_name: "AstX"
+  project_name: "ASTx"
   team:
     - name: "Active maintainers"
       members:
@@ -147,4 +147,4 @@ extra:
       icon: :material-cancel:{ .cancel }
       description: Unlikely to ever be supported or no upstream support.
 
-copyright: "Copyright &copy; 2022, AstX Team"
+copyright: "Copyright &copy; 2022, ASTx Team"

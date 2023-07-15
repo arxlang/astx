@@ -1,4 +1,4 @@
-* AstX version:
+* ASTx version:
 * Python version:
 * Operating System:
 

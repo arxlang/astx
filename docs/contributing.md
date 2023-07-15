@@ -47,8 +47,8 @@ it.
 
 ### Write Documentation
 
-AstX could always use more documentation,
-whether as part of the official AstX docs,
+ASTx could always use more documentation,
+whether as part of the official ASTx docs,
 in docstrings, or even on the web in blog posts, articles, and such.
 
 ### Submit Feedback

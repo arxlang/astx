@@ -4,12 +4,12 @@ contact_links:
 - name: 🙋  Usage Questions
   url: https://github.com/astx/discussions
   about: |
-    Use AstX's GitHub Discussions to ask "How do I do X with Cookiecutter?".
+    Use ASTx's GitHub Discussions to ask "How do I do X with Cookiecutter?".
 - name: 📖  Tutorial
   url: https://github.com/astx
   about: |
-    The AstX tutorial is continually updated and provides an in depth walkthrough
+    The ASTx tutorial is continually updated and provides an in depth walkthrough
     of how to use the latest release of Cookiecutter.
-- name: 📝  AstX Code of Conduct
+- name: 📝  ASTx Code of Conduct
   url: https://github.com/astx/coc/CODE_OF_CONDUCT.md
   about: Expectations for how people will interact with each other on Cookiecutter's GitHub.

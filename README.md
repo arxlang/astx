@@ -1,4 +1,4 @@
-# AstX
+# ASTx
 
 OSL Python Package contains all the boilerplate you need to create a Python package.
 

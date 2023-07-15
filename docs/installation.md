@@ -2,14 +2,14 @@
 
 ## Stable release
 
-To install AstX, run this command in your
+To install ASTx, run this command in your
 terminal:
 
 ```bash
 $ pip install astx
 ```
 
-This is the preferred method to install AstX,
+This is the preferred method to install ASTx,
 as it will always install the most recent stable release.
 
 If you don't have [pip](https://pip.pypa.io) installed, this
@@ -18,7 +18,7 @@ can guide you through the process.
 
 ## From sources
 
-The sources for AstX can be downloaded from
+The sources for ASTx can be downloaded from
 the [Github repo](https://github.com/arxlang/astx).
 
 You can either clone the public repository:
