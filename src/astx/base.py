@@ -87,6 +87,8 @@ class AST(metaclass=ASTMeta):
 class Expr(AST):
     """AST main expression class."""
 
+    nbytes: int = 0
+
 
 ExprType: TypeAlias = Type[Expr]
 
@@ -94,8 +96,10 @@ ExprType: TypeAlias = Type[Expr]
 class DataType(Expr):
     """AST main expression class."""
 
+    type_: ExprType
 
-class OperatorType(Expr):
+
+class OperatorType(DataType):
     """AST main expression class."""
 
 

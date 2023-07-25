@@ -1,7 +1,30 @@
+from __future__ import annotations
+
 from astx.base import DataType, ASTKind, SourceLocation, Expr, ExprType
+from astx.operators import BinaryOp
 
 
-class Number(DataType):
+class DataTypeOps(DataType):
+    def __add__(self, other: DataType) -> BinaryOp:
+        return BinaryOp("+", self, other)
+
+    def __sub__(self, other: DataType) -> BinaryOp:
+        return BinaryOp("-", self, other)
+
+    def __div__(self, other: DataType) -> BinaryOp:
+        return BinaryOp("/", self, other)
+
+    def __mul__(self, other: DataType) -> BinaryOp:
+        return BinaryOp("*", self, other)
+
+    def __pow__(self, other: DataType) -> BinaryOp:
+        return BinaryOp("^", self, other)
+
+    def __mod__(self, other: DataType) -> BinaryOp:
+        return BinaryOp("%", self, other)
+
+
+class Number(DataTypeOps):
     """Number data type expression."""
 
 
@@ -16,17 +39,25 @@ class SignedInteger(Integer):
 class Int8(SignedInteger):
     """Int8 data type expression."""
 
+    nbytes: int = 1
+
 
 class Int16(SignedInteger):
     """Int16 data type expression."""
+
+    nbytes: int = 2
 
 
 class Int32(SignedInteger):
     """Int32 data type expression."""
 
+    nbytes: int = 4
+
 
 class Int64(SignedInteger):
     """Int64 data type expression."""
+
+    nbytes: int = 8
 
 
 class Floating(Number):
@@ -49,7 +80,7 @@ class Boolean(DataType):
     """Boolean data type expression."""
 
 
-class Literal(DataType):
+class Literal(DataTypeOps):
     """Literal Data type."""
 
     type_: ExprType
@@ -67,7 +98,7 @@ class Int32Literal(Literal):
         self.loc = loc
 
 
-class Variable(Expr):
+class Variable(DataTypeOps):
     """AST class for the variable usage."""
 
     type_: ExprType

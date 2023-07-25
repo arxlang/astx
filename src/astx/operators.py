@@ -1,4 +1,5 @@
-from astx.base import OperatorType, ASTKind, Expr, SourceLocation
+from astx.base import OperatorType, ASTKind, DataType, ExprType, SourceLocation
+from astx import datatypes as dts
 
 
 class UnaryOp(OperatorType):
@@ -7,7 +8,7 @@ class UnaryOp(OperatorType):
     def __init__(
         self,
         op_code: str,
-        operand: Expr,
+        operand: DataType,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the UnaryOp instance."""
@@ -20,11 +21,13 @@ class UnaryOp(OperatorType):
 class BinaryOp(OperatorType):
     """AST class for the binary operator."""
 
+    type_: ExprType
+
     def __init__(
         self,
         op_code: str,
-        lhs: Expr,
-        rhs: Expr,
+        lhs: DataType,
+        rhs: DataType,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the BinaryOp instance."""
@@ -33,3 +36,18 @@ class BinaryOp(OperatorType):
         self.lhs = lhs
         self.rhs = rhs
         self.kind = ASTKind.BinaryOpKind
+
+        if not (
+            issubclass(lhs.type_, dts.Number)
+            and issubclass(lhs.type_, dts.Number)
+        ):
+            raise Exception(
+                "For now, binary operators are just allowed for numbers."
+                f"LHS: {lhs.type_}, RHS: {rhs.type_}"
+            )
+
+        if lhs.type_ == rhs.type_:
+            self.type_ = lhs.type_
+        else:
+            # inference
+            self.type_ = max([lhs.type_, rhs.type_], key=lambda v: v.nbytes)
