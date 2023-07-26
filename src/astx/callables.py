@@ -4,6 +4,7 @@ from astx.base import (
     ASTKind,
     SourceLocation,
     Expr,
+    DataType,
     ExprType,
     StatementType,
 )
@@ -59,10 +60,10 @@ class FunctionPrototype(StatementType):
 class Return(StatementType):
     """AST class for function `return` statement."""
 
-    value: Expr
+    value: DataType
 
     def __init__(
-        self, value: Expr, loc: SourceLocation = SourceLocation(0, 0)
+        self, value: DataType, loc: SourceLocation = SourceLocation(0, 0)
     ) -> None:
         """Initialize the Return instance."""
         self.loc = loc

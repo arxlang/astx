@@ -102,11 +102,13 @@ class Variable(DataTypeOps):
     """AST class for the variable usage."""
 
     type_: ExprType
+    value: DataType
 
     def __init__(
         self,
         name: str,
         type_: ExprType,
+        value: DataType,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the Variable instance."""
@@ -114,3 +116,4 @@ class Variable(DataTypeOps):
         self.name = name
         self.type_ = type_
         self.kind = ASTKind.VariableKind
+        self.value: DataType = value
