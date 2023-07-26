@@ -8,6 +8,7 @@ from astx import callables
 from astx import datatypes
 from astx import operators
 from astx import statements
+from astx import mixes
 
 
 def get_version() -> str:
