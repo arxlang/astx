@@ -20,7 +20,7 @@ repos:
       name: mypy
       entry: mypy
       language: system
-      files: "src/astx"
+      files: "."
       pass_filenames: true
       types:
         - python

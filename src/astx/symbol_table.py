@@ -7,7 +7,7 @@ specifics scopes.
 
 """
 from __future__ import annotations
-from typing import Dict, Optional
+from typing import Dict, Optional, Type
 
 from public import public
 
@@ -15,35 +15,47 @@ from astx.mixes import NamedExpr
 
 
 @public
-class ScopeNode:
+class ScopeNodeBase:
     name: str
+    parent: Optional[ScopeNodeBase]
+    default_parent: Optional[ScopeNodeBase] = None
     named_expr: Dict[str, NamedExpr]
-    parent: Optional[ScopeNode]
-    default_parent: Optional[ScopeNode] = None
 
     def __init__(self, name: str, parent=None):
-        self.named_expr: Dict[str, NamedExpr] = {}
-        self.parent: Optional[ScopeNode] = parent or ScopeNode.default_parent
+        self.parent: Optional[ScopeNodeBase] = (
+            parent or ScopeNodeBase.default_parent
+        )
         self.name: str = name
+        self.named_expr: Dict[str, NamedExpr] = {}
+
+
+@public
+class ScopeNode(ScopeNodeBase):
+    ...
 
 
 @public
 class Scope:
-    nodes: Dict[int, ScopeNode]
-    current: Optional[ScopeNode]
-    previous: Optional[ScopeNode]
+    nodes: Dict[int, ScopeNodeBase]
+    current: Optional[ScopeNodeBase]
+    previous: Optional[ScopeNodeBase]
+    scope_node_class: Type[ScopeNodeBase]
 
-    def __init__(self) -> None:
-        self.nodes: Dict[int, ScopeNode] = {}
+    def __init__(
+        self,
+        scope_node_class: Type[ScopeNodeBase] = ScopeNode,
+    ) -> None:
+        self.nodes: Dict[int, ScopeNodeBase] = {}
         self.current = None
         self.previous = None
+        self.scope_node_class = scope_node_class
 
-        self.add(ScopeNode("root"))
+        self.add(self.scope_node_class("root"))
 
-        ScopeNode.default_parent = self.current
+        self.scope_node_class.default_parent = self.current
 
     def add(self, name, parent=None, change_current=True):
-        node = ScopeNode(name, parent)
+        node = self.scope_node_class(name, parent)
 
         # The use of id(node) as keys in the nodes dictionary is generally
         # fine, but be aware that this approach may lead to potential issues
@@ -57,19 +69,19 @@ class Scope:
 
         return node
 
-    def get_first(self) -> ScopeNode:
+    def get_first(self) -> ScopeNodeBase:
         return self.nodes[0]
 
-    def get_last(self) -> ScopeNode:
+    def get_last(self) -> ScopeNodeBase:
         return self.nodes[-1]
 
-    def destroy(self, node: ScopeNode) -> None:
+    def destroy(self, node: ScopeNodeBase) -> None:
         del self.nodes[id(node)]
         self.current = self.previous
         self.previous = None
 
-    def set_default_parent(self, node: ScopeNode) -> None:
-        ScopeNode.default_parent = node
+    def set_default_parent(self, node: ScopeNodeBase) -> None:
+        self.scope_node_class.default_parent = node
 
 
 @public
