@@ -88,3 +88,7 @@ class Function(StatementType):
         self.prototype = prototype
         self.body = body
         self.kind = ASTKind.FunctionKind
+
+    @property
+    def name(self) -> str:
+        return self.prototype.name

@@ -71,11 +71,13 @@ class AST(metaclass=ASTMeta):
 
     loc: SourceLocation
     kind: ASTKind
+    comment: str
 
     def __init__(self, loc: SourceLocation = SourceLocation(0, 0)) -> None:
         """Initialize the AST instance."""
         self.kind = ASTKind.GenericKind
         self.loc = loc
+        self.comment: str = ""
 
     def __str__(self) -> str:
         return self.__repr__()
