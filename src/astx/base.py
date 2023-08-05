@@ -1,6 +1,6 @@
 """AST classes and functions."""
 from enum import Enum
-from typing import TypeAlias, Type
+from typing import TypeAlias, Type, ClassVar
 
 
 class SourceLocation:
@@ -99,10 +99,17 @@ class DataType(Expr):
     """AST main expression class."""
 
     type_: ExprType
+    name: str
 
 
 class OperatorType(DataType):
     """AST main expression class."""
+
+    _tmp_id: ClassVar[int] = 0
+
+    def __init__(self) -> None:
+        self.name = f"temp_{OperatorType._tmp_id}"
+        OperatorType._tmp_id += 1
 
 
 class StatementType(AST):

@@ -93,6 +93,7 @@ class Int32Literal(Literal):
     def __init__(
         self, value: int, loc: SourceLocation = SourceLocation(0, 0)
     ) -> None:
+        super().__init__(loc)
         self.value = value
         self.type_ = Int32
         self.loc = loc

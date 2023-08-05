@@ -96,6 +96,18 @@ class SymbolTable:
             raise Exception("SymbolTable: No scope active.")
         self.scopes.current.named_expr[expr.name] = expr
 
+    def update(self, expr: NamedExpr) -> None:
+        """
+        Update the expression on the SymbolTable.
+
+        It is useful mainly for updating the comment of the expression.
+        """
+        if not self.scopes.current:
+            raise Exception("SymbolTable: No scope active.")
+        if not expr.name in self.scopes.current.named_expr:
+            raise Exception("This name doesn't exist in the SymbolTable.")
+        self.scopes.current.named_expr[expr.name] = expr
+
     def lookup(self, name) -> NamedExpr:
         scope = self.scopes.current
         while scope is not None:

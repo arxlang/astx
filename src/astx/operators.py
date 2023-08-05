@@ -12,6 +12,7 @@ class UnaryOp(OperatorType):
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the UnaryOp instance."""
+        super().__init__()
         self.loc = loc
         self.op_code = op_code
         self.operand = operand
@@ -31,6 +32,8 @@ class BinaryOp(OperatorType):
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the BinaryOp instance."""
+        super().__init__()
+
         self.loc = loc
         self.op_code = op_code
         self.lhs = lhs
