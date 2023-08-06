@@ -1,12 +1,12 @@
 from astx.blocks import Block
 from astx.callables import Call, Function, FunctionPrototype, Return
-from astx.datatypes import Variable, Int32
+from astx.datatypes import Variable, Int32, Int32Literal
 from astx.modifiers import ScopeKind, VisibilityKind
 
 
 def test_function_creation_with_no_modifiers():
-    var_a = Variable("a", type_=Int32)
-    var_b = Variable("b", type_=Int32)
+    var_a = Variable("a", type_=Int32, value=Int32Literal(1))
+    var_b = Variable("b", type_=Int32, value=Int32Literal(1))
     proto = FunctionPrototype(
         name="add",
         args=[var_a, var_b],
@@ -17,8 +17,8 @@ def test_function_creation_with_no_modifiers():
 
 
 def test_function_creation_with_modifiers():
-    var_a = Variable("a", type_=Int32)
-    var_b = Variable("b", type_=Int32)
+    var_a = Variable("a", type_=Int32, value=Int32Literal(1))
+    var_b = Variable("b", type_=Int32, value=Int32Literal(1))
     proto = FunctionPrototype(
         name="add",
         args=[var_a, var_b],

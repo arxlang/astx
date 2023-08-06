@@ -7,20 +7,20 @@ from astx.base import AST, Expr, ASTKind
 class Block(AST):
     """The AST tree."""
 
-    nodes: List[Expr]
+    nodes: List[AST]
     position: int = 0
 
     def __init__(self):
         self.nodes: List[Expr] = []
         self.position: int = 0
 
-    def append(self, value: Expr):
+    def append(self, value: AST):
         self.nodes.append(value)
 
     def __iter__(self) -> Block:
         return self
 
-    def __next__(self) -> Expr:
+    def __next__(self) -> AST:
         if self.position >= len(self.nodes):
             raise StopIteration()
 

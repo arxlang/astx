@@ -3,8 +3,8 @@ from astx.operators import BinaryOp
 
 
 def test_variable_i32():
-    var_a = Variable("a", Int32)
-    var_b = Variable("b", Int32)
+    var_a = Variable("a", Int32, value=Int32Literal(1))
+    var_b = Variable("b", Int32, value=Int32Literal(1))
     BinaryOp(op_code="+", lhs=var_a, rhs=var_b)
 
 

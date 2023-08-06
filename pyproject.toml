@@ -11,10 +11,12 @@ exclude = [
 packages = [
   {include = "astx", from="src"},
 ]
+include = ["src/astx/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
 atpublic = "^4.0"
+typing-extensions = { version = "^4", python = "<3.9" }
 
 [tool.poetry.dev-dependencies]
 urllib3 = "<2"  # fix poetry issues
@@ -38,8 +40,6 @@ mkdocs-macros-plugin = ">=0.7.0,<1"
 mkdocs-material = "^9.1.15"
 mkdocstrings = "^0.21.2"
 mkdocstrings-python = "^1.1.2"
-
-
 
 [tool.poetry.group.dev.dependencies]
 makim = "^1.8.1"

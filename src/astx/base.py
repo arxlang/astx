@@ -1,6 +1,11 @@
 """AST classes and functions."""
 from enum import Enum
-from typing import TypeAlias, Type
+from typing import Type, ClassVar
+
+try:
+    from typing import TypeAlias
+except ImportError:
+    from typing_extensions import TypeAlias
 
 
 class SourceLocation:
@@ -71,11 +76,13 @@ class AST(metaclass=ASTMeta):
 
     loc: SourceLocation
     kind: ASTKind
+    comment: str
 
     def __init__(self, loc: SourceLocation = SourceLocation(0, 0)) -> None:
         """Initialize the AST instance."""
         self.kind = ASTKind.GenericKind
         self.loc = loc
+        self.comment: str = ""
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -87,6 +94,8 @@ class AST(metaclass=ASTMeta):
 class Expr(AST):
     """AST main expression class."""
 
+    nbytes: int = 0
+
 
 ExprType: TypeAlias = Type[Expr]
 
@@ -94,9 +103,18 @@ ExprType: TypeAlias = Type[Expr]
 class DataType(Expr):
     """AST main expression class."""
 
+    type_: ExprType
+    name: str
 
-class OperatorType(Expr):
+
+class OperatorType(DataType):
     """AST main expression class."""
+
+    _tmp_id: ClassVar[int] = 0
+
+    def __init__(self) -> None:
+        self.name = f"temp_{OperatorType._tmp_id}"
+        OperatorType._tmp_id += 1
 
 
 class StatementType(AST):
