@@ -1,4 +1,9 @@
-from typing import TypeAlias, Union
+from typing import Union
+
+try:
+    from typing import TypeAlias
+except ImportError:
+    from typing_extensions import TypeAlias
 
 from astx.base import DataType
 from astx.datatypes import Variable

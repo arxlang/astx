@@ -1,6 +1,11 @@
 """AST classes and functions."""
 from enum import Enum
-from typing import TypeAlias, Type, ClassVar
+from typing import Type, ClassVar
+
+try:
+    from typing import TypeAlias
+except ImportError:
+    from typing_extensions import TypeAlias
 
 
 class SourceLocation:
