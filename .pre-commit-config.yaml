@@ -20,6 +20,15 @@ repos:
       name: mypy
       entry: mypy
       language: system
+      files: "./"
+      pass_filenames: true
+      types:
+        - python
+
+    - id: ruff
+      name: ruff
+      entry: ruff
+      language: system
       files: "."
       pass_filenames: true
       types:

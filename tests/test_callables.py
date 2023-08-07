@@ -1,5 +1,5 @@
 from astx.blocks import Block
-from astx.callables import Call, Function, FunctionPrototype, Return
+from astx.callables import Function, FunctionPrototype
 from astx.datatypes import Variable, Int32, Int32Literal
 from astx.modifiers import ScopeKind, VisibilityKind
 
@@ -13,7 +13,7 @@ def test_function_creation_with_no_modifiers():
         return_type=Int32,
     )
     fn_block = Block()
-    fn = Function(prototype=proto, body=fn_block)
+    Function(prototype=proto, body=fn_block)
 
 
 def test_function_creation_with_modifiers():
@@ -27,4 +27,4 @@ def test_function_creation_with_modifiers():
         scope=ScopeKind.global_,
     )
     fn_block = Block()
-    fn = Function(prototype=proto, body=fn_block)
+    Function(prototype=proto, body=fn_block)
