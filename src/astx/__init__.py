@@ -2,14 +2,15 @@
 """ASTx."""
 from importlib import metadata as importlib_metadata
 
-from astx import base
-from astx import blocks
-from astx import callables
-from astx import datatypes
-from astx import operators
-from astx import statements
-from astx import mixes
-from astx import symbol_table
+from astx import base  # noqa: F401
+from astx import blocks  # noqa: F401
+from astx import callables  # noqa: F401
+from astx import datatypes  # noqa: F401
+from astx import flows  # noqa: F401
+from astx import mixes  # noqa: F401
+from astx import operators  # noqa: F401
+from astx import symbol_table  # noqa: F401
+from astx import variables  # noqa: F401
 
 
 def get_version() -> str:
