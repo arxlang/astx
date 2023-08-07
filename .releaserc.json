@@ -10,12 +10,12 @@
       {
         "replacements": [
           {
-            "files": ["{{ cookiecutter.package_slug }}/src/__init__.py"],
-            "from": "return '.*'  # semantic-release",
-            "to": "return '${nextRelease.version}'  # semantic-release",
+            "files": ["src/astx/__init__.py"],
+            "from": "return \".*\"  # semantic-release",
+            "to": "return \"${nextRelease.version}\"  # semantic-release",
             "results": [
               {
-                "file": "{{ cookiecutter.package_slug }}/src/__init__.py",
+                "file": "src/astx/__init__.py",
                 "hasChanged": true,
                 "numMatches": 1,
                 "numReplacements": 1
