@@ -6,10 +6,11 @@ from astx import base
 from astx import blocks
 from astx import callables
 from astx import datatypes
-from astx import operators
-from astx import statements
+from astx import flows
 from astx import mixes
+from astx import operators
 from astx import symbol_table
+from astx import variables
 
 
 def get_version() -> str:

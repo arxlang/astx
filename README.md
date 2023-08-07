@@ -1,35 +1,27 @@
 # ASTx
 
-OSL Python Package contains all the boilerplate you need to create a Python package.
+**ASTx** is a generic project that offers a way to compound in an
+expressive way an **AST**. It is generic because it is not specific
+to any language, neither to the **ArxLang** project,
+although its main focus is to provide all needed feature for **ArxLang**.
+
+**ASTx** doesn't aim to be a `lexer` or a `parser`, although it could
+be used by any programming language or parser in order to provide a
+high level representation of the AST.
+
+Note: this project is under active development and
+it is not ready for production yet.
 
 * Free software: BSD 3 Clause
-* Documentation: https://astx.readthedocs.io.
+* Documentation: https://arxlang.github.io/astx.
 
 ## Features
 
-* The security of our code: Bandit is a powerful tool that we use in our Python
-  project to ensure its security. This tool analyzes the code and detects
-  potential vulnerabilities. Some of the key features of Bandit are its ease of
-  use, its ability to integrate with other tools, and its support for multiple
-  Python versions. If you want to know about bandit you can check its
-  [documentation](https://bandit.readthedocs.io/en/latest/).
-
-* Finds unused code: [Vulture](https://github.com/jendrikseipp/vulture)
-  is useful for cleaning up and finding errors in large code bases in
-  Python.
-
-* Complexity of functions and modules: We use
-[McCabe](https://github.com/PyCQA/mccabe) to identify the complexity in our
-Python code that may be difficult to maintain or understand. By identifying
-complex code at the outset, we as developers can refactor it to make it easier
-to maintain and understand. In summary, McCabe helps us to improve the quality
-of our code and make it easier to maintain. If you would like to learn more
-about McCabe and code complexity, you can visit [McCabe - Code Complexity
-Checker](https://here-be-pythons.readthedocs.io/en/latest/python/mccabe.html).
-This tool is included with [Flake8](https://flake8.pycqa.org/en/latest/).
-
-* TODO
-
-## Credits
-
-This package was created with Cookieninja and the `osl-incubator/scicookie` project template.
+* Support for blocks of AST: `Module`, and `Block`
+* Support for control flow: `if/else` statement and `for` loop
+* Support for integer data types: Int8, Int16, Int32, Int64
+* Support for Binary and Unary operators
+* Support for object visibility: Public and Private
+* Support for object scope: Global and Local
+* Support for SymbolTable organized by scope
+* Support for functions declaration and function call

@@ -1,5 +1,5 @@
 from astx.blocks import Block
-from astx.statements import IfStmt, ForStmt
+from astx.flows import IfStmt, ForStmt
 from astx.operators import BinaryOp
 from astx.datatypes import Int32Literal
 
