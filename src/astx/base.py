@@ -7,7 +7,12 @@ try:
 except ImportError:
     from typing_extensions import TypeAlias
 
+from public import public
 
+__all__ = ["ExprType"]
+
+
+@public
 class SourceLocation:
     line: int
     col: int
@@ -17,6 +22,7 @@ class SourceLocation:
         self.col = col
 
 
+@public
 class ASTKind(Enum):
     """The expression kind class used for downcasting."""
 
@@ -66,11 +72,13 @@ class ASTKind(Enum):
     Decimal256DTKind = -121
 
 
+@public
 class ASTMeta(type):
     def __str__(cls):
         return cls.__name__
 
 
+@public
 class AST(metaclass=ASTMeta):
     """AST main expression class."""
 
@@ -91,6 +99,7 @@ class AST(metaclass=ASTMeta):
         return self.__class__.__name__
 
 
+@public
 class Expr(AST):
     """AST main expression class."""
 
@@ -100,6 +109,7 @@ class Expr(AST):
 ExprType: TypeAlias = Type[Expr]
 
 
+@public
 class DataType(Expr):
     """AST main expression class."""
 
@@ -107,6 +117,7 @@ class DataType(Expr):
     name: str
 
 
+@public
 class OperatorType(DataType):
     """AST main expression class."""
 
@@ -117,5 +128,6 @@ class OperatorType(DataType):
         OperatorType._tmp_id += 1
 
 
+@public
 class StatementType(AST):
     """AST main expression class."""

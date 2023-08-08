@@ -1,12 +1,15 @@
 """Module for controle flow AST."""
 from typing import Optional
 
+from public import public
+
 from astx.base import ASTKind, Expr, SourceLocation, StatementType
 from astx.blocks import Block
 from astx.variables import Variable
 
 
-class IfStmt(StatementType):
+@public
+class If(StatementType):
     """AST class for `if` statement."""
 
     condition: Expr
@@ -20,7 +23,7 @@ class IfStmt(StatementType):
         else_: Optional[Block] = None,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
-        """Initialize the IfStmt instance."""
+        """Initialize the If instance."""
         self.loc = loc
         self.condition = condition
         self.then = then
@@ -28,6 +31,7 @@ class IfStmt(StatementType):
         self.kind = ASTKind.IfKind
 
 
+@public
 class ForRangeLoop(StatementType):
     """AST class for `For` Loop Range statement."""
 
@@ -56,6 +60,7 @@ class ForRangeLoop(StatementType):
         self.kind = ASTKind.ForKind
 
 
+@public
 class ForCountLoop(StatementType):
     """
     AST class for a simple Count-Controlled `For` Loop statement.
