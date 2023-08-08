@@ -1,5 +1,7 @@
 from typing import List
 
+from public import public
+
 from astx.base import (
     ASTKind,
     DataType,
@@ -13,6 +15,7 @@ from astx.modifiers import ScopeKind, VisibilityKind
 from astx.variables import Variable
 
 
+@public
 class Call(Expr):
     """AST class for function call."""
 
@@ -29,6 +32,7 @@ class Call(Expr):
         self.kind = ASTKind.CallKind
 
 
+@public
 class FunctionPrototype(StatementType):
     """AST class for function prototype declaration."""
 
@@ -57,6 +61,7 @@ class FunctionPrototype(StatementType):
         self.visibility = visibility
 
 
+@public
 class Return(StatementType):
     """AST class for function `return` statement."""
 
@@ -71,6 +76,7 @@ class Return(StatementType):
         self.kind = ASTKind.ReturnKind
 
 
+@public
 class Function(StatementType):
     """AST class for function definition."""
 

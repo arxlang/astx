@@ -2,16 +2,23 @@ from __future__ import annotations
 
 from typing import List
 
+from public import public
+
 from astx.base import AST, ASTKind, Expr
 
 
+@public
 class Block(AST):
     """The AST tree."""
 
+    name: str
     nodes: List[AST]
     position: int = 0
 
-    def __init__(self):
+    def __init__(self, name: str = "entry") -> None:
+        """Initialize the AST instance."""
+        super().__init__()
+        self.name = name
         self.nodes: List[Expr] = []
         self.position: int = 0
 
@@ -30,6 +37,7 @@ class Block(AST):
         return self.nodes[i]
 
 
+@public
 class Module(Block):
     """AST main expression class."""
 
@@ -37,6 +45,5 @@ class Module(Block):
 
     def __init__(self, name: str = "main") -> None:
         """Initialize the AST instance."""
-        super().__init__()
-        self.name = name
+        super().__init__(name=name)
         self.kind = ASTKind.ModuleKind

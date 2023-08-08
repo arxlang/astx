@@ -1,6 +1,6 @@
 from astx.blocks import Block
 from astx.datatypes import Int32, Int32Literal
-from astx.flows import ForCountLoop, ForRangeLoop, IfStmt
+from astx.flows import ForCountLoop, ForRangeLoop, If
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
 
@@ -8,14 +8,14 @@ from astx.variables import Variable
 def test_if():
     op = BinaryOp(op_code=">", lhs=Int32Literal(1), rhs=Int32Literal(2))
     then_block = Block()
-    IfStmt(condition=op, then=then_block)
+    If(condition=op, then=then_block)
 
 
 def test_if_else():
     cond = BinaryOp(op_code=">", lhs=Int32Literal(1), rhs=Int32Literal(2))
     then_block = Block()
     else_block = Block()
-    IfStmt(condition=cond, then=then_block, else_=else_block)
+    If(condition=cond, then=then_block, else_=else_block)
 
 
 def test_for_range():

@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from public import public
+
 from astx.base import DataType, ExprType, SourceLocation
 from astx.operators import BinaryOp
 
 
+@public
 class DataTypeOps(DataType):
     def __add__(self, other: DataType) -> BinaryOp:
         return BinaryOp("+", self, other)
@@ -24,62 +27,75 @@ class DataTypeOps(DataType):
         return BinaryOp("%", self, other)
 
 
+@public
 class Number(DataTypeOps):
     """Number data type expression."""
 
 
+@public
 class Integer(Number):
     """Integer number data type expression."""
 
 
+@public
 class SignedInteger(Integer):
     """Signed integer number data type expression."""
 
 
+@public
 class Int8(SignedInteger):
     """Int8 data type expression."""
 
     nbytes: int = 1
 
 
+@public
 class Int16(SignedInteger):
     """Int16 data type expression."""
 
     nbytes: int = 2
 
 
+@public
 class Int32(SignedInteger):
     """Int32 data type expression."""
 
     nbytes: int = 4
 
 
+@public
 class Int64(SignedInteger):
     """Int64 data type expression."""
 
     nbytes: int = 8
 
 
+@public
 class Floating(Number):
     """AST for the literal float number."""
 
 
+@public
 class Float16(Floating):
     """Float16 data type expression."""
 
 
+@public
 class Float32(Floating):
     """Float32 data type expression."""
 
 
+@public
 class Float64(Floating):
     """Float64 data type expression."""
 
 
+@public
 class Boolean(DataType):
     """Boolean data type expression."""
 
 
+@public
 class Literal(DataTypeOps):
     """Literal Data type."""
 
@@ -87,6 +103,7 @@ class Literal(DataTypeOps):
     loc: SourceLocation
 
 
+@public
 class Int32Literal(Literal):
     value: int
 

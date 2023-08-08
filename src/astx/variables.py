@@ -1,5 +1,7 @@
 from typing import List, Tuple
 
+from public import public
+
 from astx.base import (
     ASTKind,
     DataType,
@@ -12,6 +14,7 @@ from astx.blocks import Block
 from astx.datatypes import DataTypeOps
 
 
+@public
 class VarDecl(StatementType):
     """AST class for variable declaration."""
 
@@ -34,6 +37,7 @@ class VarDecl(StatementType):
         self.kind = ASTKind.VarKind
 
 
+@public
 class Variable(DataTypeOps):
     """AST class for the variable usage."""
 

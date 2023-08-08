@@ -1,7 +1,10 @@
+from public import public
+
 from astx import datatypes as dts
 from astx.base import ASTKind, DataType, ExprType, OperatorType, SourceLocation
 
 
+@public
 class UnaryOp(OperatorType):
     """AST class for the unary operator."""
 
@@ -19,6 +22,7 @@ class UnaryOp(OperatorType):
         self.kind = ASTKind.UnaryOpKind
 
 
+@public
 class BinaryOp(OperatorType):
     """AST class for the binary operator."""
 
