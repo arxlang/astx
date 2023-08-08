@@ -6,7 +6,7 @@ except ImportError:
     from typing_extensions import TypeAlias
 
 from astx.base import DataType
-from astx.datatypes import Variable
+from astx.variables import Variable
 from astx.callables import Function
 
 

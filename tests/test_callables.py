@@ -1,7 +1,8 @@
 from astx.blocks import Block
 from astx.callables import Function, FunctionPrototype
-from astx.datatypes import Variable, Int32, Int32Literal
+from astx.datatypes import Int32, Int32Literal
 from astx.modifiers import ScopeKind, VisibilityKind
+from astx.variables import Variable
 
 
 def test_function_creation_with_no_modifiers():

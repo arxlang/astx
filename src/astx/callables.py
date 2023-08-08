@@ -9,8 +9,8 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
-from astx.datatypes import Variable
 from astx.modifiers import ScopeKind, VisibilityKind
+from astx.variables import Variable
 
 
 class Call(Expr):

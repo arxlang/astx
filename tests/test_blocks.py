@@ -1,6 +1,7 @@
 from astx.blocks import Block, Module
 from astx.operators import BinaryOp
-from astx.datatypes import Variable, Int32, Int32Literal
+from astx.datatypes import Int32, Int32Literal
+from astx.variables import Variable
 
 
 def test_block():
