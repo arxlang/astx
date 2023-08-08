@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from astx.base import DataType, ASTKind, SourceLocation, ExprType
+from astx.base import DataType, ExprType, SourceLocation
 from astx.operators import BinaryOp
 
 
@@ -97,24 +97,3 @@ class Int32Literal(Literal):
         self.value = value
         self.type_ = Int32
         self.loc = loc
-
-
-class Variable(DataTypeOps):
-    """AST class for the variable usage."""
-
-    type_: ExprType
-    value: DataType
-
-    def __init__(
-        self,
-        name: str,
-        type_: ExprType,
-        value: DataType,
-        loc: SourceLocation = SourceLocation(0, 0),
-    ) -> None:
-        """Initialize the Variable instance."""
-        super().__init__(loc)
-        self.name = name
-        self.type_ = type_
-        self.kind = ASTKind.VariableKind
-        self.value: DataType = value

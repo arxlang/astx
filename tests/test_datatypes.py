@@ -1,5 +1,6 @@
-from astx.datatypes import Int32, Int32Literal, Variable
+from astx.datatypes import Int32, Int32Literal
 from astx.operators import BinaryOp
+from astx.variables import Variable
 
 
 def test_variable_i32():

@@ -1,6 +1,6 @@
 """AST classes and functions."""
 from enum import Enum
-from typing import Type, ClassVar
+from typing import ClassVar, Type
 
 try:
     from typing import TypeAlias

@@ -1,5 +1,5 @@
-from astx.base import OperatorType, ASTKind, DataType, ExprType, SourceLocation
 from astx import datatypes as dts
+from astx.base import ASTKind, DataType, ExprType, OperatorType, SourceLocation
 
 
 class UnaryOp(OperatorType):

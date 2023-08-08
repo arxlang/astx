@@ -1,8 +1,9 @@
 """Module for controle flow AST."""
 from typing import Optional
 
-from astx.base import StatementType, Expr, SourceLocation, ASTKind
+from astx.base import ASTKind, Expr, SourceLocation, StatementType
 from astx.blocks import Block
+from astx.variables import Variable
 
 
 class IfStmt(StatementType):
@@ -27,10 +28,10 @@ class IfStmt(StatementType):
         self.kind = ASTKind.IfKind
 
 
-class ForStmt(StatementType):
-    """AST class for `For` statement."""
+class ForRangeLoop(StatementType):
+    """AST class for `For` Loop Range statement."""
 
-    var_name: str
+    variable: Variable
     start: Expr
     end: Expr
     step: Expr
@@ -38,7 +39,7 @@ class ForStmt(StatementType):
 
     def __init__(
         self,
-        var_name: str,
+        variable: Variable,
         start: Expr,
         end: Expr,
         step: Expr,
@@ -47,9 +48,38 @@ class ForStmt(StatementType):
     ) -> None:
         """Initialize the ForStmt instance."""
         self.loc = loc
-        self.var_name = var_name
+        self.variable = variable
         self.start = start
         self.end = end
         self.step = step
+        self.body = body
+        self.kind = ASTKind.ForKind
+
+
+class ForCountLoop(StatementType):
+    """
+    AST class for a simple Count-Controlled `For` Loop statement.
+
+    This is a very basic `for` loop, used by languages like C or C++.
+    """
+
+    initializer: Expr
+    condition: Expr
+    update: Expr
+    body: Block
+
+    def __init__(
+        self,
+        initializer: Expr,
+        condition: Expr,
+        update: Expr,
+        body: Block,
+        loc: SourceLocation = SourceLocation(0, 0),
+    ) -> None:
+        """Initialize the ForStmt instance."""
+        self.loc = loc
+        self.initializer = initializer
+        self.condition = condition
+        self.update = update
         self.body = body
         self.kind = ASTKind.ForKind
