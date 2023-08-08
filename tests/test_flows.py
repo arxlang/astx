@@ -1,7 +1,7 @@
 from astx.blocks import Block
-from astx.flows import IfStmt, ForCountLoop, ForRangeLoop
+from astx.datatypes import Int32, Int32Literal
+from astx.flows import ForCountLoop, ForRangeLoop, IfStmt
 from astx.operators import BinaryOp, UnaryOp
-from astx.datatypes import Int32Literal, Int32
 from astx.variables import Variable
 
 

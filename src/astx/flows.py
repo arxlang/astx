@@ -1,7 +1,7 @@
 """Module for controle flow AST."""
 from typing import Optional
 
-from astx.base import StatementType, Expr, SourceLocation, ASTKind
+from astx.base import ASTKind, Expr, SourceLocation, StatementType
 from astx.blocks import Block
 from astx.variables import Variable
 

@@ -1,6 +1,6 @@
 from astx.blocks import Block, Module
-from astx.operators import BinaryOp
 from astx.datatypes import Int32, Int32Literal
+from astx.operators import BinaryOp
 from astx.variables import Variable
 
 

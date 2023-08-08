@@ -1,11 +1,11 @@
 from typing import List, Tuple
 
 from astx.base import (
-    DataType,
-    ExprType,
-    Expr,
-    SourceLocation,
     ASTKind,
+    DataType,
+    Expr,
+    ExprType,
+    SourceLocation,
     StatementType,
 )
 from astx.blocks import Block

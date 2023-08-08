@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from astx.base import DataType, SourceLocation, ExprType
+from astx.base import DataType, ExprType, SourceLocation
 from astx.operators import BinaryOp
 
 

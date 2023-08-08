@@ -6,9 +6,8 @@ except ImportError:
     from typing_extensions import TypeAlias
 
 from astx.base import DataType
-from astx.variables import Variable
 from astx.callables import Function
-
+from astx.variables import Variable
 
 __all__ = ["NamedExpr"]
 

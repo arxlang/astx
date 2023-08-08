@@ -25,6 +25,15 @@ repos:
       types:
         - python
 
+    - id: ruff-isort
+      name: ruff-isort
+      entry: ruff check --select I001 --fix
+      language: system
+      files: "."
+      pass_filenames: true
+      types:
+        - python
+
     - id: ruff
       name: ruff
       entry: ruff

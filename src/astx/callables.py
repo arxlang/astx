@@ -2,10 +2,10 @@ from typing import List
 
 from astx.base import (
     ASTKind,
-    SourceLocation,
-    Expr,
     DataType,
+    Expr,
     ExprType,
+    SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
