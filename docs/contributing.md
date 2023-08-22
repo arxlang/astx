@@ -173,8 +173,10 @@ when `semantic-release` runs (using the default configuration):
 _NOTE: Breaking change's commit message prefix should have `!` before `:`_.
 Also, ensure to specify `feat` or `fix` in the prefix.
 
-source:
-<https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format>
+references:
+
+- https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format
+- https://www.conventionalcommits.org/en/v1.0.0/
 
 This project uses the `squash and merge` strategy, so ensure to apply
 the commit message format to the PR's title.
