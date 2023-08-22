@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.3.2](https://github.com/arxlang/astx/compare/0.3.1...0.3.2) (2023-08-22)
+
+
+### Bug Fixes
+
+* Fix logo in the documentation and fix configuration files style. ([#11](https://github.com/arxlang/astx/issues/11)) ([8552e08](https://github.com/arxlang/astx/commit/8552e08d5f2c3528dac9bc735caa8abf8f1d1ca4))
+
 ## [0.3.1](https://github.com/arxlang/astx/compare/0.3.0...0.3.1) (2023-08-22)
 
 

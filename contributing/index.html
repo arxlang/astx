@@ -16,7 +16,7 @@
       
         <link rel="next" href="../api/references/">
       
-      <link rel="icon" href="/images/favicon.png">
+      <link rel="icon" href="../images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
@@ -89,7 +89,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="ASTx" class="md-header__button md-logo" aria-label="ASTx" data-md-component="logo">
       
-  <img src="/images/logo.png" alt="logo">
+  <img src="../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -194,7 +194,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="ASTx" class="md-nav__button md-logo" aria-label="ASTx" data-md-component="logo">
       
-  <img src="/images/logo.png" alt="logo">
+  <img src="../images/logo.png" alt="logo">
 
     </a>
     ASTx
@@ -223,7 +223,7 @@
   
     <li class="md-nav__item">
       <a href=".." class="md-nav__link">
-        Home
+        ASTx Library: A Versatile Toolkit for Language Representation
       </a>
     </li>
   
@@ -584,7 +584,7 @@ helps, and credit will always be given.</p>
 <ul>
 <li>Your operating system name and version.</li>
 <li>Any details about your local setup that might be helpful in
-    troubleshooting.</li>
+  troubleshooting.</li>
 <li>Detailed steps to reproduce the bug.</li>
 </ul>
 <h3 id="fix-bugs">Fix Bugs</h3>
@@ -605,9 +605,9 @@ in docstrings, or even on the web in blog posts, articles, and such.</p>
 <ul>
 <li>Explain in detail how it would work.</li>
 <li>Keep the scope as narrow as possible, to make it easier to
-    implement.</li>
+  implement.</li>
 <li>Remember that this is a volunteer-driven project, and that
-    contributions are welcome :)</li>
+  contributions are welcome :)</li>
 </ul>
 <h2 id="get-started">Get Started!</h2>
 <p>Ready to contribute? Here’s how to set up <code>astx</code> for local development.</p>
@@ -616,37 +616,41 @@ in docstrings, or even on the web in blog posts, articles, and such.</p>
 <p>Fork the <code>astx</code> repo on GitHub.</p>
 </li>
 <li>
-<p>Clone your fork locally::</p>
-<p>$ git clone <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#103;&#105;&#116;&#64;&#103;&#105;&#116;&#104;&#117;&#98;&#46;&#99;&#111;&#109;">&#103;&#105;&#116;&#64;&#103;&#105;&#116;&#104;&#117;&#98;&#46;&#99;&#111;&#109;</a>:your_name_here/astx.git</p>
+<p>Clone your fork locally:</p>
 </li>
-<li>
-<p>Install your local copy into a virtualenv. Assuming you have
-    virtualenvwrapper installed, this is how you set up your fork for
-    local development::</p>
-<p>$ mkvirtualenv astx
-$ cd astx/
-$ python setup.py develop</p>
-</li>
-<li>
-<p>Create a branch for local development::</p>
-<p>$ git checkout -b name-of-your-bugfix-or-feature</p>
-<p>Now you can make your changes locally.</p>
-</li>
-<li>
-<p>When you’re done making changes, check that your changes pass flake8
-    and the tests, including testing other Python versions with tox::</p>
-<p>$ make lint
-$ make test</p>
-<p>To get flake8 and tox, just pip install them into your virtualenv.</p>
-</li>
-<li>
-<p>Commit your changes and push your branch to GitHub::</p>
-<p>$ git add . $ git commit -m “Your detailed description of your
-changes.” $ git push origin name-of-your-bugfix-or-feature</p>
-</li>
-<li>
-<p>Submit a pull request through the GitHub website.</p>
-</li>
+</ol>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:your_name_here/astx.git
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>astx/
+</code></pre></div>
+<ol>
+<li>Create a new virtual environment and install your local copy into that:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># note: you can use mamba or conda or micromamba</span>
+$<span class="w"> </span>mamba<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>--file<span class="w"> </span>conda/dev.yaml
+$<span class="w"> </span>conda<span class="w"> </span>activate<span class="w"> </span>astx
+$<span class="w"> </span>poetry<span class="w"> </span>install
+</code></pre></div>
+<ol>
+<li>Create a branch for local development:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>name-of-your-bugfix-or-feature
+<span class="c1"># Now you can make your changes locally.</span>
+</code></pre></div>
+<ol>
+<li>When you’re done making changes, check that your changes pass the linter
+    and the tests:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>makim<span class="w"> </span>tests.linter
+$<span class="w"> </span>makim<span class="w"> </span>tests.unittest
+</code></pre></div>
+<ol>
+<li>Commit your changes and push your branch to GitHub:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>.<span class="w"> </span>$<span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span>“Your<span class="w"> </span>detailed<span class="w"> </span>description<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>changes.”
+$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>name-of-your-bugfix-or-feature
+</code></pre></div>
+<ol>
+<li>Submit a pull request through the GitHub website.</li>
 </ol>
 <h2 id="pull-request-guidelines">Pull Request Guidelines</h2>
 <p>Before you submit a pull request, check that it meets these guidelines:</p>
@@ -658,9 +662,12 @@ changes.” $ git push origin name-of-your-bugfix-or-feature</p>
 <li>The pull request should work for Python &gt;= 3.8.</li>
 </ol>
 <h2 id="tips">Tips</h2>
-<p>To run a subset of tests::
-<div class="highlight"><pre><span></span><code>$ pytest tests.test_arxast
-</code></pre></div></p>
+<p>To run a subset of tests, you can use something like:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>pytest<span class="w"> </span>tests.test_arxast
+</code></pre></div>
+<p>or</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>makim<span class="w"> </span>tests.unittest<span class="w"> </span>--path<span class="w"> </span><span class="s2">&quot;tests/test_arxast&quot;</span><span class="w"> </span>--params<span class="w"> </span><span class="s2">&quot;-k mytest_func&quot;</span>
+</code></pre></div>
 <h2 id="release">Release</h2>
 <p>This project uses semantic-release in order to cut a new release
 based on the commit-message.</p>
@@ -704,14 +711,19 @@ when <code>semantic-release</code> runs (using the default configuration):</p>
 <td>Chore</td>
 </tr>
 <tr>
-<td><code>BREAKING CHANGE: The graphiteWidth option has been removed</code></td>
+<td><code>feat(pencil)!: The graphiteWidth option has been removed</code></td>
 <td>Breaking Release</td>
 </tr>
 </tbody>
 </table>
-<p>source:
-<a href="https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format">https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format</a></p>
-<p>As this project uses the <code>squash and merge</code> strategy, ensure to apply
+<p><em>NOTE: Breaking change's commit message prefix should have <code>!</code> before <code>:</code></em>.
+Also, ensure to specify <code>feat</code> or <code>fix</code> in the prefix.</p>
+<p><strong>References:</strong></p>
+<ul>
+<li><a href="https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format">https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format</a></li>
+<li><a href="https://www.conventionalcommits.org/en/v1.0.0/">https://www.conventionalcommits.org/en/v1.0.0/</a></li>
+</ul>
+<p>This project uses the <code>squash and merge</code> strategy, so ensure to apply
 the commit message format to the PR's title.</p>
 
 
