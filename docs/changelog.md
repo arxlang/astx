@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.3.1](https://github.com/arxlang/astx/compare/0.3.0...0.3.1) (2023-08-22)
+
+
+### Bug Fixes
+
+* fix documentation release workflow ([#10](https://github.com/arxlang/astx/issues/10)) ([6cfb9a6](https://github.com/arxlang/astx/commit/6cfb9a663c63e80a2d8bb251439f1b32b516de42))
+
 # [0.3.0](https://github.com/arxlang/astx/compare/0.2.1...0.3.0) (2023-08-22)
 
 
