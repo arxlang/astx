@@ -6,71 +6,76 @@ repos:
     hooks:
       - id: end-of-file-fixer
 
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "v3.0.2"
+    hooks:
+      - id: prettier
+
   - repo: local
     hooks:
-    - id: black
-      name: black
-      entry: black
-      language: system
-      pass_filenames: true
-      types:
-        - python
+      - id: black
+        name: black
+        entry: black
+        language: system
+        pass_filenames: true
+        types:
+          - python
 
-    - id: mypy
-      name: mypy
-      entry: mypy
-      language: system
-      files: "./"
-      pass_filenames: true
-      types:
-        - python
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: system
+        files: "./"
+        pass_filenames: true
+        types:
+          - python
 
-    - id: ruff
-      name: ruff
-      entry: ruff --fix
-      language: system
-      files: "."
-      pass_filenames: true
-      types:
-        - python
+      - id: ruff
+        name: ruff
+        entry: ruff --fix
+        language: system
+        files: "."
+        pass_filenames: true
+        types:
+          - python
 
-    - id: shellcheck
-      name: shellcheck
-      entry: shellcheck
-      language: system
-      types_or:
-        - sh
-        - shell
-        - ash
-        - bash
-        - bats
-        - dash
-        - ksh
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck
+        language: system
+        types_or:
+          - sh
+          - shell
+          - ash
+          - bash
+          - bats
+          - dash
+          - ksh
 
-    - id: bandit
-      name: bandit
-      entry: bandit
-      language: system
-      args: ['--configfile', 'pyproject.toml', '-iii', '-lll']
-      pass_filenames: true
-      types:
-        - python
+      - id: bandit
+        name: bandit
+        entry: bandit
+        language: system
+        args: ["--configfile", "pyproject.toml", "-iii", "-lll"]
+        pass_filenames: true
+        types:
+          - python
 
-    - id: vulture
-      name: vulture
-      entry: vulture --min-confidence 80
-      language: system
-      files: "src/astx"
-      description: Find unused Python code.
-      pass_filenames: true
-      types:
-        - python
+      - id: vulture
+        name: vulture
+        entry: vulture --min-confidence 80
+        language: system
+        files: "src/astx"
+        description: Find unused Python code.
+        pass_filenames: true
+        types:
+          - python
 
-    - id: mccabe
-      name: mccabe
-      entry: python -m mccabe --min 10
-      language: system
-      files: "src/astx"
-      pass_filenames: true
-      types:
-        - python
+      - id: mccabe
+        name: mccabe
+        entry: python -m mccabe --min 10
+        language: system
+        files: "src/astx"
+        pass_filenames: true
+        types:
+          - python

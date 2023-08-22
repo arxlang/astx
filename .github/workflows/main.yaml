@@ -34,22 +34,22 @@ jobs:
         shell: bash -l {0}
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: conda-incubator/setup-miniconda@v2
-      with:
-        miniconda-version: "latest"
-        mamba-version: "1.*"
-        environment-file: conda/dev.yaml
-        channels: conda-forge,nodefaults
-        activate-environment: astx
-        use-mamba: true
-        miniforge-variant: Mambaforge
+      - uses: actions/checkout@v3
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          mamba-version: "1.*"
+          environment-file: conda/dev.yaml
+          channels: conda-forge,nodefaults
+          activate-environment: astx
+          use-mamba: true
+          miniforge-variant: Mambaforge
 
-    - name: Install dependencies
-      run: poetry install
+      - name: Install dependencies
+        run: poetry install
 
-    - name: Run tests
-      run: makim tests.unittest
+      - name: Run tests
+        run: makim tests.unittest
 
-    - name: Run style checks
-      run: makim tests.linter
+      - name: Run style checks
+        run: makim tests.linter

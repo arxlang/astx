@@ -1,39 +1,46 @@
-![LOGO](/images/logo.png)
+# ASTx Library: A Versatile Toolkit for Language Representation
 
-# ASTx
+ASTx is a groundbreaking library designed to encapsulate language components in an agnostic and pythonic way. It provides a comprehensive set of classes and functionalities, allowing developers to articulate the core elements of any programming language.
 
-OSL Python Package contains all the boilerplate you need to create a Python package.
+- License: BSD 3 Clause
+- Documentation: https://arxlang.github.io/astx
 
-* License: BSD 3 Clause
-* Documentation: https://astx.github.io
+## Core Features
 
-## Features
+### 1. **Expressive Language Components**
 
-* The security of our code: Bandit is a powerful tool that we use in our Python
-  project to ensure its security. This tool analyzes the code and detects
-  potential vulnerabilities. Some of the key features of Bandit are its ease of
-  use, its ability to integrate with other tools, and its support for multiple
-  Python versions. If you want to know about bandit you can check its
-  [documentation](https://bandit.readthedocs.io/en/latest/).
+ASTx offers a rich suite of classes to describe essential language constructs such as:
 
-* Finds unused code: [Vulture](https://github.com/jendrikseipp/vulture)
-  is useful for cleaning up and finding errors in large code bases in
-  Python.
+- `If` statements
+- `For` loops
+- `Function` declarations and usages
+- Variables
+- Data Types
+- Operations
+- And more
 
-* Complexity of functions and modules: We use
-[McCabe](https://github.com/PyCQA/mccabe) to identify the complexity in our
-Python code that may be difficult to maintain or understand. By identifying
-complex code at the outset, we as developers can refactor it to make it easier
-to maintain and understand. In summary, McCabe helps us to improve the quality
-of our code and make it easier to maintain. If you would like to learn more
-about McCabe and code complexity, you can visit [McCabe - Code Complexity
-Checker](https://here-be-pythons.readthedocs.io/en/latest/python/mccabe.html).
-This tool is included with [Flake8](https://flake8.pycqa.org/en/latest/).
+These classes enable a concise and clear representation, providing an intuitive way to model various programming constructs.
 
-* TODO
+### 2. **Symbol Table Class**
 
-## Credits
+An integral part of ASTx, the Symbol Table class facilitates the translation of ASTx expressions to other languages like LLVM-IR. This class acts as a mapping layer, allowing a seamless connection between ASTx expressions and target language representations.
 
-This package was created with Cookieninja and the
-[osl-incubator/scicookie](https://github.com/osl-incubator/scicookie)
-project template.
+### 3. **Language Agnostic Design**
+
+Uniquely tailored to be independent of specific programming languages, ASTx offers a flexible foundation. It strives to provide initial components that can describe any programming language, giving users the freedom to work with multiple languages effortlessly.
+
+### 4. **Integration with Projects like ARX-IR**
+
+ASTx has proven to be a vital tool in projects like ARX-IR, where it's leveraged to translate Abstract Syntax Trees (AST) into LLVM-IR. This showcases the library's adaptability and potential to serve as a foundational layer in various applications.
+
+## Why Choose ASTx?
+
+ASTx is not just a library; it's a robust framework that fosters creativity and efficiency in language processing. Its pythonic design, combined with the power to handle different language constructs, positions ASTx as an invaluable resource for developers and researchers alike.
+
+Whether you're building a compiler, working on language translation, or exploring new frontiers in programming language design, ASTx offers a reliable and extensible toolkit to support your endeavors.
+
+## Getting Started
+
+You can explore the ASTx library and dive into its capabilities by accessing the official documentation. For those interested in contributing or seeking further insights, the ASTx community provides extensive support and collaboration opportunities.
+
+Unlock the potential of language representation with ASTx, and join us in shaping the future of programming languages.

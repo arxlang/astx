@@ -2,7 +2,7 @@
 
 In order to be able to contribute, it is important that you understand
 the project layout.
-This project uses the *src layout*, which means that the package code is located
+This project uses the _src layout_, which means that the package code is located
 at `./src/astx`.
 
 For my information, check the official documentation:
@@ -29,10 +29,10 @@ Report bugs at https://github.com/arxlang/astx/issues.
 
 If you are reporting a bug, please include:
 
-  - Your operating system name and version.
-  - Any details about your local setup that might be helpful in
-    troubleshooting.
-  - Detailed steps to reproduce the bug.
+- Your operating system name and version.
+- Any details about your local setup that might be helpful in
+  troubleshooting.
+- Detailed steps to reproduce the bug.
 
 ### Fix Bugs
 
@@ -58,11 +58,11 @@ https://github.com/arxlang/astx/issues.
 
 If you are proposing a feature:
 
-  - Explain in detail how it would work.
-  - Keep the scope as narrow as possible, to make it easier to
-    implement.
-  - Remember that this is a volunteer-driven project, and that
-    contributions are welcome :)
+- Explain in detail how it would work.
+- Keep the scope as narrow as possible, to make it easier to
+  implement.
+- Remember that this is a volunteer-driven project, and that
+  contributions are welcome :)
 
 ## Get Started!
 
@@ -70,36 +70,43 @@ Ready to contribute? Here’s how to set up `astx` for local development.
 
 1.  Fork the `astx` repo on GitHub.
 
-2.  Clone your fork locally::
+2.  Clone your fork locally:
 
-    $ git clone git@github.com:your_name_here/astx.git
+```bash
+$ git clone git@github.com:your_name_here/astx.git
+$ cd astx/
+```
 
-3.  Install your local copy into a virtualenv. Assuming you have
-    virtualenvwrapper installed, this is how you set up your fork for
-    local development::
+3.  Create a new virtual environment and install your local copy into that:
 
-    $ mkvirtualenv astx
-    $ cd astx/
-    $ python setup.py develop
+```bash
+# note: you can use mamba or conda or micromamba
+$ mamba env create --file conda/dev.yaml
+$ conda activate astx
+$ poetry install
+```
 
-4.  Create a branch for local development::
+4.  Create a branch for local development:
 
-    $ git checkout -b name-of-your-bugfix-or-feature
+```bash
+$ git checkout -b name-of-your-bugfix-or-feature
+# Now you can make your changes locally.
+```
 
-    Now you can make your changes locally.
+5.  When you’re done making changes, check that your changes pass the linter
+    and the tests:
 
-5.  When you’re done making changes, check that your changes pass flake8
-    and the tests, including testing other Python versions with tox::
+```bash
+$ makim tests.linter
+$ makim tests.unittest
+```
 
-    $ make lint
-    $ make test
+6.  Commit your changes and push your branch to GitHub:
 
-    To get flake8 and tox, just pip install them into your virtualenv.
-
-6.  Commit your changes and push your branch to GitHub::
-
-    $ git add . $ git commit -m “Your detailed description of your
-    changes.” $ git push origin name-of-your-bugfix-or-feature
+```bash
+$ git add . $ git commit -m “Your detailed description of your changes.”
+$ git push origin name-of-your-bugfix-or-feature
+```
 
 7.  Submit a pull request through the GitHub website.
 
@@ -115,11 +122,17 @@ Before you submit a pull request, check that it meets these guidelines:
 
 ## Tips
 
-To run a subset of tests::
-```
+To run a subset of tests, you can use something like:
+
+```bash
 $ pytest tests.test_arxast
 ```
 
+or
+
+```bash
+$ makim tests.unittest --path "tests/test_arxast" --params "-k mytest_func"
+```
 
 ## Release
 
@@ -137,7 +150,7 @@ publishes the release.
 By default, **semantic-release** uses [Angular Commit Message
 Conventions](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format).
 The commit message format can be changed with the `preset` or `config`
-options_ of the
+options\_ of the
 [@semantic-release/commit-analyzer](https://github.com/semantic-release/commit-analyzer#options)
 and
 [@semantic-release/release-notes-generator](https://github.com/semantic-release/release-notes-generator#options)
@@ -151,14 +164,19 @@ The table below shows which commit message gets you which release type
 when `semantic-release` runs (using the default configuration):
 
 | Commit message                                                 | Release type     |
-|----------------------------------------------------------------|------------------|
+| -------------------------------------------------------------- | ---------------- |
 | `fix(pencil): stop graphite breaking when pressure is applied` | Fix Release      |
 | `feat(pencil): add 'graphiteWidth' option`                     | Feature Release  |
 | `perf(pencil): remove graphiteWidth option`                    | Chore            |
-| `BREAKING CHANGE: The graphiteWidth option has been removed`   | Breaking Release |
+| `feat(pencil)!: The graphiteWidth option has been removed`     | Breaking Release |
 
-source:
-<https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format>
+_NOTE: Breaking change's commit message prefix should have `!` before `:`_.
+Also, ensure to specify `feat` or `fix` in the prefix.
 
-As this project uses the `squash and merge` strategy, ensure to apply
+**References:**
+
+- https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format
+- https://www.conventionalcommits.org/en/v1.0.0/
+
+This project uses the `squash and merge` strategy, so ensure to apply
 the commit message format to the PR's title.

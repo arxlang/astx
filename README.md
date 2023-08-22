@@ -12,16 +12,16 @@ high level representation of the AST.
 Note: this project is under active development and
 it is not ready for production yet.
 
-* Free software: BSD 3 Clause
-* Documentation: https://arxlang.github.io/astx.
+- Free software: BSD 3 Clause
+- Documentation: https://arxlang.github.io/astx.
 
 ## Features
 
-* Support for blocks of AST: `Module`, and `Block`
-* Support for control flow: `if/else` statement and `for` loop
-* Support for integer data types: Int8, Int16, Int32, Int64
-* Support for Binary and Unary operators
-* Support for object visibility: Public and Private
-* Support for object scope: Global and Local
-* Support for SymbolTable organized by scope
-* Support for functions declaration and function call
+- Support for blocks of AST: `Module`, and `Block`
+- Support for control flow: `if/else` statement and `for` loop
+- Support for integer data types: Int8, Int16, Int32, Int64
+- Support for Binary and Unary operators
+- Support for object visibility: Public and Private
+- Support for object scope: Global and Local
+- Support for SymbolTable organized by scope
+- Support for functions declaration and function call

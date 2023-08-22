@@ -1,6 +1,6 @@
-* ASTx version:
-* Python version:
-* Operating System:
+- ASTx version:
+- Python version:
+- Operating System:
 
 ### Description
 
