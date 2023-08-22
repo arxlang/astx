@@ -1,3 +1,4 @@
+"""Module for Variables."""
 from typing import List, Tuple
 
 from public import public

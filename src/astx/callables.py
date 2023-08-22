@@ -1,3 +1,4 @@
+"""Module for callable ASTx."""
 from typing import List
 
 from public import public
@@ -97,4 +98,5 @@ class Function(StatementType):
 
     @property
     def name(self) -> str:
+        """Returns the function prototype name."""
         return self.prototype.name
