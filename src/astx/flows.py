@@ -41,7 +41,7 @@ class ForRangeLoop(StatementType):
     step: Expr
     body: Block
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         variable: Variable,
         start: Expr,
@@ -73,7 +73,7 @@ class ForCountLoop(StatementType):
     update: Expr
     body: Block
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         initializer: Expr,
         condition: Expr,
