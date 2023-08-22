@@ -2,7 +2,7 @@
 
 In order to be able to contribute, it is important that you understand
 the project layout.
-This project uses the *src layout*, which means that the package code is located
+This project uses the _src layout_, which means that the package code is located
 at `./src/astx`.
 
 For my information, check the official documentation:
@@ -29,10 +29,10 @@ Report bugs at https://github.com/arxlang/astx/issues.
 
 If you are reporting a bug, please include:
 
-  - Your operating system name and version.
-  - Any details about your local setup that might be helpful in
-    troubleshooting.
-  - Detailed steps to reproduce the bug.
+- Your operating system name and version.
+- Any details about your local setup that might be helpful in
+  troubleshooting.
+- Detailed steps to reproduce the bug.
 
 ### Fix Bugs
 
@@ -58,11 +58,11 @@ https://github.com/arxlang/astx/issues.
 
 If you are proposing a feature:
 
-  - Explain in detail how it would work.
-  - Keep the scope as narrow as possible, to make it easier to
-    implement.
-  - Remember that this is a volunteer-driven project, and that
-    contributions are welcome :)
+- Explain in detail how it would work.
+- Keep the scope as narrow as possible, to make it easier to
+  implement.
+- Remember that this is a volunteer-driven project, and that
+  contributions are welcome :)
 
 ## Get Started!
 
@@ -116,10 +116,10 @@ Before you submit a pull request, check that it meets these guidelines:
 ## Tips
 
 To run a subset of tests::
+
 ```
 $ pytest tests.test_arxast
 ```
-
 
 ## Release
 
@@ -137,7 +137,7 @@ publishes the release.
 By default, **semantic-release** uses [Angular Commit Message
 Conventions](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format).
 The commit message format can be changed with the `preset` or `config`
-options_ of the
+options\_ of the
 [@semantic-release/commit-analyzer](https://github.com/semantic-release/commit-analyzer#options)
 and
 [@semantic-release/release-notes-generator](https://github.com/semantic-release/release-notes-generator#options)
@@ -151,7 +151,7 @@ The table below shows which commit message gets you which release type
 when `semantic-release` runs (using the default configuration):
 
 | Commit message                                                 | Release type     |
-|----------------------------------------------------------------|------------------|
+| -------------------------------------------------------------- | ---------------- |
 | `fix(pencil): stop graphite breaking when pressure is applied` | Fix Release      |
 | `feat(pencil): add 'graphiteWidth' option`                     | Feature Release  |
 | `perf(pencil): remove graphiteWidth option`                    | Chore            |

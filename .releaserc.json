@@ -1,5 +1,3 @@
-
-
 {
   "branches": ["main"],
   "tagFormat": "${version}",
@@ -53,7 +51,6 @@
       {
         "prepareCmd": "poetry build",
         "publishCmd": "poetry publish"
-
       }
     ],
     [
