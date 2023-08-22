@@ -168,9 +168,10 @@ when `semantic-release` runs (using the default configuration):
 | `fix(pencil): stop graphite breaking when pressure is applied` | Fix Release      |
 | `feat(pencil): add 'graphiteWidth' option`                     | Feature Release  |
 | `perf(pencil): remove graphiteWidth option`                    | Chore            |
-| `BREAKING CHANGE!: The graphiteWidth option has been removed`  | Breaking Release |
+| `feat(pencil)!: The graphiteWidth option has been removed`     | Breaking Release |
 
 _NOTE: Breaking change's commit message prefix should have `!` before `:`_.
+Also, ensure to specify `feat` or `fix` in the prefix.
 
 source:
 <https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format>
