@@ -72,7 +72,6 @@ class ASTKind(Enum):
     Decimal256DTKind = -121
 
 
-@public
 class ASTMeta(type):
     def __str__(cls):
         return cls.__name__
