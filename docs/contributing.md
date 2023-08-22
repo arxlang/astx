@@ -70,36 +70,43 @@ Ready to contribute? Here’s how to set up `astx` for local development.
 
 1.  Fork the `astx` repo on GitHub.
 
-2.  Clone your fork locally::
+2.  Clone your fork locally:
 
-    $ git clone git@github.com:your_name_here/astx.git
+```bash
+$ git clone git@github.com:your_name_here/astx.git
+$ cd astx/
+```
 
-3.  Install your local copy into a virtualenv. Assuming you have
-    virtualenvwrapper installed, this is how you set up your fork for
-    local development::
+3.  Create a new virtual environment and install your local copy into that:
 
-    $ mkvirtualenv astx
-    $ cd astx/
-    $ python setup.py develop
+```bash
+# note: you can use mamba or conda or micromamba
+$ mamba env create --file conda/dev.yaml
+$ conda activate astx
+$ poetry install
+```
 
-4.  Create a branch for local development::
+4.  Create a branch for local development:
 
-    $ git checkout -b name-of-your-bugfix-or-feature
+```bash
+$ git checkout -b name-of-your-bugfix-or-feature
+# Now you can make your changes locally.
+```
 
-    Now you can make your changes locally.
+5.  When you’re done making changes, check that your changes pass the linter
+    and the tests:
 
-5.  When you’re done making changes, check that your changes pass flake8
-    and the tests, including testing other Python versions with tox::
+```bash
+$ makim tests.linter
+$ makim tests.unittest
+```
 
-    $ make lint
-    $ make test
+6.  Commit your changes and push your branch to GitHub:
 
-    To get flake8 and tox, just pip install them into your virtualenv.
-
-6.  Commit your changes and push your branch to GitHub::
-
-    $ git add . $ git commit -m “Your detailed description of your
-    changes.” $ git push origin name-of-your-bugfix-or-feature
+```bash
+$ git add . $ git commit -m “Your detailed description of your changes.”
+$ git push origin name-of-your-bugfix-or-feature
+```
 
 7.  Submit a pull request through the GitHub website.
 
@@ -115,10 +122,16 @@ Before you submit a pull request, check that it meets these guidelines:
 
 ## Tips
 
-To run a subset of tests::
+To run a subset of tests, you can use something like:
 
-```
+```bash
 $ pytest tests.test_arxast
+```
+
+or
+
+```bash
+$ makim tests.unittest --path "tests/test_arxast" --params "-k mytest_func"
 ```
 
 ## Release
@@ -155,10 +168,12 @@ when `semantic-release` runs (using the default configuration):
 | `fix(pencil): stop graphite breaking when pressure is applied` | Fix Release      |
 | `feat(pencil): add 'graphiteWidth' option`                     | Feature Release  |
 | `perf(pencil): remove graphiteWidth option`                    | Chore            |
-| `BREAKING CHANGE: The graphiteWidth option has been removed`   | Breaking Release |
+| `BREAKING CHANGE!: The graphiteWidth option has been removed`  | Breaking Release |
+
+_NOTE: Breaking change's commit message prefix should have `!` before `:`_.
 
 source:
 <https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format>
 
-As this project uses the `squash and merge` strategy, ensure to apply
+This project uses the `squash and merge` strategy, so ensure to apply
 the commit message format to the PR's title.
