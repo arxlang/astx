@@ -1,6 +1,18 @@
 # Release Notes
 ---
 
+# [0.3.0](https://github.com/arxlang/astx/compare/0.2.1...0.3.0) (2023-08-22)
+
+
+### Bug Fixes
+
+* Fix the current linter configuration and the dependencies' pinning ([#9](https://github.com/arxlang/astx/issues/9)) ([d310511](https://github.com/arxlang/astx/commit/d3105113250cd866c3b679710d5fb1f106a0d597))
+
+
+### Features
+
+* Add support for ForRangeLoop and ForCountLoop ([#7](https://github.com/arxlang/astx/issues/7)) ([bb77de1](https://github.com/arxlang/astx/commit/bb77de1faa283e0b2aa49e84615050b59c56ab09))
+
 ## [0.2.1](https://github.com/arxlang/astx/compare/0.2.0...0.2.1) (2023-08-07)
 
 
