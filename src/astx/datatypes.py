@@ -1,3 +1,4 @@
+"""ASTx Data Types module."""
 from __future__ import annotations
 
 from public import public
@@ -8,22 +9,30 @@ from astx.operators import BinaryOp
 
 @public
 class DataTypeOps(DataType):
+    """Overload some magic functions used for the main operations."""
+
     def __add__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `add` method."""
         return BinaryOp("+", self, other)
 
     def __sub__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `sub` method."""
         return BinaryOp("-", self, other)
 
     def __div__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `div` method."""
         return BinaryOp("/", self, other)
 
     def __mul__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `mul` method."""
         return BinaryOp("*", self, other)
 
     def __pow__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `pow` method."""
         return BinaryOp("^", self, other)
 
     def __mod__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `mod` method."""
         return BinaryOp("%", self, other)
 
 
@@ -105,6 +114,8 @@ class Literal(DataTypeOps):
 
 @public
 class Int32Literal(Literal):
+    """Int32Literal data type class."""
+
     value: int
 
     def __init__(

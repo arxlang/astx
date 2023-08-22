@@ -1,3 +1,4 @@
+"""Module for callable ASTx."""
 from typing import List
 
 from public import public
@@ -42,7 +43,7 @@ class FunctionPrototype(StatementType):
     scope: ScopeKind
     visibility: VisibilityKind
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         name: str,
         args: List[Variable],
@@ -55,7 +56,7 @@ class FunctionPrototype(StatementType):
         self.name = name
         self.args = args
         self.return_type = return_type
-        self.line = loc.line
+        self.loc = loc
         self.kind = ASTKind.PrototypeKind
         self.scope = scope
         self.visibility = visibility
@@ -97,4 +98,5 @@ class Function(StatementType):
 
     @property
     def name(self) -> str:
+        """Returns the function prototype name."""
         return self.prototype.name

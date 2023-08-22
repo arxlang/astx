@@ -3,7 +3,7 @@ from enum import Enum
 from typing import ClassVar, Type
 
 try:
-    from typing import TypeAlias
+    from typing import TypeAlias  # type: ignore
 except ImportError:
     from typing_extensions import TypeAlias
 
@@ -72,9 +72,8 @@ class ASTKind(Enum):
     Decimal256DTKind = -121
 
 
-@public
 class ASTMeta(type):
-    def __str__(cls):
+    def __str__(cls) -> str:
         return cls.__name__
 
 

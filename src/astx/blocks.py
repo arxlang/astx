@@ -1,3 +1,4 @@
+"""Module for different kind of ASTx blocks."""
 from __future__ import annotations
 
 from typing import List
@@ -22,13 +23,16 @@ class Block(AST):
         self.nodes: List[Expr] = []
         self.position: int = 0
 
-    def append(self, value: AST):
+    def append(self, value: AST) -> None:
+        """Append a new node to the stack."""
         self.nodes.append(value)
 
     def __iter__(self) -> Block:
+        """Overload `iter` magic function."""
         return self
 
     def __next__(self) -> AST:
+        """Overload `next` magic function."""
         if self.position >= len(self.nodes):
             raise StopIteration()
 
