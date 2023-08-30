@@ -59,6 +59,14 @@ class ForRangeLoop(StatementType):
         self.body = body
         self.kind = ASTKind.ForKind
 
+    def __repr__(self) -> str:
+        """Represent the AST object as a string with details."""
+        start = self.start
+        end = self.end
+        step = self.step
+        var_name = self.variable.name
+        return f"ForRangeLoop({var_name}=[{start}:{end}:{step}])"
+
 
 @public
 class ForCountLoop(StatementType):
@@ -88,3 +96,10 @@ class ForCountLoop(StatementType):
         self.update = update
         self.body = body
         self.kind = ASTKind.ForKind
+
+    def __repr__(self) -> str:
+        """Represent the AST object as a string with details."""
+        init = self.initializer
+        cond = self.condition
+        update = self.update
+        return f"ForCountLoop({init};{cond};{update})"

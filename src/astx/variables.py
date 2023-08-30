@@ -58,3 +58,8 @@ class Variable(DataTypeOps):
         self.type_ = type_
         self.kind = ASTKind.VariableKind
         self.value: DataType = value
+
+    def __repr__(self) -> str:
+        """Represent the AST object as a string with details."""
+        type_ = self.type_.__name__
+        return f"Variable[{type_}]({self.value})"

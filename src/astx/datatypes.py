@@ -1,6 +1,8 @@
 """ASTx Data Types module."""
 from __future__ import annotations
 
+from typing import Any
+
 from public import public
 
 from astx.base import DataType, ExprType, SourceLocation
@@ -110,6 +112,12 @@ class Literal(DataTypeOps):
 
     type_: ExprType
     loc: SourceLocation
+    value: Any
+
+    def __repr__(self) -> str:
+        """Represent the AST object as a string with details."""
+        klass = self.__class__.__name__
+        return f"{klass}({self.value})"
 
 
 @public

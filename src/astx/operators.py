@@ -22,6 +22,10 @@ class UnaryOp(OperatorType):
         self.operand = operand
         self.kind = ASTKind.UnaryOpKind
 
+    def __repr__(self) -> str:
+        """Represent the AST object as a string with details."""
+        return f"UnaryOp[{self.op_code}]({self.operand})"
+
 
 @public
 class BinaryOp(OperatorType):
@@ -59,3 +63,7 @@ class BinaryOp(OperatorType):
         else:
             # inference
             self.type_ = max([lhs.type_, rhs.type_], key=lambda v: v.nbytes)
+
+    def __repr__(self) -> str:
+        """Represent the AST object as a string with details."""
+        return f"BinaryOp[{self.op_code}]({self.lhs},{self.rhs})"
