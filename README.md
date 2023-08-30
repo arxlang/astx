@@ -1,16 +1,15 @@
 # ASTx
 
-**ASTx** is an agnostic expression structure for **AST**.
-It is agnostic because it is not specific
-to any language, neither to the **ArxLang** project,
-although its main focus is to provide all needed feature for **ArxLang**.
+**ASTx** is an agnostic expression structure for **AST**. It is agnostic because
+it is not specific to any language, neither to the **ArxLang** project, although
+its main focus is to provide all needed feature for **ArxLang**.
 
-**ASTx** doesn't aim to be a `lexer` or a `parser`, although it could
-be used by any programming language or parser in order to provide a
-high level representation of the AST.
+**ASTx** doesn't aim to be a `lexer` or a `parser`, although it could be used by
+any programming language or parser in order to provide a high level
+representation of the AST.
 
-Note: this project is under active development and
-it is not ready for production yet.
+Note: this project is under active development and it is not ready for
+production yet.
 
 - Free software: BSD 3 Clause
 - Documentation: https://arxlang.github.io/astx.
