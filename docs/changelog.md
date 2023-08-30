@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.3.3](https://github.com/arxlang/astx/compare/0.3.2...0.3.3) (2023-08-30)
+
+
+### Bug Fixes
+
+* **config:** Fix configuration and improve documentation ([#12](https://github.com/arxlang/astx/issues/12)) ([fbb8898](https://github.com/arxlang/astx/commit/fbb88984c1f208177eefd0c3d45fbab1cae012d9))
+
 ## [0.3.2](https://github.com/arxlang/astx/compare/0.3.1...0.3.2) (2023-08-22)
 
 
