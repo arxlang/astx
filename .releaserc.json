@@ -65,7 +65,7 @@
         "assets": [
           "pyproject.toml",
           "docs/changelog.md",
-          "{{ cookiecutter.package_slug }}/src/__init__.py"
+          "src/astx/__init__.py"
         ],
         "message": "chore(release): ${nextRelease.version}"
       }

@@ -1,4 +1,0 @@
-overrides:
-  - files: "**/*.{md}"
-    options:
-      parser: meriyah

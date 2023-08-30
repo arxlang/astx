@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "astx"
 version = "0.3.2"  # semantic-release
-description = "OSL Python Package contains all the boilerplate you need to create a Python package."
+description = "ASTx is an agnostic expression structure for AST."
 authors = ["Ivan Ogasawara <ivan.ogasawara@gmail.com>"]
 license = "BSD 3 Clause"
 exclude = [
@@ -14,7 +14,7 @@ packages = [
 include = ["src/astx/py.typed"]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = ">=3.8.1,<4"
 atpublic = "^4.0"
 typing-extensions = { version = "^4", python = "<3.9" }
 

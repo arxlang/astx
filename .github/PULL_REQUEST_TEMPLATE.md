@@ -38,7 +38,8 @@ About this PR:
 Author's checklist:
 
 - [ ] I have reviewed the changes and it contains no misspelling.
-- [ ] The code is well commented, especially in the parts that contain more complexity.
+- [ ] The code is well commented, especially in the parts that contain more
+      complexity.
 - [ ] New and old tests passed locally.
 
 ## Additional information
