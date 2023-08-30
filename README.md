@@ -1,7 +1,7 @@
 # ASTx
 
-**ASTx** is a generic project that offers a way to compound in an
-expressive way an **AST**. It is generic because it is not specific
+**ASTx** is an agnostic expression structure for **AST**.
+It is agnostic because it is not specific
 to any language, neither to the **ArxLang** project,
 although its main focus is to provide all needed feature for **ArxLang**.
 
