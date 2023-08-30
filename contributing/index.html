@@ -561,10 +561,9 @@
 
 
 <h1 id="contributing">Contributing</h1>
-<p>In order to be able to contribute, it is important that you understand
-the project layout.
-This project uses the <em>src layout</em>, which means that the package code is located
-at <code>./src/astx</code>.</p>
+<p>In order to be able to contribute, it is important that you understand the
+project layout. This project uses the <em>src layout</em>, which means that the package
+code is located at <code>./src/astx</code>.</p>
 <p>For my information, check the official documentation:
 <a href="https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/">https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/</a></p>
 <p>In addition, you should know that to build our package we use
@@ -583,31 +582,27 @@ helps, and credit will always be given.</p>
 <p>If you are reporting a bug, please include:</p>
 <ul>
 <li>Your operating system name and version.</li>
-<li>Any details about your local setup that might be helpful in
-  troubleshooting.</li>
+<li>Any details about your local setup that might be helpful in troubleshooting.</li>
 <li>Detailed steps to reproduce the bug.</li>
 </ul>
 <h3 id="fix-bugs">Fix Bugs</h3>
-<p>Look through the GitHub issues for bugs. Anything tagged with “bug” and
-“help wanted” is open to whoever wants to implement it.</p>
+<p>Look through the GitHub issues for bugs. Anything tagged with “bug” and “help
+wanted” is open to whoever wants to implement it.</p>
 <h3 id="implement-features">Implement Features</h3>
-<p>Look through the GitHub issues for features. Anything tagged with
-“enhancement” and “help wanted” is open to whoever wants to implement
-it.</p>
+<p>Look through the GitHub issues for features. Anything tagged with “enhancement”
+and “help wanted” is open to whoever wants to implement it.</p>
 <h3 id="write-documentation">Write Documentation</h3>
-<p>ASTx could always use more documentation,
-whether as part of the official ASTx docs,
-in docstrings, or even on the web in blog posts, articles, and such.</p>
+<p>ASTx could always use more documentation, whether as part of the official ASTx
+docs, in docstrings, or even on the web in blog posts, articles, and such.</p>
 <h3 id="submit-feedback">Submit Feedback</h3>
 <p>The best way to send feedback is to file an issue at
 <a href="https://github.com/arxlang/astx/issues">https://github.com/arxlang/astx/issues</a>.</p>
 <p>If you are proposing a feature:</p>
 <ul>
 <li>Explain in detail how it would work.</li>
-<li>Keep the scope as narrow as possible, to make it easier to
-  implement.</li>
-<li>Remember that this is a volunteer-driven project, and that
-  contributions are welcome :)</li>
+<li>Keep the scope as narrow as possible, to make it easier to implement.</li>
+<li>Remember that this is a volunteer-driven project, and that contributions are
+  welcome :)</li>
 </ul>
 <h2 id="get-started">Get Started!</h2>
 <p>Ready to contribute? Here’s how to set up <code>astx</code> for local development.</p>
@@ -637,8 +632,8 @@ $<span class="w"> </span>poetry<span class="w"> </span>install
 <span class="c1"># Now you can make your changes locally.</span>
 </code></pre></div>
 <ol>
-<li>When you’re done making changes, check that your changes pass the linter
-    and the tests:</li>
+<li>When you’re done making changes, check that your changes pass the linter and
+    the tests:</li>
 </ol>
 <div class="highlight"><pre><span></span><code>$<span class="w"> </span>makim<span class="w"> </span>tests.linter
 $<span class="w"> </span>makim<span class="w"> </span>tests.unittest
@@ -656,9 +651,9 @@ $<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>
 <p>Before you submit a pull request, check that it meets these guidelines:</p>
 <ol>
 <li>The pull request should include tests.</li>
-<li>If the pull request adds functionality, the docs should be updated.
-    Put your new functionality into a function with a docstring, and add
-    the feature to the list in README.rst.</li>
+<li>If the pull request adds functionality, the docs should be updated. Put your
+    new functionality into a function with a docstring, and add the feature to
+    the list in README.rst.</li>
 <li>The pull request should work for Python &gt;= 3.8.</li>
 </ol>
 <h2 id="tips">Tips</h2>
@@ -669,27 +664,27 @@ $<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>
 <div class="highlight"><pre><span></span><code>$<span class="w"> </span>makim<span class="w"> </span>tests.unittest<span class="w"> </span>--path<span class="w"> </span><span class="s2">&quot;tests/test_arxast&quot;</span><span class="w"> </span>--params<span class="w"> </span><span class="s2">&quot;-k mytest_func&quot;</span>
 </code></pre></div>
 <h2 id="release">Release</h2>
-<p>This project uses semantic-release in order to cut a new release
-based on the commit-message.</p>
+<p>This project uses semantic-release in order to cut a new release based on the
+commit-message.</p>
 <h3 id="commit-message-format">Commit message format</h3>
-<p><strong>semantic-release</strong> uses the commit messages to determine the consumer
-impact of changes in the codebase. Following formalized conventions for
-commit messages, <strong>semantic-release</strong> automatically determines the next
+<p><strong>semantic-release</strong> uses the commit messages to determine the consumer impact
+of changes in the codebase. Following formalized conventions for commit
+messages, <strong>semantic-release</strong> automatically determines the next
 <a href="https://semver.org">semantic version</a> number, generates a changelog and
 publishes the release.</p>
-<p>By default, <strong>semantic-release</strong> uses <a href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format">Angular Commit Message
-Conventions</a>.
-The commit message format can be changed with the <code>preset</code> or <code>config</code>
-options_ of the
+<p>By default, <strong>semantic-release</strong> uses
+<a href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format">Angular Commit Message Conventions</a>.
+The commit message format can be changed with the <code>preset</code> or <code>config</code> options_
+of the
 <a href="https://github.com/semantic-release/commit-analyzer#options">@semantic-release/commit-analyzer</a>
 and
 <a href="https://github.com/semantic-release/release-notes-generator#options">@semantic-release/release-notes-generator</a>
 plugins.</p>
 <p>Tools such as <a href="https://github.com/commitizen/cz-cli">commitizen</a> or
-<a href="https://github.com/conventional-changelog/commitlint">commitlint</a> can
-be used to help contributors and enforce valid commit messages.</p>
-<p>The table below shows which commit message gets you which release type
-when <code>semantic-release</code> runs (using the default configuration):</p>
+<a href="https://github.com/conventional-changelog/commitlint">commitlint</a> can be used
+to help contributors and enforce valid commit messages.</p>
+<p>The table below shows which commit message gets you which release type when
+<code>semantic-release</code> runs (using the default configuration):</p>
 <table>
 <thead>
 <tr>
@@ -723,8 +718,8 @@ Also, ensure to specify <code>feat</code> or <code>fix</code> in the prefix.</p>
 <li><a href="https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format">https://github.com/semantic-release/semantic-release/blob/master/README.md#commit-message-format</a></li>
 <li><a href="https://www.conventionalcommits.org/en/v1.0.0/">https://www.conventionalcommits.org/en/v1.0.0/</a></li>
 </ul>
-<p>This project uses the <code>squash and merge</code> strategy, so ensure to apply
-the commit message format to the PR's title.</p>
+<p>This project uses the <code>squash and merge</code> strategy, so ensure to apply the commit
+message format to the PR's title.</p>
 
 
 
