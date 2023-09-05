@@ -1,9 +1,9 @@
 """Module for controle flow AST."""
-from typing import Optional
+from typing import Optional, cast
 
 from public import public
 
-from astx.base import ASTKind, Expr, SourceLocation, StatementType
+from astx.base import ASTKind, Expr, ReprStruct, SourceLocation, StatementType
 from astx.blocks import Block
 from astx.variables import Variable
 
@@ -29,6 +29,32 @@ class If(StatementType):
         self.then = then
         self.else_ = else_
         self.kind = ASTKind.IfKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"If[{self.condition}]"
+
+    def get_struct(self) -> ReprStruct:
+        """Return the AST structure of the object."""
+        if_condition = self.condition.get_struct()
+        if_then = self.then.get_struct()
+
+        if self.else_:
+            if_else = self.else_.get_struct()
+        else:
+            if_else = []
+
+        node = {
+            "IF-STMT": {
+                "CONDITION": if_condition,
+                "THEN": if_then,
+            }
+        }
+
+        if if_else:
+            node["IF-STMT"]["ELSE"] = if_else
+
+        return cast(ReprStruct, node)
 
 
 @public
@@ -59,6 +85,30 @@ class ForRangeLoop(StatementType):
         self.body = body
         self.kind = ASTKind.ForKind
 
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        start = self.start
+        end = self.end
+        step = self.step
+        var_name = self.variable.name
+        return f"ForRangeLoop({var_name}=[{start}:{end}:{step}])"
+
+    def get_struct(self) -> ReprStruct:
+        """Return the AST structure of the object."""
+        for_start = self.start.get_struct()
+        for_end = self.end.get_struct()
+        for_step = self.step.get_struct()
+        for_body = self.body.get_struct()
+
+        return {
+            "FOR-RANGE-STMT": {
+                "start": for_start,
+                "end": for_end,
+                "step": for_step,
+                "body": for_body,
+            }
+        }
+
 
 @public
 class ForCountLoop(StatementType):
@@ -88,3 +138,26 @@ class ForCountLoop(StatementType):
         self.update = update
         self.body = body
         self.kind = ASTKind.ForKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        init = self.initializer
+        cond = self.condition
+        update = self.update
+        return f"ForCountLoop({init};{cond};{update})"
+
+    def get_struct(self) -> ReprStruct:
+        """Return the AST structure of the object."""
+        for_init = self.initializer.get_struct()
+        for_cond = self.condition.get_struct()
+        for_update = self.update.get_struct()
+        for_body = self.body.get_struct()
+
+        return {
+            "FOR-COUNT-STMT": {
+                "initializer": for_init,
+                "condition": for_cond,
+                "update": for_update,
+                "body": for_body,
+            }
+        }

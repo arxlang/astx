@@ -1,15 +1,30 @@
 """AST classes and functions."""
+from __future__ import annotations
+
+import json
+
+from abc import abstractmethod
 from enum import Enum
-from typing import ClassVar, Type
+from typing import ClassVar, Dict, List, Type, Union
 
 try:
-    from typing import TypeAlias  # type: ignore
-except ImportError:
     from typing_extensions import TypeAlias
+except ImportError:
+    from typing import TypeAlias  # type: ignore[no-redef,attr-defined]
+
+import yaml
 
 from public import public
 
 __all__ = ["ExprType"]
+
+PrimitivesStruct: TypeAlias = Union[int, str, float, bool]
+DataTypesStruct: TypeAlias = Union[
+    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
+]
+ReprStruct: TypeAlias = Union[
+    List[DataTypesStruct], Dict[str, DataTypesStruct]
+]
 
 
 @public
@@ -74,6 +89,7 @@ class ASTKind(Enum):
 
 class ASTMeta(type):
     def __str__(cls) -> str:
+        """Return an string that represents the object."""
         return cls.__name__
 
 
@@ -92,10 +108,25 @@ class AST(metaclass=ASTMeta):
         self.comment: str = ""
 
     def __str__(self) -> str:
+        """Return an string that represents the object."""
         return self.__repr__()
 
     def __repr__(self) -> str:
+        """Return an string that represents the object."""
         return self.__class__.__name__
+
+    @abstractmethod
+    def get_struct(self) -> ReprStruct:
+        """Return a simple structure that represents the object."""
+        ...
+
+    def to_yaml(self) -> str:
+        """Return an yaml string that represents the object."""
+        return str(yaml.dump(self.get_struct(), sort_keys=False))
+
+    def to_json(self) -> str:
+        """Return an json string that represents the object."""
+        return json.dumps(self.get_struct(), indent=2)
 
 
 @public
@@ -114,17 +145,22 @@ class DataType(Expr):
 
     type_: ExprType
     name: str
+    _tmp_id: ClassVar[int] = 0
+
+    def __init__(self, loc: SourceLocation = SourceLocation(0, 0)) -> None:
+        super().__init__(loc)
+        self.name = f"temp_{DataType._tmp_id}"
+        DataType._tmp_id += 1
+        # set it as a generic data type
+        self.type_: ExprType = DataType
 
 
 @public
 class OperatorType(DataType):
     """AST main expression class."""
 
-    _tmp_id: ClassVar[int] = 0
-
     def __init__(self) -> None:
-        self.name = f"temp_{OperatorType._tmp_id}"
-        OperatorType._tmp_id += 1
+        super().__init__()
 
 
 @public

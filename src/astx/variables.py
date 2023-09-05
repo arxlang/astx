@@ -8,11 +8,12 @@ from astx.base import (
     DataType,
     Expr,
     ExprType,
+    ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
-from astx.datatypes import DataTypeOps
+from astx.operators import DataTypeOps
 
 
 @public
@@ -58,3 +59,13 @@ class Variable(DataTypeOps):
         self.type_ = type_
         self.kind = ASTKind.VariableKind
         self.value: DataType = value
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        type_ = self.type_.__name__
+        return f"Variable[{type_}]({self.value})"
+
+    def get_struct(self) -> ReprStruct:
+        """Return a string that represents the object."""
+        type_ = self.type_.__name__
+        return {f"Variable[{self.name}: {type_}]": self.value.get_struct()}
