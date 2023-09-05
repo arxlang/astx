@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.4.0](https://github.com/arxlang/astx/compare/0.3.3...0.4.0) (2023-09-05)
+
+
+### Features
+
+* Represent the ASTx in `yaml` and `json` formats ([#13](https://github.com/arxlang/astx/issues/13)) ([26d22af](https://github.com/arxlang/astx/commit/26d22af8c07988dccecf763b51d63c26394c1412))
+
 ## [0.3.3](https://github.com/arxlang/astx/compare/0.3.2...0.3.3) (2023-08-30)
 
 
