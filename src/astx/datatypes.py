@@ -5,8 +5,15 @@ from typing import Any
 
 from public import public
 
-from astx.base import DataType, ExprType, SourceLocation
-from astx.operators import BinaryOp
+from astx.base import (
+    ASTKind,
+    DataType,
+    ExprType,
+    ReprStruct,
+    SourceLocation,
+)
+
+# Operators
 
 
 @public
@@ -25,6 +32,10 @@ class DataTypeOps(DataType):
         """Overload the magic `div` method."""
         return BinaryOp("/", self, other)
 
+    def __truediv__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `div` method."""
+        return BinaryOp("/", self, other)
+
     def __mul__(self, other: DataType) -> BinaryOp:
         """Overload the magic `mul` method."""
         return BinaryOp("*", self, other)
@@ -36,6 +47,85 @@ class DataTypeOps(DataType):
     def __mod__(self, other: DataType) -> BinaryOp:
         """Overload the magic `mod` method."""
         return BinaryOp("%", self, other)
+
+
+@public
+class UnaryOp(DataTypeOps):
+    """AST class for the unary operator."""
+
+    def __init__(
+        self,
+        op_code: str,
+        operand: DataType,
+        loc: SourceLocation = SourceLocation(0, 0),
+    ) -> None:
+        """Initialize the UnaryOp instance."""
+        super().__init__()
+        self.loc = loc
+        self.op_code = op_code
+        self.operand = operand
+        self.kind = ASTKind.UnaryOpKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"UnaryOp[{self.op_code}]({self.operand})"
+
+    def get_struct(self) -> ReprStruct:
+        """Return the AST structure of the object."""
+        return {f"UNARY[{self.op_code}]": self.operand.get_struct()}
+
+
+@public
+class BinaryOp(DataTypeOps):
+    """AST class for the binary operator."""
+
+    type_: ExprType
+
+    def __init__(
+        self,
+        op_code: str,
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = SourceLocation(0, 0),
+    ) -> None:
+        """Initialize the BinaryOp instance."""
+        super().__init__()
+
+        self.loc = loc
+        self.op_code = op_code
+        self.lhs = lhs
+        self.rhs = rhs
+        self.kind = ASTKind.BinaryOpKind
+
+        if not (
+            issubclass(lhs.type_, Number) and issubclass(lhs.type_, Number)
+        ):
+            raise Exception(
+                "For now, binary operators are just allowed for numbers."
+                f"LHS: {lhs.type_}, RHS: {rhs.type_}"
+            )
+
+        if lhs.type_ == rhs.type_:
+            self.type_ = lhs.type_
+        else:
+            # inference
+            self.type_ = max([lhs.type_, rhs.type_], key=lambda v: v.nbytes)
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"BinaryOp[{self.op_code}]({self.lhs},{self.rhs})"
+
+    def get_struct(self) -> ReprStruct:
+        """Return the AST structure that represents the object."""
+        return {
+            f"BINARY[{self.op_code}]": {
+                "lhs": self.lhs.get_struct(),
+                "rhs": self.rhs.get_struct(),
+            }
+        }
+
+
+# Data Types
 
 
 @public
@@ -114,10 +204,14 @@ class Literal(DataTypeOps):
     loc: SourceLocation
     value: Any
 
-    def __repr__(self) -> str:
-        """Represent the AST object as a string with details."""
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
         klass = self.__class__.__name__
         return f"{klass}({self.value})"
+
+    def get_struct(self) -> ReprStruct:
+        """Return the AST representation for the object."""
+        return {f"Literal[{self.type_}]": self.value}
 
 
 @public
@@ -129,6 +223,7 @@ class Int32Literal(Literal):
     def __init__(
         self, value: int, loc: SourceLocation = SourceLocation(0, 0)
     ) -> None:
+        """Initialize Int32Literal."""
         super().__init__(loc)
         self.value = value
         self.type_ = Int32

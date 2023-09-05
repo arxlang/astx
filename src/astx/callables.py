@@ -1,5 +1,5 @@
 """Module for callable ASTx."""
-from typing import List
+from typing import List, cast
 
 from public import public
 
@@ -8,6 +8,7 @@ from astx.base import (
     DataType,
     Expr,
     ExprType,
+    ReprStruct,
     SourceLocation,
     StatementType,
 )
@@ -31,6 +32,21 @@ class Call(Expr):
         self.callee = callee
         self.args = args
         self.kind = ASTKind.CallKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        args = [str(arg) for arg in self.args]
+        return f"Call[{self.callee}: {', '.join(args)}]"
+
+    def get_struct(self) -> ReprStruct:
+        """Return the AST structure of the object."""
+        call_args = []
+
+        for node in self.args:
+            call_args.append(node.get_struct())
+
+        call_node = {f"CALL[{self.callee}]": {"args": call_args}}
+        return cast(ReprStruct, call_node)
 
 
 @public
@@ -61,6 +77,10 @@ class FunctionPrototype(StatementType):
         self.scope = scope
         self.visibility = visibility
 
+    def get_struct(self) -> ReprStruct:
+        """Get the AST structure that represent the object."""
+        raise Exception("Visitor method not necessary")
+
 
 @public
 class Return(StatementType):
@@ -75,6 +95,14 @@ class Return(StatementType):
         self.loc = loc
         self.value = value
         self.kind = ASTKind.ReturnKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"Return[{self.value}]"
+
+    def get_struct(self) -> ReprStruct:
+        """Return the AST structure of the object."""
+        return {"RETURN": self.value.get_struct()}
 
 
 @public
@@ -98,5 +126,25 @@ class Function(StatementType):
 
     @property
     def name(self) -> str:
-        """Returns the function prototype name."""
+        """Return the function prototype name."""
         return self.prototype.name
+
+    def __str__(self) -> str:
+        """Return a string that represent the object."""
+        return f"Function[{self.name}]"
+
+    def get_struct(self) -> ReprStruct:
+        """Get the AST structure that represent the object."""
+        fn_args = []
+        for arg in self.prototype.args:
+            fn_args.append(arg.get_struct())
+
+        fn_body = self.body.get_struct()
+
+        node = {
+            f"FUNCTION[{self.prototype.name}]": {
+                "args": fn_args,
+                "body": fn_body,
+            }
+        }
+        return cast(ReprStruct, node)
