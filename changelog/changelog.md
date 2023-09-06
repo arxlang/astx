@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.5.0](https://github.com/arxlang/astx/compare/0.4.0...0.5.0) (2023-09-06)
+
+
+### Features
+
+* Add initial support for jupyter display with graphviz ([#14](https://github.com/arxlang/astx/issues/14)) ([35a8c98](https://github.com/arxlang/astx/commit/35a8c98b328b94fd279df0711cea102dc6e8f536))
+
 # [0.4.0](https://github.com/arxlang/astx/compare/0.3.3...0.4.0) (2023-09-05)
 
 
