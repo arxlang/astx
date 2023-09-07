@@ -50,8 +50,7 @@ groups:
     targets:
       build:
         help: build documentation
-        run: |
-          mkdocs build --config-file mkdocs.yaml
+        run: mkdocs build --config-file mkdocs.yaml
 
       preview:
         help: preview documentation page locally
