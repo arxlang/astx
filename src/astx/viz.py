@@ -17,6 +17,7 @@ def traverse_ast(
     ast: ReprStruct,
     graph: Optional[Digraph] = None,
     parent: Optional[str] = None,
+    shape: str = "box",
 ) -> Digraph:
     """
     Recursively traverse the AST and build a Graphviz graph.
@@ -30,6 +31,8 @@ def traverse_ast(
     parent : str, optional
         The identifier of the parent node in the graph, by default
         it is an empty string
+    shape: str, options: ellipse, box, circle, diamond
+        The shape used for the nodes in the graph. Default "box".
     """
     if not graph:
         graph = Digraph()
@@ -39,21 +42,29 @@ def traverse_ast(
 
     for key, value in ast.items():
         node_name = f"{hash(key)}_{hash(str(value))}"
-        graph.node(node_name, key)
+        graph.node(node_name, key, shape=shape)
 
         if parent:
             graph.edge(parent, node_name)
 
         if isinstance(value, dict):
-            traverse_ast(value, graph, node_name)
+            traverse_ast(value, graph, node_name, shape=shape)
         elif isinstance(value, list):
             for item in value:
                 if isinstance(item, dict):
-                    traverse_ast(item, graph, node_name)
+                    traverse_ast(item, graph, node_name, shape=shape)
     return graph
 
 
-def visualize(ast: ReprStruct) -> None:
-    """Visualize the AST using graphviz."""
-    graph = traverse_ast(ast)
+def visualize(ast: ReprStruct, shape: str = "box") -> None:
+    """
+    Visualize the AST using graphviz.
+
+    Parameters
+    ----------
+    ast: ReprStruct
+    shape: str, options: ellipse, box, circle, diamond
+        The shape used for the nodes in the graph. Default "box".
+    """
+    graph = traverse_ast(ast, shape=shape)
     display(Image(graph.pipe(format="png")))
