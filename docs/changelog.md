@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.6.0](https://github.com/arxlang/astx/compare/0.5.1...0.6.0) (2023-09-07)
+
+
+### Features
+
+* Add options for the graph visualization objects shape ([#16](https://github.com/arxlang/astx/issues/16)) ([93f6ebd](https://github.com/arxlang/astx/commit/93f6ebd2cec7fee718ee37e5fb6e982cdd97fbc6))
+
 ## [0.5.1](https://github.com/arxlang/astx/compare/0.5.0...0.5.1) (2023-09-07)
 
 
