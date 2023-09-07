@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.5.1](https://github.com/arxlang/astx/compare/0.5.0...0.5.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* Fix docs generation ([#15](https://github.com/arxlang/astx/issues/15)) ([e1bfb4e](https://github.com/arxlang/astx/commit/e1bfb4e0447798d468a249183e35922581a8d197))
+
 # [0.5.0](https://github.com/arxlang/astx/compare/0.4.0...0.5.0) (2023-09-06)
 
 
