@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.7.0](https://github.com/arxlang/astx/compare/0.6.0...0.7.0) (2023-12-05)
+
+
+### Features
+
+* Add ref attribute to the Expr class ([#18](https://github.com/arxlang/astx/issues/18)) ([60b9b0e](https://github.com/arxlang/astx/commit/60b9b0e08d0690595517a3e1659b04f5434e14c4))
+
 # [0.6.0](https://github.com/arxlang/astx/compare/0.5.1...0.6.0) (2023-09-07)
 
 
