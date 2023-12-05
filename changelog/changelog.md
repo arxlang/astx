@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.7.1](https://github.com/arxlang/astx/compare/0.7.0...0.7.1) (2023-12-05)
+
+
+### Bug Fixes
+
+* Fix typing issues ([#19](https://github.com/arxlang/astx/issues/19)) ([9cb53c4](https://github.com/arxlang/astx/commit/9cb53c46f05db17f36af0d412527c56ceef922b0))
+
 # [0.7.0](https://github.com/arxlang/astx/compare/0.6.0...0.7.0) (2023-12-05)
 
 
