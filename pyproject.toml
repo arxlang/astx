@@ -14,11 +14,11 @@ packages = [
 include = ["src/astx/py.typed"]
 
 [tool.poetry.dependencies]
-python = ">=3.8.1,<4"
-atpublic = "^4.0"
-typing-extensions = { version = "^4", python = "<3.9" }
-graphviz = "^0.20.1"
-ipython = "<8"
+python = ">=3.8.1,<3.12"
+atpublic = ">=4.0"
+typing-extensions = { version = ">=4", python = "<3.9" }
+graphviz = ">=0.20.1"
+distlib = ">=0.3.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.3.2"
@@ -31,6 +31,7 @@ bandit = ">=1.7.5"
 vulture = ">=2.9.1"
 mccabe = ">=0.6.1"
 ipykernel = ">=6.0.0"
+ipython = ">=7.0.0"
 mkdocs = ">=1.4.3"
 mkdocs-exclude = ">=1.0.2"
 mkdocs-jupyter = ">=0.24.1"
