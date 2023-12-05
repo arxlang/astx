@@ -2,7 +2,7 @@ version: 1.0
 groups:
   clean:
     targets:
-      all:
+      tmp:
         help: remove build artifacts, compiled files, and cache
         shell: bash
         run: |
