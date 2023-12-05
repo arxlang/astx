@@ -5,7 +5,7 @@ import json
 
 from abc import abstractmethod
 from enum import Enum
-from typing import ClassVar, Dict, List, Type, Union
+from typing import ClassVar, Dict, List, Type, Union, cast
 
 from IPython.display import Image
 
@@ -175,6 +175,11 @@ class DataType(Expr):
         DataType._tmp_id += 1
         # set it as a generic data type
         self.type_: ExprType = DataType
+
+    def get_struct(self) -> ReprStruct:
+        """Return a simple structure that represents the object."""
+        struct = {"DATA-TYPE": self.name}
+        return cast(ReprStruct, struct)
 
 
 @public
