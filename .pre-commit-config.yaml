@@ -13,10 +13,23 @@ repos:
 
   - repo: local
     hooks:
-      - id: black
-        name: black
-        entry: black
+      - id: ruff-format
+        name: ruff-format
+        entry: ruff format
+        exclude: |
+          (?x)(
+            docs
+          )
         language: system
+        pass_filenames: true
+        types:
+          - python
+
+      - id: ruff-linter
+        name: ruff-linter
+        entry: ruff check
+        language: system
+        exclude: "docs/"
         pass_filenames: true
         types:
           - python
@@ -26,15 +39,6 @@ repos:
         entry: mypy
         language: system
         files: "./"
-        pass_filenames: true
-        types:
-          - python
-
-      - id: ruff
-        name: ruff
-        entry: ruff --fix
-        language: system
-        files: "."
         pass_filenames: true
         types:
           - python

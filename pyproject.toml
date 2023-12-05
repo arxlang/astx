@@ -21,41 +21,31 @@ graphviz = "^0.20.1"
 ipython = "<8"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.3.2"
-pytest-cov = "^4.1.0"
-coverage = "^7.2.7"
-black = "^23.3.0"
-pre-commit = "^3.3.2"
-ruff = "^0.0.278"
-mypy = "^1.3.0"
-bandit = "^1.7.5"
+pytest = ">=7.3.2"
+pytest-cov = ">=4.1.0"
+coverage = ">=7.2.7"
+pre-commit = ">=3.3.2"
+ruff = ">=0.1.5"
+mypy = ">=1.6.0"
+bandit = ">=1.7.5"
 vulture = ">=2.9.1"
-mccabe = "^0.6.1"
-ipython = "<8"
+mccabe = ">=0.6.1"
 ipykernel = ">=6.0.0"
-mkdocs = "^1.4.3"
-mkdocs-exclude = "^1.0.2"
-mkdocs-jupyter = "^0.24.1"
-mkdocs-literate-nav = "^0.6.0"
+mkdocs = ">=1.4.3"
+mkdocs-exclude = ">=1.0.2"
+mkdocs-jupyter = ">=0.24.1"
+mkdocs-literate-nav = ">=0.6.0"
 mkdocs-macros-plugin = ">=0.7.0,<1"
-mkdocs-material = "^9.1.15"
-mkdocstrings = "^0.21.2"
-mkdocstrings-python = "^1.1.2"
+mkdocs-material = ">=9.1.15"
+mkdocstrings = ">=0.21.2"
+mkdocstrings-python = ">=1.1.2"
+jupyterlab = ">=4.0.5"
 makim = "1.8.3"
-jupyterlab = "^4.0.5"
 
 [tool.pytest.ini_options]
 testpaths = [
     "tests",
 ]
-
-[tool.black]
-line-length = 79
-target-version = ["py38"]
-force-exclude = '''(?x)(
-    docs/*
-  | .*\\.egg-info
-)'''  # TOML's single-quoted strings do not require escaping backslashes
 
 [tool.bandit]
 exclude_dirs = ["tests"]
@@ -87,7 +77,7 @@ select = [
   "RUF", # Ruff-specific rules
   "I001", # isort
 ]
-fixable = ["I001"]
+fix = true
 
 [tool.ruff.pydocstyle]
 convention = "numpy"
@@ -95,6 +85,9 @@ convention = "numpy"
 [tool.ruff.isort]
 # Use a single line between direct and from import
 lines-between-types = 1
+
+[tool.ruff.format]
+quote-style = "double"
 
 [tool.mypy]
 python_version = "3.8"

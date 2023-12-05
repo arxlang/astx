@@ -102,12 +102,14 @@ class AST(metaclass=ASTMeta):
     loc: SourceLocation
     kind: ASTKind
     comment: str
+    ref: str
 
     def __init__(self, loc: SourceLocation = SourceLocation(0, 0)) -> None:
         """Initialize the AST instance."""
         self.kind = ASTKind.GenericKind
         self.loc = loc
-        self.comment: str = ""
+        self.ref = ""
+        self.comment = ""
 
     def __str__(self) -> str:
         """Return an string that represents the object."""
