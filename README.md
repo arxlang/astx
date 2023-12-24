@@ -11,7 +11,7 @@ representation of the AST.
 Note: this project is under active development and it is not ready for
 production yet.
 
-- Free software: BSD 3 Clause
+- License: BSD 3 Clause
 - Documentation: https://arxlang.github.io/astx.
 
 ## Features
