@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.8.0](https://github.com/arxlang/astx/compare/0.7.1...0.8.0) (2024-01-08)
+
+
+### Features
+
+* Add new data types for LiteralInt8, LiteralInt16, LiteralIn64 ([#24](https://github.com/arxlang/astx/issues/24)) ([40230ec](https://github.com/arxlang/astx/commit/40230ec72d447b0aa31012e1c0d81cdc37b0c34b))
+
 ## [0.7.1](https://github.com/arxlang/astx/compare/0.7.0...0.7.1) (2023-12-05)
 
 

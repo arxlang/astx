@@ -906,11 +906,11 @@ import astx</div>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">module</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">Module</span><span class="p">()</span>
 
-<span class="n">a</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32Literal</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"b"</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32Literal</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"c"</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32Literal</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">LiteralInt32</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"b"</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">LiteralInt32</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"c"</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">Int32</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">astx</span><span class="o">.</span><span class="n">LiteralInt32</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
 
-<span class="n">lit_1</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">Int32Literal</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">lit_1</span> <span class="o">=</span> <span class="n">astx</span><span class="o">.</span><span class="n">LiteralInt32</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">basic_op</span> <span class="o">=</span> <span class="n">lit_1</span> <span class="o">+</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span> <span class="o">/</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span>
 
@@ -925,11 +925,11 @@ import astx</div>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-2">module = astx.Module()
 
-a = astx.Variable(name="a", type_=astx.Int32, value=astx.Int32Literal(1))
-b = astx.Variable(name="b", type_=astx.Int32, value=astx.Int32Literal(2))
-c = astx.Variable(name="c", type_=astx.Int32, value=astx.Int32Literal(4))
+a = astx.Variable(name="a", type_=astx.Int32, value=astx.LiteralInt32(1))
+b = astx.Variable(name="b", type_=astx.Int32, value=astx.LiteralInt32(2))
+c = astx.Variable(name="c", type_=astx.Int32, value=astx.LiteralInt32(4))
 
-lit_1 = astx.Int32Literal(1)
+lit_1 = astx.LiteralInt32(1)
 
 basic_op = lit_1 + b - a * c / a + (b - a / a)
 
