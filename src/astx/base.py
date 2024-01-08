@@ -7,8 +7,6 @@ from abc import abstractmethod
 from enum import Enum
 from typing import ClassVar, Dict, List, Type, Union, cast
 
-from IPython.display import Image
-
 try:
     from typing_extensions import TypeAlias
 except ImportError:
@@ -119,23 +117,18 @@ class AST(metaclass=ASTMeta):
         """Return an string that represents the object."""
         return self.__class__.__name__
 
-    def _repr_png_(self) -> Image:
+    def _repr_png_(self) -> None:
         """
         Return PNG representation of the Graphviz object.
 
         This method is specially recognized by Jupyter Notebook to display
         a Graphviz diagram inline.
-
-        Returns
-        -------
-        bytes
-            PNG binary data.
         """
         # importing it here in order to avoid cyclic import issue
         from astx.viz import visualize
 
         data = self.get_struct()
-        return visualize(data)
+        visualize(data)
 
     @abstractmethod
     def get_struct(self) -> ReprStruct:
