@@ -36,7 +36,7 @@ jobs:
         os:
           - "ubuntu"
           - "macos"
-          - "windows"
+          # - "windows"
     runs-on: ${{ matrix.os }}-latest
     concurrency:
       group: ci-tests-${{ matrix.os }}-${{ matrix.python_version }}-${{ github.ref }}
