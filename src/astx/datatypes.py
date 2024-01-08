@@ -215,16 +215,64 @@ class Literal(DataTypeOps):
 
 
 @public
-class Int32Literal(Literal):
-    """Int32Literal data type class."""
+class LiteralInt8(Literal):
+    """LiteralInt8 data type class."""
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = SourceLocation(0, 0)
     ) -> None:
-        """Initialize Int32Literal."""
+        """Initialize LiteralInt8."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = Int8
+        self.loc = loc
+
+
+@public
+class LiteralInt16(Literal):
+    """LiteralInt16 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = SourceLocation(0, 0)
+    ) -> None:
+        """Initialize LiteralInt16."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = Int16
+        self.loc = loc
+
+
+@public
+class LiteralInt32(Literal):
+    """LiteralInt32 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = SourceLocation(0, 0)
+    ) -> None:
+        """Initialize LiteralInt32."""
         super().__init__(loc)
         self.value = value
         self.type_ = Int32
+        self.loc = loc
+
+
+@public
+class LiteralInt64(Literal):
+    """LiteralInt64 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = SourceLocation(0, 0)
+    ) -> None:
+        """Initialize LiteralInt64."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = Int64
         self.loc = loc
