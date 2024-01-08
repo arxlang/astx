@@ -8,7 +8,7 @@ can be displayed inline in a Jupyter notebook.
 from typing import Optional
 
 from graphviz import Digraph
-from IPython.display import Image, display
+from IPython.display import Image, display  # type: ignore[attr-defined]
 
 from astx.base import ReprStruct
 
@@ -67,4 +67,5 @@ def visualize(ast: ReprStruct, shape: str = "box") -> None:
         The shape used for the nodes in the graph. Default "box".
     """
     graph = traverse_ast(ast, shape=shape)
-    display(Image(graph.pipe(format="png")))
+    image = Image(graph.pipe(format="png"))  # type: ignore[no-untyped-call]
+    display(image)  # type: ignore[no-untyped-call]

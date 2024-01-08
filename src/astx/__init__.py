@@ -28,10 +28,10 @@ from astx.blocks import (
     Module,
 )
 from astx.callables import (
-    Call,
     Function,
+    FunctionCall,
     FunctionPrototype,
-    Return,
+    FunctionReturn,
 )
 from astx.datatypes import (
     Boolean,
@@ -89,10 +89,10 @@ __all__ = [
     "OperatorType",
     "SourceLocation",
     "StatementType",
-    "Call",
+    "FunctionCall",
     "Function",
     "FunctionPrototype",
-    "Return",
+    "FunctionReturn",
     "Boolean",
     "DataTypeOps",
     "Float16",
