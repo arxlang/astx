@@ -1,12 +1,12 @@
 """Module for testing operators."""
 import pytest
 
-from astx.datatypes import Int32Literal
+from astx.datatypes import LiteralInt32
 from astx.operators import BinaryOp, UnaryOp
 
-lit_1 = Int32Literal(1)
-lit_2 = Int32Literal(2)
-lit_3 = Int32Literal(3)
+lit_1 = LiteralInt32(1)
+lit_2 = LiteralInt32(2)
+lit_3 = LiteralInt32(3)
 
 
 @pytest.mark.parametrize(
@@ -38,5 +38,5 @@ def test_binary_op(explicit: BinaryOp, implicit: BinaryOp) -> None:
 
 def test_unary_op() -> None:
     """Test unary operator."""
-    lit_a = Int32Literal(1)
+    lit_a = LiteralInt32(1)
     UnaryOp(op_code="+", operand=lit_a)
