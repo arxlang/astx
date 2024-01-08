@@ -74,12 +74,12 @@ jobs:
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
-        miniconda-version: "latest"
-        environment-file: conda/dev.yaml
-        channels: conda-forge,nodefaults
-        activate-environment: astx
-        auto-update-conda: true
-        conda-solver: libmamba
+          miniconda-version: "latest"
+          environment-file: conda/dev.yaml
+          channels: conda-forge,nodefaults
+          activate-environment: astx
+          auto-update-conda: true
+          conda-solver: libmamba
 
       - name: Install dependencies
         run: poetry install
