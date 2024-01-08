@@ -18,7 +18,7 @@ from astx.variables import Variable
 
 
 @public
-class Call(Expr):
+class FunctionCall(Expr):
     """AST class for function call."""
 
     def __init__(
@@ -83,7 +83,7 @@ class FunctionPrototype(StatementType):
 
 
 @public
-class Return(StatementType):
+class FunctionReturn(StatementType):
     """AST class for function `return` statement."""
 
     value: DataType
