@@ -66,6 +66,7 @@ verbose = false
 line-length = 79
 force-exclude = true
 src = ["./"]
+ignore = ["PLR0913"]
 exclude = [
   'docs',
 ]

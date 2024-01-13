@@ -62,6 +62,7 @@ from astx.mixes import (
     NamedExpr,
 )
 from astx.modifiers import (
+    MutabilityKind,
     ScopeKind,
     VisibilityKind,
 )
@@ -118,6 +119,7 @@ __all__ = [
     "ForRangeLoop",
     "If",
     "NamedExpr",
+    "MutabilityKind",
     "ScopeKind",
     "VisibilityKind",
     "BinaryOp",

@@ -12,7 +12,8 @@ nav:
   - Changelog: changelog.md
   - Contributing: contributing.md
   - API: api/references.md
-  - Notebook page: example.ipynb
+  - Tutorials:
+      - Get Started: tutorials/example.ipynb
 theme:
   name: material
   features:

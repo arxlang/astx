@@ -1,18 +1,18 @@
 """Module for Variables."""
-from typing import List, Tuple
+from __future__ import annotations
 
 from public import public
 
 from astx.base import (
     ASTKind,
     DataType,
-    Expr,
     ExprType,
     ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
+from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
 from astx.operators import DataTypeOps
 
 
@@ -20,19 +20,28 @@ from astx.operators import DataTypeOps
 class VarDecl(StatementType):
     """AST class for variable declaration."""
 
-    var_names: List[Tuple[str, Expr]]
-    type_name: str
+    mutability: MutabilityKind
+    visibility: VisibilityKind
+    scope: ScopeKind
+    var_names: tuple[str, ...]
+    type_name: ExprType
     body: Block
 
     def __init__(
         self,
-        var_names: List[Tuple[str, Expr]],
-        type_name: str,
+        mutability: MutabilityKind,
+        visibility: VisibilityKind,
+        scope: ScopeKind,
+        var_names: tuple[str, ...],
+        type_name: ExprType,
         body: Block,
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the VarExprAST instance."""
         self.loc = loc
+        self.mutability = mutability
+        self.scope = scope
+        self.visibility = visibility
         self.var_names = var_names
         self.type_name = type_name
         self.body = body
