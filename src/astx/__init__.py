@@ -22,6 +22,7 @@ from astx.base import (
     OperatorType,
     SourceLocation,
     StatementType,
+    Undefined,
 )
 from astx.blocks import (
     Block,
@@ -73,6 +74,7 @@ from astx.operators import (
 from astx.variables import (
     VarDecl,
     Variable,
+    VarsDecl,
 )
 
 
@@ -89,6 +91,7 @@ __all__ = [
     "ASTKind",
     "DataType",
     "Expr",
+    "Undefined",
     "ExprType",
     "OperatorType",
     "SourceLocation",
@@ -125,6 +128,7 @@ __all__ = [
     "BinaryOp",
     "UnaryOp",
     "VarDecl",
+    "VarsDecl",
     "Variable",
     "Block",
     "Module",

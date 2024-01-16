@@ -47,7 +47,9 @@ class ASTKind(Enum):
     # variables
     VariableKind = -10
     VarDeclKind = -11
+    VarsDeclKind = -11
     VarAssignKind = -12
+    VarsAssignKind = -12
 
     # operators
     UnaryOpKind = -20
@@ -153,6 +155,11 @@ class Expr(AST):
 
 
 ExprType: TypeAlias = Type[Expr]
+
+
+@public
+class Undefined(Expr):
+    """Undefined expression class."""
 
 
 @public

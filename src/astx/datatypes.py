@@ -98,7 +98,8 @@ class BinaryOp(DataTypeOps):
         self.kind = ASTKind.BinaryOpKind
 
         if not (
-            issubclass(lhs.type_, Number) and issubclass(lhs.type_, Number)
+            issubclass(lhs.type_, (Number, BinaryOp, DataType))
+            and issubclass(rhs.type_, (Number, BinaryOp, DataType))
         ):
             raise Exception(
                 "For now, binary operators are just allowed for numbers."
@@ -108,7 +109,7 @@ class BinaryOp(DataTypeOps):
         if lhs.type_ == rhs.type_:
             self.type_ = lhs.type_
         else:
-            # inference
+            # type inference
             self.type_ = max([lhs.type_, rhs.type_], key=lambda v: v.nbytes)
 
     def __str__(self) -> str:
@@ -129,7 +130,7 @@ class BinaryOp(DataTypeOps):
 
 
 @public
-class Any(DataTypeOps):
+class AnyExpr(DataTypeOps):
     """Generic data type expression."""
 
 
