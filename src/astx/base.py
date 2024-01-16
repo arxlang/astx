@@ -46,7 +46,8 @@ class ASTKind(Enum):
 
     # variables
     VariableKind = -10
-    VarKind = -11  # var keyword for variable declaration
+    VarDeclKind = -11
+    VarAssignKind = -12
 
     # operators
     UnaryOpKind = -20

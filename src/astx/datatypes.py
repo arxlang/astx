@@ -129,6 +129,11 @@ class BinaryOp(DataTypeOps):
 
 
 @public
+class Any(DataTypeOps):
+    """Generic data type expression."""
+
+
+@public
 class Number(DataTypeOps):
     """Number data type expression."""
 
