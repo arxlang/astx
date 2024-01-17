@@ -1,5 +1,7 @@
 """Module for callable ASTx."""
-from typing import List, cast
+from __future__ import annotations
+
+from typing import cast
 
 from public import public
 
@@ -14,7 +16,7 @@ from astx.base import (
 )
 from astx.blocks import Block
 from astx.modifiers import ScopeKind, VisibilityKind
-from astx.variables import Variable
+from astx.variables import Argument
 
 
 @public
@@ -24,7 +26,7 @@ class FunctionCall(Expr):
     def __init__(
         self,
         callee: str,
-        args: List[Variable],
+        args: tuple[DataType, ...],
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the Call instance."""
@@ -54,7 +56,7 @@ class FunctionPrototype(StatementType):
     """AST class for function prototype declaration."""
 
     name: str
-    args: List[Variable]
+    args: tuple[Argument, ...]
     return_type: ExprType
     scope: ScopeKind
     visibility: VisibilityKind
@@ -62,7 +64,7 @@ class FunctionPrototype(StatementType):
     def __init__(
         self,
         name: str,
-        args: List[Variable],
+        args: tuple[Argument, ...],
         return_type: ExprType,
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
