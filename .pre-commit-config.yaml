@@ -36,12 +36,9 @@ repos:
 
       - id: mypy
         name: mypy
-        entry: mypy
+        entry: mypy .
         language: system
-        files: "./"
-        pass_filenames: true
-        types:
-          - python
+        pass_filenames: false
 
       - id: shellcheck
         name: shellcheck

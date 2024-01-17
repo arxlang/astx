@@ -22,6 +22,7 @@ from astx.base import (
     OperatorType,
     SourceLocation,
     StatementType,
+    Undefined,
 )
 from astx.blocks import (
     Block,
@@ -62,6 +63,7 @@ from astx.mixes import (
     NamedExpr,
 )
 from astx.modifiers import (
+    MutabilityKind,
     ScopeKind,
     VisibilityKind,
 )
@@ -70,7 +72,8 @@ from astx.operators import (
     UnaryOp,
 )
 from astx.variables import (
-    VarDecl,
+    VarAssignment,
+    VarDeclaration,
     Variable,
 )
 
@@ -88,6 +91,7 @@ __all__ = [
     "ASTKind",
     "DataType",
     "Expr",
+    "Undefined",
     "ExprType",
     "OperatorType",
     "SourceLocation",
@@ -118,11 +122,13 @@ __all__ = [
     "ForRangeLoop",
     "If",
     "NamedExpr",
+    "MutabilityKind",
     "ScopeKind",
     "VisibilityKind",
     "BinaryOp",
     "UnaryOp",
-    "VarDecl",
+    "VarAssignment",
+    "VarDeclaration",
     "Variable",
     "Block",
     "Module",

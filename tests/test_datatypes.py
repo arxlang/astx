@@ -1,13 +1,14 @@
 """Tests for data types."""
-from astx.datatypes import Int32, LiteralInt32
+from astx.datatypes import LiteralInt32
 from astx.operators import BinaryOp
 from astx.variables import Variable
 
 
 def test_variable_i32() -> None:
     """Test variable i32."""
-    var_a = Variable("a", Int32, value=LiteralInt32(1))
-    var_b = Variable("b", Int32, value=LiteralInt32(1))
+    var_a = Variable("a")
+    var_b = Variable("b")
+
     BinaryOp(op_code="+", lhs=var_a, rhs=var_b)
 
 

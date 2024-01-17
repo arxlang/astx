@@ -3,7 +3,7 @@ from astx.blocks import Block
 from astx.datatypes import Int32, LiteralInt32
 from astx.flows import ForCountLoop, ForRangeLoop, If
 from astx.operators import BinaryOp, UnaryOp
-from astx.variables import Variable
+from astx.variables import InlineVarDeclaration, Variable
 
 
 def test_if() -> None:
@@ -23,20 +23,21 @@ def test_if_else() -> None:
 
 def test_for_range() -> None:
     """Test `For Range Loop` statement."""
-    var_a = Variable("a", type_=Int32, value=LiteralInt32(-1))
+    decl_a = InlineVarDeclaration("a", type_=Int32, value=LiteralInt32(-1))
     start = LiteralInt32(1)
     end = LiteralInt32(10)
     step = LiteralInt32(1)
     body = Block()
     body.append(LiteralInt32(2))
-    ForRangeLoop(variable=var_a, start=start, end=end, step=step, body=body)
+    ForRangeLoop(variable=decl_a, start=start, end=end, step=step, body=body)
 
 
 def test_for_count() -> None:
     """Test `For Count Loop` statement."""
-    var_a = Variable("a", type_=Int32, value=LiteralInt32(0))
+    decl_a = InlineVarDeclaration("a", type_=Int32, value=LiteralInt32(0))
+    var_a = Variable("a")
     cond = BinaryOp(op_code="<", lhs=var_a, rhs=LiteralInt32(10))
     update = UnaryOp(op_code="++", operand=var_a)
     body = Block()
     body.append(LiteralInt32(2))
-    ForCountLoop(initializer=var_a, condition=cond, update=update, body=body)
+    ForCountLoop(initializer=decl_a, condition=cond, update=update, body=body)

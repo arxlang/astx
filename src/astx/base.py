@@ -41,50 +41,54 @@ class SourceLocation:
 class ASTKind(Enum):
     """The expression kind class used for downcasting."""
 
-    GenericKind = -1
-    ModuleKind = -2
+    GenericKind = -100
+    ModuleKind = -101
 
     # variables
-    VariableKind = -10
-    VarKind = -11  # var keyword for variable declaration
+    ArgumentKind = -200
+    VariableKind = -201
+    VarDeclKind = -202
+    VarsDeclKind = -203
+    VarAssignmentKind = -204
+    VarsAssignKind = -205
 
     # operators
-    UnaryOpKind = -20
-    BinaryOpKind = -21
+    UnaryOpKind = -300
+    BinaryOpKind = -301
 
     # functions
-    PrototypeKind = -30
-    FunctionKind = -31
-    CallKind = -32
-    ReturnKind = -33
+    PrototypeKind = -400
+    FunctionKind = -401
+    CallKind = -402
+    ReturnKind = -403
 
     # control flow
-    IfKind = -40
-    ForKind = -41
+    IfKind = -500
+    ForKind = -501
 
     # data types
-    NullDTKind = -100
-    BooleanDTKind = -101
-    Int8DTKind = -102
-    UInt8DTKind = -103
-    Int16DTKind = -104
-    UInt16DTKind = -105
-    Int32DTKind = -106
-    UInt32DTKind = -107
-    Int64DTKind = -108
-    UInt64DTKind = -109
-    FloatDTKind = -110
-    DoubleDTKind = -111
-    BinaryDTKind = -112
-    StringDTKind = -113
-    FixedSizeBinaryDTKind = -114
-    Date32DTKind = -115
-    Date64DTKind = -116
-    TimestampDTKind = -117
-    Time32DTKind = -118
-    Time64DTKind = -119
-    Decimal128DTKind = -120
-    Decimal256DTKind = -121
+    NullDTKind = -600
+    BooleanDTKind = -601
+    Int8DTKind = -602
+    UInt8DTKind = -603
+    Int16DTKind = -604
+    UInt16DTKind = -605
+    Int32DTKind = -606
+    UInt32DTKind = -607
+    Int64DTKind = -608
+    UInt64DTKind = -609
+    FloatDTKind = -610
+    DoubleDTKind = -611
+    BinaryDTKind = -612
+    StringDTKind = -613
+    FixedSizeBinaryDTKind = -614
+    Date32DTKind = -615
+    Date64DTKind = -616
+    TimestampDTKind = -617
+    Time32DTKind = -618
+    Time64DTKind = -619
+    Decimal128DTKind = -620
+    Decimal256DTKind = -621
 
 
 class ASTMeta(type):
@@ -115,7 +119,7 @@ class AST(metaclass=ASTMeta):
 
     def __repr__(self) -> str:
         """Return an string that represents the object."""
-        return self.__class__.__name__
+        return f"{self.__class__.__name__}"
 
     def _repr_png_(self) -> None:
         """
@@ -127,8 +131,7 @@ class AST(metaclass=ASTMeta):
         # importing it here in order to avoid cyclic import issue
         from astx.viz import visualize
 
-        data = self.get_struct()
-        visualize(data)
+        visualize(self.get_struct())
 
     @abstractmethod
     def get_struct(self) -> ReprStruct:
@@ -155,6 +158,16 @@ ExprType: TypeAlias = Type[Expr]
 
 
 @public
+class Undefined(Expr):
+    """Undefined expression class."""
+
+    def get_struct(self) -> ReprStruct:
+        """Return a simple structure that represents the object."""
+        struct = {"DATA-TYPE": "UNDEFINED"}
+        return cast(ReprStruct, struct)
+
+
+@public
 class DataType(Expr):
     """AST main expression class."""
 
@@ -168,6 +181,10 @@ class DataType(Expr):
         DataType._tmp_id += 1
         # set it as a generic data type
         self.type_: ExprType = DataType
+
+    def __repr__(self) -> str:
+        """Return an string that represents the object."""
+        return f"{self.__class__.__name__}: {self.name}"
 
     def get_struct(self) -> ReprStruct:
         """Return a simple structure that represents the object."""

@@ -10,6 +10,7 @@ class VisibilityKind(Enum):
 
     public: int = 1
     private: int = 2
+    protected: int = 3
 
 
 @public
@@ -18,3 +19,11 @@ class ScopeKind(Enum):
 
     global_: int = 1
     local: int = 2
+
+
+@public
+class MutabilityKind(Enum):
+    """Definition for different kind of mutability."""
+
+    constant: int = 1
+    mutable: int = 2
