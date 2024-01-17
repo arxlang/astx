@@ -48,7 +48,7 @@ class ASTKind(Enum):
     VariableKind = -10
     VarDeclKind = -11
     VarsDeclKind = -11
-    VarAssignKind = -12
+    VarAssignmentKind = -12
     VarsAssignKind = -12
 
     # operators
@@ -118,7 +118,7 @@ class AST(metaclass=ASTMeta):
 
     def __repr__(self) -> str:
         """Return an string that represents the object."""
-        return self.__class__.__name__
+        return f"{self.__class__.__name__}: {self.name}"
 
     def _repr_png_(self) -> None:
         """
@@ -130,8 +130,7 @@ class AST(metaclass=ASTMeta):
         # importing it here in order to avoid cyclic import issue
         from astx.viz import visualize
 
-        data = self.get_struct()
-        visualize(data)
+        visualize(self.get_struct())
 
     @abstractmethod
     def get_struct(self) -> ReprStruct:

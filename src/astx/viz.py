@@ -36,9 +36,10 @@ def traverse_ast(
     """
     if not graph:
         graph = Digraph()
+        graph.attr(rankdir="TB")
 
     if not isinstance(ast, dict):
-        return graph
+        return graph.unflatten(stagger=3)
 
     for key, value in ast.items():
         node_name = f"{hash(key)}_{hash(str(value))}"
@@ -53,7 +54,7 @@ def traverse_ast(
             for item in value:
                 if isinstance(item, dict):
                     traverse_ast(item, graph, node_name, shape=shape)
-    return graph
+    return graph.unflatten(stagger=3)
 
 
 def visualize(ast: ReprStruct, shape: str = "box") -> None:

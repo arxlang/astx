@@ -3025,6 +3025,23 @@ files = [
 ]
 
 [[package]]
+name = "umlizer"
+version = "0.1.0"
+description = "Tool for creating UML from project files"
+optional = false
+python-versions = ">=3.8.1,<4"
+files = [
+    {file = "umlizer-0.1.0-py3-none-any.whl", hash = "sha256:cc5fdd8744f8035f6fb30a57ced253b04cb01f2c62da8d06b4c3a1a65cc05c41"},
+    {file = "umlizer-0.1.0.tar.gz", hash = "sha256:3093e392c0f9af139876fa3d235e452616df44e8aded4a598c3bcfa8d862f795"},
+]
+
+[package.dependencies]
+atpublic = ">=4.0"
+graphviz = ">=0.20.1"
+typer = ">=0.9.0"
+typing-extensions = {version = ">=4", markers = "python_version < \"3.9\""}
+
+[[package]]
 name = "uri-template"
 version = "1.3.0"
 description = "RFC 6570 URI Template Processor"
@@ -3224,4 +3241,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4"
-content-hash = "a80ab84fe9a5b6efb98d08eb98fc92c371e823bb63db768544cab396cf56dfdd"
+content-hash = "7f966fe4fed8b6dbcad8ba47a682a6c29d37c4298116766e7d0345facc3f6082"

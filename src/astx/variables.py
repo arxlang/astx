@@ -19,7 +19,7 @@ UNDEFINED = Undefined()
 
 
 @public
-class VarDecl(StatementType):
+class VarDeclaration(StatementType):
     """AST class for variable declaration."""
 
     mutability: MutabilityKind
@@ -52,44 +52,13 @@ class VarDecl(StatementType):
     def __str__(self) -> str:
         """Return a string that represents the object."""
         type_ = self.type_.__name__
-        return f"VarDecl[{self.name}, {type_}] = {self.value}"
+        return f"VarDeclaration[{self.name}, {type_}] = {self.value}"
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
         type_ = self.type_.__name__
-        struct_key = f"VarDecl[{self.name}, {type_}] = {self.value}"
+        struct_key = f"VarDeclaration[{self.name}, {type_}] = {self.value}"
         return {struct_key: self.name}
-
-
-class VarsDecl(StatementType):
-    """AST class for variable declaration."""
-
-    mutability: MutabilityKind
-    visibility: VisibilityKind
-    scope: ScopeKind
-    names: tuple[str, ...]
-    type_: ExprType
-    values: Expr | tuple[Expr]
-
-    def __init__(
-        self,
-        names: tuple[str, ...],
-        type_: ExprType,
-        mutability: MutabilityKind = MutabilityKind.constant,
-        visibility: VisibilityKind = VisibilityKind.public,
-        scope: ScopeKind = ScopeKind.local,
-        values: Expr | tuple[Expr] = UNDEFINED,
-        loc: SourceLocation = SourceLocation(0, 0),
-    ) -> None:
-        """Initialize the VarExprAST instance."""
-        self.loc = loc
-        self.mutability = mutability
-        self.scope = scope
-        self.visibility = visibility
-        self.names = names
-        self.type_ = type_
-        self.values = value
-        self.kind = ASTKind.VarsDeclKind
 
 
 @public
@@ -97,7 +66,7 @@ class VarAssignment(StatementType):
     """AST class for variable declaration."""
 
     name: str
-    body: Block
+    value: Expr
 
     def __init__(
         self,
@@ -109,27 +78,16 @@ class VarAssignment(StatementType):
         self.loc = loc
         self.name = name
         self.value = value
-        self.kind = ASTKind.VarAssignKind
+        self.kind = ASTKind.VarAssignmentKind
 
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"VarAssignment[{self.name}] = {self.value}"
 
-@public
-class VarsAssignment(StatementType):
-    """AST class for variable declaration."""
-
-    names: tuple[str, ...]
-    values: Expr | tuple[Expr]
-
-    def __init__(
-        self,
-        names: tuple[str, ...],
-        values: Expr | tuple[Expr],
-        loc: SourceLocation = SourceLocation(0, 0),
-    ) -> None:
-        """Initialize the VarExprAST instance."""
-        self.loc = loc
-        self.names = names
-        self.value = value
-        self.kind = ASTKind.VarsAssignKind
+    def get_struct(self) -> ReprStruct:
+        """Return a string that represents the object."""
+        struct_key = f"VarAssignment[{self.name}] = {self.value}"
+        return {struct_key: self.value}
 
 
 @public

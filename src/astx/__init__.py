@@ -72,9 +72,9 @@ from astx.operators import (
     UnaryOp,
 )
 from astx.variables import (
-    VarDecl,
+    VarAssignment,
+    VarDeclaration,
     Variable,
-    VarsDecl,
 )
 
 
@@ -127,8 +127,8 @@ __all__ = [
     "VisibilityKind",
     "BinaryOp",
     "UnaryOp",
-    "VarDecl",
-    "VarsDecl",
+    "VarAssignment",
+    "VarDeclaration",
     "Variable",
     "Block",
     "Module",
