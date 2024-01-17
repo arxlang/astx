@@ -14,6 +14,7 @@ nav:
   - API: api/references.md
   - Tutorials:
       - Get Started: tutorials/example.ipynb
+      - Variables: tutorials/variables.ipynb
 theme:
   name: material
   features:
