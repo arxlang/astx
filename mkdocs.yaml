@@ -15,6 +15,7 @@ nav:
   - Tutorials:
       - Get Started: tutorials/example.ipynb
       - Variables: tutorials/variables.ipynb
+      - Functions: tutorials/functions.ipynb
 theme:
   name: material
   features:
