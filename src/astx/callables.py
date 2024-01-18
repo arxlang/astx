@@ -47,7 +47,7 @@ class FunctionCall(Expr):
         for node in self.args:
             call_args.append(node.get_struct())
 
-        call_node = {f"CALL[{self.callee}]": {"args": call_args}}
+        call_node = {f"FUNCTION-CALL[{self.callee}]": {"args": call_args}}
         return cast(ReprStruct, call_node)
 
 
@@ -134,6 +134,18 @@ class Function(StatementType):
     def __str__(self) -> str:
         """Return a string that represent the object."""
         return f"Function[{self.name}]"
+
+    def __call__(
+        self,
+        args: tuple[DataType, ...],
+        loc: SourceLocation = SourceLocation(0, 0),
+    ) -> FunctionCall:
+        """Return a FunctionCall for this call operation."""
+        return FunctionCall(
+            self.prototype.name,
+            args,
+            loc,
+        )
 
     def get_struct(self) -> ReprStruct:
         """Get the AST structure that represent the object."""
