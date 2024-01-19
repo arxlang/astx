@@ -42,7 +42,6 @@ groups:
 
       notebooks:
         help: test jupyter notebooks
-        args:
         run: pytest --nbmake
 
       ci:
