@@ -42,7 +42,7 @@ groups:
 
       notebooks:
         help: test jupyter notebooks
-        run: pytest --nbmake
+        run: pytest -vv --nbmake docs/tutorials
 
       ci:
         help: run the sames tests executed on CI
