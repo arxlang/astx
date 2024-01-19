@@ -73,9 +73,10 @@ from astx.operators import (
 )
 from astx.variables import (
     Argument,
-    VarAssignment,
-    VarDeclaration,
+    InlineVariableDeclaration,
     Variable,
+    VariableAssignment,
+    VariableDeclaration,
 )
 
 
@@ -115,6 +116,7 @@ __all__ = [
     "FunctionReturn",
     "get_version",
     "If",
+    "InlineVariableDeclaration",
     "Int16",
     "Int32",
     "Int64",
@@ -140,8 +142,8 @@ __all__ = [
     "Target",
     "UnaryOp",
     "Undefined",
-    "VarAssignment",
-    "VarDeclaration",
+    "VariableAssignment",
+    "VariableDeclaration",
     "Variable",
     "variables",
     "VisibilityKind",

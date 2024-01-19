@@ -21,7 +21,7 @@ UNDEFINED = Undefined()
 
 
 @public
-class VarDeclaration(StatementType):
+class VariableDeclaration(StatementType):
     """AST class for variable declaration."""
 
     mutability: MutabilityKind
@@ -54,17 +54,19 @@ class VarDeclaration(StatementType):
     def __str__(self) -> str:
         """Return a string that represents the object."""
         type_ = self.type_.__name__
-        return f"VarDeclaration[{self.name}, {type_}] = {self.value}"
+        return f"VariableDeclaration[{self.name}, {type_}] = {self.value}"
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
         type_ = self.type_.__name__
-        struct_key = f"VarDeclaration[{self.name}, {type_}] = {self.value}"
+        struct_key = (
+            f"VariableDeclaration[{self.name}, {type_}] = {self.value}"
+        )
         return cast(ReprStruct, {struct_key: self.value})
 
 
 @public
-class InlineVarDeclaration(Expr):
+class InlineVariableDeclaration(Expr):
     """
     AST class for inline variable declaration expression.
 
@@ -99,17 +101,19 @@ class InlineVarDeclaration(Expr):
     def __str__(self) -> str:
         """Return a string that represents the object."""
         type_ = self.type_.__name__
-        return f"VarDeclaration[{self.name}, {type_}] = {self.value}"
+        return f"VariableDeclaration[{self.name}, {type_}] = {self.value}"
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
         type_ = self.type_.__name__
-        struct_key = f"VarDeclaration[{self.name}, {type_}] = {self.value}"
+        struct_key = (
+            f"VariableDeclaration[{self.name}, {type_}] = {self.value}"
+        )
         return cast(ReprStruct, {struct_key: self.value})
 
 
 @public
-class VarAssignment(StatementType):
+class VariableAssignment(StatementType):
     """AST class for variable declaration."""
 
     name: str
@@ -125,15 +129,15 @@ class VarAssignment(StatementType):
         self.loc = loc
         self.name = name
         self.value = value
-        self.kind = ASTKind.VarAssignmentKind
+        self.kind = ASTKind.VariableAssignmentKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"VarAssignment[{self.name}] = {self.value}"
+        return f"VariableAssignment[{self.name}] = {self.value}"
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = f"VarAssignment[{self.name}] = {self.value}"
+        struct_key = f"VariableAssignment[{self.name}] = {self.value}"
         return cast(ReprStruct, {struct_key: self.value})
 
 

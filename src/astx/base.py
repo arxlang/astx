@@ -49,7 +49,7 @@ class ASTKind(Enum):
     VariableKind = -201
     VarDeclKind = -202
     VarsDeclKind = -203
-    VarAssignmentKind = -204
+    VariableAssignmentKind = -204
     VarsAssignKind = -205
 
     # operators

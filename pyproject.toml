@@ -43,6 +43,7 @@ mkdocstrings-python = ">=1.1.2"
 jupyterlab = ">=4.0.5"
 makim = "1.10.0"
 umlizer = "^0.1.0"
+nbmake = ">=1.4.6"
 
 [tool.pytest.ini_options]
 testpaths = [
