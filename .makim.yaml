@@ -40,10 +40,16 @@ groups:
             default: "-vv"
         run: pytest {{ args.path }} {{ args.params }}
 
+      notebooks:
+        help: test jupyter notebooks
+        args:
+        run: pytest --nbmake
+
       ci:
         help: run the sames tests executed on CI
         dependencies:
           - target: tests.unittest
+          - target: tests.notebooks
           - target: tests.linter
 
   docs:

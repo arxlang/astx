@@ -1,6 +1,10 @@
-name: build
+name: main
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   check-branch:
@@ -84,8 +88,51 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
-      - name: Run tests
+      - name: Run unit tests
         run: makim tests.unittest
 
+      - name: Test jupyter notebooks
+        run: makim tests.notebooks
+
+  linter-and-docs:
+    needs: check-branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    concurrency:
+      group: ci-linter-docs-${{ matrix.os }}-${{ matrix.python_version }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniconda-version: "latest"
+          environment-file: conda/dev.yaml
+          channels: conda-forge,nodefaults
+          activate-environment: astx
+          auto-update-conda: true
+          conda-solver: libmamba
+
+      - name: Install dependencies
+        run: |
+          poetry config virtualenvs.create false
+          poetry install
+
+      - name: Test documentation generation
+        run: makim docs.build
+
       - name: Run style checks
-        run: makim tests.linter
+        if: success() || failure()
+        run: |
+          pre-commit install
+          makim tests.linter
+
+      - name: Setup tmate session
+        if: "${{ failure() && (contains(github.event.pull_request.labels.*.name, 'ci:enable-debugging')) }}"
+        uses: mxschmitt/action-tmate@v3
