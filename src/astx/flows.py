@@ -5,7 +5,7 @@ from public import public
 
 from astx.base import ASTKind, Expr, ReprStruct, SourceLocation, StatementType
 from astx.blocks import Block
-from astx.variables import InlineVarDeclaration
+from astx.variables import InlineVariableDeclaration
 
 
 @public
@@ -61,7 +61,7 @@ class If(StatementType):
 class ForRangeLoop(StatementType):
     """AST class for `For` Loop Range statement."""
 
-    variable: InlineVarDeclaration
+    variable: InlineVariableDeclaration
     start: Expr
     end: Expr
     step: Expr
@@ -69,7 +69,7 @@ class ForRangeLoop(StatementType):
 
     def __init__(
         self,
-        variable: InlineVarDeclaration,
+        variable: InlineVariableDeclaration,
         start: Expr,
         end: Expr,
         step: Expr,
@@ -118,14 +118,14 @@ class ForCountLoop(StatementType):
     This is a very basic `for` loop, used by languages like C or C++.
     """
 
-    initializer: InlineVarDeclaration
+    initializer: InlineVariableDeclaration
     condition: Expr
     update: Expr
     body: Block
 
     def __init__(
         self,
-        initializer: InlineVarDeclaration,
+        initializer: InlineVariableDeclaration,
         condition: Expr,
         update: Expr,
         body: Block,

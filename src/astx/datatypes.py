@@ -24,29 +24,57 @@ class DataTypeOps(DataType):
         """Overload the magic `add` method."""
         return BinaryOp("+", self, other)
 
-    def __sub__(self, other: DataType) -> BinaryOp:
-        """Overload the magic `sub` method."""
-        return BinaryOp("-", self, other)
-
     def __div__(self, other: DataType) -> BinaryOp:
         """Overload the magic `div` method."""
         return BinaryOp("/", self, other)
 
-    def __truediv__(self, other: DataType) -> BinaryOp:
-        """Overload the magic `div` method."""
-        return BinaryOp("/", self, other)
+    def __eq__(self, other: DataType) -> BinaryOp:  # type: ignore
+        """Overload the magic `eq` method."""
+        return BinaryOp("==", self, other)
+
+    def __ge__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `ge` method."""
+        return BinaryOp(">=", self, other)
+
+    def __gt__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `gt` method."""
+        return BinaryOp(">", self, other)
+
+    def __le__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `le` method."""
+        return BinaryOp("<=", self, other)
+
+    def __lt__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `lt` method."""
+        return BinaryOp("<", self, other)
+
+    def __mod__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `mod` method."""
+        return BinaryOp("%", self, other)
 
     def __mul__(self, other: DataType) -> BinaryOp:
         """Overload the magic `mul` method."""
         return BinaryOp("*", self, other)
 
+    def __ne__(self, other: DataType) -> BinaryOp:  # type: ignore
+        """Overload the magic `ne` method."""
+        return BinaryOp("!=", self, other)
+
+    def __neg__(self) -> UnaryOp:
+        """Overload the magic `ne` method."""
+        return UnaryOp("!", self)
+
     def __pow__(self, other: DataType) -> BinaryOp:
         """Overload the magic `pow` method."""
         return BinaryOp("^", self, other)
 
-    def __mod__(self, other: DataType) -> BinaryOp:
-        """Overload the magic `mod` method."""
-        return BinaryOp("%", self, other)
+    def __sub__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `sub` method."""
+        return BinaryOp("-", self, other)
+
+    def __truediv__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `truediv` method."""
+        return BinaryOp("/", self, other)
 
 
 @public
