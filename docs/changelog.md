@@ -1,6 +1,16 @@
 # Release Notes
 ---
 
+# [0.9.0](https://github.com/arxlang/astx/compare/0.8.0...0.9.0) (2024-03-06)
+
+
+### Features
+
+* create LiteralBoolean class ([#51](https://github.com/arxlang/astx/issues/51)) ([5b84b04](https://github.com/arxlang/astx/commit/5b84b04fe047e556a3446e380032a88d650a0013))
+* Improve DataTypeOp and add Tutorial about For Loops ([#29](https://github.com/arxlang/astx/issues/29)) ([195c57b](https://github.com/arxlang/astx/commit/195c57bf969da2a653887bc9beddbfe89772eab9))
+* Improve Function classes and add a tutorial about that ([#27](https://github.com/arxlang/astx/issues/27)) ([f8608d5](https://github.com/arxlang/astx/commit/f8608d54946cd6b452369eae2991856054482fca))
+* Improve Variables classes ([#26](https://github.com/arxlang/astx/issues/26)) ([d981f88](https://github.com/arxlang/astx/commit/d981f88ef4d8f9ca77e5f6d2290e10b8149bd2dc))
+
 # [0.8.0](https://github.com/arxlang/astx/compare/0.7.1...0.8.0) (2024-01-08)
 
 
