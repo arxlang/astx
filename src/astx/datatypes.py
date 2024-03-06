@@ -310,3 +310,19 @@ class LiteralInt64(Literal):
         self.value = value
         self.type_ = Int64
         self.loc = loc
+
+
+@public
+class LiteralBoolean(Literal):
+    """LiteralBoolean data type class."""
+
+    value: bool
+
+    def __init__(
+        self, value: bool, loc: SourceLocation = SourceLocation(0, 0)
+    ) -> None:
+        """Initialize LiteralBoolean."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = Boolean
+        self.loc = loc

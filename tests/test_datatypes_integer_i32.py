@@ -1,4 +1,4 @@
-"""Tests for data types."""
+"""Tests for i32 data type."""
 from astx.datatypes import LiteralInt32
 from astx.operators import BinaryOp
 from astx.variables import Variable
