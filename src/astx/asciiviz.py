@@ -69,4 +69,4 @@ def ascii_ast(nodes: List[str], edges: List[str]) -> None:
     G = nx.Graph()
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
-    print(graph_to_ascii)
+    print(graph_to_ascii(G))
