@@ -13,9 +13,10 @@ nav:
   - Contributing: contributing.md
   - API: api/references.md
   - Tutorials:
-      - Get Started: tutorials/example.ipynb
+      - Get Started: tutorials/get-started.ipynb
       - Variables: tutorials/variables.ipynb
       - Functions: tutorials/functions.ipynb
+      - For Loop: tutorials/for-loop.ipynb
 theme:
   name: material
   features:
