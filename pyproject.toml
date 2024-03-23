@@ -41,7 +41,7 @@ mkdocs-material = ">=9.1.15"
 mkdocstrings = ">=0.21.2"
 mkdocstrings-python = ">=1.1.2"
 jupyterlab = ">=4.0.5"
-makim = "1.10.0"
+makim = "1.14.0"
 umlizer = "^0.1.0"
 nbmake = ">=1.4.6"
 

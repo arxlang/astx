@@ -1,4 +1,4 @@
-# Contributing
+# Contributing Guideline
 
 In order to be able to contribute, it is important that you understand the
 project layout. This project uses the _src layout_, which means that the package
@@ -34,13 +34,13 @@ If you are reporting a bug, please include:
 
 ### Fix Bugs
 
-Look through the GitHub issues for bugs. Anything tagged with “bug” and “help
-wanted” is open to whoever wants to implement it.
+Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
+wanted" is open to whoever wants to implement it.
 
 ### Implement Features
 
-Look through the GitHub issues for features. Anything tagged with “enhancement”
-and “help wanted” is open to whoever wants to implement it.
+Look through the GitHub issues for features. Anything tagged with "enhancement"
+and "help wanted" is open to whoever wants to implement it.
 
 ### Write Documentation
 
@@ -64,7 +64,6 @@ If you are proposing a feature:
 Ready to contribute? Here’s how to set up `astx` for local development.
 
 1.  Fork the `astx` repo on GitHub.
-
 2.  Clone your fork locally:
 
 ```bash
@@ -99,7 +98,8 @@ $ makim tests.unittest
 6.  Commit your changes and push your branch to GitHub:
 
 ```bash
-$ git add . $ git commit -m “Your detailed description of your changes.”
+$ git add .
+$ git commit -m "Your detailed description of your changes."
 $ git push origin name-of-your-bugfix-or-feature
 ```
 
