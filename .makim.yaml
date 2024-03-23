@@ -55,7 +55,9 @@ groups:
     targets:
       build:
         help: build documentation
-        run: mkdocs build --config-file mkdocs.yaml
+        run: |
+          mkdocs build --config-file mkdocs.yaml
+          echo "astx.arxlang.org" > ./build/CNAME
 
       preview:
         help: preview documentation page locally
