@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.9.1](https://github.com/arxlang/astx/compare/0.9.0...0.9.1) (2024-03-23)
+
+
+### Bug Fixes
+
+* **docs:** Fix contributing guide and getting started tutorial ([#53](https://github.com/arxlang/astx/issues/53)) ([e51d83f](https://github.com/arxlang/astx/commit/e51d83f970895188868d025768229bc9e3b0696f))
+
 # [0.9.0](https://github.com/arxlang/astx/compare/0.8.0...0.9.0) (2024-03-06)
 
 
