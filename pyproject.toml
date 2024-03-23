@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "astx"
-version = "0.9.0"  # semantic-release
+version = "0.9.1"  # semantic-release
 description = "ASTx is an agnostic expression structure for AST."
 readme = "docs/index.md"
 authors = ["Ivan Ogasawara <ivan.ogasawara@gmail.com>"]
