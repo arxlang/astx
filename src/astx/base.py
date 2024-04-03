@@ -27,6 +27,18 @@ ReprStruct: TypeAlias = Union[
 ]
 
 
+def is_using_jupyter_notebook() -> bool:
+    """Check if it is executed in a jupyter notebook."""
+    try:
+        from IPython import get_ipython  # type: ignore
+
+        if "IPKernelApp" in get_ipython().config:  # type: ignore
+            return True
+    except Exception:
+        pass
+    return False
+
+
 @public
 class SourceLocation:
     line: int
@@ -115,11 +127,14 @@ class AST(metaclass=ASTMeta):
 
     def __str__(self) -> str:
         """Return an string that represents the object."""
-        return self.__repr__()
+        return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
         """Return an string that represents the object."""
-        return f"{self.__class__.__name__}"
+        if not is_using_jupyter_notebook():
+            # note: this should be replaced by asciinet approach
+            return f"[{self.__str__()}]"
+        return ""
 
     def _repr_png_(self) -> None:
         """
@@ -182,7 +197,7 @@ class DataType(Expr):
         # set it as a generic data type
         self.type_: ExprType = DataType
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         """Return an string that represents the object."""
         return f"{self.__class__.__name__}: {self.name}"
 
