@@ -1,4 +1,5 @@
 """Module for mixing ASTx types from different modules."""
+
 from typing import Union
 
 try:

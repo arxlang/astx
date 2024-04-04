@@ -1,4 +1,5 @@
 """Module for different kind of ASTx blocks."""
+
 from __future__ import annotations
 
 from typing import cast

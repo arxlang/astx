@@ -1,5 +1,6 @@
 # mypy: disable-error-code="attr-defined"
 """ASTx."""
+
 from importlib import metadata as importlib_metadata
 
 from astx import (

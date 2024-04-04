@@ -1,4 +1,5 @@
 """Module for controle flow AST."""
+
 from typing import Optional, cast
 
 from public import public

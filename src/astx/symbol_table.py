@@ -6,6 +6,7 @@ of scopes, so the variable or function would be available in
 specifics scopes.
 
 """
+
 from __future__ import annotations
 
 from typing import Dict, Optional, Type

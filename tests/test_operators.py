@@ -1,4 +1,5 @@
 """Module for testing operators."""
+
 import pytest
 
 from astx.datatypes import LiteralInt32

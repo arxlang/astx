@@ -1,4 +1,5 @@
 """Tests for Boolean data type."""
+
 from astx.datatypes import Boolean, LiteralBoolean
 from astx.variables import VariableDeclaration
 
