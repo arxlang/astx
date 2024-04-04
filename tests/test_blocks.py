@@ -1,4 +1,5 @@
 """Module for testing different kind of ASTx blocks."""
+
 from astx.blocks import Block, Module
 from astx.datatypes import Int32, LiteralInt32
 from astx.operators import BinaryOp

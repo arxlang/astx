@@ -5,6 +5,7 @@ This module provides utilities for converting an Abstract Syntax Tree (AST),
 represented as a nested Python dictionary, to a Graphviz dot graph. The graph
 can be displayed inline in a Jupyter notebook.
 """
+
 from typing import Optional
 
 from graphviz import Digraph

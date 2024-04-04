@@ -1,4 +1,5 @@
 """Test callable ASTx objects."""
+
 from astx.blocks import Block
 from astx.callables import Function, FunctionPrototype
 from astx.datatypes import Int32, LiteralInt32

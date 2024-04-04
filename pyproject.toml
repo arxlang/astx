@@ -68,10 +68,13 @@ verbose = false
 line-length = 79
 force-exclude = true
 src = ["./"]
-ignore = ["PLR0913"]
 exclude = [
   'docs',
 ]
+fix = true
+
+[tool.ruff.lint]
+ignore = ["PLR0913"]
 select = [
   "E",   # pycodestyle
   "F",   # pyflakes
@@ -81,12 +84,11 @@ select = [
   "RUF", # Ruff-specific rules
   "I001", # isort
 ]
-fix = true
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 # Use a single line between direct and from import
 lines-between-types = 1
 

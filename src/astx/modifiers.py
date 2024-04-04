@@ -1,4 +1,5 @@
 """Modifications for ASTx, such as visibility, scope, etc."""
+
 from enum import Enum
 
 from public import public
