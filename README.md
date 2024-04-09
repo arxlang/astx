@@ -12,7 +12,7 @@ Note: this project is under active development and it is not ready for
 production yet.
 
 - License: BSD 3 Clause
-- Documentation: https://arxlang.github.io/astx.
+- Documentation: https://astx.arxlang.org.
 
 ## Features
 
