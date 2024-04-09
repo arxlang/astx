@@ -33,9 +33,21 @@ theme:
   logo: images/logo.png
   favicon: images/favicon.png
   palette:
-    scheme: slate
-    primary: white
-    accent: lime
+    # Palette toggle for light mode
+    - scheme: default
+      primary: white
+      accent: lime
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: white
+      accent: lime
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
   # custom_dir: docs/overrides
 plugins:
   - search
