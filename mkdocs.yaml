@@ -1,5 +1,5 @@
 site_name: ASTx
-site_url: https://arxlang.github.io/astx
+site_url: https://astx.arxlang.org
 repo_url: https://github.com/arxlang/astx
 docs_dir: ./docs
 site_dir: ./build
@@ -21,6 +21,7 @@ theme:
   name: material
   features:
     - content.code.annotate
+    - content.code.copy
     - content.tabs.link
     - header.autohide
     - navigation.indexes
@@ -30,8 +31,8 @@ theme:
     - search.suggest
   icon:
     repo: fontawesome/brands/github
-  logo: images/logo.png
-  favicon: images/favicon.png
+  logo: ./images/logo.png
+  favicon: ./images/favicon.ico
   palette:
     # Palette toggle for light mode
     - scheme: default
@@ -107,9 +108,10 @@ plugins:
       execute: false
       ignore:
         - "*.py"
+        - ".ipynb_checkpoints/*"
       # execute_ignore: "tutorial/*Geospatial*.ipynb"
       include_source: true
-      theme: dark
+      include_requirejs: true
   - literate-nav
 markdown_extensions:
   - admonition
@@ -137,7 +139,8 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
   - tables
-  - toc
+  - toc:
+      permalink: true
 extra:
   project_name: "ASTx"
   team:

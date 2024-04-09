@@ -6,7 +6,7 @@ functionalities, allowing developers to articulate the core elements of any
 programming language.
 
 - License: BSD 3 Clause
-- Documentation: https://arxlang.github.io/astx
+- Documentation: https://astx.arxlang.org
 
 ## Core Features
 
