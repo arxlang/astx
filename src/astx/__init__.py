@@ -11,6 +11,7 @@ from astx import (
     flows,
     mixes,
     operators,
+    packages,
     symbol_table,
     variables,
 )
@@ -27,7 +28,6 @@ from astx.base import (
 )
 from astx.blocks import (
     Block,
-    Module,
 )
 from astx.callables import (
     Function,
@@ -72,6 +72,7 @@ from astx.operators import (
     BinaryOp,
     UnaryOp,
 )
+from astx.packages import Module, Package, Program, Target
 from astx.variables import (
     Argument,
     InlineVariableDeclaration,
@@ -135,6 +136,9 @@ __all__ = [
     "Number",
     "operators",
     "OperatorType",
+    "packages",
+    "Package",
+    "Program",
     "ScopeKind",
     "SignedInteger",
     "SourceLocation",
