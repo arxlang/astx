@@ -4,7 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - graphviz
-  - python 3.8.1
+  - python
   - poetry >=1.5
   - nodejs # used by semantic-release
   - shellcheck
