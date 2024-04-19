@@ -1,6 +1,18 @@
 # Release Notes
 ---
 
+# [0.10.0](https://github.com/arxlang/astx/compare/0.9.1...0.10.0) (2024-04-19)
+
+
+### Bug Fixes
+
+* Fix get_struct for variables ([#59](https://github.com/arxlang/astx/issues/59)) ([7f4ec89](https://github.com/arxlang/astx/commit/7f4ec8917ab8c814af8d4730e48e9c517c65d3bd))
+
+
+### Features
+
+* Add structure for the output from asciinet approach ([#55](https://github.com/arxlang/astx/issues/55)) ([f66beb5](https://github.com/arxlang/astx/commit/f66beb5d00b58b75978e6b64427955d5a02bdc8f))
+
 ## [0.9.1](https://github.com/arxlang/astx/compare/0.9.0...0.9.1) (2024-03-23)
 
 
