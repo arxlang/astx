@@ -134,7 +134,7 @@ class AST(metaclass=ASTMeta):
         """Return an string that represents the object."""
         if not is_using_jupyter_notebook():
             # note: this should be replaced by asciinet approach
-            return f"[{self.__str__()}]"
+            return f"{self.__str__()}"
         return ""
 
     def _repr_png_(self) -> None:

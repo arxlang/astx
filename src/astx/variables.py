@@ -55,15 +55,12 @@ class VariableDeclaration(StatementType):
     def __str__(self) -> str:
         """Return a string that represents the object."""
         type_ = self.type_.__name__
-        return f"VariableDeclaration[{self.name}, {type_}] = {self.value}"
+        return f"VariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
-        type_ = self.type_.__name__
-        struct_key = (
-            f"VariableDeclaration[{self.name}, {type_}] = {self.value}"
-        )
-        return cast(ReprStruct, {struct_key: self.value})
+        struct_key = str(self)
+        return cast(ReprStruct, {struct_key: self.value.get_struct()})
 
 
 @public
@@ -102,15 +99,12 @@ class InlineVariableDeclaration(Expr):
     def __str__(self) -> str:
         """Return a string that represents the object."""
         type_ = self.type_.__name__
-        return f"VariableDeclaration[{self.name}, {type_}] = {self.value}"
+        return f"InlineVariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
-        type_ = self.type_.__name__
-        struct_key = (
-            f"VariableDeclaration[{self.name}, {type_}] = {self.value}"
-        )
-        return cast(ReprStruct, {struct_key: self.value})
+        struct_key = str(self)
+        return cast(ReprStruct, {struct_key: self.value.get_struct()})
 
 
 @public
@@ -134,12 +128,12 @@ class VariableAssignment(StatementType):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"VariableAssignment[{self.name}] = {self.value}"
+        return f"VariableAssignment[{self.name}]"
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = f"VariableAssignment[{self.name}] = {self.value}"
-        return cast(ReprStruct, {struct_key: self.value})
+        struct_key = str(self)
+        return cast(ReprStruct, {struct_key: self.value.get_struct()})
 
 
 @public
@@ -163,7 +157,7 @@ class Variable(DataTypeOps):
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
-        return cast(ReprStruct, {f"Variable[{self.name}]": self})
+        return cast(ReprStruct, {f"Variable[{self.name}]": self.name})
 
 
 @public
@@ -190,6 +184,11 @@ class Argument(Variable):
         self.type_ = type_
         self.default = default
         self.kind = ASTKind.ArgumentKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        type_ = self.type_.__name__
+        return f"Argument[{self.name}, {type_}]"
 
     def get_struct(self) -> ReprStruct:
         """Return a string that represents the object."""
