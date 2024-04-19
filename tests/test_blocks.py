@@ -22,6 +22,10 @@ def test_block() -> None:
 
     block.append(sum_op)
 
+    breakpoint()
+
+    print(block)
+
 
 def test_module() -> None:
     """Test ASTx module."""
