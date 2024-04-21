@@ -6,7 +6,7 @@ from typing import cast
 
 from public import public
 
-from astx.base import AST, ASTKind, Expr, ReprStruct
+from astx.base import AST, Expr, ReprStruct, SourceLocation
 
 
 @public
@@ -17,9 +17,13 @@ class Block(AST):
     nodes: list[AST]
     position: int = 0
 
-    def __init__(self, name: str = "entry") -> None:
+    def __init__(
+        self,
+        name: str = "entry",
+        loc: SourceLocation = SourceLocation(0, 0),
+    ) -> None:
         """Initialize the AST instance."""
-        super().__init__()
+        super().__init__(loc=loc)
         self.name = name
         self.nodes: list[Expr] = []
         self.position: int = 0
@@ -49,35 +53,3 @@ class Block(AST):
             block_node.append(node.get_struct())
 
         return cast(ReprStruct, block_node)
-
-
-@public
-class Module(Block):
-    """AST main expression class."""
-
-    name: str
-
-    def __init__(self, name: str = "main") -> None:
-        """Initialize the AST instance."""
-        super().__init__(name=name)
-        self.kind = ASTKind.ModuleKind
-
-    def __str__(self) -> str:
-        """Return the string representation of the object."""
-        return f"Module[{self.name}]"
-
-    @property
-    def block(self) -> list[AST]:
-        """Define an alias for self.nodes."""
-        return self.nodes
-
-    def get_struct(self) -> ReprStruct:
-        """Return the AST structure of the object."""
-        block_node = []
-
-        for node in self.nodes:
-            block_node.append(node.get_struct())
-
-        module_node = {f"MODULE[{self.name}]": block_node}
-
-        return cast(ReprStruct, module_node)

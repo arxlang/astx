@@ -40,7 +40,7 @@ jobs:
         os:
           - "ubuntu"
           - "macos"
-          # - "windows"
+
     runs-on: ${{ matrix.os }}-latest
     concurrency:
       group: ci-tests-${{ matrix.os }}-${{ matrix.python_version }}-${{ github.ref }}
@@ -53,29 +53,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install MacOS extra tools and add extra setup
-        if: ${{ matrix.os == 'macos' }}
-        run: |
-          sudo mkdir -p /tmp
-          sudo chmod 777 /tmp
-
-          brew install gnu-sed
-          echo 'export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"' >> ~/.bashrc
-          echo 'export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"' >> ~/.bash_profile
-
-      - name: Prepare conda environment (windows)
-        if: ${{ matrix.os == 'windows' }}
-        run: |
-          $env:Path += ";C:\Program Files\Git\usr\bin"
-          sed -i s/python\ 3\.8/python\ ${{ matrix.python_version }}/ conda/dev.yaml
-          cat conda/dev.yaml
-
-      - name: Prepare conda environment
-        if: ${{ matrix.os != 'windows' }}
-        run: |
-          sed -i s/python\ 3\.8\.1/python\ ${{ matrix.python_version }}/ conda/dev.yaml
-          cat conda/dev.yaml
-
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniconda-version: "latest"
@@ -84,9 +61,12 @@ jobs:
           activate-environment: astx
           auto-update-conda: true
           conda-solver: libmamba
+          python-version: "${{ matrix.python_version }}"
 
       - name: Install dependencies
-        run: poetry install
+        run: |
+          poetry check
+          poetry install
 
       - name: Run unit tests
         run: makim tests.unittest
@@ -94,7 +74,7 @@ jobs:
       - name: Test jupyter notebooks
         run: makim tests.notebooks
 
-  linter-and-docs:
+  linter:
     needs: check-branch
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -104,7 +84,7 @@ jobs:
         shell: bash -l {0}
 
     concurrency:
-      group: ci-linter-docs-${{ matrix.os }}-${{ matrix.python_version }}-${{ github.ref }}
+      group: ci-linter-${{ matrix.os }}-${{ matrix.python_version }}-${{ github.ref }}
       cancel-in-progress: true
 
     steps:
@@ -118,14 +98,12 @@ jobs:
           activate-environment: astx
           auto-update-conda: true
           conda-solver: libmamba
+          python-version: "3.8.1"
 
       - name: Install dependencies
         run: |
           poetry config virtualenvs.create false
           poetry install
-
-      - name: Test documentation generation
-        run: makim docs.build
 
       - name: Run style checks
         if: success() || failure()

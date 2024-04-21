@@ -2,6 +2,10 @@ name: Documentation
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -10,6 +14,10 @@ jobs:
   release:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
+    concurrency:
+      group: ci-docs-${{ github.event_name }}-${{ github.ref }}
+      cancel-in-progress: true
 
     defaults:
       run:
@@ -26,7 +34,7 @@ jobs:
           activate-environment: astx
           auto-update-conda: true
           conda-solver: libmamba
-          python-version: 3.8.1
+          python-version: "3.8.1"
 
       - name: Install deps
         run: |
@@ -38,6 +46,7 @@ jobs:
 
       - name: GitHub Pages action
         uses: peaceiris/actions-gh-pages@v3.5.9
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/

@@ -109,7 +109,6 @@ plugins:
       ignore:
         - "*.py"
         - ".ipynb_checkpoints/*"
-      # execute_ignore: "tutorial/*Geospatial*.ipynb"
       include_source: true
       include_requirejs: true
   - literate-nav
