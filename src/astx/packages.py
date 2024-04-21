@@ -121,10 +121,7 @@ class Program(Package):
     def __init__(
         self,
         name: str = "main",
-        target: Target = Target(
-            "e-m:e-i64:64-f80:128-n8:16:32:64-S128",
-            "x86_64-unknown-linux-gnu",
-        ),
+        target: Target = Target("", ""),
         modules: list[Module] = [],
         packages: list[Package] = [],
         loc: SourceLocation = SourceLocation(0, 0),
