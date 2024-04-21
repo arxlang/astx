@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.11.0](https://github.com/arxlang/astx/compare/0.10.0...0.11.0) (2024-04-21)
+
+
+### Features
+
+* Add AST for Program, Package, and Target ([#58](https://github.com/arxlang/astx/issues/58)) ([87865a8](https://github.com/arxlang/astx/commit/87865a887bd515a4b7c3a65680f1e4f4b2c4367f))
+
 # [0.10.0](https://github.com/arxlang/astx/compare/0.9.1...0.10.0) (2024-04-19)
 
 

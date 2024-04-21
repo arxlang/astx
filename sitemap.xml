@@ -2,47 +2,47 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://astx.arxlang.org/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/changelog/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/contributing/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/installation/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/references/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/tutorials/for-loop/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/tutorials/functions/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/tutorials/get-started/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/tutorials/variables/</loc>
-         <lastmod>2024-04-19</lastmod>
+         <lastmod>2024-04-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
