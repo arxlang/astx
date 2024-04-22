@@ -12,5 +12,3 @@ dependencies:
   - pip:
       # distlib issue
       - paginate
-      # 'PosixPath' object has no attribute 'endswith'
-      - virtualenv < 20.25.2

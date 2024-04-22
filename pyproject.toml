@@ -44,6 +44,8 @@ makim = "1.15.0"
 umlizer = ">=0.1.0"
 nbmake = ">=1.4.6"
 mkdocs-gen-files = ">=0.5.0"
+# 'PosixPath' object has no attribute 'endswith'
+virtualenv = "<=20.25.1"
 
 [tool.pytest.ini_options]
 testpaths = [
