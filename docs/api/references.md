@@ -1,3 +1,3 @@
-# Api references
+# API references
 
 ::: astx
