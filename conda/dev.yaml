@@ -13,4 +13,4 @@ dependencies:
       # distlib issue
       - paginate
       # 'PosixPath' object has no attribute 'endswith'
-      - mkdocs-exclude >=1.0.2
+      - virtualenv < 20.25.2
