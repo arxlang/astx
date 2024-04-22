@@ -10,4 +10,7 @@ dependencies:
   - shellcheck
   - pip
   - pip:
+      # distlib issue
       - paginate
+      # 'PosixPath' object has no attribute 'endswith'
+      - mkdocs-exclude >=1.0.2
