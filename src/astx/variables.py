@@ -41,10 +41,11 @@ class VariableDeclaration(StatementType):
         visibility: VisibilityKind = VisibilityKind.public,
         scope: ScopeKind = ScopeKind.local,
         value: Expr = UNDEFINED,
+        parent: Optional[ASTNodes] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the VarExprAST instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.mutability = mutability
         self.scope = scope
         self.visibility = visibility
@@ -87,9 +88,10 @@ class InlineVariableDeclaration(Expr):
         scope: ScopeKind = ScopeKind.local,
         value: Expr = UNDEFINED,
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.mutability = mutability
         self.scope = scope
         self.visibility = visibility
@@ -122,8 +124,10 @@ class VariableAssignment(StatementType):
         name: str,
         value: Expr,
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
+        super().__init__(loc=loc, parent=parent)
         self.loc = loc
         self.name = name
         self.value = value
@@ -150,9 +154,10 @@ class Variable(DataTypeOps):
         self,
         name: str,
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Variable instance."""
-        super().__init__(loc)
+        super().__init__(loc=loc, parent=parent)
         self.name = name
 
     def __str__(self) -> str:
@@ -182,9 +187,10 @@ class Argument(Variable):
         mutability: MutabilityKind = MutabilityKind.constant,
         default: Expr = UNDEFINED,
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.mutability = mutability
         self.name = name
         self.type_ = type_

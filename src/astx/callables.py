@@ -75,9 +75,10 @@ class FunctionPrototype(StatementType):
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the FunctionPrototype instance."""
-        super().__init__(loc=loc)
+        super().__init__(loc=loc, parent=parent)
         self.name = name
         self.args = args
         self.return_type = return_type
@@ -131,9 +132,10 @@ class Function(StatementType):
         prototype: FunctionPrototype,
         body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Function instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.prototype = prototype
         self.body = body
         self.kind = ASTKind.FunctionKind
@@ -168,12 +170,7 @@ class Function(StatementType):
         fn_body = self.body.get_struct(simplified)
 
         key = f"FUNCTION[{self.prototype.name}]"
-        value = cast(
-            ReprStruct,
-            {
-                "args": fn_args,
-                "body": fn_body,
-            },
-        )
-
+        args_struct = self._prepare_struct("args", fn_args, simplified)
+        body_struct = self._prepare_struct("body", fn_body, simplified)
+        value = cast(ReprStruct, {**args_struct, **body_struct})
         return self._prepare_struct(key, value, simplified)
