@@ -43,7 +43,6 @@ def traverse_ast(
         return graph.unflatten(stagger=3)
 
     for key, value in ast.items():
-        breakpoint()
         node_name = f"{hash(key)}_{hash(str(value))}"
         graph.node(node_name, key, shape=shape)
 
