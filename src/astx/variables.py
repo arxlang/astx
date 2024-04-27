@@ -57,10 +57,11 @@ class VariableDeclaration(StatementType):
         type_ = self.type_.__name__
         return f"VariableDeclaration[{self.name}, {type_}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = str(self)
-        return cast(ReprStruct, {struct_key: self.value.get_struct()})
+        key = str(self)
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -101,10 +102,11 @@ class InlineVariableDeclaration(Expr):
         type_ = self.type_.__name__
         return f"InlineVariableDeclaration[{self.name}, {type_}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = str(self)
-        return cast(ReprStruct, {struct_key: self.value.get_struct()})
+        key = str(self)
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -130,10 +132,11 @@ class VariableAssignment(StatementType):
         """Return a string that represents the object."""
         return f"VariableAssignment[{self.name}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = str(self)
-        return cast(ReprStruct, {struct_key: self.value.get_struct()})
+        key = str(self)
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -155,9 +158,11 @@ class Variable(DataTypeOps):
         """Return a string that represents the object."""
         return f"Variable[{self.name}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return a string that represents the object."""
-        return cast(ReprStruct, {f"Variable[{self.name}]": self.name})
+        key = f"Variable[{self.name}]"
+        value = self.name
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -190,7 +195,8 @@ class Argument(Variable):
         type_ = self.type_.__name__
         return f"Argument[{self.name}, {type_}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = f"Argument[{self.name}, {self.type_}] = {self.default}"
-        return cast(ReprStruct, {struct_key: self.default})
+        key = f"Argument[{self.name}, {self.type_}] = {self.default}"
+        value = cast(ReprStruct, self.default)
+        return self._prepare_struct(key, value, simplified)

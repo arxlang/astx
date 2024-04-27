@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import Optional, cast
 
 from public import public
 
 from astx.base import (
     ASTKind,
+    ASTNodes,
     DataType,
     Expr,
     ExprType,
@@ -29,9 +30,10 @@ class FunctionCall(Expr):
         callee: str,
         args: tuple[DataType, ...],
         loc: SourceLocation = SourceLocation(0, 0),
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Call instance."""
-        super().__init__(loc)
+        super().__init__(loc=loc, parent=parent)
         self.callee = callee
         self.args = args
         self.kind = ASTKind.CallKind
@@ -41,15 +43,17 @@ class FunctionCall(Expr):
         args = [str(arg) for arg in self.args]
         return f"Call[{self.callee}: {', '.join(args)}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return the AST structure of the object."""
         call_args = []
 
         for node in self.args:
-            call_args.append(node.get_struct())
+            call_args.append(node.get_struct(simplified))
 
-        call_node = {f"FUNCTION-CALL[{self.callee}]": {"args": call_args}}
-        return cast(ReprStruct, call_node)
+        key = f"FUNCTION-CALL[{self.callee}]"
+        value = cast(ReprStruct, {"args": call_args})
+
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -72,6 +76,7 @@ class FunctionPrototype(StatementType):
         loc: SourceLocation = SourceLocation(0, 0),
     ) -> None:
         """Initialize the FunctionPrototype instance."""
+        super().__init__(loc=loc)
         self.name = name
         self.args = args
         self.return_type = return_type
@@ -80,7 +85,7 @@ class FunctionPrototype(StatementType):
         self.scope = scope
         self.visibility = visibility
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Get the AST structure that represent the object."""
         raise Exception("Visitor method not necessary")
 
@@ -92,10 +97,13 @@ class FunctionReturn(StatementType):
     value: DataType
 
     def __init__(
-        self, value: DataType, loc: SourceLocation = SourceLocation(0, 0)
+        self,
+        value: DataType,
+        loc: SourceLocation = SourceLocation(0, 0),
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Return instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.value = value
         self.kind = ASTKind.ReturnKind
 
@@ -103,9 +111,11 @@ class FunctionReturn(StatementType):
         """Return a string representation of the object."""
         return f"Return[{self.value}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return the AST structure of the object."""
-        return {"RETURN": self.value.get_struct()}
+        key = "RETURN"
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -148,18 +158,21 @@ class Function(StatementType):
             loc,
         )
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Get the AST structure that represent the object."""
         fn_args = []
         for arg in self.prototype.args:
-            fn_args.append(arg.get_struct())
+            fn_args.append(arg.get_struct(simplified))
 
-        fn_body = self.body.get_struct()
+        fn_body = self.body.get_struct(simplified)
 
-        node = {
-            f"FUNCTION[{self.prototype.name}]": {
+        key = f"FUNCTION[{self.prototype.name}]"
+        value = cast(
+            ReprStruct,
+            {
                 "args": fn_args,
                 "body": fn_body,
-            }
-        }
-        return cast(ReprStruct, node)
+            },
+        )
+
+        return self._prepare_struct(key, value, simplified)

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from public import public
 
@@ -99,9 +99,11 @@ class UnaryOp(DataTypeOps):
         """Return a string that represents the object."""
         return f"UnaryOp[{self.op_code}]({self.operand})"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return the AST structure of the object."""
-        return {f"UNARY[{self.op_code}]": self.operand.get_struct()}
+        key = f"UNARY[{self.op_code}]"
+        value = self.operand.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -145,14 +147,17 @@ class BinaryOp(DataTypeOps):
         """Return a string that represents the object."""
         return f"BinaryOp[{self.op_code}]({self.lhs},{self.rhs})"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return the AST structure that represents the object."""
-        return {
-            f"BINARY[{self.op_code}]": {
-                "lhs": self.lhs.get_struct(),
-                "rhs": self.rhs.get_struct(),
-            }
-        }
+        key = f"BINARY[{self.op_code}]"
+        value = cast(
+            ReprStruct,
+            {
+                "lhs": self.lhs.get_struct(simplified),
+                "rhs": self.rhs.get_struct(simplified),
+            },
+        )
+        return self._prepare_struct(key, value, simplified)
 
 
 # Data Types
@@ -244,9 +249,11 @@ class Literal(DataTypeOps):
         klass = self.__class__.__name__
         return f"{klass}({self.value})"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return the AST representation for the object."""
-        return {f"Literal[{self.type_}]": self.value}
+        key = f"Literal[{self.type_}]"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
 
 
 @public

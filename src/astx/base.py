@@ -6,7 +6,7 @@ import json
 
 from abc import abstractmethod
 from enum import Enum
-from typing import ClassVar, Dict, List, Type, Union, cast
+from typing import ClassVar, Dict, List, Optional, Type, Union, cast
 
 try:
     from typing_extensions import TypeAlias
@@ -117,14 +117,21 @@ class AST(metaclass=ASTMeta):
     loc: SourceLocation
     kind: ASTKind
     comment: str
+    parent: Optional[ASTNodes] = None
     ref: str
 
-    def __init__(self, loc: SourceLocation = SourceLocation(0, 0)) -> None:
+    def __init__(
+        self,
+        loc: SourceLocation = SourceLocation(0, 0),
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
         """Initialize the AST instance."""
         self.kind = ASTKind.GenericKind
         self.loc = loc
         self.ref = ""
         self.comment = ""
+        self.parent = parent
+        self._update_parent()
 
     def __str__(self) -> str:
         """Return an string that represents the object."""
@@ -147,20 +154,58 @@ class AST(metaclass=ASTMeta):
         # importing it here in order to avoid cyclic import issue
         from astx.viz import visualize
 
-        visualize(self.get_struct())
+        visualize(self.get_struct(simplified=True))
+
+    def _update_parent(self) -> None:
+        """Update the parent node."""
+        if self.parent:
+            self.parent.nodes.append(self)
+
+    def _get_metadata(self) -> ReprStruct:
+        """Return the metadata for the requested AST."""
+        metadata = {
+            "loc": self.loc,
+            "comment": self.comment,
+            "ref": self.comment,
+            "kind": self.kind,
+        }
+        return cast(ReprStruct, metadata)
+
+    def _prepare_struct(
+        self, key: str, value: Union[str, ReprStruct], simplified: bool
+    ) -> ReprStruct:
+        if simplified:
+            struct = {key: value}
+        else:
+            struct = {
+                key: {
+                    "value": value,
+                    "metadata": self._get_metadata(),
+                }
+            }
+        return cast(ReprStruct, struct)
 
     @abstractmethod
-    def get_struct(self) -> ReprStruct:
-        """Return a simple structure that represents the object."""
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
+        """Return a structure that represents the node object."""
         ...
 
-    def to_yaml(self) -> str:
+    def to_yaml(self, simplified: bool = True) -> str:
         """Return an yaml string that represents the object."""
-        return str(yaml.dump(self.get_struct(), sort_keys=False))
+        return str(
+            yaml.dump(self.get_struct(simplified=simplified), sort_keys=False)
+        )
 
-    def to_json(self) -> str:
+    def to_json(self, simplified: bool = True) -> str:
         """Return an json string that represents the object."""
-        return json.dumps(self.get_struct(), indent=2)
+        return json.dumps(self.get_struct(simplified=simplified), indent=2)
+
+
+@public
+class ASTNodes(AST):
+    """AST with a list of nodes."""
+
+    nodes: list[AST]
 
 
 @public
@@ -177,10 +222,11 @@ ExprType: TypeAlias = Type[Expr]
 class Undefined(Expr):
     """Undefined expression class."""
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return a simple structure that represents the object."""
-        struct = {"DATA-TYPE": "UNDEFINED"}
-        return cast(ReprStruct, struct)
+        value = "UNDEFINED"
+        key = "DATA-TYPE"
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -191,29 +237,32 @@ class DataType(Expr):
     name: str
     _tmp_id: ClassVar[int] = 0
 
-    def __init__(self, loc: SourceLocation = SourceLocation(0, 0)) -> None:
+    def __init__(
+        self,
+        loc: SourceLocation = SourceLocation(0, 0),
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
         super().__init__(loc)
         self.name = f"temp_{DataType._tmp_id}"
         DataType._tmp_id += 1
         # set it as a generic data type
         self.type_: ExprType = DataType
+        self.parent = parent
 
     def __str__(self) -> str:
         """Return an string that represents the object."""
         return f"{self.__class__.__name__}: {self.name}"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return a simple structure that represents the object."""
-        struct = {"DATA-TYPE": self.name}
-        return cast(ReprStruct, struct)
+        key = "DATA-TYPE"
+        value = self.name
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
 class OperatorType(DataType):
     """AST main expression class."""
-
-    def __init__(self) -> None:
-        super().__init__()
 
 
 @public

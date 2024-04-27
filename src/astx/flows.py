@@ -35,27 +35,22 @@ class If(StatementType):
         """Return a string representation of the object."""
         return f"If[{self.condition}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return the AST structure of the object."""
-        if_condition = self.condition.get_struct()
-        if_then = self.then.get_struct()
+        if_condition = self.condition.get_struct(simplified)
+        if_then = self.then.get_struct(simplified)
 
         if self.else_:
-            if_else = self.else_.get_struct()
+            if_else = {"ELSE": self.else_.get_struct(simplified)}
         else:
-            if_else = []
+            if_else = {}
 
-        node = {
-            "IF-STMT": {
-                "CONDITION": if_condition,
-                "THEN": if_then,
-            }
-        }
+        key = "IF-STMT"
+        value = cast(
+            ReprStruct, {"CONDITION": if_condition, "THEN": if_then, **if_else}
+        )
 
-        if if_else:
-            node["IF-STMT"]["ELSE"] = if_else
-
-        return cast(ReprStruct, node)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -94,21 +89,25 @@ class ForRangeLoop(StatementType):
         var_name = self.variable.name
         return f"ForRangeLoop({var_name}=[{start}:{end}:{step}])"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return the AST structure of the object."""
-        for_start = self.start.get_struct()
-        for_end = self.end.get_struct()
-        for_step = self.step.get_struct()
-        for_body = self.body.get_struct()
+        for_start = self.start.get_struct(simplified)
+        for_end = self.end.get_struct(simplified)
+        for_step = self.step.get_struct(simplified)
+        for_body = self.body.get_struct(simplified)
 
-        return {
-            "FOR-RANGE-STMT": {
+        key = "FOR-RANGE-STMT"
+        value = cast(
+            ReprStruct,
+            {
                 "start": for_start,
                 "end": for_end,
                 "step": for_step,
                 "body": for_body,
-            }
-        }
+            },
+        )
+
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -147,18 +146,22 @@ class ForCountLoop(StatementType):
         update = self.update
         return f"ForCountLoop({init};{cond};{update})"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = True) -> ReprStruct:
         """Return the AST structure of the object."""
-        for_init = self.initializer.get_struct()
-        for_cond = self.condition.get_struct()
-        for_update = self.update.get_struct()
-        for_body = self.body.get_struct()
+        for_init = self.initializer.get_struct(simplified)
+        for_cond = self.condition.get_struct(simplified)
+        for_update = self.update.get_struct(simplified)
+        for_body = self.body.get_struct(simplified)
 
-        return {
-            "FOR-COUNT-STMT": {
+        key = "FOR-COUNT-STMT"
+        value = cast(
+            ReprStruct,
+            {
                 "initializer": for_init,
                 "condition": for_cond,
                 "update": for_update,
                 "body": for_body,
-            }
-        }
+            },
+        )
+
+        return self._prepare_struct(key, value, simplified)
