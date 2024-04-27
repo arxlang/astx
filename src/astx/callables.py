@@ -7,6 +7,7 @@ from typing import Optional, cast
 from public import public
 
 from astx.base import (
+    NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
     DataType,
@@ -29,7 +30,7 @@ class FunctionCall(Expr):
         self,
         callee: str,
         args: tuple[DataType, ...],
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Call instance."""
@@ -73,7 +74,7 @@ class FunctionPrototype(StatementType):
         return_type: ExprType,
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the FunctionPrototype instance."""
         super().__init__(loc=loc)
@@ -99,7 +100,7 @@ class FunctionReturn(StatementType):
     def __init__(
         self,
         value: DataType,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Return instance."""
@@ -129,7 +130,7 @@ class Function(StatementType):
         self,
         prototype: FunctionPrototype,
         body: Block,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the Function instance."""
         self.loc = loc
@@ -149,7 +150,7 @@ class Function(StatementType):
     def __call__(
         self,
         args: tuple[DataType, ...],
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> FunctionCall:
         """Return a FunctionCall for this call operation."""
         return FunctionCall(

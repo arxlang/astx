@@ -49,6 +49,15 @@ class SourceLocation:
         self.line = line
         self.col = col
 
+    def __str__(self) -> str:
+        return "{" + f"line: {self.line}, col: {self.col}" + "}"
+
+    def __repr__(self) -> str:
+        return str(self)
+
+
+NO_SOURCE_LOCATION = SourceLocation(-1, -1)
+
 
 @public
 class ASTKind(Enum):
@@ -122,7 +131,7 @@ class AST(metaclass=ASTMeta):
 
     def __init__(
         self,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the AST instance."""
@@ -154,7 +163,7 @@ class AST(metaclass=ASTMeta):
         # importing it here in order to avoid cyclic import issue
         from astx.viz import visualize
 
-        visualize(self.get_struct(simplified=True))
+        visualize(self.get_struct(simplified=False))
 
     def _update_parent(self) -> None:
         """Update the parent node."""
@@ -166,7 +175,7 @@ class AST(metaclass=ASTMeta):
         metadata = {
             "loc": self.loc,
             "comment": self.comment,
-            "ref": self.comment,
+            "ref": self.ref,
             "kind": self.kind,
         }
         return cast(ReprStruct, metadata)
@@ -239,7 +248,7 @@ class DataType(Expr):
 
     def __init__(
         self,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc)

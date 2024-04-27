@@ -8,7 +8,15 @@ from typing import cast
 
 from public import public
 
-from astx.base import AST, ASTKind, ASTNodes, Expr, ReprStruct, SourceLocation
+from astx.base import (
+    AST,
+    NO_SOURCE_LOCATION,
+    ASTKind,
+    ASTNodes,
+    Expr,
+    ReprStruct,
+    SourceLocation,
+)
 from astx.blocks import Block
 
 
@@ -40,7 +48,7 @@ class Module(Block):
     def __init__(
         self,
         name: str = "main",
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
         super().__init__(name=name, loc=loc)
@@ -81,7 +89,7 @@ class Package(ASTNodes):
         name: str = "main",
         modules: list[Module] = [],
         packages: list[Package] = [],
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
         super().__init__(loc=loc)
@@ -128,7 +136,7 @@ class Program(Package):
         target: Target = Target("", ""),
         modules: list[Module] = [],
         packages: list[Package] = [],
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
         super().__init__(

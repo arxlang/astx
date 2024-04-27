@@ -6,7 +6,13 @@ from typing import Optional, cast
 
 from public import public
 
-from astx.base import AST, ASTNodes, ReprStruct, SourceLocation
+from astx.base import (
+    AST,
+    NO_SOURCE_LOCATION,
+    ASTNodes,
+    ReprStruct,
+    SourceLocation,
+)
 
 
 @public
@@ -19,7 +25,7 @@ class Block(ASTNodes):
     def __init__(
         self,
         name: str = "entry",
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the AST instance."""

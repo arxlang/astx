@@ -7,6 +7,7 @@ from typing import cast
 from public import public
 
 from astx.base import (
+    NO_SOURCE_LOCATION,
     ASTKind,
     Expr,
     ExprType,
@@ -40,7 +41,7 @@ class VariableDeclaration(StatementType):
         visibility: VisibilityKind = VisibilityKind.public,
         scope: ScopeKind = ScopeKind.local,
         value: Expr = UNDEFINED,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the VarExprAST instance."""
         self.loc = loc
@@ -85,7 +86,7 @@ class InlineVariableDeclaration(Expr):
         visibility: VisibilityKind = VisibilityKind.public,
         scope: ScopeKind = ScopeKind.local,
         value: Expr = UNDEFINED,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the VarExprAST instance."""
         self.loc = loc
@@ -120,7 +121,7 @@ class VariableAssignment(StatementType):
         self,
         name: str,
         value: Expr,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the VarExprAST instance."""
         self.loc = loc
@@ -148,7 +149,7 @@ class Variable(DataTypeOps):
     def __init__(
         self,
         name: str,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the Variable instance."""
         super().__init__(loc)
@@ -180,7 +181,7 @@ class Argument(Variable):
         type_: ExprType,
         mutability: MutabilityKind = MutabilityKind.constant,
         default: Expr = UNDEFINED,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the VarExprAST instance."""
         self.loc = loc

@@ -26,7 +26,7 @@ def traverse_ast(
     Parameters
     ----------
     ast : ReprStruct
-        The AST as a nested dictionary.
+        The AST as a nested dictionary (full structure version).
     graph : Digraph
         The Graphviz graph object.
     parent : str, optional
@@ -42,8 +42,13 @@ def traverse_ast(
     if not isinstance(ast, dict):
         return graph.unflatten(stagger=3)
 
-    for key, value in ast.items():
-        node_name = f"{hash(key)}_{hash(str(value))}"
+    for key, full_value in ast.items():
+        if not isinstance(full_value, dict):
+            continue
+        value = full_value.get("value", "")
+        ref = full_value.get("metadata", {}).get("ref", "")
+
+        node_name = f"{hash(key)}_{hash(str(ref))}_{hash(str(value))}"
         graph.node(node_name, key, shape=shape)
 
         if parent:
@@ -51,10 +56,13 @@ def traverse_ast(
 
         if isinstance(value, dict):
             traverse_ast(value, graph, node_name, shape=shape)
-        elif isinstance(value, list):
-            for item in value:
-                if isinstance(item, dict):
-                    traverse_ast(item, graph, node_name, shape=shape)
+            continue
+        elif not isinstance(value, list):
+            continue
+
+        for item in value:
+            if isinstance(item, dict):
+                traverse_ast(item, graph, node_name, shape=shape)
     return graph.unflatten(stagger=3)
 
 

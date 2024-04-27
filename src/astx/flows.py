@@ -4,7 +4,14 @@ from typing import Optional, cast
 
 from public import public
 
-from astx.base import ASTKind, Expr, ReprStruct, SourceLocation, StatementType
+from astx.base import (
+    NO_SOURCE_LOCATION,
+    ASTKind,
+    Expr,
+    ReprStruct,
+    SourceLocation,
+    StatementType,
+)
 from astx.blocks import Block
 from astx.variables import InlineVariableDeclaration
 
@@ -22,7 +29,7 @@ class If(StatementType):
         condition: Expr,
         then: Block,
         else_: Optional[Block] = None,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the If instance."""
         self.loc = loc
@@ -70,7 +77,7 @@ class ForRangeLoop(StatementType):
         end: Expr,
         step: Expr,
         body: Block,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the ForStmt instance."""
         self.loc = loc
@@ -129,7 +136,7 @@ class ForCountLoop(StatementType):
         condition: Expr,
         update: Expr,
         body: Block,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the ForStmt instance."""
         self.loc = loc

@@ -18,6 +18,7 @@ nav:
       - Variables: tutorials/variables.ipynb
       - Functions: tutorials/functions.ipynb
       - For Loop: tutorials/for-loop.ipynb
+      - Literals: tutorials/literals.ipynb
 theme:
   name: material
   features:
