@@ -6,7 +6,7 @@ represented as a nested Python dictionary, to a Graphviz dot graph. The graph
 can be displayed inline in a Jupyter notebook.
 """
 
-from typing import Optional
+from typing import Optional, cast
 
 from graphviz import Digraph
 from IPython.display import Image, display  # type: ignore[attr-defined]
@@ -45,8 +45,13 @@ def traverse_ast(
     for key, full_value in ast.items():
         if not isinstance(full_value, dict):
             continue
+
         value = full_value.get("value", "")
-        ref = full_value.get("metadata", {}).get("ref", "")
+        metadata = full_value.get("metadata", {})
+        ref = ""
+
+        if isinstance(metadata, dict):
+            ref = cast(str, metadata.get("ref", ""))
 
         node_name = f"{hash(key)}_{hash(str(ref))}_{hash(str(value))}"
         graph.node(node_name, key, shape=shape)

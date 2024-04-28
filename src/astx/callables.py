@@ -11,6 +11,7 @@ from astx.base import (
     ASTKind,
     ASTNodes,
     DataType,
+    DataTypesStruct,
     Expr,
     ExprType,
     ReprStruct,
@@ -163,14 +164,23 @@ class Function(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Get the AST structure that represent the object."""
-        fn_args = []
+        # todo: implement arguments properly
+        fn_args_nodes: list[DataTypesStruct] = []
         for arg in self.prototype.args:
-            fn_args.append(arg.get_struct(simplified))
+            fn_args_nodes.append(arg.get_struct(simplified))
 
         fn_body = self.body.get_struct(simplified)
+        fn_args: ReprStruct = {"args": fn_args_nodes}
 
         key = f"FUNCTION[{self.prototype.name}]"
         args_struct = self._prepare_struct("args", fn_args, simplified)
         body_struct = self._prepare_struct("body", fn_body, simplified)
-        value = cast(ReprStruct, {**args_struct, **body_struct})
+
+        if not isinstance(args_struct, dict):
+            raise Exception("`args` struct is not a valid object.")
+
+        if not isinstance(body_struct, dict):
+            raise Exception("`body` struct is not a valid object.")
+
+        value: ReprStruct = {**args_struct, **body_struct}
         return self._prepare_struct(key, value, simplified)

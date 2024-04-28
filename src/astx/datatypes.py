@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import Any
 from uuid import uuid4
 
 from public import public
@@ -159,7 +159,13 @@ class BinaryOp(DataTypeOps):
             "rhs", self.rhs.get_struct(simplified), simplified
         )
 
-        value = cast(ReprStruct, {**lhs_struct, **rhs_struct})
+        if not isinstance(lhs_struct, dict):
+            raise Exception("`lhs` struct is not a valid object.")
+
+        if not isinstance(rhs_struct, dict):
+            raise Exception("`rhs` struct is not a valid object.")
+
+        value: ReprStruct = {**lhs_struct, **rhs_struct}
         return self._prepare_struct(key, value, simplified)
 
 
@@ -247,7 +253,7 @@ class Literal(DataTypeOps):
     loc: SourceLocation
     value: Any
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:  # type: ignore
         super().__init__(*args, **kwargs)
         self.ref = uuid4().hex
 

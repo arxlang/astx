@@ -207,3 +207,23 @@ class Argument(Variable):
         key = f"Argument[{self.name}, {self.type_}] = {self.default}"
         value = cast(ReprStruct, self.default)
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+class Arguments(ASTNodes):
+    """AST class for argument definition."""
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Arguments({len(self.nodes)})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a string that represents the object."""
+        args_nodes = []
+
+        for node in self.nodes:
+            args_nodes.append(node.get_struct(simplified))
+
+        key = str(self)
+        value = cast(ReprStruct, args_nodes)
+        return self._prepare_struct(key, value, simplified)

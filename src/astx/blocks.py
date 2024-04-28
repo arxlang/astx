@@ -56,12 +56,12 @@ class Block(ASTNodes):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        block_node = []
+        block_nodes = []
 
         for node in self.nodes:
-            block_node.append(node.get_struct(simplified))
+            block_nodes.append(node.get_struct(simplified))
 
         key = "BLOCK"
-        value = cast(ReprStruct, block_node)
+        value = cast(ReprStruct, block_nodes)
 
         return self._prepare_struct(key, value, simplified)
