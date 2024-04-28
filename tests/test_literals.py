@@ -9,4 +9,4 @@ def test_literal_int32() -> None:
     lit_1_b = LiteralInt32(value=1)
     lit_2_a = LiteralInt32(value=2)
 
-    assert lit_1_a.ref != lit_1_b != lit_2_a
+    assert lit_1_a.ref != lit_1_b.ref != lit_2_a.ref
