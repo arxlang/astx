@@ -8,7 +8,15 @@ from typing import cast
 
 from public import public
 
-from astx.base import AST, ASTKind, Expr, ReprStruct, SourceLocation
+from astx.base import (
+    AST,
+    NO_SOURCE_LOCATION,
+    ASTKind,
+    ASTNodes,
+    Expr,
+    ReprStruct,
+    SourceLocation,
+)
 from astx.blocks import Block
 
 
@@ -24,10 +32,11 @@ class Target(Expr):
         self.datalayout = datalayout
         self.triple = triple
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        node = {"TARGET": f"{self.datalayout}, {self.triple}"}
-        return cast(ReprStruct, node)
+        key = "TARGET"
+        value = f"{self.datalayout}, {self.triple}"
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -39,7 +48,7 @@ class Module(Block):
     def __init__(
         self,
         name: str = "main",
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
         super().__init__(name=name, loc=loc)
@@ -54,20 +63,21 @@ class Module(Block):
         """Define an alias for self.nodes."""
         return self.nodes
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         block_node = []
 
         for node in self.nodes:
-            block_node.append(node.get_struct())
+            block_node.append(node.get_struct(simplified))
 
-        module_node = {f"MODULE[{self.name}]": block_node}
+        key = f"MODULE[{self.name}]"
+        value = cast(ReprStruct, block_node)
 
-        return cast(ReprStruct, module_node)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
-class Package(AST):
+class Package(ASTNodes):
     """AST class for Package."""
 
     name: str
@@ -79,7 +89,7 @@ class Package(AST):
         name: str = "main",
         modules: list[Module] = [],
         packages: list[Package] = [],
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
         super().__init__(loc=loc)
@@ -91,25 +101,27 @@ class Package(AST):
         """Return the string representation of the object."""
         return f"PACKAGE[{self.name}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         packages = []
         modules = []
 
         for package in self.packages:
-            packages.append(package.get_struct())
+            packages.append(package.get_struct(simplified))
 
         for module in self.modules:
-            modules.append(module.get_struct())
+            modules.append(module.get_struct(simplified))
 
-        package_node = {
-            str(self): {
+        key = str(self)
+        value = cast(
+            ReprStruct,
+            {
                 "modules": modules,
                 "packages": packages,
-            }
-        }
+            },
+        )
 
-        return cast(ReprStruct, package_node)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -124,7 +136,7 @@ class Program(Package):
         target: Target = Target("", ""),
         modules: list[Module] = [],
         packages: list[Package] = [],
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
         super().__init__(

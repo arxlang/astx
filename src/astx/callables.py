@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import Optional, cast
 
 from public import public
 
 from astx.base import (
+    NO_SOURCE_LOCATION,
     ASTKind,
+    ASTNodes,
     DataType,
+    DataTypesStruct,
     Expr,
     ExprType,
     ReprStruct,
@@ -28,10 +31,11 @@ class FunctionCall(Expr):
         self,
         callee: str,
         args: tuple[DataType, ...],
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Call instance."""
-        super().__init__(loc)
+        super().__init__(loc=loc, parent=parent)
         self.callee = callee
         self.args = args
         self.kind = ASTKind.CallKind
@@ -41,15 +45,17 @@ class FunctionCall(Expr):
         args = [str(arg) for arg in self.args]
         return f"Call[{self.callee}: {', '.join(args)}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         call_args = []
 
         for node in self.args:
-            call_args.append(node.get_struct())
+            call_args.append(node.get_struct(simplified))
 
-        call_node = {f"FUNCTION-CALL[{self.callee}]": {"args": call_args}}
-        return cast(ReprStruct, call_node)
+        key = f"FUNCTION-CALL[{self.callee}]"
+        value = cast(ReprStruct, {"args": call_args})
+
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -69,9 +75,11 @@ class FunctionPrototype(StatementType):
         return_type: ExprType,
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the FunctionPrototype instance."""
+        super().__init__(loc=loc, parent=parent)
         self.name = name
         self.args = args
         self.return_type = return_type
@@ -80,7 +88,7 @@ class FunctionPrototype(StatementType):
         self.scope = scope
         self.visibility = visibility
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Get the AST structure that represent the object."""
         raise Exception("Visitor method not necessary")
 
@@ -92,10 +100,13 @@ class FunctionReturn(StatementType):
     value: DataType
 
     def __init__(
-        self, value: DataType, loc: SourceLocation = SourceLocation(0, 0)
+        self,
+        value: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Return instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.value = value
         self.kind = ASTKind.ReturnKind
 
@@ -103,9 +114,11 @@ class FunctionReturn(StatementType):
         """Return a string representation of the object."""
         return f"Return[{self.value}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        return {"RETURN": self.value.get_struct()}
+        key = "RETURN"
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -119,10 +132,11 @@ class Function(StatementType):
         self,
         prototype: FunctionPrototype,
         body: Block,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Function instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.prototype = prototype
         self.body = body
         self.kind = ASTKind.FunctionKind
@@ -139,7 +153,7 @@ class Function(StatementType):
     def __call__(
         self,
         args: tuple[DataType, ...],
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> FunctionCall:
         """Return a FunctionCall for this call operation."""
         return FunctionCall(
@@ -148,18 +162,25 @@ class Function(StatementType):
             loc,
         )
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Get the AST structure that represent the object."""
-        fn_args = []
+        # todo: implement arguments properly
+        fn_args_nodes: list[DataTypesStruct] = []
         for arg in self.prototype.args:
-            fn_args.append(arg.get_struct())
+            fn_args_nodes.append(arg.get_struct(simplified))
 
-        fn_body = self.body.get_struct()
+        fn_body = self.body.get_struct(simplified)
+        fn_args: ReprStruct = {"args": fn_args_nodes}
 
-        node = {
-            f"FUNCTION[{self.prototype.name}]": {
-                "args": fn_args,
-                "body": fn_body,
-            }
-        }
-        return cast(ReprStruct, node)
+        key = f"FUNCTION[{self.prototype.name}]"
+        args_struct = self._prepare_struct("args", fn_args, simplified)
+        body_struct = self._prepare_struct("body", fn_body, simplified)
+
+        if not isinstance(args_struct, dict):
+            raise Exception("`args` struct is not a valid object.")
+
+        if not isinstance(body_struct, dict):
+            raise Exception("`body` struct is not a valid object.")
+
+        value: ReprStruct = {**args_struct, **body_struct}
+        return self._prepare_struct(key, value, simplified)

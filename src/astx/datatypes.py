@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from typing import Any
+from uuid import uuid4
 
 from public import public
 
 from astx.base import (
+    NO_SOURCE_LOCATION,
     ASTKind,
     DataType,
     ExprType,
@@ -86,7 +88,7 @@ class UnaryOp(DataTypeOps):
         self,
         op_code: str,
         operand: DataType,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the UnaryOp instance."""
         super().__init__()
@@ -99,9 +101,11 @@ class UnaryOp(DataTypeOps):
         """Return a string that represents the object."""
         return f"UnaryOp[{self.op_code}]({self.operand})"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        return {f"UNARY[{self.op_code}]": self.operand.get_struct()}
+        key = f"UNARY[{self.op_code}]"
+        value = self.operand.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -115,7 +119,7 @@ class BinaryOp(DataTypeOps):
         op_code: str,
         lhs: DataType,
         rhs: DataType,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the BinaryOp instance."""
         super().__init__()
@@ -145,14 +149,24 @@ class BinaryOp(DataTypeOps):
         """Return a string that represents the object."""
         return f"BinaryOp[{self.op_code}]({self.lhs},{self.rhs})"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure that represents the object."""
-        return {
-            f"BINARY[{self.op_code}]": {
-                "lhs": self.lhs.get_struct(),
-                "rhs": self.rhs.get_struct(),
-            }
-        }
+        key = f"BINARY[{self.op_code}]"
+        lhs_struct = self._prepare_struct(
+            "lhs", self.lhs.get_struct(simplified), simplified
+        )
+        rhs_struct = self._prepare_struct(
+            "rhs", self.rhs.get_struct(simplified), simplified
+        )
+
+        if not isinstance(lhs_struct, dict):
+            raise Exception("`lhs` struct is not a valid object.")
+
+        if not isinstance(rhs_struct, dict):
+            raise Exception("`rhs` struct is not a valid object.")
+
+        value: ReprStruct = {**lhs_struct, **rhs_struct}
+        return self._prepare_struct(key, value, simplified)
 
 
 # Data Types
@@ -239,14 +253,20 @@ class Literal(DataTypeOps):
     loc: SourceLocation
     value: Any
 
+    def __init__(self, *args, **kwargs) -> None:  # type: ignore
+        super().__init__(*args, **kwargs)
+        self.ref = uuid4().hex
+
     def __str__(self) -> str:
         """Return a string that represents the object."""
         klass = self.__class__.__name__
         return f"{klass}({self.value})"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST representation for the object."""
-        return {f"Literal[{self.type_}]": self.value}
+        key = f"Literal[{self.type_}]: {self.value}"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -256,7 +276,7 @@ class LiteralInt8(Literal):
     value: int
 
     def __init__(
-        self, value: int, loc: SourceLocation = SourceLocation(0, 0)
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt8."""
         super().__init__(loc)
@@ -272,7 +292,7 @@ class LiteralInt16(Literal):
     value: int
 
     def __init__(
-        self, value: int, loc: SourceLocation = SourceLocation(0, 0)
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt16."""
         super().__init__(loc)
@@ -288,7 +308,7 @@ class LiteralInt32(Literal):
     value: int
 
     def __init__(
-        self, value: int, loc: SourceLocation = SourceLocation(0, 0)
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt32."""
         super().__init__(loc)
@@ -304,7 +324,7 @@ class LiteralInt64(Literal):
     value: int
 
     def __init__(
-        self, value: int, loc: SourceLocation = SourceLocation(0, 0)
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt64."""
         super().__init__(loc)
@@ -320,7 +340,7 @@ class LiteralBoolean(Literal):
     value: bool
 
     def __init__(
-        self, value: bool, loc: SourceLocation = SourceLocation(0, 0)
+        self, value: bool, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralBoolean."""
         super().__init__(loc)

@@ -2,30 +2,39 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import Optional, cast
 
 from public import public
 
-from astx.base import AST, Expr, ReprStruct, SourceLocation
+from astx.base import (
+    AST,
+    NO_SOURCE_LOCATION,
+    ASTNodes,
+    ReprStruct,
+    SourceLocation,
+)
 
 
 @public
-class Block(AST):
+class Block(ASTNodes):
     """The AST tree."""
 
     name: str
-    nodes: list[AST]
     position: int = 0
 
     def __init__(
         self,
         name: str = "entry",
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the AST instance."""
-        super().__init__(loc=loc)
+        super().__init__(loc=loc, parent=parent)
         self.name = name
-        self.nodes: list[Expr] = []
+        # note: maybe it would be nice to add options for rules, so
+        #       it could have specific rules for the type of AST
+        #       accepted
+        self.nodes: list[AST] = []
         self.position: int = 0
 
     def append(self, value: AST) -> None:
@@ -45,11 +54,14 @@ class Block(AST):
         self.position += 1
         return self.nodes[i]
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        block_node = []
+        block_nodes = []
 
         for node in self.nodes:
-            block_node.append(node.get_struct())
+            block_nodes.append(node.get_struct(simplified))
 
-        return cast(ReprStruct, block_node)
+        key = "BLOCK"
+        value = cast(ReprStruct, block_nodes)
+
+        return self._prepare_struct(key, value, simplified)

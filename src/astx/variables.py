@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import Optional, cast
 
 from public import public
 
 from astx.base import (
+    NO_SOURCE_LOCATION,
     ASTKind,
+    ASTNodes,
     Expr,
     ExprType,
     ReprStruct,
@@ -40,10 +42,11 @@ class VariableDeclaration(StatementType):
         visibility: VisibilityKind = VisibilityKind.public,
         scope: ScopeKind = ScopeKind.local,
         value: Expr = UNDEFINED,
-        loc: SourceLocation = SourceLocation(0, 0),
+        parent: Optional[ASTNodes] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the VarExprAST instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.mutability = mutability
         self.scope = scope
         self.visibility = visibility
@@ -57,10 +60,11 @@ class VariableDeclaration(StatementType):
         type_ = self.type_.__name__
         return f"VariableDeclaration[{self.name}, {type_}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = str(self)
-        return cast(ReprStruct, {struct_key: self.value.get_struct()})
+        key = str(self)
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -84,10 +88,11 @@ class InlineVariableDeclaration(Expr):
         visibility: VisibilityKind = VisibilityKind.public,
         scope: ScopeKind = ScopeKind.local,
         value: Expr = UNDEFINED,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.mutability = mutability
         self.scope = scope
         self.visibility = visibility
@@ -101,10 +106,11 @@ class InlineVariableDeclaration(Expr):
         type_ = self.type_.__name__
         return f"InlineVariableDeclaration[{self.name}, {type_}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = str(self)
-        return cast(ReprStruct, {struct_key: self.value.get_struct()})
+        key = str(self)
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -118,9 +124,11 @@ class VariableAssignment(StatementType):
         self,
         name: str,
         value: Expr,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
+        super().__init__(loc=loc, parent=parent)
         self.loc = loc
         self.name = name
         self.value = value
@@ -130,10 +138,11 @@ class VariableAssignment(StatementType):
         """Return a string that represents the object."""
         return f"VariableAssignment[{self.name}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = str(self)
-        return cast(ReprStruct, {struct_key: self.value.get_struct()})
+        key = str(self)
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -145,19 +154,22 @@ class Variable(DataTypeOps):
     def __init__(
         self,
         name: str,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Variable instance."""
-        super().__init__(loc)
+        super().__init__(loc=loc, parent=parent)
         self.name = name
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
         return f"Variable[{self.name}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a string that represents the object."""
-        return cast(ReprStruct, {f"Variable[{self.name}]": self.name})
+        key = f"Variable[{self.name}]"
+        value = self.name
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -175,12 +187,12 @@ class Argument(Variable):
         type_: ExprType,
         mutability: MutabilityKind = MutabilityKind.constant,
         default: Expr = UNDEFINED,
-        loc: SourceLocation = SourceLocation(0, 0),
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
-        self.loc = loc
+        super().__init__(name=name, loc=loc, parent=parent)
         self.mutability = mutability
-        self.name = name
         self.type_ = type_
         self.default = default
         self.kind = ASTKind.ArgumentKind
@@ -190,7 +202,28 @@ class Argument(Variable):
         type_ = self.type_.__name__
         return f"Argument[{self.name}, {type_}]"
 
-    def get_struct(self) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a string that represents the object."""
-        struct_key = f"Argument[{self.name}, {self.type_}] = {self.default}"
-        return cast(ReprStruct, {struct_key: self.default})
+        key = f"Argument[{self.name}, {self.type_}] = {self.default}"
+        value = cast(ReprStruct, self.default)
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+class Arguments(ASTNodes):
+    """AST class for argument definition."""
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Arguments({len(self.nodes)})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a string that represents the object."""
+        args_nodes = []
+
+        for node in self.nodes:
+            args_nodes.append(node.get_struct(simplified))
+
+        key = str(self)
+        value = cast(ReprStruct, args_nodes)
+        return self._prepare_struct(key, value, simplified)
