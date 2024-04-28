@@ -19,7 +19,7 @@ nav:
       - Functions: tutorials/functions.ipynb
       - For Loop: tutorials/for-loop.ipynb
       - Literals: tutorials/literals.ipynb
-      - Scopes: tutorials/scopes.ipynb
+      - Context: tutorials/context.ipynb
 theme:
   name: material
   features:
