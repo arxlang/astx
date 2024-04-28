@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.12.0](https://github.com/arxlang/astx/compare/0.11.0...0.12.0) (2024-04-28)
+
+
+### Features
+
+* Add initial support for context (parent node) ([#61](https://github.com/arxlang/astx/issues/61)) ([f1200a7](https://github.com/arxlang/astx/commit/f1200a7b9dece7f61b411d6a4655b3f79fed0b82))
+
 # [0.11.0](https://github.com/arxlang/astx/compare/0.10.0...0.11.0) (2024-04-21)
 
 
