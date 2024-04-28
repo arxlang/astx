@@ -44,7 +44,7 @@ class FunctionCall(Expr):
         args = [str(arg) for arg in self.args]
         return f"Call[{self.callee}: {', '.join(args)}]"
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         call_args = []
 
@@ -87,7 +87,7 @@ class FunctionPrototype(StatementType):
         self.scope = scope
         self.visibility = visibility
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Get the AST structure that represent the object."""
         raise Exception("Visitor method not necessary")
 
@@ -113,7 +113,7 @@ class FunctionReturn(StatementType):
         """Return a string representation of the object."""
         return f"Return[{self.value}]"
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "RETURN"
         value = self.value.get_struct(simplified)
@@ -161,7 +161,7 @@ class Function(StatementType):
             loc,
         )
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Get the AST structure that represent the object."""
         fn_args = []
         for arg in self.prototype.args:

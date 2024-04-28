@@ -32,7 +32,7 @@ class Target(Expr):
         self.datalayout = datalayout
         self.triple = triple
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "TARGET"
         value = f"{self.datalayout}, {self.triple}"
@@ -63,7 +63,7 @@ class Module(Block):
         """Define an alias for self.nodes."""
         return self.nodes
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         block_node = []
 
@@ -101,7 +101,7 @@ class Package(ASTNodes):
         """Return the string representation of the object."""
         return f"PACKAGE[{self.name}]"
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         packages = []
         modules = []

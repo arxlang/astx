@@ -195,17 +195,17 @@ class AST(metaclass=ASTMeta):
         return cast(ReprStruct, struct)
 
     @abstractmethod
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a structure that represents the node object."""
         ...
 
-    def to_yaml(self, simplified: bool = True) -> str:
+    def to_yaml(self, simplified: bool = False) -> str:
         """Return an yaml string that represents the object."""
         return str(
             yaml.dump(self.get_struct(simplified=simplified), sort_keys=False)
         )
 
-    def to_json(self, simplified: bool = True) -> str:
+    def to_json(self, simplified: bool = False) -> str:
         """Return an json string that represents the object."""
         return json.dumps(self.get_struct(simplified=simplified), indent=2)
 
@@ -231,7 +231,7 @@ ExprType: TypeAlias = Type[Expr]
 class Undefined(Expr):
     """Undefined expression class."""
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a simple structure that represents the object."""
         value = "UNDEFINED"
         key = "DATA-TYPE"
@@ -262,7 +262,7 @@ class DataType(Expr):
         """Return an string that represents the object."""
         return f"{self.__class__.__name__}: {self.name}"
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a simple structure that represents the object."""
         key = "DATA-TYPE"
         value = self.name

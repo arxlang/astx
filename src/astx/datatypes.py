@@ -101,7 +101,7 @@ class UnaryOp(DataTypeOps):
         """Return a string that represents the object."""
         return f"UnaryOp[{self.op_code}]({self.operand})"
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = f"UNARY[{self.op_code}]"
         value = self.operand.get_struct(simplified)
@@ -149,7 +149,7 @@ class BinaryOp(DataTypeOps):
         """Return a string that represents the object."""
         return f"BinaryOp[{self.op_code}]({self.lhs},{self.rhs})"
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure that represents the object."""
         key = f"BINARY[{self.op_code}]"
         lhs_struct = self._prepare_struct(
@@ -256,7 +256,7 @@ class Literal(DataTypeOps):
         klass = self.__class__.__name__
         return f"{klass}({self.value})"
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST representation for the object."""
         key = f"Literal[{self.type_}]: {self.value}"
         value = self.value

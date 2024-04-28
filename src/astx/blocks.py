@@ -54,7 +54,7 @@ class Block(ASTNodes):
         self.position += 1
         return self.nodes[i]
 
-    def get_struct(self, simplified: bool = True) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         block_node = []
 
