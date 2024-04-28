@@ -213,7 +213,6 @@ class Argument(Variable):
 class Arguments(ASTNodes):
     """AST class for argument definition."""
 
-    # @copy_type(ASTNodes.__init__)
     def __init__(self, *args: Argument, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         for arg in args:
