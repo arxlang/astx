@@ -2,112 +2,122 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://astx.arxlang.org/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/changelog/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/contributing/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/installation/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/SUMMARY/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/base/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/blocks/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/callables/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/datatypes/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/flows/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/mixes/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/modifiers/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/operators/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/packages/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/symbol_table/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/variables/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/api/viz/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://astx.arxlang.org/tutorials/context/</loc>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/tutorials/for-loop/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/tutorials/functions/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/tutorials/get-started/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://astx.arxlang.org/tutorials/literals/</loc>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://astx.arxlang.org/tutorials/variables/</loc>
-         <lastmod>2024-04-22</lastmod>
+         <lastmod>2024-04-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
