@@ -13,6 +13,13 @@ try:
 except ImportError:
     from typing import TypeAlias  # type: ignore[no-redef,attr-defined]
 
+
+try:
+    from typing_extensions import Self
+except ImportError:
+    from typing import Self  # type: ignore[no-redef,attr-defined]
+
+
 import yaml
 
 from public import public
@@ -68,11 +75,12 @@ class ASTKind(Enum):
 
     # variables
     ArgumentKind = -200
-    VariableKind = -201
-    VarDeclKind = -202
-    VarsDeclKind = -203
-    VariableAssignmentKind = -204
-    VarsAssignKind = -205
+    ArgumentsKind = -201
+    VariableKind = -202
+    VarDeclKind = -203
+    VarsDeclKind = -204
+    VariableAssignmentKind = -205
+    VarsAssignKind = -206
 
     # operators
     UnaryOpKind = -300
@@ -214,7 +222,41 @@ class AST(metaclass=ASTMeta):
 class ASTNodes(AST):
     """AST with a list of nodes."""
 
+    name: str
     nodes: list[AST]
+    position: int = 0
+
+    def __init__(
+        self,
+        name: str = "entry",
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the AST instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.name = name
+        # note: maybe it would be nice to add options for rules, so
+        #       it could have specific rules for the type of AST
+        #       accepted
+        self.nodes: list[AST] = []
+        self.position: int = 0
+
+    def __iter__(self) -> Self:
+        """Overload `iter` magic function."""
+        return self
+
+    def __next__(self) -> AST:
+        """Overload `next` magic function."""
+        if self.position >= len(self.nodes):
+            raise StopIteration()
+
+        i = self.position
+        self.position += 1
+        return self.nodes[i]
+
+    def append(self, value: AST) -> None:
+        """Append a new node to the stack."""
+        self.nodes.append(value)
 
 
 @public

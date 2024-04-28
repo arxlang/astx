@@ -76,6 +76,7 @@ from astx.operators import (
 from astx.packages import Module, Package, Program, Target
 from astx.variables import (
     Argument,
+    Arguments,
     InlineVariableDeclaration,
     Variable,
     VariableAssignment,
@@ -93,6 +94,7 @@ def get_version() -> str:
 
 __all__ = [
     "Argument",
+    "Arguments",
     "AST",
     "ASTKind",
     "base",
