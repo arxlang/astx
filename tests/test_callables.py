@@ -4,7 +4,7 @@ from astx.blocks import Block
 from astx.callables import Function, FunctionPrototype
 from astx.datatypes import Int32, LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
-from astx.variables import Argument
+from astx.variables import Argument, Arguments
 
 
 def test_function_creation_with_no_modifiers() -> None:
@@ -14,7 +14,7 @@ def test_function_creation_with_no_modifiers() -> None:
 
     proto = FunctionPrototype(
         name="add",
-        args=(var_a, var_b),
+        args=Arguments(var_a, var_b),
         return_type=Int32,
     )
     fn_block = Block()
@@ -27,7 +27,7 @@ def test_function_creation_with_modifiers() -> None:
     var_b = Argument("b", type_=Int32, default=LiteralInt32(1))
     proto = FunctionPrototype(
         name="add",
-        args=(var_a, var_b),
+        args=Arguments(var_a, var_b),
         return_type=Int32,
         visibility=VisibilityKind.public,
         scope=ScopeKind.global_,

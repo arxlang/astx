@@ -11,7 +11,6 @@ from astx.base import (
     ASTKind,
     ASTNodes,
     DataType,
-    DataTypesStruct,
     Expr,
     ExprType,
     ReprStruct,
@@ -20,7 +19,7 @@ from astx.base import (
 )
 from astx.blocks import Block
 from astx.modifiers import ScopeKind, VisibilityKind
-from astx.variables import Argument
+from astx.variables import Arguments
 
 
 @public
@@ -63,7 +62,7 @@ class FunctionPrototype(StatementType):
     """AST class for function prototype declaration."""
 
     name: str
-    args: tuple[Argument, ...]
+    args: Arguments
     return_type: ExprType
     scope: ScopeKind
     visibility: VisibilityKind
@@ -71,7 +70,7 @@ class FunctionPrototype(StatementType):
     def __init__(
         self,
         name: str,
-        args: tuple[Argument, ...],
+        args: Arguments,
         return_type: ExprType,
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
@@ -164,13 +163,8 @@ class Function(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Get the AST structure that represent the object."""
-        # todo: implement arguments properly
-        fn_args_nodes: list[DataTypesStruct] = []
-        for arg in self.prototype.args:
-            fn_args_nodes.append(arg.get_struct(simplified))
-
+        fn_args = self.prototype.args.get_struct(simplified)
         fn_body = self.body.get_struct(simplified)
-        fn_args: ReprStruct = {"args": fn_args_nodes}
 
         key = f"FUNCTION[{self.prototype.name}]"
         args_struct = self._prepare_struct("args", fn_args, simplified)

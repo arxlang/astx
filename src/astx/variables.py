@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Any, Optional, cast
 
 from public import public
 
@@ -212,6 +212,12 @@ class Argument(Variable):
 @public
 class Arguments(ASTNodes):
     """AST class for argument definition."""
+
+    # @copy_type(ASTNodes.__init__)
+    def __init__(self, *args: Argument, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        for arg in args:
+            self.append(arg)
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
