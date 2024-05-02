@@ -40,6 +40,12 @@ groups:
             default: "-vv"
         run: pytest ${{ args.path }} ${{ args.params }}
 
+      coverage:
+        help: Coverage test
+        shell: bash
+        run: |
+          pytest --cov=astx --cov-fail-under=85 tests/
+
       notebooks:
         help: test jupyter notebooks
         run: pytest -vv --nbmake docs/tutorials
