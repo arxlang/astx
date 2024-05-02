@@ -1,3 +1,5 @@
+"""Test classes and functions about Symbol Table."""
+
 from astx import Variable
 from astx.symbol_table import SymbolTable
 

@@ -25,7 +25,7 @@ def test_module() -> None:
     assert module.get_struct()
     assert module.get_struct(simplified=True)
 
-    visualize(module)
+    visualize(module.get_struct())
 
 
 def test_target() -> None:
@@ -38,7 +38,7 @@ def test_target() -> None:
     assert target.get_struct()
     assert target.get_struct(simplified=True)
 
-    visualize(target)
+    visualize(target.get_struct())
 
 
 def test_packages() -> None:
@@ -55,7 +55,7 @@ def test_packages() -> None:
     assert package_main.get_struct()
     assert package_main.get_struct(simplified=True)
 
-    visualize(package_main)
+    visualize(package_main.get_struct())
 
 
 def test_program() -> None:
@@ -82,4 +82,4 @@ def test_program() -> None:
     assert program.get_struct()
     assert program.get_struct(simplified=True)
 
-    visualize(program)
+    visualize(program.get_struct())

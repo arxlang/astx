@@ -90,11 +90,13 @@ class Scope:
 
     def get_first(self) -> ScopeNodeBase:
         """Get the first node in the scope."""
-        return list(self.nodes.keys())[0]
+        node_id = next(iter(self.nodes.keys()))
+        return self.nodes[node_id]
 
     def get_last(self) -> ScopeNodeBase:
         """Get the latest node in the scope."""
-        return list(self.nodes.keys())[-1]
+        node_id = list(self.nodes.keys())[-1]
+        return self.nodes[node_id]
 
     def destroy(self, node: ScopeNodeBase) -> None:
         """Destroy the current scope."""

@@ -13,7 +13,7 @@ def test_variable() -> None:
     assert var_a.get_struct()
     assert var_a.get_struct(simplified=True)
 
-    visualize(var_a)
+    visualize(var_a.get_struct())
 
 
 def test_variable_decl() -> None:
@@ -26,7 +26,7 @@ def test_variable_decl() -> None:
     assert decl_a.get_struct()
     assert decl_a.get_struct(simplified=True)
 
-    visualize(decl_a)
+    visualize(decl_a.get_struct())
 
 
 def test_inline_variable_decl() -> None:
@@ -39,7 +39,7 @@ def test_inline_variable_decl() -> None:
     assert decl_a.get_struct()
     assert decl_a.get_struct(simplified=True)
 
-    visualize(decl_a)
+    visualize(decl_a.get_struct())
 
 
 def test_variable_assign() -> None:
@@ -50,7 +50,7 @@ def test_variable_assign() -> None:
     assert assign_a.get_struct()
     assert assign_a.get_struct(simplified=True)
 
-    visualize(assign_a)
+    visualize(assign_a.get_struct())
 
 
 def test_argument() -> None:
@@ -61,7 +61,7 @@ def test_argument() -> None:
     assert arg_a.get_struct()
     assert arg_a.get_struct(simplified=True)
 
-    visualize(arg_a)
+    visualize(arg_a.get_struct())
 
 
 def test_arguments() -> None:
@@ -77,4 +77,4 @@ def test_arguments() -> None:
     assert args.get_struct()
     assert args.get_struct(simplified=True)
 
-    visualize(args)
+    visualize(args.get_struct())

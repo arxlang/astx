@@ -25,7 +25,7 @@ def test_function_creation_with_no_modifiers() -> None:
     assert fn.get_struct()
     assert fn.get_struct(simplified=True)
 
-    visualize(fn)
+    visualize(fn.get_struct())
 
 
 def test_function_creation_with_modifiers() -> None:
@@ -46,10 +46,11 @@ def test_function_creation_with_modifiers() -> None:
     assert fn.get_struct()
     assert fn.get_struct(simplified=True)
 
-    visualize(fn)
+    visualize(fn.get_struct())
 
 
 def test_function_call() -> None:
+    """Test the FunctionCall class."""
     fn_call = FunctionCall(callee="fn", args=tuple())
 
     assert str(fn_call)

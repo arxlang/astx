@@ -21,21 +21,35 @@ def test_literal_i32() -> None:
 
 
 def test_bin_ops() -> None:
+    """Test binary operations."""
     var_a = Variable("a")
     lit_2 = LiteralInt32(value=2)
 
     bin_ops_chain = var_a + var_a - var_a * var_a / var_a**lit_2
     mod_2 = bin_ops_chain % LiteralInt32(value=2)
+    assert mod_2
 
     ne_op = var_a != lit_2
+    assert ne_op
+
     neg_op = not var_a
+    assert neg_op
+
     eq_op = var_a == lit_2
+    assert eq_op
 
     ge_op = var_a >= lit_2
     gt_op = var_a > lit_2
     le_op = var_a <= lit_2
     lt_op = var_a < lit_2
 
+    assert ge_op
+    assert gt_op
+    assert le_op
+    assert lt_op
+
 
 def test_unary_ops() -> None:
+    """Test unary operations."""
     lit_2 = -LiteralInt32(value=2)
+    assert lit_2

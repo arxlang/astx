@@ -17,7 +17,7 @@ def test_if() -> None:
     assert str(if_stmt)
     assert if_stmt.get_struct()
     assert if_stmt.get_struct(simplified=True)
-    visualize(if_stmt)
+    visualize(if_stmt.get_struct())
 
 
 def test_if_else() -> None:
@@ -30,7 +30,7 @@ def test_if_else() -> None:
     assert str(if_stmt)
     assert if_stmt.get_struct()
     assert if_stmt.get_struct(simplified=True)
-    visualize(if_stmt)
+    visualize(if_stmt.get_struct())
 
 
 def test_for_range() -> None:
@@ -50,7 +50,7 @@ def test_for_range() -> None:
     assert str(for_stmt)
     assert for_stmt.get_struct()
     assert for_stmt.get_struct(simplified=True)
-    visualize(for_stmt)
+    visualize(for_stmt.get_struct())
 
 
 def test_for_count() -> None:
@@ -68,4 +68,4 @@ def test_for_count() -> None:
     assert str(for_stmt)
     assert for_stmt.get_struct()
     assert for_stmt.get_struct(simplified=True)
-    visualize(for_stmt)
+    visualize(for_stmt.get_struct())
