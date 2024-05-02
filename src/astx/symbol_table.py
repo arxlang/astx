@@ -9,7 +9,7 @@ specifics scopes.
 
 from __future__ import annotations
 
-from typing import Dict, Optional, Type
+from typing import Optional, Type
 
 from public import public
 
@@ -23,7 +23,7 @@ class ScopeNodeBase:
     name: str
     parent: Optional[ScopeNodeBase]
     default_parent: Optional[ScopeNodeBase] = None
-    named_expr: Dict[str, NamedExpr]
+    named_expr: dict[str, NamedExpr]
 
     def __init__(
         self, name: str, parent: Optional[ScopeNodeBase] = None
@@ -33,7 +33,7 @@ class ScopeNodeBase:
             parent or ScopeNodeBase.default_parent
         )
         self.name: str = name
-        self.named_expr: Dict[str, NamedExpr] = {}
+        self.named_expr: dict[str, NamedExpr] = {}
 
 
 @public
@@ -47,7 +47,7 @@ class ScopeNode(ScopeNodeBase):
 class Scope:
     """Organize the ASTx objects according to the scope."""
 
-    nodes: Dict[int, ScopeNodeBase]
+    nodes: dict[int, ScopeNodeBase]
     current: Optional[ScopeNodeBase]
     previous: Optional[ScopeNodeBase]
     scope_node_class: Type[ScopeNodeBase]
@@ -57,7 +57,7 @@ class Scope:
         scope_node_class: Type[ScopeNodeBase] = ScopeNode,
     ) -> None:
         """Initialize the scope."""
-        self.nodes: Dict[int, ScopeNodeBase] = {}
+        self.nodes: dict[int, ScopeNodeBase] = {}
         self.current = None
         self.previous = None
         self.scope_node_class = scope_node_class
@@ -90,11 +90,13 @@ class Scope:
 
     def get_first(self) -> ScopeNodeBase:
         """Get the first node in the scope."""
-        return self.nodes[0]
+        node_id = next(iter(self.nodes.keys()))
+        return self.nodes[node_id]
 
     def get_last(self) -> ScopeNodeBase:
         """Get the latest node in the scope."""
-        return self.nodes[-1]
+        node_id = list(self.nodes.keys())[-1]
+        return self.nodes[node_id]
 
     def destroy(self, node: ScopeNodeBase) -> None:
         """Destroy the current scope."""

@@ -158,7 +158,7 @@ class AST(metaclass=ASTMeta):
         """Return an string that represents the object."""
         if not is_using_jupyter_notebook():
             # note: this should be replaced by asciinet approach
-            return f"{self.__str__()}"
+            return str(self)
         return ""
 
     def _repr_png_(self) -> None:
@@ -175,8 +175,8 @@ class AST(metaclass=ASTMeta):
 
     def _update_parent(self) -> None:
         """Update the parent node."""
-        if self.parent:
-            self.parent.nodes.append(self)
+        if self.parent is not None:
+            self.parent.append(self)
 
     def _get_metadata(self) -> ReprStruct:
         """Return the metadata for the requested AST."""
@@ -205,7 +205,6 @@ class AST(metaclass=ASTMeta):
     @abstractmethod
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a structure that represents the node object."""
-        ...
 
     def to_yaml(self, simplified: bool = False) -> str:
         """Return an yaml string that represents the object."""
@@ -248,6 +247,7 @@ class ASTNodes(AST):
     def __next__(self) -> AST:
         """Overload `next` magic function."""
         if self.position >= len(self.nodes):
+            self.position = 0
             raise StopIteration()
 
         i = self.position

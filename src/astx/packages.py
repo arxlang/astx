@@ -29,6 +29,7 @@ class Target(Expr):
 
     def __init__(self, datalayout: str, triple: str) -> None:
         """Initialize the AST instance."""
+        super().__init__()
         self.datalayout = datalayout
         self.triple = triple
 

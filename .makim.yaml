@@ -1,7 +1,7 @@
 version: 1.0
 groups:
   clean:
-    targets:
+    tasks:
       tmp:
         help: remove build artifacts, compiled files, and cache
         shell: bash
@@ -20,7 +20,7 @@ groups:
           rm -rf .pytest_cache
 
   tests:
-    targets:
+    tasks:
       linter:
         help: run linter tools
         run: |
@@ -38,7 +38,13 @@ groups:
             help: Specify parameters to be used for tests
             type: string
             default: "-vv"
-        run: pytest ${{ args.path }} ${{ args.params }}
+        shell: bash
+        run: |
+          pytest \
+            --cov=astx \
+            --cov-fail-under=95 \
+            --cov-report term-missing \
+            --no-cov-on-fail ${{ args.path }} ${{ args.params }}
 
       notebooks:
         help: test jupyter notebooks
@@ -47,12 +53,12 @@ groups:
       ci:
         help: run the sames tests executed on CI
         dependencies:
-          - target: tests.unit
-          - target: tests.notebooks
-          - target: tests.linter
+          - task: tests.unit
+          - task: tests.notebooks
+          - task: tests.linter
 
   docs:
-    targets:
+    tasks:
       build:
         help: build documentation
         run: |
@@ -78,7 +84,7 @@ groups:
           -p "semantic-release-replace-plugin" \
           semantic-release
 
-    targets:
+    tasks:
       ci:
         help: run semantic release on CI
         run: ${{ vars.app }} --ci
