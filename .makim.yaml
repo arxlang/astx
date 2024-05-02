@@ -27,7 +27,7 @@ groups:
           pre-commit install
           pre-commit run --all-files
 
-      unittest:
+      unit:
         help: run tests
         args:
           path:
@@ -47,7 +47,7 @@ groups:
       ci:
         help: run the sames tests executed on CI
         dependencies:
-          - target: tests.unittest
+          - target: tests.unit
           - target: tests.notebooks
           - target: tests.linter
 

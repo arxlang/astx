@@ -43,7 +43,7 @@ def test_packages() -> None:
     package_main.packages.append(package_child)
     package_main.modules.append(module_main)
 
-    assert package_main
+    assert package_main is not None
 
 
 def test_program() -> None:
@@ -66,4 +66,4 @@ def test_program() -> None:
 
     program.packages.append(package_main)
     program.modules.append(module_program)
-    assert program
+    assert program is not None
