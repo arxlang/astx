@@ -69,7 +69,7 @@ jobs:
           poetry install
 
       - name: Run unit tests
-        run: makim tests.unittest
+        run: makim tests.unit
 
       - name: Test jupyter notebooks
         run: makim tests.notebooks
