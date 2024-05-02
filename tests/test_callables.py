@@ -1,5 +1,7 @@
 """Test callable ASTx objects."""
 
+import pytest
+
 from astx.blocks import Block
 from astx.callables import Function, FunctionCall, FunctionPrototype
 from astx.datatypes import Int32, LiteralInt32
@@ -18,6 +20,10 @@ def test_function_creation_with_no_modifiers() -> None:
         args=Arguments(var_a, var_b),
         return_type=Int32,
     )
+
+    with pytest.raises(Exception):
+        proto.get_struct()
+
     fn_block = Block()
     fn = Function(prototype=proto, body=fn_block)
 
@@ -51,7 +57,7 @@ def test_function_creation_with_modifiers() -> None:
 
 def test_function_call() -> None:
     """Test the FunctionCall class."""
-    fn_call = FunctionCall(callee="fn", args=tuple())
+    fn_call = FunctionCall(callee="fn", args=(LiteralInt32(1),))
 
     assert str(fn_call)
     assert fn_call.get_struct()
