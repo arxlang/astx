@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.12.3](https://github.com/arxlang/astx/compare/0.12.2...0.12.3) (2024-05-02)
+
+
+### Bug Fixes
+
+* Test coverage for more than 95% of the code and fix general issues ([#64](https://github.com/arxlang/astx/issues/64)) ([13d5d3c](https://github.com/arxlang/astx/commit/13d5d3c1c1f52dd8cad902a0120be2495fa6ce38))
+
 ## [0.12.2](https://github.com/arxlang/astx/compare/0.12.1...0.12.2) (2024-05-02)
 
 
