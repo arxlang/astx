@@ -5,13 +5,19 @@ from astx.datatypes import Int32, LiteralInt32
 from astx.flows import ForCountLoop, ForRangeLoop, If
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
+from astx.viz import visualize
 
 
 def test_if() -> None:
     """Test `if` statement."""
     op = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
     then_block = Block()
-    If(condition=op, then=then_block)
+    if_stmt = If(condition=op, then=then_block)
+
+    assert str(if_stmt)
+    assert if_stmt.get_struct()
+    assert if_stmt.get_struct(simplified=True)
+    visualize(if_stmt)
 
 
 def test_if_else() -> None:
@@ -19,7 +25,12 @@ def test_if_else() -> None:
     cond = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
     then_block = Block()
     else_block = Block()
-    If(condition=cond, then=then_block, else_=else_block)
+    if_stmt = If(condition=cond, then=then_block, else_=else_block)
+
+    assert str(if_stmt)
+    assert if_stmt.get_struct()
+    assert if_stmt.get_struct(simplified=True)
+    visualize(if_stmt)
 
 
 def test_for_range() -> None:
@@ -32,7 +43,14 @@ def test_for_range() -> None:
     step = LiteralInt32(1)
     body = Block()
     body.append(LiteralInt32(2))
-    ForRangeLoop(variable=decl_a, start=start, end=end, step=step, body=body)
+    for_stmt = ForRangeLoop(
+        variable=decl_a, start=start, end=end, step=step, body=body
+    )
+
+    assert str(for_stmt)
+    assert for_stmt.get_struct()
+    assert for_stmt.get_struct(simplified=True)
+    visualize(for_stmt)
 
 
 def test_for_count() -> None:
@@ -43,4 +61,11 @@ def test_for_count() -> None:
     update = UnaryOp(op_code="++", operand=var_a)
     body = Block()
     body.append(LiteralInt32(2))
-    ForCountLoop(initializer=decl_a, condition=cond, update=update, body=body)
+    for_stmt = ForCountLoop(
+        initializer=decl_a, condition=cond, update=update, body=body
+    )
+
+    assert str(for_stmt)
+    assert for_stmt.get_struct()
+    assert for_stmt.get_struct(simplified=True)
+    visualize(for_stmt)

@@ -38,13 +38,13 @@ groups:
             help: Specify parameters to be used for tests
             type: string
             default: "-vv"
-        run: pytest ${{ args.path }} ${{ args.params }}
-
-      coverage:
-        help: Coverage test
         shell: bash
         run: |
-          pytest --cov=astx --cov-fail-under=85 tests/
+          pytest \
+            --cov=astx \
+            --cov-fail-under=90 \
+            --cov-report term-missing \
+            --no-cov-on-fail ${{ args.path }} ${{ args.params }}
 
       notebooks:
         help: test jupyter notebooks

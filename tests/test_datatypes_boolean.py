@@ -10,9 +10,11 @@ def test_variable_boolean() -> None:
         name="a", type_=Boolean, value=LiteralBoolean(value=True)
     )
     assert decl_a.type_ == Boolean.__mro__[0]  # astx.datatypes.Boolean
+    assert decl_a.get_struct()
 
 
 def test_literal_boolean() -> None:
     """Test literal boolean."""
     lit_a = LiteralBoolean(value=True)
     assert type(lit_a) == LiteralBoolean
+    assert lit_a.get_struct()

@@ -1,10 +1,11 @@
 """Test callable ASTx objects."""
 
 from astx.blocks import Block
-from astx.callables import Function, FunctionPrototype
+from astx.callables import Function, FunctionCall, FunctionPrototype
 from astx.datatypes import Int32, LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
 from astx.variables import Argument, Arguments
+from astx.viz import visualize
 
 
 def test_function_creation_with_no_modifiers() -> None:
@@ -18,7 +19,13 @@ def test_function_creation_with_no_modifiers() -> None:
         return_type=Int32,
     )
     fn_block = Block()
-    Function(prototype=proto, body=fn_block)
+    fn = Function(prototype=proto, body=fn_block)
+
+    assert str(fn)
+    assert fn.get_struct()
+    assert fn.get_struct(simplified=True)
+
+    visualize(fn)
 
 
 def test_function_creation_with_modifiers() -> None:
@@ -33,4 +40,18 @@ def test_function_creation_with_modifiers() -> None:
         scope=ScopeKind.global_,
     )
     fn_block = Block()
-    Function(prototype=proto, body=fn_block)
+    fn = Function(prototype=proto, body=fn_block)
+
+    assert str(fn)
+    assert fn.get_struct()
+    assert fn.get_struct(simplified=True)
+
+    visualize(fn)
+
+
+def test_function_call() -> None:
+    fn_call = FunctionCall(callee="fn", args=tuple())
+
+    assert str(fn_call)
+    assert fn_call.get_struct()
+    assert fn_call.get_struct(simplified=True)
