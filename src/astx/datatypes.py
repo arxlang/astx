@@ -27,13 +27,13 @@ class DataTypeOps(DataType):
         """Overload the magic `add` method."""
         return BinaryOp("+", self, other)
 
-    def __div__(self, other: DataType) -> BinaryOp:
-        """Overload the magic `div` method."""
-        return BinaryOp("/", self, other)
-
     def __eq__(self, other: DataType) -> BinaryOp:  # type: ignore
         """Overload the magic `eq` method."""
         return BinaryOp("==", self, other)
+
+    def __floordiv__(self, other: DataType) -> BinaryOp:
+        """Overload the magic `floordiv` method."""
+        return BinaryOp("//", self, other)
 
     def __ge__(self, other: DataType) -> BinaryOp:
         """Overload the magic `ge` method."""
@@ -64,8 +64,12 @@ class DataTypeOps(DataType):
         return BinaryOp("!=", self, other)
 
     def __neg__(self) -> UnaryOp:
-        """Overload the magic `ne` method."""
-        return UnaryOp("!", self)
+        """Overload the magic `neg` method."""
+        return UnaryOp("-", self)
+
+    def __pos__(self) -> UnaryOp:
+        """Overload the magic `pos` method."""
+        return UnaryOp("+", self)
 
     def __pow__(self, other: DataType) -> BinaryOp:
         """Overload the magic `pow` method."""
