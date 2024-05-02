@@ -92,7 +92,7 @@ $ git checkout -b name-of-your-bugfix-or-feature
 
 ```bash
 $ makim tests.linter
-$ makim tests.unittest
+$ makim tests.unit
 ```
 
 6.  Commit your changes and push your branch to GitHub:
@@ -126,7 +126,7 @@ $ pytest tests.test_arxast
 or
 
 ```bash
-$ makim tests.unittest --path "tests/test_arxast" --params "-k mytest_func"
+$ makim tests.unit --path "tests/test_arxast" --params "-k mytest_func"
 ```
 
 ## Release

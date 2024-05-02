@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.12.2](https://github.com/arxlang/astx/compare/0.12.1...0.12.2) (2024-05-02)
+
+
+### Bug Fixes
+
+* Support subscripting to get nodes by index ([#63](https://github.com/arxlang/astx/issues/63)) ([102bf75](https://github.com/arxlang/astx/commit/102bf75f2eeeadd153b1381e134423a747534638))
+
 ## [0.12.1](https://github.com/arxlang/astx/compare/0.12.0...0.12.1) (2024-05-02)
 
 

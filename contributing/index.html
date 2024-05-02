@@ -1358,7 +1358,7 @@ $<span class="w"> </span>poetry<span class="w"> </span>install
     the tests:</li>
 </ol>
 <div class="language-bash highlight"><pre><span></span><code>$<span class="w"> </span>makim<span class="w"> </span>tests.linter
-$<span class="w"> </span>makim<span class="w"> </span>tests.unittest
+$<span class="w"> </span>makim<span class="w"> </span>tests.unit
 </code></pre></div>
 <ol>
 <li>Commit your changes and push your branch to GitHub:</li>
@@ -1384,7 +1384,7 @@ $<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>
 <div class="language-bash highlight"><pre><span></span><code>$<span class="w"> </span>pytest<span class="w"> </span>tests.test_arxast
 </code></pre></div>
 <p>or</p>
-<div class="language-bash highlight"><pre><span></span><code>$<span class="w"> </span>makim<span class="w"> </span>tests.unittest<span class="w"> </span>--path<span class="w"> </span><span class="s2">&quot;tests/test_arxast&quot;</span><span class="w"> </span>--params<span class="w"> </span><span class="s2">&quot;-k mytest_func&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code>$<span class="w"> </span>makim<span class="w"> </span>tests.unit<span class="w"> </span>--path<span class="w"> </span><span class="s2">&quot;tests/test_arxast&quot;</span><span class="w"> </span>--params<span class="w"> </span><span class="s2">&quot;-k mytest_func&quot;</span>
 </code></pre></div>
 <h2 id="release">Release<a class="headerlink" href="#release" title="Permanent link">&para;</a></h2>
 <p>This project uses semantic-release in order to cut a new release based on the
