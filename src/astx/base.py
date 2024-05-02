@@ -258,6 +258,14 @@ class ASTNodes(AST):
         """Append a new node to the stack."""
         self.nodes.append(value)
 
+    def __getitem__(self, index: int) -> AST:
+        """Support subscripting to get nodes by index."""
+        return self.nodes[index]
+
+    def __len__(self) -> int:
+        """Return the number of nodes, supports len function."""
+        return len(self.nodes)
+
 
 @public
 class Expr(AST):
