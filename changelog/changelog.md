@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.12.1](https://github.com/arxlang/astx/compare/0.12.0...0.12.1) (2024-05-02)
+
+
+### Bug Fixes
+
+* Fix the usage of Function Arguments ([#62](https://github.com/arxlang/astx/issues/62)) ([6c78b66](https://github.com/arxlang/astx/commit/6c78b6684c8dae7b4b6a012049f8046fc3968066))
+
 # [0.12.0](https://github.com/arxlang/astx/compare/0.11.0...0.12.0) (2024-04-28)
 
 

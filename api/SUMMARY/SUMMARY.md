@@ -9,5 +9,7 @@
     * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> operators](operators.md)
     * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> packages](packages.md)
     * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> symbol_table](symbol_table.md)
+    * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> tools](tools/index.md)
+        * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> typing](tools/typing.md)
     * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> variables](variables.md)
     * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> viz](viz.md)
