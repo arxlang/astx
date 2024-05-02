@@ -50,7 +50,7 @@ class If(StatementType):
         if_condition = self.condition.get_struct(simplified)
         if_then = self.then.get_struct(simplified)
 
-        if self.else_:
+        if self.else_ is not None:
             if_else = self.else_.get_struct(simplified)
             if_else_struct = self._prepare_struct("ELSE", if_else, simplified)
         else:

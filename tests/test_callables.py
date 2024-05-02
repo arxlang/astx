@@ -3,7 +3,12 @@
 import pytest
 
 from astx.blocks import Block
-from astx.callables import Function, FunctionCall, FunctionPrototype
+from astx.callables import (
+    Function,
+    FunctionCall,
+    FunctionPrototype,
+    FunctionReturn,
+)
 from astx.datatypes import Int32, LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
 from astx.variables import Argument, Arguments
@@ -62,3 +67,12 @@ def test_function_call() -> None:
     assert str(fn_call)
     assert fn_call.get_struct()
     assert fn_call.get_struct(simplified=True)
+
+
+def test_function_return() -> None:
+    """Test the FunctionReturn class."""
+    fn_return = FunctionReturn(LiteralInt32(0))
+
+    assert str(fn_return)
+    assert fn_return.get_struct()
+    assert fn_return.get_struct(simplified=True)
