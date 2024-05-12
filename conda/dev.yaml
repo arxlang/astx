@@ -12,3 +12,4 @@ dependencies:
   - pip:
       # distlib issue
       - paginate
+      - asciinet==0.3.1
