@@ -6,6 +6,7 @@ represented as a nested Python dictionary, to a Graphviz dot graph which
 can be displayed inline in a Jupyter notebook, or as an ascii representation
 directly in the console.
 """
+
 from __future__ import annotations
 
 import re
