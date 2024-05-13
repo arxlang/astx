@@ -15,7 +15,11 @@ from typing import Any, Optional
 
 import requests
 
-from asciinet import Timeout, _asciigraph, _AsciiGraphProxy
+from asciinet import (
+    Timeout,
+    _asciigraph,
+    _AsciiGraphProxy,
+)
 from graphviz import Digraph
 from IPython.display import Image, display  # type: ignore[attr-defined]
 from msgpack import dumps, loads
