@@ -76,7 +76,7 @@ def test_function_call() -> None:
 
     fn_call = FunctionCall(fn=fn, args=(LiteralInt32(1),))
 
-    assert fn_call == fn(args=(LiteralInt32(1),))
+    assert hash(fn_call) == hash(fn(args=(LiteralInt32(1),)))
     assert fn_call.get_struct()
     assert fn_call.get_struct(simplified=True)
 
