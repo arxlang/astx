@@ -120,7 +120,6 @@ def graph_to_ascii_overload(
             )
 
         # substitute modhash by labels in the ascii representation
-        graph_str = graph_str.decode("utf-8")
         graph_list = list(graph_str)
         for modhash, label in modhash_label_mapping:
             start = graph_str.index(modhash)
