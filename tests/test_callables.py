@@ -62,9 +62,21 @@ def test_function_creation_with_modifiers() -> None:
 
 def test_function_call() -> None:
     """Test the FunctionCall class."""
-    fn_call = FunctionCall(callee="fn", args=(LiteralInt32(1),))
+    var_a = Argument("a", type_=Int32, default=LiteralInt32(1))
+    var_b = Argument("b", type_=Int32, default=LiteralInt32(1))
+    proto = FunctionPrototype(
+        name="add",
+        args=Arguments(var_a, var_b),
+        return_type=Int32,
+        visibility=VisibilityKind.public,
+        scope=ScopeKind.global_,
+    )
+    fn_block = Block()
+    fn = Function(prototype=proto, body=fn_block)
 
-    assert str(fn_call)
+    fn_call = FunctionCall(fn=fn, args=(LiteralInt32(1),))
+
+    assert fn_call == fn(args=(LiteralInt32(1),))
     assert fn_call.get_struct()
     assert fn_call.get_struct(simplified=True)
 
