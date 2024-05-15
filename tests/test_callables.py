@@ -74,9 +74,11 @@ def test_function_call() -> None:
     fn_block = Block()
     fn = Function(prototype=proto, body=fn_block)
 
-    fn_call = FunctionCall(fn=fn, args=(LiteralInt32(1),))
+    lit_int32_1 = LiteralInt32(1)
 
-    assert hash(fn_call) == hash(fn(args=(LiteralInt32(1),)))
+    fn_call = FunctionCall(fn=fn, args=(lit_int32_1,))
+
+    assert hash(fn_call) == hash(fn(args=(lit_int32_1,)))
     assert fn_call.get_struct()
     assert fn_call.get_struct(simplified=True)
 
