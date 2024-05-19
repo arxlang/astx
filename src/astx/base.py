@@ -8,6 +8,8 @@ from abc import abstractmethod
 from enum import Enum
 from typing import ClassVar, Dict, List, Optional, Type, Union, cast
 
+from astx.viz import graph_to_ascii, traverse_ast_ascii
+
 try:
     from typing_extensions import TypeAlias
 except ImportError:
@@ -157,8 +159,8 @@ class AST(metaclass=ASTMeta):
     def __repr__(self) -> str:
         """Return an string that represents the object."""
         if not is_using_jupyter_notebook():
-            # note: this should be replaced by asciinet approach
-            return str(self)
+            graph = traverse_ast_ascii(self.get_struct(simplified=True))
+            return graph_to_ascii(graph)  # type: ignore[no-any-return]
         return ""
 
     def _repr_png_(self) -> None:

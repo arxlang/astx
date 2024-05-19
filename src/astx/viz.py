@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 import types
 
-from typing import Any, Optional
+from typing import Any, Optional, cast
 
 import requests
 
@@ -26,18 +26,18 @@ from IPython.display import Image, display  # type: ignore[attr-defined]
 from msgpack import dumps, loads
 
 
-def traverse_ast(
+def traverse_ast_ascii(
     ast: dict[str, Any] | list[Any],
     graph: Optional[Digraph] = None,
     parent: Optional[str] = None,
     shape: str = "box",
 ) -> Digraph:
     """
-    Recursively traverse the AST and build a Graphviz graph.
+    Traverse the AST and build a Graphviz graph for ascii representation.
 
     Parameters
     ----------
-    ast : dict | list
+    ast : dict
         The AST as a nested dictionary (full structure version).
     graph : Digraph
         The Graphviz graph object.
@@ -46,6 +46,11 @@ def traverse_ast(
         it is an empty string
     shape: str, options: ellipse, box, circle, diamond
         The shape used for the nodes in the graph. Default "box".
+
+    Returns
+    -------
+    Digraph
+        Graphviz (dot) graph representation.
     """
     if not graph:
         graph = Digraph()
@@ -53,7 +58,7 @@ def traverse_ast(
 
     if isinstance(ast, list):
         for item in ast:
-            traverse_ast(item, graph, parent, shape)
+            traverse_ast_ascii(item, graph, parent, shape)
     elif isinstance(ast, dict):
         for key, value in ast.items():
             if not parent:
@@ -66,8 +71,70 @@ def traverse_ast(
                 graph.edge(parent, node_name)
 
             graph.node(node_name, label=key, shape=shape)
-            traverse_ast(value, graph, node_name, shape)
+            traverse_ast_ascii(value, graph, node_name, shape)
     return graph
+
+
+def traverse_ast_png(
+    ast: dict[str, Any] | list[Any],
+    graph: Optional[Digraph] = None,
+    parent: Optional[str] = None,
+    shape: str = "box",
+) -> Digraph:
+    """
+    Traverse the AST and build a Graphviz graph for png representation.
+
+    Parameters
+    ----------
+    ast : dict
+        The AST as a nested dictionary (full structure version).
+    graph : Digraph
+        The Graphviz graph object.
+    parent : str, optional
+        The identifier of the parent node in the graph, by default
+        it is an empty string
+    shape: str, options: ellipse, box, circle, diamond
+        The shape used for the nodes in the graph. Default "box".
+
+    Returns
+    -------
+    Digraph
+        Graphviz (dot) graph representation.
+    """
+    if not graph:
+        graph = Digraph()
+        graph.attr(rankdir="TB")
+
+    if not isinstance(ast, dict):
+        return graph.unflatten(stagger=3)
+
+    for key, full_value in ast.items():
+        if not isinstance(full_value, dict):
+            continue
+
+        value = full_value.get("value", "")
+        metadata = full_value.get("metadata", {})
+        ref = ""
+
+        if isinstance(metadata, dict):
+            ref = cast(str, metadata.get("ref", ""))
+
+        node_name = f"{hash(key)}_{hash(str(ref))}_{hash(str(value))}"
+        graph.node(node_name, key, shape=shape)
+
+        if parent:
+            graph.edge(parent, node_name)
+
+        if isinstance(value, dict):
+            traverse_ast_png(value, graph, node_name, shape=shape)
+            continue
+        elif not isinstance(value, list):
+            continue
+
+        for item in value:
+            if isinstance(item, dict):
+                traverse_ast_png(item, graph, node_name, shape=shape)
+    return graph.unflatten(stagger=3)
 
 
 def visualize(ast: dict[str, Any] | list[Any], shape: str = "box") -> None:
@@ -76,19 +143,19 @@ def visualize(ast: dict[str, Any] | list[Any], shape: str = "box") -> None:
 
     Parameters
     ----------
-    ast: dict | list
+    ast: dict
             The AST as a nested dictionary
     shape: str, options: ellipse, box, circle, diamond.
         The shape used for the nodes in the graph. Default "box".
     """
-    graph = traverse_ast(ast, shape=shape)
+    graph = traverse_ast_png(ast, shape=shape)
     image = Image(graph.pipe(format="png"))  # type: ignore[no-untyped-call]
     display(image)  # type: ignore[no-untyped-call]
 
 
 def graph_to_ascii_overload(
     self: _AsciiGraphProxy, graph: Digraph, timeout: int = 10
-) -> None:
+) -> str:
     """
     Overload asciinet.graph_to_ascii function.
 
@@ -102,6 +169,12 @@ def graph_to_ascii_overload(
         The Graphviz graph object.
     timeout : int
         Time limit in seconds for requests.post. Default is 10 seconds.
+
+    Returns
+    -------
+    str
+        The ascii graph representation as a string.
+
     """
     try:
         nodes_modhash, edges_modhash, modhash_label_mapping = get_hash_labels(
@@ -122,12 +195,13 @@ def graph_to_ascii_overload(
         # substitute modhash by labels in the ascii representation
         graph_list = list(graph_str)
         for modhash, label in modhash_label_mapping:
-            start = graph_str.index(modhash)
-            end = graph_str.index(modhash) + (len(modhash))
+            start = graph_str.find(modhash)
+            end = graph_str.find(modhash) + (len(modhash))
             graph_list[start:end] = label
 
         graph = "".join(graph_list)
-        return print(graph)
+        return graph  # type: ignore[no-any-return]
+
     except (ConnectionError, Timeout):
         self._restart()
         raise ValueError("Could not convert graph to ASCII")
@@ -146,11 +220,11 @@ def get_hash_labels(
 
     Returns
     -------
-    nodes_modhash : list
+    list
         Hash for ascii representation nodes.
-    edges_modhash : list
+    list
         Hash for ascii representation edges.
-    modhash_label_mapping : list
+    list
         Mapping between nodes hash and labels.
     """
     dot_lines = graph.source.splitlines()
