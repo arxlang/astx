@@ -25,6 +25,8 @@ from graphviz import Digraph
 from IPython.display import Image, display  # type: ignore[attr-defined]
 from msgpack import dumps, loads
 
+from astx.base import ReprStruct
+
 
 def traverse_ast_ascii(
     ast: dict[str, Any] | list[Any],
@@ -76,7 +78,7 @@ def traverse_ast_ascii(
 
 
 def traverse_ast_png(
-    ast: dict[str, Any] | list[Any],
+    ast: ReprStruct,
     graph: Optional[Digraph] = None,
     parent: Optional[str] = None,
     shape: str = "box",
@@ -137,7 +139,7 @@ def traverse_ast_png(
     return graph.unflatten(stagger=3)
 
 
-def visualize(ast: dict[str, Any] | list[Any], shape: str = "box") -> None:
+def visualize(ast: ReprStruct, shape: str = "box") -> None:
     """
     Visualize the abstract syntax tree (AST) using graphviz.
 
