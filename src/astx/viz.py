@@ -297,7 +297,7 @@ def get_hash_labels(
     return nodes_modhash, edges_modhash, modhash_label_mapping
 
 
-def graph_to_ascii(graph: Digraph, timeout: int = 10) -> Any:
+def graph_to_ascii(graph: Digraph, timeout: int = 10) -> str:
     """
     Wrap function for graph_to_ascii.
 
@@ -313,7 +313,8 @@ def graph_to_ascii(graph: Digraph, timeout: int = 10) -> Any:
     if not isinstance(graph, Digraph):
         raise ValueError("graph must be a networkx.Graph")
 
-    return _asciigraph.graph_to_ascii(graph, timeout=timeout)
+    result = _asciigraph.graph_to_ascii(graph, timeout=timeout)
+    return cast(str, result)
 
 
 _asciigraph.graph_to_ascii = types.MethodType(

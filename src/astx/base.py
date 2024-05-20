@@ -160,7 +160,7 @@ class AST(metaclass=ASTMeta):
         """Return an string that represents the object."""
         if not is_using_jupyter_notebook():
             graph = traverse_ast_ascii(self.get_struct(simplified=True))
-            return graph_to_ascii(graph)  # type: ignore[no-any-return]
+            return graph_to_ascii(graph)
         return ""
 
     def _repr_png_(self) -> None:
