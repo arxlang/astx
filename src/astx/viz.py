@@ -25,8 +25,6 @@ from graphviz import Digraph
 from IPython.display import Image, display  # type: ignore[attr-defined]
 from msgpack import dumps, loads
 
-from astx.base import ReprStruct
-
 
 def traverse_ast_ascii(
     ast: dict[str, Any] | list[Any],
@@ -78,7 +76,7 @@ def traverse_ast_ascii(
 
 
 def traverse_ast_png(
-    ast: ReprStruct,
+    ast: dict[str, Any] | list[Any],
     graph: Optional[Digraph] = None,
     parent: Optional[str] = None,
     shape: str = "box",
@@ -139,7 +137,7 @@ def traverse_ast_png(
     return graph.unflatten(stagger=3)
 
 
-def visualize(ast: ReprStruct, shape: str = "box") -> None:
+def visualize(ast: dict[str, Any] | list[Any], shape: str = "box") -> None:
     """
     Visualize the abstract syntax tree (AST) using graphviz.
 
@@ -153,6 +151,32 @@ def visualize(ast: ReprStruct, shape: str = "box") -> None:
     graph = traverse_ast_png(ast, shape=shape)
     image = Image(graph.pipe(format="png"))  # type: ignore[no-untyped-call]
     display(image)  # type: ignore[no-untyped-call]
+
+
+def make_node_box(modhash_label_mapping: list[tuple[str, str]]) -> str:
+    """
+    Make ascii representation for one-node ASTs.
+
+    Parameters
+    ----------
+    modhash_label_mapping : list
+        Mapping between node hash and label.
+
+    Returns
+    -------
+    str
+        The ascii graph representation as a string.
+
+    """
+    label = modhash_label_mapping[0][1]
+    box_width = len(label) + 2
+    space_before_box = " " * 4
+    box_upper = space_before_box + "┌" + "─" * box_width + "┐"
+    box_middle = space_before_box + "│ " + label + " │"
+    box_lower = space_before_box + "└" + "─" * box_width + "┘"
+    box = [box_upper, box_middle, box_lower]
+    node = "\n".join(box)
+    return node
 
 
 def graph_to_ascii_overload(
@@ -183,6 +207,11 @@ def graph_to_ascii_overload(
             graph
         )
 
+        # assuming there won't be more than one node with no edges
+        if not edges_modhash:
+            node = make_node_box(modhash_label_mapping)
+            return node
+
         # Prepare the graph ascii repr
         graph_repr = dumps({"vertices": nodes_modhash, "edges": edges_modhash})
         response = requests.post(self._url, data=graph_repr, timeout=timeout)
@@ -197,8 +226,8 @@ def graph_to_ascii_overload(
         # substitute modhash by labels in the ascii representation
         graph_list = list(graph_str)
         for modhash, label in modhash_label_mapping:
-            start = graph_str.find(modhash)
-            end = graph_str.find(modhash) + (len(modhash))
+            start = graph_str.index(modhash)
+            end = graph_str.index(modhash) + (len(modhash))
             graph_list[start:end] = label
 
         graph = "".join(graph_list)
