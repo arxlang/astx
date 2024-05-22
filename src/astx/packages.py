@@ -14,10 +14,10 @@ from astx.base import (
     ASTKind,
     ASTNodes,
     Expr,
-    ReprStruct,
     SourceLocation,
 )
 from astx.blocks import Block
+from astx.types import ReprStruct
 
 
 @public

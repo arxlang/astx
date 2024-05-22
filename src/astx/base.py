@@ -6,7 +6,10 @@ import json
 
 from abc import abstractmethod
 from enum import Enum
-from typing import ClassVar, Dict, List, Optional, Type, Union, cast
+from typing import ClassVar, Optional, Type, Union, cast
+
+from astx.types import ReprStruct
+from astx.viz import graph_to_ascii, traverse_ast_ascii
 
 try:
     from typing_extensions import TypeAlias
@@ -25,14 +28,6 @@ import yaml
 from public import public
 
 __all__ = ["ExprType"]
-
-PrimitivesStruct: TypeAlias = Union[int, str, float, bool]
-DataTypesStruct: TypeAlias = Union[
-    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
-]
-ReprStruct: TypeAlias = Union[
-    List[DataTypesStruct], Dict[str, DataTypesStruct]
-]
 
 
 def is_using_jupyter_notebook() -> bool:
@@ -157,8 +152,8 @@ class AST(metaclass=ASTMeta):
     def __repr__(self) -> str:
         """Return an string that represents the object."""
         if not is_using_jupyter_notebook():
-            # note: this should be replaced by asciinet approach
-            return str(self)
+            graph = traverse_ast_ascii(self.get_struct(simplified=True))
+            return graph_to_ascii(graph)
         return ""
 
     def _repr_png_(self) -> None:

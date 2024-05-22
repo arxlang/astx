@@ -9,11 +9,11 @@ from astx.base import (
     ASTKind,
     ASTNodes,
     Expr,
-    ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
+from astx.types import ReprStruct
 from astx.variables import InlineVariableDeclaration
 
 

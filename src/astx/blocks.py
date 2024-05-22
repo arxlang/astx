@@ -8,8 +8,8 @@ from public import public
 
 from astx.base import (
     ASTNodes,
-    ReprStruct,
 )
+from astx.types import ReprStruct
 
 
 @public
