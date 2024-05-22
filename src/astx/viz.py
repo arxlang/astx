@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 import types
 
-from typing import Any, Optional, cast
+from typing import Optional, cast
 
 import requests
 
@@ -29,7 +29,7 @@ from astx.types import ReprStruct
 
 
 def traverse_ast_ascii(
-    ast: dict[str, Any] | list[Any],
+    ast: ReprStruct,
     graph: Optional[Digraph] = None,
     parent: Optional[str] = None,
     shape: str = "box",
@@ -60,7 +60,7 @@ def traverse_ast_ascii(
 
     if isinstance(ast, list):
         for item in ast:
-            traverse_ast_ascii(item, graph, parent, shape)
+            traverse_ast_ascii(cast(ReprStruct, item), graph, parent, shape)
     elif isinstance(ast, dict):
         for key, value in ast.items():
             if not parent:
@@ -73,7 +73,9 @@ def traverse_ast_ascii(
                 graph.edge(parent, node_name)
 
             graph.node(node_name, label=key, shape=shape)
-            traverse_ast_ascii(value, graph, node_name, shape)
+            traverse_ast_ascii(
+                cast(ReprStruct, value), graph, node_name, shape
+            )
     return graph
 
 
@@ -139,7 +141,7 @@ def traverse_ast_png(
     return graph.unflatten(stagger=3)
 
 
-def visualize(ast: dict[str, Any] | list[Any], shape: str = "box") -> None:
+def visualize(ast: ReprStruct, shape: str = "box") -> None:
     """
     Visualize the abstract syntax tree (AST) using graphviz.
 
