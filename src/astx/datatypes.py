@@ -12,9 +12,9 @@ from astx.base import (
     ASTKind,
     DataType,
     ExprType,
-    ReprStruct,
     SourceLocation,
 )
+from astx.types import ReprStruct
 
 # Operators
 

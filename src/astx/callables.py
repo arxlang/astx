@@ -13,12 +13,12 @@ from astx.base import (
     DataType,
     Expr,
     ExprType,
-    ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
 from astx.modifiers import ScopeKind, VisibilityKind
+from astx.types import ReprStruct
 from astx.variables import Arguments
 
 

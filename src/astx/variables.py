@@ -12,13 +12,13 @@ from astx.base import (
     ASTNodes,
     Expr,
     ExprType,
-    ReprStruct,
     SourceLocation,
     StatementType,
     Undefined,
 )
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
 from astx.operators import DataTypeOps
+from astx.types import ReprStruct
 
 UNDEFINED = Undefined()
 

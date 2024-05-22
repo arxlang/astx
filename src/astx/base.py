@@ -6,8 +6,9 @@ import json
 
 from abc import abstractmethod
 from enum import Enum
-from typing import ClassVar, Dict, List, Optional, Type, Union, cast
+from typing import ClassVar, Optional, Type, Union, cast
 
+from astx.types import ReprStruct
 from astx.viz import graph_to_ascii, traverse_ast_ascii
 
 try:
@@ -27,14 +28,6 @@ import yaml
 from public import public
 
 __all__ = ["ExprType"]
-
-PrimitivesStruct: TypeAlias = Union[int, str, float, bool]
-DataTypesStruct: TypeAlias = Union[
-    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
-]
-ReprStruct: TypeAlias = Union[
-    List[DataTypesStruct], Dict[str, DataTypesStruct]
-]
 
 
 def is_using_jupyter_notebook() -> bool:
