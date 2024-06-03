@@ -161,6 +161,9 @@ def test_function_call_fibonacci() -> None:
     # Append the Fibonacci function to the module block
     module.block.append(fib_fn)
 
+    assert module.get_struct()
+    assert module.get_struct(simplified=True)
+
 
 def test_function_return() -> None:
     """Test the FunctionReturn class."""
