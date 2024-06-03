@@ -107,7 +107,7 @@ class ForRangeLoop(StatementType):
         self.end = end
         self.step = step
         self.body = body
-        self.kind = ASTKind.ForKind
+        self.kind = ASTKind.ForRangeKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
@@ -180,7 +180,7 @@ class ForCountLoop(StatementType):
         self.condition = condition
         self.update = update
         self.body = body
-        self.kind = ASTKind.ForKind
+        self.kind = ASTKind.ForCountKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
@@ -225,6 +225,57 @@ class ForCountLoop(StatementType):
             **for_cond_struct,
             **for_update_struct,
             **for_body_struct,
+        }
+
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+class While(StatementType):
+    """AST class for `while` statement."""
+
+    condition: Expr
+    body: Block
+
+    def __init__(
+        self,
+        condition: Expr,
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the While instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.condition = condition
+        self.body = body
+        self.kind = ASTKind.WhileKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"While[{self.condition}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        while_condition = self.condition.get_struct(simplified)
+        while_body = self.body.get_struct(simplified)
+
+        while_condition_struct = self._prepare_struct(
+            "condition", while_condition, simplified
+        )
+        while_body_struct = self._prepare_struct(
+            "body", while_body, simplified
+        )
+
+        if not isinstance(while_condition_struct, dict):
+            raise Exception("`while_condition` struct is not a valid object.")
+
+        if not isinstance(while_body_struct, dict):
+            raise Exception("`while_body` struct is not a valid object.")
+
+        key = "WHILE-STMT"
+        value: ReprStruct = {
+            **while_condition_struct,
+            **while_body_struct,
         }
 
         return self._prepare_struct(key, value, simplified)

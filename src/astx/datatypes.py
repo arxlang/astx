@@ -23,6 +23,10 @@ from astx.types import ReprStruct
 class DataTypeOps(DataType):
     """Overload some magic functions used for the main operations."""
 
+    def __hash__(self) -> int:
+        """Ensure that the hash method is not None."""
+        return super().__hash__()
+
     def __add__(self, other: DataType) -> BinaryOp:
         """Overload the magic `add` method."""
         return BinaryOp("+", self, other)

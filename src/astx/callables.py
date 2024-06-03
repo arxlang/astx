@@ -11,7 +11,6 @@ from astx.base import (
     ASTKind,
     ASTNodes,
     DataType,
-    Expr,
     ExprType,
     SourceLocation,
     StatementType,
@@ -23,26 +22,29 @@ from astx.variables import Arguments
 
 
 @public
-class FunctionCall(Expr):
+class FunctionCall(DataType):
     """AST class for function call."""
+
+    fn: Function
+    args: tuple[DataType, ...]
 
     def __init__(
         self,
-        callee: str,
+        fn: Function,
         args: tuple[DataType, ...],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Call instance."""
         super().__init__(loc=loc, parent=parent)
-        self.callee = callee
+        self.fn = fn
         self.args = args
         self.kind = ASTKind.CallKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
         args = [str(arg) for arg in self.args]
-        return f"Call[{self.callee}: {', '.join(args)}]"
+        return f"Call[{self.fn}: {', '.join(args)}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -51,7 +53,7 @@ class FunctionCall(Expr):
         for node in self.args:
             call_args.append(node.get_struct(simplified))
 
-        key = f"FUNCTION-CALL[{self.callee}]"
+        key = f"FUNCTION-CALL[{self.fn}]"
         value = cast(ReprStruct, {"args": call_args})
 
         return self._prepare_struct(key, value, simplified)
@@ -153,13 +155,10 @@ class Function(StatementType):
         self,
         args: tuple[DataType, ...],
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> FunctionCall:
-        """Return a FunctionCall for this call operation."""
-        return FunctionCall(
-            self.prototype.name,
-            args,
-            loc,
-        )
+        """Initialize the Call instance."""
+        return FunctionCall(fn=self, args=args, loc=loc, parent=parent)
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Get the AST structure that represent the object."""

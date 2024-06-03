@@ -6,6 +6,7 @@ import json
 
 from abc import abstractmethod
 from enum import Enum
+from hashlib import sha256
 from typing import ClassVar, Optional, Type, Union, cast
 
 from astx.types import ReprStruct
@@ -89,7 +90,9 @@ class ASTKind(Enum):
 
     # control flow
     IfKind = -500
-    ForKind = -501
+    ForCountKind = -501
+    ForRangeKind = -502
+    WhileKind = -503
 
     # data types
     NullDTKind = -600
@@ -144,6 +147,10 @@ class AST(metaclass=ASTMeta):
         self.comment = ""
         self.parent = parent
         self._update_parent()
+
+    def __hash__(self) -> int:
+        value = sha256(f"{self.get_struct()}".encode("utf8")).digest()
+        return int.from_bytes(value, "big")
 
     def __str__(self) -> str:
         """Return an string that represents the object."""

@@ -60,6 +60,7 @@ from astx.flows import (
     ForCountLoop,
     ForRangeLoop,
     If,
+    While,
 )
 from astx.mixes import (
     NamedExpr,
@@ -156,6 +157,7 @@ __all__ = [
     "Variable",
     "variables",
     "VisibilityKind",
+    "While",
 ]
 
 
