@@ -1,6 +1,19 @@
 # Release Notes
 ---
 
+# [0.13.0](https://github.com/arxlang/astx/compare/0.12.3...0.13.0) (2024-06-03)
+
+
+### Bug Fixes
+
+* set ReprStruct as ast data type in funcs ([#66](https://github.com/arxlang/astx/issues/66)) ([5ac2e73](https://github.com/arxlang/astx/commit/5ac2e739e3f5913843f22075321602b7ce53001d))
+
+
+### Features
+
+* add ascii repr in the console ([#52](https://github.com/arxlang/astx/issues/52)) ([71a9039](https://github.com/arxlang/astx/commit/71a9039795062ac4fb9267b1ce64b41a042549ca))
+* Improve FunctionCall and add support for While AST statement ([#65](https://github.com/arxlang/astx/issues/65)) ([c4adea5](https://github.com/arxlang/astx/commit/c4adea571cdea84b9138f900abb10407a639b806))
+
 ## [0.12.3](https://github.com/arxlang/astx/compare/0.12.2...0.12.3) (2024-05-02)
 
 
