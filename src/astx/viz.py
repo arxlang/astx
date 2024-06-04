@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 import types
 
-from typing import Optional, cast
+from typing import Any, Optional, cast
 
 import requests
 
@@ -84,6 +84,7 @@ def traverse_ast_png(
     graph: Optional[Digraph] = None,
     parent: Optional[str] = None,
     shape: str = "box",
+    edge_label: str = "",
 ) -> Digraph:
     """
     Traverse the AST and build a Graphviz graph for png representation.
@@ -116,26 +117,37 @@ def traverse_ast_png(
         if not isinstance(full_value, dict):
             continue
 
-        value = full_value.get("value", "")
-        metadata = full_value.get("metadata", {})
+        content = full_value.get("content", "")
+        metadata = cast(dict[str, Any], full_value.get("metadata", {}))
         ref = ""
 
-        if isinstance(metadata, dict):
-            ref = cast(str, metadata.get("ref", ""))
+        if not metadata:
+            # if the node doesn't have a metadata, it is a edge
+            traverse_ast_png(
+                full_value,
+                graph,
+                parent,
+                shape=shape,
+                edge_label=key,
+            )
+            continue
 
-        node_name = f"{hash(key)}_{hash(str(ref))}_{hash(str(value))}"
+        ref = cast(str, metadata.get("ref", ""))
+
+        node_name = f"{hash(key)}_{hash(str(ref))}_{hash(str(content))}"
         graph.node(node_name, key, shape=shape)
 
         if parent:
-            graph.edge(parent, node_name)
+            graph_params = {"label": edge_label} if edge_label else {}
+            graph.edge(parent, node_name, **graph_params)
 
-        if isinstance(value, dict):
-            traverse_ast_png(value, graph, node_name, shape=shape)
+        if isinstance(content, dict):
+            traverse_ast_png(content, graph, node_name, shape=shape)
             continue
-        elif not isinstance(value, list):
+        elif not isinstance(content, list):
             continue
 
-        for item in value:
+        for item in content:
             if isinstance(item, dict):
                 traverse_ast_png(item, graph, node_name, shape=shape)
     return graph.unflatten(stagger=3)

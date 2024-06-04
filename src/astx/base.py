@@ -198,7 +198,7 @@ class AST(metaclass=ASTMeta):
         else:
             struct = {
                 key: {
-                    "value": value,
+                    "content": value,
                     "metadata": self._get_metadata(),
                 }
             }

@@ -16,8 +16,6 @@ from astx.base import (
 )
 from astx.types import ReprStruct
 
-# Operators
-
 
 @public
 class DataTypeOps(DataType):
@@ -160,21 +158,11 @@ class BinaryOp(DataTypeOps):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure that represents the object."""
         key = f"BINARY[{self.op_code}]"
-        lhs_struct = self._prepare_struct(
-            "lhs", self.lhs.get_struct(simplified), simplified
-        )
-        rhs_struct = self._prepare_struct(
-            "rhs", self.rhs.get_struct(simplified), simplified
-        )
+        lhs = {"lhs": self.lhs.get_struct(simplified)}
+        rhs = {"rhs": self.rhs.get_struct(simplified)}
 
-        if not isinstance(lhs_struct, dict):
-            raise Exception("`lhs` struct is not a valid object.")
-
-        if not isinstance(rhs_struct, dict):
-            raise Exception("`rhs` struct is not a valid object.")
-
-        value: ReprStruct = {**lhs_struct, **rhs_struct}
-        return self._prepare_struct(key, value, simplified)
+        content: ReprStruct = {**lhs, **rhs}
+        return self._prepare_struct(key, content, simplified)
 
 
 # Data Types

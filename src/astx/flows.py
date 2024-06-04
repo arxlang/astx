@@ -1,6 +1,8 @@
 """Module for controle flow AST."""
 
-from typing import Optional
+from __future__ import annotations
+
+from typing import Any, Optional, cast
 
 from public import public
 
@@ -13,7 +15,7 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
-from astx.types import ReprStruct
+from astx.types import ReprStruct, DataTypesStruct
 from astx.variables import InlineVariableDeclaration
 
 
@@ -49,32 +51,16 @@ class If(StatementType):
         """Return the AST structure of the object."""
         if_condition = self.condition.get_struct(simplified)
         if_then = self.then.get_struct(simplified)
+        if_else: ReprStruct = {}
 
         if self.else_ is not None:
             if_else = self.else_.get_struct(simplified)
-            if_else_struct = self._prepare_struct("ELSE", if_else, simplified)
-        else:
-            if_else_struct = {}
-
-        if_condition_struct = self._prepare_struct(
-            "CONDITION", if_condition, simplified
-        )
-        if_then_struct = self._prepare_struct("THEN", if_then, simplified)
-
-        if not isinstance(if_condition_struct, dict):
-            raise Exception("`if_condition` struct is not a valid object.")
-
-        if not isinstance(if_then_struct, dict):
-            raise Exception("`if_then` struct is not a valid object.")
-
-        if not isinstance(if_else_struct, dict):
-            raise Exception("`if_else` struct is not a valid object.")
 
         key = "IF-STMT"
         value: ReprStruct = {
-            **if_condition_struct,
-            **if_then_struct,
-            **if_else_struct,
+            **cast(dict[str, DataTypesStruct], if_condition),
+            **cast(dict[str, DataTypesStruct], if_then),
+            **cast(dict[str, DataTypesStruct], if_else),
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -124,29 +110,12 @@ class ForRangeLoop(StatementType):
         for_step = self.step.get_struct(simplified)
         for_body = self.body.get_struct(simplified)
 
-        for_start_struct = self._prepare_struct("start", for_start, simplified)
-        for_end_struct = self._prepare_struct("end", for_end, simplified)
-        for_step_struct = self._prepare_struct("step", for_step, simplified)
-        for_body_struct = self._prepare_struct("body", for_body, simplified)
-
-        if not isinstance(for_start_struct, dict):
-            raise Exception("`for_start` struct is not a valid object.")
-
-        if not isinstance(for_end_struct, dict):
-            raise Exception("`for_end` struct is not a valid object.")
-
-        if not isinstance(for_step_struct, dict):
-            raise Exception("`for_step` struct is not a valid object.")
-
-        if not isinstance(for_body_struct, dict):
-            raise Exception("`for_body` struct is not a valid object.")
-
         key = "FOR-RANGE-STMT"
         value: ReprStruct = {
-            **for_start_struct,
-            **for_end_struct,
-            **for_step_struct,
-            **for_body_struct,
+            **cast(DataTypesStruct, for_start),
+            **cast(DataTypesStruct, for_end),
+            **cast(DataTypesStruct, for_step),
+            **cast(DataTypesStruct, for_body),
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -196,35 +165,12 @@ class ForCountLoop(StatementType):
         for_update = self.update.get_struct(simplified)
         for_body = self.body.get_struct(simplified)
 
-        for_init_struct = self._prepare_struct(
-            "initializer", for_init, simplified
-        )
-        for_cond_struct = self._prepare_struct(
-            "condition", for_cond, simplified
-        )
-        for_update_struct = self._prepare_struct(
-            "update", for_update, simplified
-        )
-        for_body_struct = self._prepare_struct("body", for_body, simplified)
-
-        if not isinstance(for_init_struct, dict):
-            raise Exception("`for_init` struct is not a valid object.")
-
-        if not isinstance(for_cond_struct, dict):
-            raise Exception("`for_cond` struct is not a valid object.")
-
-        if not isinstance(for_update_struct, dict):
-            raise Exception("`for_update` struct is not a valid object.")
-
-        if not isinstance(for_body_struct, dict):
-            raise Exception("`for_body` struct is not a valid object.")
-
         key = "FOR-COUNT-STMT"
         value: ReprStruct = {
-            **for_init_struct,
-            **for_cond_struct,
-            **for_update_struct,
-            **for_body_struct,
+            **for_init,
+            **for_cond,
+            **for_update,
+            **for_body,
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -259,23 +205,10 @@ class While(StatementType):
         while_condition = self.condition.get_struct(simplified)
         while_body = self.body.get_struct(simplified)
 
-        while_condition_struct = self._prepare_struct(
-            "condition", while_condition, simplified
-        )
-        while_body_struct = self._prepare_struct(
-            "body", while_body, simplified
-        )
-
-        if not isinstance(while_condition_struct, dict):
-            raise Exception("`while_condition` struct is not a valid object.")
-
-        if not isinstance(while_body_struct, dict):
-            raise Exception("`while_body` struct is not a valid object.")
-
         key = "WHILE-STMT"
         value: ReprStruct = {
-            **while_condition_struct,
-            **while_body_struct,
+            **while_condition,
+            **while_body,
         }
 
         return self._prepare_struct(key, value, simplified)
