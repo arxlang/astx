@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional, cast
+from typing import Optional, cast
 
 from public import public
 
@@ -15,7 +15,7 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
-from astx.types import ReprStruct, DataTypesStruct
+from astx.types import DataTypesStruct, ReprStruct
 from astx.variables import InlineVariableDeclaration
 
 
@@ -112,10 +112,10 @@ class ForRangeLoop(StatementType):
 
         key = "FOR-RANGE-STMT"
         value: ReprStruct = {
-            **cast(DataTypesStruct, for_start),
-            **cast(DataTypesStruct, for_end),
-            **cast(DataTypesStruct, for_step),
-            **cast(DataTypesStruct, for_body),
+            **cast(dict[str, DataTypesStruct], for_start),
+            **cast(dict[str, DataTypesStruct], for_end),
+            **cast(dict[str, DataTypesStruct], for_step),
+            **cast(dict[str, DataTypesStruct], for_body),
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -167,10 +167,10 @@ class ForCountLoop(StatementType):
 
         key = "FOR-COUNT-STMT"
         value: ReprStruct = {
-            **for_init,
-            **for_cond,
-            **for_update,
-            **for_body,
+            **cast(dict[str, DataTypesStruct], for_init),
+            **cast(dict[str, DataTypesStruct], for_cond),
+            **cast(dict[str, DataTypesStruct], for_update),
+            **cast(dict[str, DataTypesStruct], for_body),
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -207,8 +207,8 @@ class While(StatementType):
 
         key = "WHILE-STMT"
         value: ReprStruct = {
-            **while_condition,
-            **while_body,
+            **cast(dict[str, DataTypesStruct], while_condition),
+            **cast(dict[str, DataTypesStruct], while_body),
         }
 
         return self._prepare_struct(key, value, simplified)

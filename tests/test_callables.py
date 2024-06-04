@@ -4,6 +4,8 @@ import pytest
 
 from astx.blocks import Block
 from astx.callables import (
+    Argument,
+    Arguments,
     Function,
     FunctionCall,
     FunctionPrototype,
@@ -11,7 +13,6 @@ from astx.callables import (
 )
 from astx.datatypes import Int32, LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
-from astx.variables import Argument, Arguments
 from astx.viz import visualize
 
 
