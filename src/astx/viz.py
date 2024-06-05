@@ -25,7 +25,7 @@ from graphviz import Digraph
 from IPython.display import Image, display  # type: ignore[attr-defined]
 from msgpack import dumps, loads
 
-from astx.types import ReprStruct
+from astx.types import DictDataTypesStruct, ReprStruct
 
 
 def traverse_ast_ascii(
@@ -79,11 +79,12 @@ def traverse_ast_ascii(
     return graph
 
 
-def traverse_ast_png(
+def traverse_ast_to_graphviz(
     ast: ReprStruct,
     graph: Optional[Digraph] = None,
     parent: Optional[str] = None,
     shape: str = "box",
+    edge_label: str = "",
 ) -> Digraph:
     """
     Traverse the AST and build a Graphviz graph for png representation.
@@ -116,29 +117,40 @@ def traverse_ast_png(
         if not isinstance(full_value, dict):
             continue
 
-        value = full_value.get("value", "")
-        metadata = full_value.get("metadata", {})
+        content = full_value.get("content", "")
+        metadata = cast(DictDataTypesStruct, full_value.get("metadata", {}))
         ref = ""
 
-        if isinstance(metadata, dict):
-            ref = cast(str, metadata.get("ref", ""))
+        if not metadata:
+            # if the node doesn't have a metadata, it is a edge
+            traverse_ast_to_graphviz(
+                full_value,
+                graph,
+                parent,
+                shape=shape,
+                edge_label=key,
+            )
+            continue
 
-        node_name = f"{hash(key)}_{hash(str(ref))}_{hash(str(value))}"
+        ref = cast(str, metadata.get("ref", ""))
+
+        node_name = f"{hash(key)}_{hash(str(ref))}_{hash(str(content))}"
         graph.node(node_name, key, shape=shape)
 
         if parent:
-            graph.edge(parent, node_name)
+            graph_params = {"label": edge_label} if edge_label else {}
+            graph.edge(parent, node_name, **graph_params)
 
-        if isinstance(value, dict):
-            traverse_ast_png(value, graph, node_name, shape=shape)
+        if isinstance(content, dict):
+            traverse_ast_to_graphviz(content, graph, node_name, shape=shape)
             continue
-        elif not isinstance(value, list):
+        elif not isinstance(content, list):
             continue
 
-        for item in value:
+        for item in content:
             if isinstance(item, dict):
-                traverse_ast_png(item, graph, node_name, shape=shape)
-    return graph.unflatten(stagger=3)
+                traverse_ast_to_graphviz(item, graph, node_name, shape=shape)
+    return graph
 
 
 def visualize(ast: ReprStruct, shape: str = "box") -> None:
@@ -152,8 +164,10 @@ def visualize(ast: ReprStruct, shape: str = "box") -> None:
     shape: str, options: ellipse, box, circle, diamond.
         The shape used for the nodes in the graph. Default "box".
     """
-    graph = traverse_ast_png(ast, shape=shape)
-    image = Image(graph.pipe(format="png"))  # type: ignore[no-untyped-call]
+    graph = traverse_ast_to_graphviz(ast, shape=shape)
+    image = Image(  # type: ignore[no-untyped-call]
+        graph.unflatten(stagger=3).pipe(format="png")
+    )
     display(image)  # type: ignore[no-untyped-call]
 
 
@@ -346,7 +360,9 @@ def graph_to_ascii(graph: Digraph, timeout: int = 10) -> str:
         Time limit in seconds for requests.post. Default is 10 seconds.
     """
     if not isinstance(graph, Digraph):
-        raise ValueError("graph must be a networkx.Graph")
+        raise ValueError(
+            f"Graph must be a graphviz.Digraph (`{type(graph)}` was given.)"
+        )
 
     result = _asciigraph.graph_to_ascii(graph, timeout=timeout)
     return cast(str, result)

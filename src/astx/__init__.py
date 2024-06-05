@@ -30,6 +30,8 @@ from astx.blocks import (
     Block,
 )
 from astx.callables import (
+    Argument,
+    Arguments,
     Function,
     FunctionCall,
     FunctionPrototype,
@@ -76,8 +78,6 @@ from astx.operators import (
 )
 from astx.packages import Module, Package, Program, Target
 from astx.variables import (
-    Argument,
-    Arguments,
     InlineVariableDeclaration,
     Variable,
     VariableAssignment,

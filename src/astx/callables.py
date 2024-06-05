@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Any, Optional, cast
 
 from public import public
 
@@ -11,14 +11,80 @@ from astx.base import (
     ASTKind,
     ASTNodes,
     DataType,
+    Expr,
     ExprType,
     SourceLocation,
     StatementType,
+    Undefined,
 )
 from astx.blocks import Block
-from astx.modifiers import ScopeKind, VisibilityKind
+from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
 from astx.types import ReprStruct
-from astx.variables import Arguments
+from astx.variables import Variable
+
+UNDEFINED = Undefined()
+
+
+@public
+class Argument(Variable):
+    """AST class for argument definition."""
+
+    mutability: MutabilityKind
+    name: str
+    type_: ExprType
+    default: Expr
+
+    def __init__(
+        self,
+        name: str,
+        type_: ExprType,
+        mutability: MutabilityKind = MutabilityKind.constant,
+        default: Expr = UNDEFINED,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the VarExprAST instance."""
+        super().__init__(name=name, loc=loc, parent=parent)
+        self.mutability = mutability
+        self.type_ = type_
+        self.default = default
+        self.kind = ASTKind.ArgumentKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        type_ = self.type_.__name__
+        return f"Argument[{self.name}, {type_}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a string that represents the object."""
+        key = f"Argument[{self.name}, {self.type_}] = {self.default}"
+        value = cast(ReprStruct, self.default)
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+class Arguments(ASTNodes):
+    """AST class for argument definition."""
+
+    def __init__(self, *args: Argument, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        for arg in args:
+            self.append(arg)
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Arguments({len(self.nodes)})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a string that represents the object."""
+        args_nodes = []
+
+        for node in self.nodes:
+            args_nodes.append(node.get_struct(simplified))
+
+        key = str(self)
+        value = cast(ReprStruct, args_nodes)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -166,14 +232,8 @@ class Function(StatementType):
         fn_body = self.body.get_struct(simplified)
 
         key = f"FUNCTION[{self.prototype.name}]"
-        args_struct = self._prepare_struct("args", fn_args, simplified)
-        body_struct = self._prepare_struct("body", fn_body, simplified)
-
-        if not isinstance(args_struct, dict):
-            raise Exception("`args` struct is not a valid object.")
-
-        if not isinstance(body_struct, dict):
-            raise Exception("`body` struct is not a valid object.")
+        args_struct = {"args": fn_args}
+        body_struct = {"body": fn_body}
 
         value: ReprStruct = {**args_struct, **body_struct}
         return self._prepare_struct(key, value, simplified)
