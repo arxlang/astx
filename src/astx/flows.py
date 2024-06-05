@@ -15,7 +15,7 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
-from astx.types import DataTypesStruct, ReprStruct
+from astx.types import DictDataTypesStruct, ReprStruct
 from astx.variables import InlineVariableDeclaration
 
 
@@ -58,9 +58,9 @@ class If(StatementType):
 
         key = "IF-STMT"
         value: ReprStruct = {
-            **cast(dict[str, DataTypesStruct], if_condition),
-            **cast(dict[str, DataTypesStruct], if_then),
-            **cast(dict[str, DataTypesStruct], if_else),
+            **cast(DictDataTypesStruct, if_condition),
+            **cast(DictDataTypesStruct, if_then),
+            **cast(DictDataTypesStruct, if_else),
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -112,10 +112,10 @@ class ForRangeLoop(StatementType):
 
         key = "FOR-RANGE-STMT"
         value: ReprStruct = {
-            **cast(dict[str, DataTypesStruct], for_start),
-            **cast(dict[str, DataTypesStruct], for_end),
-            **cast(dict[str, DataTypesStruct], for_step),
-            **cast(dict[str, DataTypesStruct], for_body),
+            **cast(DictDataTypesStruct, for_start),
+            **cast(DictDataTypesStruct, for_end),
+            **cast(DictDataTypesStruct, for_step),
+            **cast(DictDataTypesStruct, for_body),
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -167,10 +167,10 @@ class ForCountLoop(StatementType):
 
         key = "FOR-COUNT-STMT"
         value: ReprStruct = {
-            **cast(dict[str, DataTypesStruct], for_init),
-            **cast(dict[str, DataTypesStruct], for_cond),
-            **cast(dict[str, DataTypesStruct], for_update),
-            **cast(dict[str, DataTypesStruct], for_body),
+            **cast(DictDataTypesStruct, for_init),
+            **cast(DictDataTypesStruct, for_cond),
+            **cast(DictDataTypesStruct, for_update),
+            **cast(DictDataTypesStruct, for_body),
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -207,8 +207,8 @@ class While(StatementType):
 
         key = "WHILE-STMT"
         value: ReprStruct = {
-            **cast(dict[str, DataTypesStruct], while_condition),
-            **cast(dict[str, DataTypesStruct], while_body),
+            **cast(DictDataTypesStruct, while_condition),
+            **cast(DictDataTypesStruct, while_body),
         }
 
         return self._prepare_struct(key, value, simplified)

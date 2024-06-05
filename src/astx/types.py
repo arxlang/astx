@@ -1,5 +1,7 @@
 """AST types module."""
 
+from __future__ import annotations
+
 from typing import Dict, List, Union
 
 try:
@@ -12,6 +14,5 @@ PrimitivesStruct: TypeAlias = Union[int, str, float, bool]
 DataTypesStruct: TypeAlias = Union[
     PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
 ]
-ReprStruct: TypeAlias = Union[
-    List[DataTypesStruct], Dict[str, DataTypesStruct]
-]
+DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
+ReprStruct: TypeAlias = Union[List[DataTypesStruct], DictDataTypesStruct]
