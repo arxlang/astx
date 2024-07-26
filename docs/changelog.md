@@ -1,6 +1,14 @@
 # Release Notes
 ---
 
+## [0.13.1](https://github.com/arxlang/astx/compare/0.13.0...0.13.1) (2024-07-26)
+
+
+### Bug Fixes
+
+* Fix graphviz diagram ([#68](https://github.com/arxlang/astx/issues/68)) ([97fb871](https://github.com/arxlang/astx/commit/97fb8718a7a734193c541e5ac3606ed39f4d5881))
+* Fix IF and FUNCTION-CALL AST struct representation ([#71](https://github.com/arxlang/astx/issues/71)) ([87fffbe](https://github.com/arxlang/astx/commit/87fffbe570271563dddfe1e50322d92a15026c05))
+
 # [0.13.0](https://github.com/arxlang/astx/compare/0.12.3...0.13.0) (2024-06-03)
 
 
