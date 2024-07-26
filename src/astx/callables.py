@@ -114,13 +114,21 @@ class FunctionCall(DataType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        call_args = []
+        call_params = []
 
         for node in self.args:
-            call_args.append(node.get_struct(simplified))
+            call_params.append(node.get_struct(simplified))
 
-        key = f"FUNCTION-CALL[{self.fn}]"
-        value = cast(ReprStruct, {"args": call_args})
+        key = f"FUNCTION-CALL[{self.fn.name}]"
+        value = cast(
+            ReprStruct,
+            {
+                f"Parameters ({len(call_params)})": {
+                    f"param({idx})": param
+                    for idx, param in enumerate(call_params)
+                }
+            },
+        )
 
         return self._prepare_struct(key, value, simplified)
 

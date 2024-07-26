@@ -49,12 +49,12 @@ class If(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        if_condition = self.condition.get_struct(simplified)
-        if_then = self.then.get_struct(simplified)
+        if_condition = {"condition": self.condition.get_struct(simplified)}
+        if_then = {"then-block": self.then.get_struct(simplified)}
         if_else: ReprStruct = {}
 
         if self.else_ is not None:
-            if_else = self.else_.get_struct(simplified)
+            if_else = {"else-block": self.else_.get_struct(simplified)}
 
         key = "IF-STMT"
         value: ReprStruct = {
