@@ -1054,6 +1054,8 @@
       
         
       
+        
+      
     
     
     
@@ -1199,6 +1201,27 @@
   
   <span class="md-ellipsis">
     Adding Nodes into Specific Contexts in ASTx
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/fibonacci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fibonacci Sequence with ASTx
   </span>
   
 
@@ -1554,9 +1577,9 @@
 <span class="normal">175</span>
 <span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReprStruct</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the AST structure of the object.&quot;&quot;&quot;</span>
-    <span class="n">for_init</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)</span>
-    <span class="n">for_cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)</span>
-    <span class="n">for_update</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)</span>
+    <span class="n">for_init</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;initialization&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)}</span>
+    <span class="n">for_cond</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)}</span>
+    <span class="n">for_update</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)}</span>
     <span class="n">for_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)</span>
 
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;FOR-COUNT-STMT&quot;</span>
@@ -1747,9 +1770,9 @@
 <span class="normal">120</span>
 <span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReprStruct</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the AST structure of the object.&quot;&quot;&quot;</span>
-    <span class="n">for_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)</span>
-    <span class="n">for_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)</span>
-    <span class="n">for_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)</span>
+    <span class="n">for_start</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)}</span>
+    <span class="n">for_end</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)}</span>
+    <span class="n">for_step</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;step&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)}</span>
     <span class="n">for_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)</span>
 
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;FOR-RANGE-STMT&quot;</span>
