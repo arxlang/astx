@@ -20,6 +20,7 @@ nav:
       - For Loop: tutorials/for-loop.ipynb
       - Literals: tutorials/literals.ipynb
       - Context: tutorials/context.ipynb
+      - "Example 1: Fibonacci": tutorials/fibonacci.ipynb
 theme:
   name: material
   features:
