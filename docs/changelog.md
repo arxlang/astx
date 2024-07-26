@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.13.2](https://github.com/arxlang/astx/compare/0.13.1...0.13.2) (2024-07-26)
+
+
+### Bug Fixes
+
+* Fix FOR-LOOPs AST structure output ([#72](https://github.com/arxlang/astx/issues/72)) ([8cbb104](https://github.com/arxlang/astx/commit/8cbb1048d8c9eef5e74042f316c1ab0588935c74))
+
 ## [0.13.1](https://github.com/arxlang/astx/compare/0.13.0...0.13.1) (2024-07-26)
 
 
