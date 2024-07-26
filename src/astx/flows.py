@@ -105,9 +105,9 @@ class ForRangeLoop(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        for_start = self.start.get_struct(simplified)
-        for_end = self.end.get_struct(simplified)
-        for_step = self.step.get_struct(simplified)
+        for_start = {"start": self.start.get_struct(simplified)}
+        for_end = {"end": self.end.get_struct(simplified)}
+        for_step = {"step": self.step.get_struct(simplified)}
         for_body = self.body.get_struct(simplified)
 
         key = "FOR-RANGE-STMT"
@@ -160,9 +160,9 @@ class ForCountLoop(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        for_init = self.initializer.get_struct(simplified)
-        for_cond = self.condition.get_struct(simplified)
-        for_update = self.update.get_struct(simplified)
+        for_init = {"initialization": self.initializer.get_struct(simplified)}
+        for_cond = {"condition": self.condition.get_struct(simplified)}
+        for_update = {"update": self.update.get_struct(simplified)}
         for_body = self.body.get_struct(simplified)
 
         key = "FOR-COUNT-STMT"

@@ -27,7 +27,6 @@ jobs:
           pr_sha: ${{ github.event.pull_request.head.sha }}
 
   tests:
-    needs: check-branch
     timeout-minutes: 10
     strategy:
       matrix:
