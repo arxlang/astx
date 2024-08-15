@@ -30,11 +30,17 @@ def test_variable() -> None:
 
 @pytest.mark.parametrize("literal_class", LITERAL_CLASSES)
 def test_literal(literal_class: Type[astx.Literal]) -> None:
-    """Test integer literals."""
+    """Test integer literals for i32."""
     lit_a = literal_class(1)
     lit_b = literal_class(2)
     BinaryOp(op_code="+", lhs=lit_a, rhs=lit_b)
 
+@pytest.mark.parametrize("literal_class", LITERAL_CLASSES)
+def test_literal_i16(literal_class: Type[astx.Literal]) -> None:
+    """Test integer literals for i16."""
+    lit_a = literal_class(1)
+    lit_b = literal_class(2)
+    BinaryOp(op_code="+", lhs=lit_a, rhs=lit_b)
 
 @pytest.mark.parametrize(
     "fn_bin_op,op_code",
@@ -76,6 +82,20 @@ def test_bin_ops(
         (lambda literal_class: -literal_class(1), "-"),
     ],
 )
+@pytest.mark.parametrize("literal_class", LITERAL_CLASSES)
+def test_unary_ops(
+    literal_class: Type[astx.Literal],
+    fn_unary_op: Callable[[Type[astx.Literal]], UnaryOp],
+    op_code: str,
+) -> None:
+    """Test unary operations."""
+    unary_op = fn_unary_op(literal_class)
+    assert unary_op.op_code == op_code
+    assert str(unary_op) != ""
+    assert repr(unary_op) != ""
+    assert unary_op.get_struct() != {}
+    assert unary_op.get_struct(simplified=True) != {}
+
 @pytest.mark.parametrize("literal_class", LITERAL_CLASSES)
 def test_unary_ops(
     literal_class: Type[astx.Literal],

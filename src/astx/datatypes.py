@@ -308,6 +308,7 @@ class LiteralInt32(Literal):
     ) -> None:
         """Initialize LiteralInt32."""
         super().__init__(loc)
+        
         self.value = value
         self.type_ = Int32
         self.loc = loc
