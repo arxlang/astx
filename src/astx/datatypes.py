@@ -215,6 +215,11 @@ class Int64(SignedInteger):
 
     nbytes: int = 8
 
+@public
+class Int128(SignedInteger):
+    """Int128 data type expression"""
+
+    nbytes: int = 16
 
 @public
 class Floating(Number):
@@ -326,6 +331,22 @@ class LiteralInt64(Literal):
         super().__init__(loc)
         self.value = value
         self.type_ = Int64
+        self.loc = loc
+
+
+@public
+class LiteralInt128(Literal):
+    """LiteralInt128 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralInt128."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = Int128
         self.loc = loc
 
 
