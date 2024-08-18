@@ -55,6 +55,7 @@ from astx.datatypes import (
     LiteralInt16,
     LiteralInt32,
     LiteralInt64,
+    LiteralInt128,
     Number,
     SignedInteger,
 )
@@ -134,6 +135,7 @@ __all__ = [
     "LiteralInt32",
     "LiteralInt64",
     "LiteralInt8",
+    "LiteralInt128",
     "mixes",
     "Module",
     "MutabilityKind",
