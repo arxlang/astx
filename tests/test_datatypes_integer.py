@@ -17,6 +17,7 @@ LITERAL_CLASSES = [
     astx.LiteralInt16,
     astx.LiteralInt32,
     astx.LiteralInt64,
+    astx.LiteralInt128,
 ]
 
 
