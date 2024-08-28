@@ -184,6 +184,11 @@ class Integer(Number):
 
 
 @public
+class UnsignedInteger(Integer):
+    """Unsigned integer number data type expression."""
+
+
+@public
 class SignedInteger(Integer):
     """Signed integer number data type expression."""
 
@@ -221,6 +226,13 @@ class Int128(SignedInteger):
     """Int128 data type expression."""
 
     nbytes: int = 16
+
+
+@public
+class UInt8(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 1
 
 
 @public
@@ -349,6 +361,22 @@ class LiteralInt128(Literal):
         super().__init__(loc)
         self.value = value
         self.type_ = Int128
+        self.loc = loc
+
+
+@public
+class LiteralUInt8(Literal):
+    """LiteralUInt8 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt8."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt8
         self.loc = loc
 
 
