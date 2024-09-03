@@ -258,7 +258,7 @@ class UInt64(UnsignedInteger):
 
 
 @public
-class UInt64(UnsignedInteger):
+class UInt128(UnsignedInteger):
     """UInt8 data type expression."""
 
     nbytes: int = 16
