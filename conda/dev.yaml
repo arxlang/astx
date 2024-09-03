@@ -11,5 +11,5 @@ dependencies:
   - pip
   - pip:
       # distlib issue
-      - distlib = 1.1.0
-      - paginate = 0.56
+      - distlib==1.1.0
+      - paginate==0.56
