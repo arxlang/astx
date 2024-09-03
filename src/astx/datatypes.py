@@ -236,6 +236,35 @@ class UInt8(UnsignedInteger):
 
 
 @public
+class UInt16(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 2
+
+
+@public
+class UInt32(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 4
+
+
+
+@public
+class UInt64(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 8
+
+
+@public
+class UInt64(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 16
+
+
+@public
 class Floating(Number):
     """AST for the literal float number."""
 
@@ -374,6 +403,70 @@ class LiteralUInt8(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralUInt8."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt8
+        self.loc = loc
+
+
+@public
+class LiteralUInt16(Literal):
+    """LiteralUInt16 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt16."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt8
+        self.loc = loc
+
+
+@public
+class LiteralUInt32(Literal):
+    """LiteralUInt32 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt32."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt8
+        self.loc = loc
+
+
+@public
+class LiteralUInt64(Literal):
+    """LiteralUInt64 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt64."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt8
+        self.loc = loc
+
+
+@public
+class LiteralUInt128(Literal):
+    """LiteralUInt128 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt128."""
         super().__init__(loc)
         self.value = value
         self.type_ = UInt8
