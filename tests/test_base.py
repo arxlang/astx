@@ -58,7 +58,7 @@ def test_ast_nodes() -> None:
 
     for idx, item in enumerate(block):
         count += 1
-
+        
     assert count == 1
 
 

@@ -249,7 +249,6 @@ class UInt32(UnsignedInteger):
     nbytes: int = 4
 
 
-
 @public
 class UInt64(UnsignedInteger):
     """UInt8 data type expression."""
