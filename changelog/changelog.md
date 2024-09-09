@@ -1,6 +1,14 @@
 # Release Notes
 ---
 
+# [0.14.0](https://github.com/arxlang/astx/compare/0.13.2...0.14.0) (2024-09-09)
+
+
+### Features
+
+* Add support for int128 ([#76](https://github.com/arxlang/astx/issues/76)) ([9dfe465](https://github.com/arxlang/astx/commit/9dfe465eb4b8f53e6cab4be89e41cf8e03045a33))
+* Add support for Unsigned Integers datatypes uint8, uint16, unit32, uint64, uint 128 ([#81](https://github.com/arxlang/astx/issues/81)) ([5a72f95](https://github.com/arxlang/astx/commit/5a72f958b0889fdf60b8b89d6202e99afd085c2c))
+
 ## [0.13.2](https://github.com/arxlang/astx/compare/0.13.1...0.13.2) (2024-07-26)
 
 
