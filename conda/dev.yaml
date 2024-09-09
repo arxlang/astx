@@ -9,7 +9,4 @@ dependencies:
   - nodejs # used by semantic-release
   - shellcheck
   - pip
-  - pip:
-      # distlib issue
-      - distlib
-      - paginate==0.5.6
+
