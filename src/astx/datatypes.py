@@ -436,7 +436,7 @@ class LiteralUInt32(Literal):
         """Initialize LiteralUInt32."""
         super().__init__(loc)
         self.value = value
-        self.type_ = UInt8
+        self.type_ = UInt32
         self.loc = loc
 
 
