@@ -9,6 +9,4 @@ dependencies:
   - nodejs >=18.17 # used by semantic-release
   - shellcheck
   - pip
-  - pip:
-      # distlib issue
-      - paginate
+  
