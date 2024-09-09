@@ -468,7 +468,7 @@ class LiteralUInt128(Literal):
         """Initialize LiteralUInt128."""
         super().__init__(loc)
         self.value = value
-        self.type_ = UInt8
+        self.type_ = UInt128
         self.loc = loc
 
 
