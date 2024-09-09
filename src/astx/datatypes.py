@@ -184,6 +184,11 @@ class Integer(Number):
 
 
 @public
+class UnsignedInteger(Integer):
+    """Unsigned integer number data type expression."""
+
+
+@public
 class SignedInteger(Integer):
     """Signed integer number data type expression."""
 
@@ -219,6 +224,41 @@ class Int64(SignedInteger):
 @public
 class Int128(SignedInteger):
     """Int128 data type expression."""
+
+    nbytes: int = 16
+
+
+@public
+class UInt8(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 1
+
+
+@public
+class UInt16(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 2
+
+
+@public
+class UInt32(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 4
+
+
+@public
+class UInt64(UnsignedInteger):
+    """UInt8 data type expression."""
+
+    nbytes: int = 8
+
+
+@public
+class UInt128(UnsignedInteger):
+    """UInt8 data type expression."""
 
     nbytes: int = 16
 
@@ -349,6 +389,86 @@ class LiteralInt128(Literal):
         super().__init__(loc)
         self.value = value
         self.type_ = Int128
+        self.loc = loc
+
+
+@public
+class LiteralUInt8(Literal):
+    """LiteralUInt8 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt8."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt8
+        self.loc = loc
+
+
+@public
+class LiteralUInt16(Literal):
+    """LiteralUInt16 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt16."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt16
+        self.loc = loc
+
+
+@public
+class LiteralUInt32(Literal):
+    """LiteralUInt32 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt32."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt32
+        self.loc = loc
+
+
+@public
+class LiteralUInt64(Literal):
+    """LiteralUInt64 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt64."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt64
+        self.loc = loc
+
+
+@public
+class LiteralUInt128(Literal):
+    """LiteralUInt128 data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUInt128."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = UInt128
         self.loc = loc
 
 

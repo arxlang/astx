@@ -16,5 +16,5 @@ def test_variable_boolean() -> None:
 def test_literal_boolean() -> None:
     """Test literal boolean."""
     lit_a = LiteralBoolean(value=True)
-    assert type(lit_a) == LiteralBoolean
+    assert isinstance(lit_a, LiteralBoolean)
     assert lit_a.get_struct()
