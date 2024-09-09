@@ -10,4 +10,5 @@ dependencies:
   - shellcheck
   - pip
   - pip:
-    - paginate
+      # distlib issue
+      - paginate
