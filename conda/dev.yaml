@@ -9,4 +9,3 @@ dependencies:
   - nodejs # used by semantic-release
   - shellcheck
   - pip
-
