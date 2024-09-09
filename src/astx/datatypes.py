@@ -452,7 +452,7 @@ class LiteralUInt64(Literal):
         """Initialize LiteralUInt64."""
         super().__init__(loc)
         self.value = value
-        self.type_ = UInt8
+        self.type_ = UInt64
         self.loc = loc
 
 
