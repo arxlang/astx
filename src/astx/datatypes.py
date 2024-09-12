@@ -486,3 +486,51 @@ class LiteralBoolean(Literal):
         self.value = value
         self.type_ = Boolean
         self.loc = loc
+
+
+@public
+class LiteralFloat16(Literal):
+    """LiteralFloat16 data type class."""
+
+    value: float
+
+    def __init__(
+        self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralFloat16."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = Float16
+        self.loc = loc
+
+
+@public
+class LiteralFloat32(Literal):
+    """LiteralFloat32 data type class."""
+
+    value: float
+
+    def __init__(
+        self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralFloat32."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = Float32
+        self.loc = loc
+
+
+@public
+class LiteralFloat64(Literal):
+    """LiteralFloat64 data type class."""
+
+    value: float
+
+    def __init__(
+        self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralFloat64."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = Float64
+        self.loc = loc
