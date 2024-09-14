@@ -168,11 +168,8 @@ class BinaryOp(DataTypeOps):
 # Data Types
 
 
-def new_func(DataTypeOps):
-    return DataTypeOps
-
 @public
-class AnyExpr(new_func(DataTypeOps)):
+class AnyExpr(DataTypeOps):
     """Generic data type expression."""
 
 
@@ -546,7 +543,12 @@ class Complex32(DataTypeOps):
     real: Float32
     imag: Float32
 
-    def __init__(self, real: float, imag: float, loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
+    def __init__(
+        self,
+        real: float,
+        imag: float,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
         """Initialize Complex32."""
         super().__init__(loc)
         self.real = LiteralFloat32(real, loc)
@@ -561,7 +563,10 @@ class Complex32(DataTypeOps):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST representation for the object."""
         key = f"Complex32({self.real.value} + {self.imag.value}j)"
-        value = {"real": self.real.get_struct(simplified), "imag": self.imag.get_struct(simplified)}
+        value = {
+            "real": self.real.get_struct(simplified),
+            "imag": self.imag.get_struct(simplified),
+        }
         return self._prepare_struct(key, value, simplified)
 
 
@@ -572,7 +577,12 @@ class Complex64(DataTypeOps):
     real: Float64
     imag: Float64
 
-    def __init__(self, real: float, imag: float, loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
+    def __init__(
+        self,
+        real: float,
+        imag: float,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
         """Initialize Complex64."""
         super().__init__(loc)
         self.real = LiteralFloat64(real, loc)
@@ -587,5 +597,8 @@ class Complex64(DataTypeOps):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST representation for the object."""
         key = f"Complex64({self.real.value} + {self.imag.value}j)"
-        value = {"real": self.real.get_struct(simplified), "imag": self.imag.get_struct(simplified)}
+        value = {
+            "real": self.real.get_struct(simplified),
+            "imag": self.imag.get_struct(simplified),
+        }
         return self._prepare_struct(key, value, simplified)
