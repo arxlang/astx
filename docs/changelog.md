@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.15.0](https://github.com/arxlang/astx/compare/0.14.0...0.15.0) (2024-09-14)
+
+
+### Features
+
+* Add Support for Float Datatypes (float16, float32, float64) ([#86](https://github.com/arxlang/astx/issues/86)) ([2e48959](https://github.com/arxlang/astx/commit/2e48959725535e9c7aed978199e57feff04ec0a0))
+
 # [0.14.0](https://github.com/arxlang/astx/compare/0.13.2...0.14.0) (2024-09-09)
 
 
