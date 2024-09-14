@@ -168,8 +168,11 @@ class BinaryOp(DataTypeOps):
 # Data Types
 
 
+def new_func(DataTypeOps):
+    return DataTypeOps
+
 @public
-class AnyExpr(DataTypeOps):
+class AnyExpr(new_func(DataTypeOps)):
     """Generic data type expression."""
 
 
@@ -534,3 +537,55 @@ class LiteralFloat64(Literal):
         self.value = value
         self.type_ = Float64
         self.loc = loc
+
+
+@public
+class Complex32(DataTypeOps):
+    """Complex32 data type expression."""
+
+    real: Float32
+    imag: Float32
+
+    def __init__(self, real: float, imag: float, loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
+        """Initialize Complex32."""
+        super().__init__(loc)
+        self.real = LiteralFloat32(real, loc)
+        self.imag = LiteralFloat32(imag, loc)
+        self.type_ = Complex32
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Complex32({self.real.value} + {self.imag.value}j)"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST representation for the object."""
+        key = f"Complex32({self.real.value} + {self.imag.value}j)"
+        value = {"real": self.real.get_struct(simplified), "imag": self.imag.get_struct(simplified)}
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+class Complex64(DataTypeOps):
+    """Complex64 data type expression."""
+
+    real: Float64
+    imag: Float64
+
+    def __init__(self, real: float, imag: float, loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
+        """Initialize Complex64."""
+        super().__init__(loc)
+        self.real = LiteralFloat64(real, loc)
+        self.imag = LiteralFloat64(imag, loc)
+        self.type_ = Complex64
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Complex64({self.real.value} + {self.imag.value}j)"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST representation for the object."""
+        key = f"Complex64({self.real.value} + {self.imag.value}j)"
+        value = {"real": self.real.get_struct(simplified), "imag": self.imag.get_struct(simplified)}
+        return self._prepare_struct(key, value, simplified)
