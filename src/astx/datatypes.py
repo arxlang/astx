@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any,Union,Optional
 from uuid import uuid4
 
 from public import public
@@ -579,8 +579,8 @@ class LiteralComplex64(Literal):
 
     def __init__(
         self,
-        real: float,
-        imag: float,
+        real: Union[float, complex],
+        imag: Optional[float] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize Complex32."""
@@ -613,8 +613,8 @@ class LiteralComplex32(Literal):
 
     def __init__(
         self,
-        real: float,
-        imag: float,
+        real: Union[float, complex],
+        imag: Optional[float] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize Complex32."""
