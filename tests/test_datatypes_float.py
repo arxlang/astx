@@ -53,6 +53,8 @@ def test_literal(literal_class: Type[astx.Literal]) -> None:
         (lambda literal_class: VAR_A % literal_class(1.23), "%"),
     ],
 )
+
+
 @pytest.mark.parametrize("literal_class", FLOAT_LITERAL_CLASSES)
 def test_bin_ops(
     literal_class: Type[astx.Literal],
@@ -75,6 +77,8 @@ def test_bin_ops(
         (lambda literal_class: -literal_class(1.23), "-"),
     ],
 )
+
+
 @pytest.mark.parametrize("literal_class", FLOAT_LITERAL_CLASSES)
 def test_unary_ops(
     literal_class: Type[astx.Literal],

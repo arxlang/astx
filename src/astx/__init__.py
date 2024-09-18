@@ -41,6 +41,8 @@ from astx.datatypes import (
     Boolean,
     Complex32,
     Complex64,
+    LiteralComplex32,
+    LiteralComplex64,
     DataTypeOps,
     Float16,
     Float32,
@@ -192,6 +194,8 @@ __all__ = [
     "While",
     "Complex32",
     "Complex64",
+    "LiteralComplex32",
+    "LiteralComplex64",
 ]
 
 
