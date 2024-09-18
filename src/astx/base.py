@@ -117,6 +117,7 @@ class ASTKind(Enum):
     Time64DTKind = -619
     Decimal128DTKind = -620
     Decimal256DTKind = -621
+    ComplexDTKind = -622
 
 
 class ASTMeta(type):

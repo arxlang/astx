@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional, Union
 from uuid import uuid4
 
 from public import public
@@ -534,3 +534,105 @@ class LiteralFloat64(Literal):
         self.value = value
         self.type_ = Float64
         self.loc = loc
+
+
+@public
+class Complex32(Floating):
+    """Complex number data type expression."""
+
+    nbytes: int = 32
+
+    def __init__(
+        self,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize the Complex data type."""
+        super().__init__(loc=loc)
+        self.type_ = Complex32
+        self.name = "complex"
+        self.kind = ASTKind.ComplexDTKind
+
+
+@public
+class Complex64(Floating):
+    """Complex number data type expression."""
+
+    nbytes: int = 64
+
+    def __init__(
+        self,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize the Complex data type."""
+        super().__init__(loc=loc)
+        self.type_ = Complex32
+        self.name = "complex"
+        self.kind = ASTKind.ComplexDTKind
+
+
+@public
+class LiteralComplex64(Literal):
+    """Complex32 data type expression."""
+
+    real: Float64
+    imag: Float64
+
+    def __init__(
+        self,
+        real: Union[float, complex],
+        imag: Optional[float] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize Complex32."""
+        super().__init__(loc)
+        self.real = LiteralFloat32(real, loc)
+        self.imag = LiteralFloat32(imag, loc)
+        self.type_ = Complex32
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Complex32({self.real.value} + {self.imag.value}j)"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST representation for the object."""
+        key = f"Complex32({self.real.value} + {self.imag.value}j)"
+        value = {
+            "real": self.real.get_struct(simplified),
+            "imag": self.imag.get_struct(simplified),
+        }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+class LiteralComplex32(Literal):
+    """Complex32 data type expression."""
+
+    real: Float32
+    imag: Float32
+
+    def __init__(
+        self,
+        real: Union[float, complex],
+        imag: Optional[float] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize Complex32."""
+        super().__init__(loc)
+        self.real = LiteralFloat32(real, loc)
+        self.imag = LiteralFloat32(imag, loc)
+        self.type_ = Complex32
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Complex32({self.real.value} + {self.imag.value}j)"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST representation for the object."""
+        key = f"Complex32({self.real.value} + {self.imag.value}j)"
+        value = {
+            "real": self.real.get_struct(simplified),
+            "imag": self.imag.get_struct(simplified),
+        }
+        return self._prepare_struct(key, value, simplified)
