@@ -13,8 +13,8 @@ from astx.variables import Variable
 VAR_A = Variable("a")
 
 COMPLEX_LITERAL_CLASSES = [
-    astx.LiteralComplex64,
-    astx.LiteralComplex32,
+    astx.datatypes.LiteralComplex64,
+    astx.datatypes.LiteralComplex32,
 ]
 
 
@@ -64,8 +64,6 @@ def test_complex_bin_ops(
         (lambda literal_class: -literal_class(1.23 + 2.34j), "-"),
     ],
 )
-
-
 @pytest.mark.parametrize("literal_class", COMPLEX_LITERAL_CLASSES)
 def test_complex_unary_ops(
     literal_class: Type[astx.Literal],
