@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any,Union,Optional
+from typing import Any, Optional, Union
 from uuid import uuid4
 
 from public import public
