@@ -72,6 +72,12 @@ from astx.datatypes import (
     UInt64,
     UInt128,
     UnsignedInteger,
+    Complex,
+    Complex32,
+    Complex64,
+    LiteralComplex,
+    LiteralComplex32,
+    LiteralComplex64,
 )
 from astx.flows import (
     ForCountLoop,
@@ -188,6 +194,12 @@ __all__ = [
     "variables",
     "VisibilityKind",
     "While",
+    "Complex",
+    "Complex32",
+    "Complex64",
+    "LiteralComplex",
+    "LiteralComplex32",
+    "LiteralComplex64",
 ]
 
 
