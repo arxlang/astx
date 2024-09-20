@@ -365,7 +365,7 @@ def graph_to_ascii(graph: Digraph, timeout: int = 10) -> str:
         )
 
     result = _asciigraph.graph_to_ascii(graph, timeout=timeout)
-    return cast(str, result)
+    return f"\n{result}\n"
 
 
 _asciigraph.graph_to_ascii = types.MethodType(

@@ -286,7 +286,7 @@ class Undefined(Expr):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a simple structure that represents the object."""
         value = "UNDEFINED"
-        key = "DATA-TYPE"
+        key = "UNDEFINED"
         return self._prepare_struct(key, value, simplified)
 
 
@@ -316,7 +316,7 @@ class DataType(Expr):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a simple structure that represents the object."""
-        key = "DATA-TYPE"
+        key = f"DATA-TYPE[{self.__class__.__name__}]"
         value = self.name
         return self._prepare_struct(key, value, simplified)
 
