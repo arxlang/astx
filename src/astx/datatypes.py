@@ -597,9 +597,12 @@ class LiteralComplex(Literal):
         return f"LiteralComplex({self.value.real} + {self.value.imag}j)"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST representation for the object."""
-        key = f"LiteralComplex[{self.type_}]"
-        value = f"{self.value.real} + {self.value.imag}j"
+        """Return the AST representation for the complex literal."""
+        key = f"{self.__class__.__name__}: {self.value}"
+        value = {
+            "real": self.value.real,
+            "imag": self.value.imag,
+        }
         return self._prepare_struct(key, value, simplified)
 
 
