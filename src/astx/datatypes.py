@@ -599,7 +599,7 @@ class LiteralComplex(Literal):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST representation for the complex literal."""
         key = f"{self.__class__.__name__}: {self.value}"
-        value = {
+        value: ReprStruct = {
             "real": self.value.real,
             "imag": self.value.imag,
         }
