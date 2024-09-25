@@ -1,14 +1,16 @@
-import pytest
-from astx.datatypes import LiteralBoolean
-from astx.datatypes import And, Or, Xor, Not
+"""Test suite for binary operators in the astx datatypes module."""
+
+from astx.datatypes import And, LiteralBoolean, Not, Or, Xor
+
 
 def test_literal_boolean() -> None:
     """Test LiteralBoolean creation."""
     true_lit = LiteralBoolean(True)
     false_lit = LiteralBoolean(False)
-    
+
     assert str(true_lit) == "LiteralBoolean(True)"
     assert str(false_lit) == "LiteralBoolean(False)"
+
 
 def test_boolean_operators() -> None:
     """Test boolean operators."""

@@ -38,7 +38,10 @@ from astx.callables import (
     FunctionReturn,
 )
 from astx.datatypes import (
+    And,
     Boolean,
+    BooleanBinaryOp,
+    BooleanUnaryOp,
     Complex,
     Complex32,
     Complex64,
@@ -70,7 +73,9 @@ from astx.datatypes import (
     LiteralUInt32,
     LiteralUInt64,
     LiteralUInt128,
+    Not,
     Number,
+    Or,
     SignedInteger,
     UInt8,
     UInt16,
@@ -78,12 +83,7 @@ from astx.datatypes import (
     UInt64,
     UInt128,
     UnsignedInteger,
-    BooleanBinaryOp,
-    BooleanUnaryOp,
-    And,
-    Or,
     Xor,
-    Not,
 )
 from astx.flows import (
     ForCountLoop,
