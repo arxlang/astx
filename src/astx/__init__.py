@@ -78,6 +78,12 @@ from astx.datatypes import (
     UInt64,
     UInt128,
     UnsignedInteger,
+    BooleanBinaryOp,
+    BooleanUnaryOp,
+    And,
+    Or,
+    Xor,
+    Not,
 )
 from astx.flows import (
     ForCountLoop,
@@ -200,6 +206,12 @@ __all__ = [
     "LiteralComplex",
     "LiteralComplex32",
     "LiteralComplex64",
+    "BooleanBinaryOp",
+    "BooleanUnaryOp",
+    "And",
+    "Or",
+    "Xor",
+    "Not",
 ]
 
 
