@@ -118,6 +118,9 @@ class ASTKind(Enum):
     Decimal128DTKind = -620
     Decimal256DTKind = -621
 
+    # imports
+    ImportStmtKind = -700
+
 
 class ASTMeta(type):
     def __str__(cls) -> str:
