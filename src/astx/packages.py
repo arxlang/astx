@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 
-from typing import cast
+from typing import Optional, cast
 
 from public import public
 
@@ -148,3 +148,47 @@ class Program(Package):
     def __str__(self) -> str:
         """Return the string representation of the object."""
         return f"PROGRAM[{self.name}]"
+
+
+@public
+class AliasExpr(Expr):
+    """Represents an alias in an import statement."""
+
+    name: str
+    asname: Optional[str]
+
+    def __init__(
+        self,
+        name: str,
+        asname: Optional[str] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.name = name
+        self.asname = asname
+        self.kind = ASTKind.AliasExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the alias."""
+        if self.asname:
+            return f"{self.name} as {self.asname}"
+        else:
+            return self.name
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the alias."""
+        key = "Alias"
+        value = {
+            "name": self.name,
+            "asname": self.asname,
+        }
+        return self._prepare_struct(key, value, simplified)  # type: ignore[arg-type]
+
+
+# error: Argument 2 to "_prepare_struct" of "AST" has incompatible type
+# "Dict[str, List[str]]"; expected "Union[str, ReprStruct]"  [arg-type]
+
+# src/astx/packages.py:186: error: Argument 2 to "_prepare_struct" of
+# "AST" has incompatible type "Dict[str, Optional[str]]"; expected
+# "Union[str, ReprStruct]"  [arg-type]
