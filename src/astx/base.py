@@ -120,6 +120,7 @@ class ASTKind(Enum):
 
     # imports
     ImportStmtKind = -700
+    AliasExprKind = -702
 
 
 class ASTMeta(type):
