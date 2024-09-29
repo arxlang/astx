@@ -120,6 +120,7 @@ class ASTKind(Enum):
 
     # imports
     ImportStmtKind = -700
+    ImportFromStmtKind = -701
     AliasExprKind = -702
 
 
