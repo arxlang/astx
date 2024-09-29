@@ -15,6 +15,7 @@ from astx.base import (
     ASTNodes,
     Expr,
     SourceLocation,
+    StatementType,
 )
 from astx.blocks import Block
 from astx.types import ReprStruct
@@ -192,3 +193,38 @@ class AliasExpr(Expr):
 # src/astx/packages.py:186: error: Argument 2 to "_prepare_struct" of
 # "AST" has incompatible type "Dict[str, Optional[str]]"; expected
 # "Union[str, ReprStruct]"  [arg-type]
+
+
+@public
+class ImportStmt(StatementType):
+    """Represents an import statement."""
+
+    names: list[AliasExpr]
+
+    def __init__(
+        self,
+        names: list[AliasExpr],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.names = names
+        self.kind = ASTKind.ImportStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the import statement."""
+        names_str = ", ".join(str(name) for name in self.names)
+        return f"import {names_str}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the import statement."""
+        key = "Import"
+        name = self.names[0]  # added
+        value = name.get_struct(simplified)  # added
+        # value = [name.get_struct(simplified) for name in self.names] # orign
+        return self._prepare_struct(key, value, simplified)
+
+
+# I believe l. 222 calls get_struct from AliasExpr, which returns a
+# ReprStruct. The way line 222 is written, value will be a list of ReprStruct.
+# self._prepare_struct expects argument 2 to be a ReprStruct, not a list.
