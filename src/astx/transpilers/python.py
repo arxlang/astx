@@ -40,6 +40,13 @@ class ASTxPythonTranspiler:
         raise Exception(f"Not implemented yet ({expr}).")
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AliasExpr) -> str:
+        """Handle AliasExpr nodes."""
+        if self.asname:
+            return f"Import {node.name} as {node.asname}"
+        return f"Import {node.name}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Argument) -> str:
         """Handle UnaryOp nodes."""
         type_ = self.visit(node.type_)
