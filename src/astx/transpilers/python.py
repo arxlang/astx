@@ -70,9 +70,18 @@ class ASTxPythonTranspiler:
         return self._generate_block(node)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportFromStmt) -> str:
+        """Handle ImportFromStmt nodes."""
+        if node.module:
+            return f"from {node.module} import {node.names}"
+        else:
+            level_dots = "." * node.level
+            return f"from {level_dots} import {node.names}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportStmt) -> str:
         """Handle ImportStmt nodes."""
-        return f"Import {node.names}"
+        return f"import {node.names}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Int32]) -> str:
