@@ -43,8 +43,8 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.AliasExpr) -> str:
         """Handle AliasExpr nodes."""
         if self.asname:
-            return f"Import {node.name} as {node.asname}"
-        return f"Import {node.name}"
+            return f"{node.name} as {node.asname}"
+        return f"{node.name}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Argument) -> str:
@@ -68,6 +68,11 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.Block) -> str:
         """Handle Block nodes."""
         return self._generate_block(node)
+
+    # @dispatch  # type: ignore[no-redef]
+    # def visit(self, node: astx.ImportStmt) -> str:
+    #     """Handle ImportStmt nodes."""
+    #     return f"Import {node.names}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Int32]) -> str:
