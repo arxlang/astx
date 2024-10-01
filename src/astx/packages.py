@@ -177,22 +177,98 @@ class AliasExpr(Expr):
         else:
             return self.name
 
+    # def get_struct(self, simplified: bool = False) -> ReprStruct: """Return
+    # the AST structure of the alias.""" key = "Alias" value = { "name":
+    # self.name, "asname": self.asname, } return self._prepare_struct(key,
+    # value, simplified) # Argument 2 to "_prepare_struct" of "AST" has
+    # incompatible type "Dict[str, Optional[str]]"; expected "Union[str,
+    # ReprStruct]"  [arg-type]
+
+    # def get_struct(self, simplified: bool = False) -> ReprStruct:
+    #     """Return the AST structure of the alias."""
+    #     key = "Alias"
+    #
+    #     value_1 = {"name": self.name}
+    #     value_2 = {"asname": self.asname}
+    #
+    #     value: ReprStruct = {
+    #         **value_1,
+    #         **value_2,
+    #     }
+    #
+    # return self._prepare_struct(key, value, simplified) 199: error:
+    # Unpacked dict entry 1 has incompatible type "Dict[str, Optional[str]]";
+    # expected "SupportsKeysAndGetItem[str, Union[int, str, float, Dict[str,
+    # DataTypesStruct], List[DataTypesStruct]]]"  [dict-item]
+
+    #     def get_struct(self, simplified: bool = False) -> ReprStruct:
+    #         """Return the AST structure of the alias."""
+    #         key = "Alias"
+    #
+    #         value_1 = {"name": self.name}
+    #         value_2 = {"asname": self.asname}
+    #
+    #         if self.asname:
+    #             value: ReprStruct = {
+    #                 **value_1,
+    #                 **value_2,
+    #             }
+    #         else:
+    #             value: ReprStruct = value_1
+    #         return self._prepare_struct(key, value, simplified)
+    #
+    #
+    # # 215: error: Unpacked dict entry 1 has incompatible type "Dict[str,
+    # Optional[str]]"; expected "SupportsKeysAndGetItem[str, Union[int, str,
+    # float, Dict[str, DataTypesStruct], List[DataTypesStruct]]]" # 218:
+    # error: Name "value" already defined on line 213
+
+    #     def get_struct(self, simplified: bool = False) -> ReprStruct:
+    #         """Return the AST structure of the alias."""
+    #         key = "Alias"
+    #
+    #         value_1 = {"name": self.name}
+    #
+    #         if self.asname:
+    #             value: ReprStruct = {
+    #                 **value_1,
+    #                 **{"asname": self.asname},
+    #             }
+    #             return self._prepare_struct(key, value, simplified)
+    #         else:
+    #             value: ReprStruct = value_1
+    #         return self._prepare_struct(key, value, simplified)
+    #
+    # # 238: error: Name "value" already defined on line 232
+
+    #     def get_struct(self, simplified: bool = False) -> ReprStruct:
+    #         """Return the AST structure of the alias."""
+    #         key = "Alias"
+    #
+    #         value_1 = {"name": self.name}
+    #
+    #         if self.asname:
+    #             value_1.update({"asname": self.asname})
+    #
+    # value: ReprStruct = value_1 return self._prepare_struct(key, value,
+    # simplified) 252: error: Incompatible types in assignment (expression
+    # has type "Dict[str, str]", variable has type "ReprStruct")  [assignment]
+
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the alias."""
         key = "Alias"
-        value = {
-            "name": self.name,
-            "asname": self.asname,
-        }
-        return self._prepare_struct(key, value, simplified)  # type: ignore[arg-type]
 
+        name_dict = {"name": self.name}
 
-# error: Argument 2 to "_prepare_struct" of "AST" has incompatible type
-# "Dict[str, List[str]]"; expected "Union[str, ReprStruct]"  [arg-type]
+        if self.asname:
+            value_names: ReprStruct = {
+                **name_dict,
+                **{"asname": self.asname},
+            }
+            return self._prepare_struct(key, value_names, simplified)
 
-# src/astx/packages.py:186: error: Argument 2 to "_prepare_struct" of
-# "AST" has incompatible type "Dict[str, Optional[str]]"; expected
-# "Union[str, ReprStruct]"  [arg-type]
+        value_name: ReprStruct = {**name_dict}
+        return self._prepare_struct(key, value_name, simplified)
 
 
 @public
@@ -219,12 +295,139 @@ class ImportStmt(StatementType):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the import statement."""
         key = "Import"
-        name = self.names[0]  # added
-        value = name.get_struct(simplified)  # added
-        # value = [name.get_struct(simplified) for name in self.names] # orign
+        value = cast(
+            ReprStruct, [name.get_struct(simplified) for name in self.names]
+        )
         return self._prepare_struct(key, value, simplified)
 
 
-# I believe l. 222 calls get_struct from AliasExpr, which returns a
-# ReprStruct. The way line 222 is written, value will be a list of ReprStruct.
-# self._prepare_struct expects argument 2 to be a ReprStruct, not a list.
+@public
+class ImportFromStmt(StatementType):
+    """Represents an import-from statement."""
+
+    module: Optional[str]
+    names: list[AliasExpr]
+    level: int  # Represents the level of relative import (number of dots)
+
+    def __init__(
+        self,
+        module: Optional[str],
+        names: list[AliasExpr],
+        level: int = 0,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.module = module
+        self.names = names
+        self.level = level
+        self.kind = ASTKind.ImportFromStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the import-from statement."""
+        level_dots = "." * self.level
+        module_str = (
+            f"{level_dots}{self.module}" if self.module else level_dots
+        )
+        names_str = ", ".join(str(name) for name in self.names)
+        return f"from {module_str} import {names_str}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the import-from statement."""
+        key = "ImportFrom"
+
+        level_dict = {"level": self.level}
+        names_values = cast(
+            ReprStruct, [name.get_struct(simplified) for name in self.names]
+        )
+        names_dict = {"names": names_values}
+
+        if self.module:
+            module_dict = {"module": self.module}
+            value_module: ReprStruct = {
+                **module_dict,
+                **level_dict,
+                **names_dict,
+            }
+            return self._prepare_struct(key, value_module, simplified)
+
+        value: ReprStruct = {
+            **level_dict,
+            **names_dict,
+        }
+        return self._prepare_struct(key, value, simplified)
+
+        # def get_struct(self, simplified: bool = False) -> ReprStruct:
+        #     """Return the AST structure of the import-from statement."""
+        #     key = "ImportFrom"
+        #     value = {
+        #         "module": self.module,
+        #         "level": self.level,
+        #         "names": [
+        #             name.get_struct(simplified) for name in self.names
+        #         ],
+        #     }
+        #     return self._prepare_struct(key, value, simplified)
+
+    # 344: error: Argument 2 to "_prepare_struct" of "AST" has incompatible
+    # type "Dict[str, Union[List[Union[List[DataTypesStruct],
+    # DictDataTypesStruct]], int, str, None]]"; expected
+    # "Union[str, ReprStruct]
+    #
+    # def get_struct(self, simplified: bool = False) -> ReprStruct:
+    #     """Return the AST structure of the import-from statement."""
+    #     key = "ImportFrom"
+    #
+    #     level_dict = {"level": self.level}
+    #     names_values = [
+    #         name.get_struct(simplified) for name in self.names
+    #     ]
+    #     names_dict = {"names": names_values}
+    #
+    #     if self.module:
+    #         module_dict = {"module": self.module}
+    #         value_module: ReprStruct = {
+    #             **module_dict,
+    #             **level_dict,
+    #             **names_dict,
+    #         }
+    #         return self._prepare_struct(key, value_module, simplified)
+    #
+    #     value: ReprStruct = {
+    #         **level_dict,
+    #         **names_dict,
+    #     }
+    #     return self._prepare_struct(key, value, simplified)
+
+    # src/astx/packages.py:383: error: Unpacked dict entry 2 has incompatible
+    # type "Dict[str, List[Union[List[DataTypesStruct],
+    # DictDataTypesStruct]]]"; expected "SupportsKeysAndGetItem[str,
+    # Union[int, str, float, Dict[str, DataTypesStruct],
+    # List[DataTypesStruct]]]"  [dict-item] src/astx/packages.py:389: error:
+    # Unpacked dict entry 1 has incompatible type "Dict[str, List[Union[List[
+    # DataTypesStruct], DictDataTypesStruct]]]"; expected
+    # "SupportsKeysAndGetItem[str, Union[int, str, float, Dict[str,
+    # DataTypesStruct], List[DataTypesStruct]]]"  [dict-item]
+
+
+#     def get_struct(self, simplified: bool = False) -> ReprStruct:
+#         """Return the AST structure of the import-from statement."""
+#         key = "ImportFrom"
+#
+#         module_dict: Dict[str, Union[str, None]] = {"module": self.module}
+#         level_dict = {"level": self.level}
+#         names_values = cast(
+#             ReprStruct, [name.get_struct(simplified) for name in self.names]
+#         )
+#         names_dict = {"names": names_values}
+#
+#         value_module: ReprStruct = {
+#             **module_dict,
+#             **level_dict,
+#             **names_dict,
+#         }
+#         return self._prepare_struct(key, value_module, simplified)
+#
+# 407: error: Unpacked dict entry 0 has incompatible type "Dict[str,
+# Optional[str]]"; expected "SupportsKeysAndGetItem[str, Union[int, str,
+# float, Dict[str, DataTypesStruct], List[DataTypesStruct]]]"
