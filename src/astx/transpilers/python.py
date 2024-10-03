@@ -72,16 +72,25 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromStmt) -> str:
         """Handle ImportFromStmt nodes."""
+        names = [self.visit(name) for name in node.names]
         if node.module:
-            return f"from {node.module} import {node.names}"
+            imports = " \n".join(
+                f"from {node.module} import {x}" for x in names
+            )
+            return imports
         else:
             level_dots = "." * node.level
-            return f"from {level_dots} import {node.names}"
+            imports = " \n".join(
+                f"from {level_dots} import {x}" for x in names
+            )
+            return imports
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportStmt) -> str:
         """Handle ImportStmt nodes."""
-        return f"import {node.names}"
+        names = [self.visit(name) for name in node.names]
+        imports = " \n".join(f"import {x}" for x in names)
+        return imports
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Int32]) -> str:
