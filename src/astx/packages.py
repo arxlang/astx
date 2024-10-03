@@ -291,11 +291,11 @@ class ImportFromStmt(StatementType):
 
     module: Optional[str]
     names: list[AliasExpr]
-    level: int  # Represents the level of relative import (number of dots)
+    level: int
 
     def __init__(
         self,
-        names: list[AliasExpr],  # inverted the order here
+        names: list[AliasExpr],
         module: Optional[str] = None,
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
