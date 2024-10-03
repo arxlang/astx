@@ -42,7 +42,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AliasExpr) -> str:
         """Handle AliasExpr nodes."""
-        if self.asname:
+        if node.asname:
             return f"{node.name} as {node.asname}"
         return f"{node.name}"
 
