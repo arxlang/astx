@@ -313,7 +313,9 @@ class ImportFromStmt(StatementType):  # ISSUES HERE!
         self,
         # names: Optional[list[AliasExpr]] = None,  #
         names: list[AliasExpr],  #
-        module: Optional[str] = None,
+        module: Optional[
+            str
+        ] = "",  # None, # put empty string here to avoid different data types
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
