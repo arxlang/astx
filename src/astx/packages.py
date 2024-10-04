@@ -362,21 +362,29 @@ class ImportFromStmt(StatementType):  # ISSUES HERE!
             [name.get_struct(simplified) for name in self.names],
         )
         names_dict = {"names": names_values}
-
-        if self.module:
-            module_dict = {"module": self.module}
-            value_module: ReprStruct = {
-                **module_dict,
-                **level_dict,
-                **names_dict,
-            }
-            return self._prepare_struct(key, value_module, simplified)
+        module_dict = {"module": self.module} if self.module else {}
 
         value: ReprStruct = {
+            **module_dict,
             **level_dict,
             **names_dict,
         }
+
         return self._prepare_struct(key, value, simplified)
+
+        # if self.module:
+        #     module_dict = {"module": self.module}
+        #     value_module: ReprStruct = {
+        #         **module_dict,
+        #         **level_dict,
+        #         **names_dict,
+        #     }
+        #     return self._prepare_struct(key, value_module, simplified)
+        # value: ReprStruct = {
+        #     **level_dict,
+        #     **names_dict,
+        # }
+        # return self._prepare_struct(key, value, simplified)
 
         # def get_struct(self, simplified: bool = False) -> ReprStruct:
         #     """Return the AST structure of the import-from statement."""
