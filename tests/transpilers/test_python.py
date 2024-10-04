@@ -8,7 +8,7 @@ from astx.transpilers import python as astx2py
 def test_import() -> None:
     """Test astx.ImportStmt and astx.AliasExpr."""
     # Create alias
-    alias1 = astx.AliasExpr(name="math")  # type: ignore[abstract]
+    alias1 = astx.AliasExpr(name="math")
 
     # Create an import statement
     import_stmt = astx.ImportStmt(names=[alias1])
@@ -27,7 +27,7 @@ def test_import() -> None:
 def test_import_with_alias() -> None:
     """Test astx.ImportStmt and astx.AliasExpr using alias."""
     # Create aliases
-    alias2 = astx.AliasExpr(name="os", asname="operating_system")  # type: ignore[abstract]
+    alias2 = astx.AliasExpr(name="os", asname="operating_system")
 
     # Create an import statement
     import_stmt = astx.ImportStmt(names=[alias2])
@@ -46,8 +46,8 @@ def test_import_with_alias() -> None:
 def test_multiple_imports() -> None:  # CHECK THIS WITH IVAN
     """Test astx.ImportStmt and astx.AliasExpr with multiple imports."""
     # Create aliases
-    alias1 = astx.AliasExpr(name="math")  # type: ignore[abstract]
-    alias2 = astx.AliasExpr(name="os", asname="operating_system")  # type: ignore[abstract]
+    alias1 = astx.AliasExpr(name="math")
+    alias2 = astx.AliasExpr(name="os", asname="operating_system")
 
     # Create an import statement
     import_stmt = astx.ImportStmt(names=[alias1, alias2])
@@ -65,7 +65,7 @@ def test_multiple_imports() -> None:  # CHECK THIS WITH IVAN
 
 def test_import_from_no_module() -> None:
     """Test astx.ImportFromStmt with relative import."""
-    alias3 = astx.AliasExpr(name="path")  # type: ignore[abstract]
+    alias3 = astx.AliasExpr(name="path")
 
     import_from_stmt = astx.ImportFromStmt(names=[alias3], level=1)
     # Initialize the generator
@@ -82,7 +82,7 @@ def test_import_from_no_module() -> None:
 def test_import_from_with_module_and_alias() -> None:
     """Test astx.ImportFromStmt importing from module."""
     # Create an import-from statement
-    alias3 = astx.AliasExpr(name="path", asname="p")  # type: ignore[abstract]
+    alias3 = astx.AliasExpr(name="path", asname="p")
 
     import_from_stmt = astx.ImportFromStmt(
         module="os", names=[alias3], level=0

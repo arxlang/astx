@@ -254,6 +254,22 @@ class AliasExpr(Expr):
     # simplified) 252: error: Incompatible types in assignment (expression
     # has type "Dict[str, str]", variable has type "ReprStruct")  [assignment]
 
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the alias."""
+        key = "Alias"
+
+        name_dict = {"name": self.name}
+
+        if self.asname:
+            value_names: ReprStruct = {
+                **name_dict,
+                **{"asname": self.asname},
+            }
+            return self._prepare_struct(key, value_names, simplified)
+
+        value_name: ReprStruct = {**name_dict}
+        return self._prepare_struct(key, value_name, simplified)
+
 
 @public
 class ImportStmt(StatementType):
@@ -286,7 +302,7 @@ class ImportStmt(StatementType):
 
 
 @public
-class ImportFromStmt(StatementType):
+class ImportFromStmt(StatementType):  # ISSUES HERE!
     """Represents an import-from statement."""
 
     module: Optional[str]

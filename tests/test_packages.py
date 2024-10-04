@@ -2,7 +2,14 @@
 
 from astx.datatypes import Int32, LiteralInt32
 from astx.operators import BinaryOp
-from astx.packages import Module, Package, Program, Target
+from astx.packages import (
+    AliasExpr,
+    ImportStmt,
+    Module,
+    Package,
+    Program,
+    Target,
+)
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize
 
@@ -83,3 +90,14 @@ def test_program() -> None:
     assert program.get_struct(simplified=True)
 
     visualize(program.get_struct())
+
+
+def test_import() -> None:
+    """Test astx.ImportFromStmt importing from module."""
+    # Create an import-from statement
+    alias3 = AliasExpr(name="path", asname="p")
+
+    import_stmt = ImportStmt(names=[alias3])
+
+    assert import_stmt.get_struct()
+    assert import_stmt.get_struct(simplified=True)
