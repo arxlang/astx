@@ -290,12 +290,13 @@ class ImportFromStmt(StatementType):
     """Represents an import-from statement."""
 
     module: Optional[str]
-    names: list[AliasExpr]
+    names: list[AliasExpr]  #
     level: int
 
     def __init__(
         self,
-        names: list[AliasExpr],
+        # names: Optional[list[AliasExpr]] = None,  #
+        names: list[AliasExpr],  #
         module: Optional[str] = None,
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
@@ -303,6 +304,7 @@ class ImportFromStmt(StatementType):
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.module = module
+        # self.names = names or []  # does this work?
         self.names = names
         self.level = level
         self.kind = ASTKind.ImportFromStmtKind
@@ -313,6 +315,10 @@ class ImportFromStmt(StatementType):
         module_str = (
             f"{level_dots}{self.module}" if self.module else level_dots
         )
+        # if self.names:
+        #     names_str = ", ".join(str(name) for name in self.names)
+        # else:
+        #     names_str = "*"
         names_str = ", ".join(str(name) for name in self.names)
         return f"from {module_str} import {names_str}"
 
@@ -321,8 +327,21 @@ class ImportFromStmt(StatementType):
         key = "ImportFrom"
 
         level_dict = {"level": self.level}
+        # if self.names:
+        #     names_values = cast(
+        #         ReprStruct,
+        #         [name.get_struct(simplified) for name in self.names],
+        #     )
+        #     names_dict = {"names": names_values}
+        # else:
+        #     names_dict = {"names": "*"}
+        # src/astx/packages.py:337: error: Dict entry 0 has incompatible type
+        # "str": "str"; expected "str": "Union[List[DataTypesStruct],
+        # DictDataTypesStruct]"  [dict-item]
+
         names_values = cast(
-            ReprStruct, [name.get_struct(simplified) for name in self.names]
+            ReprStruct,
+            [name.get_struct(simplified) for name in self.names],
         )
         names_dict = {"names": names_values}
 
