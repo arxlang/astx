@@ -4,6 +4,7 @@ from astx.datatypes import Int32, LiteralInt32
 from astx.operators import BinaryOp
 from astx.packages import (
     AliasExpr,
+    ImportFromStmt,
     ImportStmt,
     Module,
     Package,
@@ -101,3 +102,14 @@ def test_import() -> None:
 
     assert import_stmt.get_struct()
     assert import_stmt.get_struct(simplified=True)
+
+
+def test_import_from() -> None:
+    """Test astx.ImportFromStmt importing from module."""
+    # Create an import-from statement
+    alias3 = AliasExpr(name="path", asname="p")
+
+    import_from_stmt = ImportFromStmt(module="os", names=[alias3], level=0)
+
+    assert import_from_stmt.get_struct()
+    assert import_from_stmt.get_struct(simplified=True)
