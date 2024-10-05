@@ -29,7 +29,7 @@ def test_transpiler_import_from() -> None:
     alias = astx.AliasExpr(name="pyplot", asname="plt")
 
     import_from_stmt = astx.ImportFromStmt(
-        module="matplotlib", names=[alias], level=1
+        module="matplotlib", names=[alias], level=0
     )
 
     # Initialize the generator
