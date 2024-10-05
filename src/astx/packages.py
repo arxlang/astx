@@ -182,7 +182,7 @@ class AliasExpr(Expr):
         key = "Alias"
 
         name_dict = {"name": self.name}
-        asname_dict = {"asname": self.name} if self.asname else {}
+        asname_dict = {"asname": self.asname} if self.asname else {}
         value: ReprStruct = {
             **name_dict,
             **asname_dict,
