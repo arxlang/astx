@@ -203,7 +203,10 @@ class ImportStmt(StatementType):
         parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
-        self.names = names
+        if isinstance(names, list):
+            self.names = names
+        else:
+            self.names = [names]
         self.kind = ASTKind.ImportStmtKind
 
     def __str__(self) -> str:
@@ -221,7 +224,7 @@ class ImportStmt(StatementType):
 
 
 @public
-class ImportFromStmt(StatementType):  # ISSUES HERE!
+class ImportFromStmt(StatementType):
     """Represents an import-from statement."""
 
     module: Optional[str]
@@ -231,10 +234,8 @@ class ImportFromStmt(StatementType):  # ISSUES HERE!
     def __init__(
         self,
         # names: Optional[list[AliasExpr]] = None,  #
-        names: list[AliasExpr],  #
-        module: Optional[
-            str
-        ] = "",  # None, # put empty string here to avoid different data types
+        names: list[AliasExpr],
+        module: Optional[str] = "",
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -242,13 +243,11 @@ class ImportFromStmt(StatementType):  # ISSUES HERE!
         super().__init__(loc=loc, parent=parent)
         self.module = module
         # self.names = names or []  # does this work?
-        if not isinstance(names, list):
-            self.names = [names]
-        else:
+        if isinstance(names, list):
             self.names = names
-        # self.names = [names] if not isinstance(names, list) else names #
-        # error: List item 0 has incompatible type "List[AliasExpr]"; expected
-        # "AliasExpr"
+        else:
+            self.names = [names]
+
         self.level = level
         self.kind = ASTKind.ImportFromStmtKind
 
