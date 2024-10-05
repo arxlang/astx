@@ -228,7 +228,7 @@ class ImportFromStmt(StatementType):
     """Represents an import-from statement."""
 
     module: Optional[str]
-    names: list[AliasExpr]  #
+    names: list[AliasExpr]
     level: int
 
     def __init__(
