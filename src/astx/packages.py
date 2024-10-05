@@ -246,6 +246,9 @@ class ImportFromStmt(StatementType):  # ISSUES HERE!
             self.names = [names]
         else:
             self.names = names
+        # self.names = [names] if not isinstance(names, list) else names #
+        # error: List item 0 has incompatible type "List[AliasExpr]"; expected
+        # "AliasExpr"
         self.level = level
         self.kind = ASTKind.ImportFromStmtKind
 
