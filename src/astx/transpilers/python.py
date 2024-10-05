@@ -89,8 +89,10 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.ImportStmt) -> str:
         """Handle ImportStmt nodes."""
         names = [self.visit(name) for name in node.names]
-        imports = " \n".join(f"import {x}" for x in names)
-        return imports
+        names_ = ", ".join(x for x in names)
+        return f"import {names_}"
+        # imports = " \n".join(f"import {x}" for x in names)
+        # return imports
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Int32]) -> str:
