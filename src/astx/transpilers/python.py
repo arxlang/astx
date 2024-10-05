@@ -88,13 +88,11 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportStmt) -> str:
         """Handle ImportStmt nodes."""
-        if not isinstance(node.names, list):  ##
+        if not isinstance(node.names, list):
             node.names = [node.names]
         names = [self.visit(name) for name in node.names]
-        names_ = ", ".join(x for x in names)
-        return f"import {names_}"
-        # imports = " \n".join(f"import {x}" for x in names)
-        # return imports
+        names_str = ", ".join(x for x in names)
+        return f"import {names_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Int32]) -> str:
