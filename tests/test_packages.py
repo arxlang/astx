@@ -94,11 +94,12 @@ def test_program() -> None:
 
 
 def test_import() -> None:
-    """Test astx.ImportFromStmt importing from module."""
-    # Create an import-from statement
-    alias3 = AliasExpr(name="path", asname="p")
+    """Test astx.ImportStmt multiple imports."""
+    alias1 = AliasExpr(name="math")
+    alias2 = AliasExpr(name="matplotlib", asname="mtlb")
 
-    import_stmt = ImportStmt(names=[alias3])
+    # Create an import statement
+    import_stmt = ImportStmt(names=[alias1, alias2])
 
     assert import_stmt.get_struct()
     assert import_stmt.get_struct(simplified=True)
@@ -106,10 +107,30 @@ def test_import() -> None:
 
 def test_import_from() -> None:
     """Test astx.ImportFromStmt importing from module."""
-    # Create an import-from statement
-    alias3 = AliasExpr(name="path", asname="p")
+    alias4 = AliasExpr(name="pyplot", asname="plt")
 
-    import_from_stmt = ImportFromStmt(module="os", names=[alias3], level=0)
+    import_from_stmt = ImportFromStmt(
+        module="matplotlib", names=[alias4], level=1
+    )
 
+    assert import_from_stmt.get_struct()
+    assert import_from_stmt.get_struct(simplified=True)
+
+
+def test_import_from_wildcard() -> None:
+    """Test astx.ImportFromStmt wildcard import from module."""
+    alias6 = AliasExpr(name="*")
+
+    import_from_stmt = ImportFromStmt(module="matplotlib", names=[alias6])
+
+    assert import_from_stmt.get_struct()
+    assert import_from_stmt.get_struct(simplified=True)
+
+
+def test_import_from_future() -> None:
+    """Test astx.ImportFromStmt from future import."""
+    alias7 = AliasExpr(name="division")
+
+    import_from_stmt = ImportFromStmt(module="__future__", names=[alias7])
     assert import_from_stmt.get_struct()
     assert import_from_stmt.get_struct(simplified=True)

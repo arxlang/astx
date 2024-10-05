@@ -203,10 +203,7 @@ class ImportStmt(StatementType):
         parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
-        if isinstance(names, list):
-            self.names = names
-        else:
-            self.names = [names]
+        self.names = names
         self.kind = ASTKind.ImportStmtKind
 
     def __str__(self) -> str:
@@ -233,7 +230,6 @@ class ImportFromStmt(StatementType):
 
     def __init__(
         self,
-        # names: Optional[list[AliasExpr]] = None,  #
         names: list[AliasExpr],
         module: Optional[str] = "",
         level: int = 0,
@@ -242,12 +238,7 @@ class ImportFromStmt(StatementType):
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.module = module
-        # self.names = names or []  # does this work?
-        if isinstance(names, list):
-            self.names = names
-        else:
-            self.names = [names]
-
+        self.names = names
         self.level = level
         self.kind = ASTKind.ImportFromStmtKind
 
