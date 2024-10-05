@@ -203,7 +203,10 @@ class ImportStmt(StatementType):
         parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
-        self.names = names
+        if isinstance(names, list):
+            self.names = names
+        else:
+            self.names = [names]
         self.kind = ASTKind.ImportStmtKind
 
     def __str__(self) -> str:
