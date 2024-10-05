@@ -93,7 +93,7 @@ def test_program() -> None:
     visualize(program.get_struct())
 
 
-def test_import() -> None:
+def test_multiple_imports() -> None:
     """Test astx.ImportStmt multiple imports."""
     alias1 = AliasExpr(name="math")
     alias2 = AliasExpr(name="matplotlib", asname="mtlb")
@@ -117,7 +117,7 @@ def test_import_from() -> None:
     assert import_from_stmt.get_struct(simplified=True)
 
 
-def test_import_from_wildcard() -> None:
+def test_wildcard_import_from() -> None:
     """Test astx.ImportFromStmt wildcard import from module."""
     alias6 = AliasExpr(name="*")
 
