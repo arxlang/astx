@@ -5,49 +5,10 @@ import astx
 from astx.transpilers import python as astx2py
 
 
-def test_import() -> None:
-    """Test astx.ImportStmt and astx.AliasExpr."""
-    # Create alias
+def test_transpiler_multiple_imports() -> None:
+    """Test astx.ImportStmt multiple imports."""
     alias1 = astx.AliasExpr(name="math")
-
-    # Create an import statement
-    import_stmt = astx.ImportStmt(names=[alias1])
-
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
-    # Generate Python code
-    generated_code = generator.visit(import_stmt)
-
-    expected_code = "import math"
-
-    assert generated_code == expected_code, "generated_code != expected_code"
-
-
-def test_import_with_alias() -> None:
-    """Test astx.ImportStmt and astx.AliasExpr using alias."""
-    # Create aliases
-    alias2 = astx.AliasExpr(name="os", asname="operating_system")
-
-    # Create an import statement
-    import_stmt = astx.ImportStmt(names=[alias2])
-
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
-    # Generate Python code
-    generated_code = generator.visit(import_stmt)
-
-    expected_code = "import os as operating_system"
-
-    assert generated_code == expected_code, "generated_code != expected_code"
-
-
-def test_multiple_imports() -> None:  # CHECK THIS WITH IVAN
-    """Test astx.ImportStmt and astx.AliasExpr with multiple imports."""
-    # Create aliases
-    alias1 = astx.AliasExpr(name="math")
-    alias2 = astx.AliasExpr(name="os", asname="operating_system")
+    alias2 = astx.AliasExpr(name="matplotlib", asname="mtlb")
 
     # Create an import statement
     import_stmt = astx.ImportStmt(names=[alias1, alias2])
@@ -58,35 +19,19 @@ def test_multiple_imports() -> None:  # CHECK THIS WITH IVAN
     # Generate Python code
     generated_code = generator.visit(import_stmt)
 
-    expected_code = "import math \nimport os as operating_system"
+    expected_code = "import math, matplotlib as mtlb"
 
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
-def test_import_from_no_module() -> None:
-    """Test astx.ImportFromStmt with relative import."""
-    alias3 = astx.AliasExpr(name="path")
-
-    import_from_stmt = astx.ImportFromStmt(names=[alias3], level=1)
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
-    # Generate Python code
-    generated_code = generator.visit(import_from_stmt)
-
-    expected_code = "from . import path"
-
-    assert generated_code == expected_code, "generated_code != expected_code"
-
-
-def test_import_from_with_module_and_alias() -> None:
+def test_transpiler_import_from() -> None:
     """Test astx.ImportFromStmt importing from module."""
-    # Create an import-from statement
-    alias3 = astx.AliasExpr(name="path", asname="p")
+    alias = astx.AliasExpr(name="pyplot", asname="plt")
 
     import_from_stmt = astx.ImportFromStmt(
-        module="os", names=[alias3], level=0
+        module="matplotlib", names=[alias], level=1
     )
+
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
@@ -96,12 +41,46 @@ def test_import_from_with_module_and_alias() -> None:
     # print generated code
     generated_code
 
-    expected_code = "from os import path as p"
+    expected_code = "from matplotlib import pyplot as plt"
 
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
-def test_function() -> None:
+def test_transpiler_wildcard_import_from() -> None:
+    """Test astx.ImportFromStmt wildcard import from module."""
+    alias = astx.AliasExpr(name="*")
+
+    import_from_stmt = astx.ImportFromStmt(module="matplotlib", names=[alias])
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(import_from_stmt)
+
+    expected_code = "from matplotlib import *"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_transpiler_future_import_from() -> None:
+    """Test astx.ImportFromStmt from future import."""
+    alias = astx.AliasExpr(name="division")
+
+    import_from_stmt = astx.ImportFromStmt(module="__future__", names=[alias])
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(import_from_stmt)
+
+    expected_code = "from __future__ import division"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_transpiler_function() -> None:
     """Test astx.Function."""
     # Function parameters
     args = astx.Arguments(
