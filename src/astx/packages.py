@@ -242,7 +242,10 @@ class ImportFromStmt(StatementType):  # ISSUES HERE!
         super().__init__(loc=loc, parent=parent)
         self.module = module
         # self.names = names or []  # does this work?
-        self.names = names
+        if not isinstance(names, list):
+            self.names = [names]
+        else:
+            self.names = names
         self.level = level
         self.kind = ASTKind.ImportFromStmtKind
 
