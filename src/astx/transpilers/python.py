@@ -74,24 +74,11 @@ class ASTxPythonTranspiler:
         """Handle ImportFromStmt nodes."""
         names = [self.visit(name) for name in node.names]
         level_dots = "." * node.level
-        # module = node.module if node.module else ""
         module_str = (
             f"{level_dots}{node.module}" if node.module else level_dots
         )
         names_str = ", ".join(str(name) for name in names)
         return f"from {module_str} import {names_str}"
-        #
-        # if node.module:
-        #     imports = " \n".join(
-        #         f"from {node.module} import {x}" for x in names
-        #     )
-        #     return imports
-        # else:
-        #     level_dots = "." * node.level
-        #     imports = " \n".join(
-        #         f"from {level_dots} import {x}" for x in names
-        #     )
-        #     return imports
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportStmt) -> str:
