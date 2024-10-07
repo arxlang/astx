@@ -22,6 +22,7 @@ graphviz = ">=0.20.1"
 asciinet = ">=0.3.1"
 msgpack = ">=1"
 plum-dispatch = ">=2.0"
+typeguard = ">=4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.3.2"
