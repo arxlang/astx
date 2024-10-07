@@ -2,7 +2,15 @@
 
 from astx.datatypes import Int32, LiteralInt32
 from astx.operators import BinaryOp
-from astx.packages import Module, Package, Program, Target
+from astx.packages import (
+    AliasExpr,
+    ImportFromStmt,
+    ImportStmt,
+    Module,
+    Package,
+    Program,
+    Target,
+)
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize
 
@@ -83,3 +91,46 @@ def test_program() -> None:
     assert program.get_struct(simplified=True)
 
     visualize(program.get_struct())
+
+
+def test_multiple_imports() -> None:
+    """Test ImportStmt multiple imports."""
+    alias1 = AliasExpr(name="math")
+    alias2 = AliasExpr(name="matplotlib", asname="mtlb")
+
+    # Create an import statement
+    import_stmt = ImportStmt(names=[alias1, alias2])
+
+    assert import_stmt.get_struct()
+    assert import_stmt.get_struct(simplified=True)
+
+
+def test_import_from() -> None:
+    """Test ImportFromStmt importing from module."""
+    alias = AliasExpr(name="pyplot", asname="plt")
+
+    import_from_stmt = ImportFromStmt(
+        module="matplotlib", names=[alias], level=1
+    )
+
+    assert import_from_stmt.get_struct()
+    assert import_from_stmt.get_struct(simplified=True)
+
+
+def test_wildcard_import_from() -> None:
+    """Test ImportFromStmt wildcard import from module."""
+    alias = AliasExpr(name="*")
+
+    import_from_stmt = ImportFromStmt(module="matplotlib", names=[alias])
+
+    assert import_from_stmt.get_struct()
+    assert import_from_stmt.get_struct(simplified=True)
+
+
+def test_future_import_from() -> None:
+    """Test ImportFromStmt from future import."""
+    alias = AliasExpr(name="division")
+
+    import_from_stmt = ImportFromStmt(module="__future__", names=[alias])
+    assert import_from_stmt.get_struct()
+    assert import_from_stmt.get_struct(simplified=True)
