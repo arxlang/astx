@@ -4,7 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - graphviz
-  - openjdk 17.* # java is required by asciinet
+  - openjdk # java is required by asciinet
   - python
   - poetry >=1.5
   - nodejs # used by semantic-release
