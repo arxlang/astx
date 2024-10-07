@@ -161,7 +161,7 @@ class AliasExpr(Expr):
     def __init__(
         self,
         name: str,
-        asname: Optional[str] = None,
+        asname: str = "",
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -203,10 +203,7 @@ class ImportStmt(StatementType):
         parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
-        if isinstance(names, list):
-            self.names = names
-        else:
-            self.names = [names]
+        self.names = names
         self.kind = ASTKind.ImportStmtKind
 
     def __str__(self) -> str:
@@ -234,7 +231,7 @@ class ImportFromStmt(StatementType):
     def __init__(
         self,
         names: list[AliasExpr],
-        module: Optional[str] = "",
+        module: str = "",
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
