@@ -11,7 +11,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  release:
+  documentation:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -34,7 +34,7 @@ jobs:
           activate-environment: astx
           auto-update-conda: true
           conda-solver: libmamba
-          python-version: "3.8.1"
+          python-version: "3.9.*"
 
       - name: Install deps
         run: |
