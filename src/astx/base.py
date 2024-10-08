@@ -125,6 +125,8 @@ class ASTKind(Enum):
     ImportStmtKind = -700
     ImportFromStmtKind = -701
     AliasExprKind = -702
+    ImportExprKind = -800
+    ImportFromExprKind = -801
 
 
 class ASTMeta(type):
