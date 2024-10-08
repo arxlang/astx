@@ -12,6 +12,7 @@ from __future__ import annotations
 from typing import Optional, Type
 
 from public import public
+from typeguard import typechecked
 
 from astx.mixes import NamedExpr
 
@@ -25,6 +26,7 @@ class ScopeNodeBase:
     default_parent: Optional[ScopeNodeBase] = None
     named_expr: dict[str, NamedExpr]
 
+    @typechecked
     def __init__(
         self, name: str, parent: Optional[ScopeNodeBase] = None
     ) -> None:
@@ -52,6 +54,7 @@ class Scope:
     previous: Optional[ScopeNodeBase]
     scope_node_class: Type[ScopeNodeBase]
 
+    @typechecked
     def __init__(
         self,
         scope_node_class: Type[ScopeNodeBase] = ScopeNode,
@@ -115,6 +118,7 @@ class SymbolTable:
 
     scopes: Scope
 
+    @typechecked
     def __init__(self) -> None:
         self.scopes = Scope()
 

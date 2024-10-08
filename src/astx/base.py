@@ -9,6 +9,8 @@ from enum import Enum
 from hashlib import sha256
 from typing import ClassVar, Optional, Type, Union, cast
 
+from typeguard import typechecked
+
 from astx.types import ReprStruct
 from astx.viz import graph_to_ascii, traverse_ast_ascii
 
@@ -48,6 +50,7 @@ class SourceLocation:
     line: int
     col: int
 
+    @typechecked
     def __init__(self, line: int, col: int):
         self.line = line
         self.col = col
@@ -140,6 +143,7 @@ class AST(metaclass=ASTMeta):
     parent: Optional[ASTNodes] = None
     ref: str
 
+    @typechecked
     def __init__(
         self,
         loc: SourceLocation = NO_SOURCE_LOCATION,
@@ -232,6 +236,7 @@ class ASTNodes(AST):
     nodes: list[AST]
     position: int = 0
 
+    @typechecked
     def __init__(
         self,
         name: str = "entry",
@@ -303,6 +308,7 @@ class DataType(Expr):
     name: str
     _tmp_id: ClassVar[int] = 0
 
+    @typechecked
     def __init__(
         self,
         loc: SourceLocation = NO_SOURCE_LOCATION,

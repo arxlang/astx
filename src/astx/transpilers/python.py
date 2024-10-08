@@ -3,6 +3,7 @@
 from typing import Type
 
 from plum import dispatch
+from typeguard import typechecked
 
 import astx
 
@@ -17,6 +18,7 @@ class ASTxPythonTranspiler:
     The visit method for astx.AST should be the first one.
     """
 
+    @typechecked
     def __init__(self) -> None:
         self.indent_level = 0
         self.indent_str = "    "  # 4 spaces

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any, Optional, cast
 
 from public import public
+from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -34,6 +35,7 @@ class Argument(Variable):
     type_: ExprType
     default: Expr
 
+    @typechecked
     def __init__(
         self,
         name: str,
@@ -66,6 +68,7 @@ class Argument(Variable):
 class Arguments(ASTNodes):
     """AST class for argument definition."""
 
+    @typechecked
     def __init__(self, *args: Argument, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         for arg in args:
@@ -94,6 +97,7 @@ class FunctionCall(DataType):
     fn: Function
     args: tuple[DataType, ...]
 
+    @typechecked
     def __init__(
         self,
         fn: Function,
@@ -143,6 +147,7 @@ class FunctionPrototype(StatementType):
     scope: ScopeKind
     visibility: VisibilityKind
 
+    @typechecked
     def __init__(
         self,
         name: str,
@@ -174,6 +179,7 @@ class FunctionReturn(StatementType):
 
     value: DataType
 
+    @typechecked
     def __init__(
         self,
         value: DataType,
@@ -203,6 +209,7 @@ class Function(StatementType):
     prototype: FunctionPrototype
     body: Block
 
+    @typechecked
     def __init__(
         self,
         prototype: FunctionPrototype,

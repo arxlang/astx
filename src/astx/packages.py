@@ -7,6 +7,7 @@ import copy
 from typing import Optional, cast
 
 from public import public
+from typeguard import typechecked
 
 from astx.base import (
     AST,
@@ -28,6 +29,7 @@ class Target(Expr):
     datalayout: str
     triple: str
 
+    @typechecked
     def __init__(self, datalayout: str, triple: str) -> None:
         """Initialize the AST instance."""
         super().__init__()
@@ -47,6 +49,7 @@ class Module(Block):
 
     name: str
 
+    @typechecked
     def __init__(
         self,
         name: str = "main",
@@ -86,6 +89,7 @@ class Package(ASTNodes):
     modules: list[Module]
     packages: list[Package]
 
+    @typechecked
     def __init__(
         self,
         name: str = "main",
@@ -132,6 +136,7 @@ class Program(Package):
 
     target: Target
 
+    @typechecked
     def __init__(
         self,
         name: str = "main",
@@ -158,6 +163,7 @@ class AliasExpr(Expr):
     name: str
     asname: Optional[str]
 
+    @typechecked
     def __init__(
         self,
         name: str,
@@ -196,6 +202,7 @@ class ImportStmt(StatementType):
 
     names: list[AliasExpr]
 
+    @typechecked
     def __init__(
         self,
         names: list[AliasExpr],
@@ -228,6 +235,7 @@ class ImportFromStmt(StatementType):
     names: list[AliasExpr]
     level: int
 
+    @typechecked
     def __init__(
         self,
         names: list[AliasExpr],

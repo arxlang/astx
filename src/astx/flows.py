@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Optional, cast
 
 from public import public
+from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -27,6 +28,7 @@ class If(StatementType):
     then: Block
     else_: Optional[Block]
 
+    @typechecked
     def __init__(
         self,
         condition: Expr,
@@ -76,6 +78,7 @@ class ForRangeLoop(StatementType):
     step: Expr
     body: Block
 
+    @typechecked
     def __init__(
         self,
         variable: InlineVariableDeclaration,
@@ -134,6 +137,7 @@ class ForCountLoop(StatementType):
     update: Expr
     body: Block
 
+    @typechecked
     def __init__(
         self,
         initializer: InlineVariableDeclaration,
@@ -183,6 +187,7 @@ class While(StatementType):
     condition: Expr
     body: Block
 
+    @typechecked
     def __init__(
         self,
         condition: Expr,

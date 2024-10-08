@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Optional
 
 from public import public
+from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -34,6 +35,7 @@ class VariableDeclaration(StatementType):
     type_: ExprType
     value: Expr
 
+    @typechecked
     def __init__(
         self,
         name: str,
@@ -80,6 +82,7 @@ class InlineVariableDeclaration(Expr):
     type_: ExprType
     value: Expr
 
+    @typechecked
     def __init__(
         self,
         name: str,
@@ -120,6 +123,7 @@ class VariableAssignment(StatementType):
     name: str
     value: Expr
 
+    @typechecked
     def __init__(
         self,
         name: str,
@@ -151,6 +155,7 @@ class Variable(DataTypeOps):
 
     name: str
 
+    @typechecked
     def __init__(
         self,
         name: str,
