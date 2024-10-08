@@ -1463,13 +1463,13 @@ rapidfuzz = ">=3.8.0,<4.0.0"
 
 [[package]]
 name = "makim"
-version = "1.15.1"
+version = "1.17.0"
 description = "Simplify the usage of containers"
 optional = false
 python-versions = "<4,>=3.8.1"
 files = [
-    {file = "makim-1.15.1-py3-none-any.whl", hash = "sha256:c5e9b8f09b2f8287679ac865bcb54d42d321bb0c8ea0225fe1464147de79afa5"},
-    {file = "makim-1.15.1.tar.gz", hash = "sha256:1dd3b4e93a10902772b9f0072f70660a041a835cf2212e95336d08239fc84ec5"},
+    {file = "makim-1.17.0-py3-none-any.whl", hash = "sha256:ad0c7009e3e5a8cd4a186c487e1b69db5f9325d60f0053daf4676742e665cfa5"},
+    {file = "makim-1.17.0.tar.gz", hash = "sha256:97e8fabf76bcba25a6f36be6ce360da743cdd75db4457827d24a1fee782e659f"},
 ]
 
 [package.dependencies]
@@ -1478,7 +1478,7 @@ jinja2 = ">=2.0"
 python-dotenv = ">=0.21.1"
 python-levenshtein = ">=0.23.0"
 pyyaml = ">=5.0"
-rich = ">=13.7.0"
+rich = ">=10.11.0"
 sh = ">=2.0.0"
 shellingham = ">=1.5.4"
 typer = ">=0.9.0"
@@ -3751,4 +3751,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4"
-content-hash = "522fd2392358bfc1566f40a97ca91178086562367f83da54966233b5a5bb0f93"
+content-hash = "8f718aba176dddd21cc1885cf109e8d762c2a35e1d11870c86bad5e3a42a76ee"
