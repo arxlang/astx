@@ -278,3 +278,41 @@ class ImportFromStmt(StatementType):
         }
 
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+class ImportExpr(Expr):
+    """Represents an import operation as an expression."""
+
+    module: str
+    alias: str
+
+    def __init__(
+        self,
+        module: str,
+        alias: str = "",
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.module = module
+        self.alias = alias
+        self.kind = ASTKind.ImportExprKind
+        # You can set the type_ attribute if needed
+        # self.type_ = ModuleType or similar
+
+    def __str__(self) -> str:
+        """Return a string representation of the import expression."""
+        if self.alias:
+            return f"import {self.module} as {self.alias}"
+        else:
+            return f"import {self.module}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the import expression."""
+        key = "ImportExpr"
+        value: ReprStruct = {
+            "module": self.module,
+            "alias": self.alias,
+        }
+        return self._prepare_struct(key, value, simplified)
