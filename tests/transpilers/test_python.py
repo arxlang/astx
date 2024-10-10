@@ -60,16 +60,16 @@ def test_function() -> None:
 
     assert generated_code == expected_code, "generated_code != expected_code"
 
-def test_int32_type() -> None:
-    """Test astx.Int32 type."""
-    # Create an Int32 node
-    int32_node = astx.Int32()
+def test_literal_int32() -> None:
+    """Test astx.LiteralInt32."""
+    # Create a LiteralInt32 node
+    literal_int32_node = astx.LiteralInt32(value=42)
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
-    generated_code = generator.visit(int32_node)
-    expected_code = "int"
+    generated_code = generator.visit(literal_int32_node)
+    expected_code = "42"
 
     assert generated_code == expected_code, "generated_code != expected_code"
