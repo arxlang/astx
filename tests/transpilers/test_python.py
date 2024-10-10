@@ -124,13 +124,13 @@ def test_literal_float64() -> None:
 def test_literal_complex() -> None:
     """Test astx.LiteralComplex."""
     # Create a LiteralComplex node
-    literal_complex64_node = astx.LiteralComplex(value=complex(3, 4))
+    literal_complex_node = astx.LiteralComplex(value=Complex32(3, 4))
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
-    generated_code = generator.visit(literal_complex64_node)
+    generated_code = generator.visit(literal_complex_node)
     expected_code = "(3, 4)"
 
     assert generated_code == expected_code, "generated_code != expected_code"
