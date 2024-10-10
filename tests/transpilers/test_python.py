@@ -133,7 +133,9 @@ def test_literal_complex32() -> None:
     generated_code = generator.visit(literal_complex32_node)
     expected_code = "(1, 2.8)"
 
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_literal_complex64() -> None:
@@ -148,4 +150,6 @@ def test_literal_complex64() -> None:
     generated_code = generator.visit(literal_complex64_node)
     expected_code = "(3.5, 4)"
 
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
