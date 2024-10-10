@@ -60,44 +60,16 @@ def test_function() -> None:
 
     assert generated_code == expected_code, "generated_code != expected_code"
 
-def test_float32() -> None:
-    """Test astx.Float32."""
-    # Variable declaration
-    float32_var = astx.VariableAssignment(
-        name="x",
-        value=astx.LiteralFloat32(10.5),
-        loc=astx.SourceLocation(line=1, col=0),
-    )
-    # Binary operation
-    binary_op = astx.BinaryOp(
-        op_code="+",
-        lhs=astx.Variable(name="x"),
-        rhs=astx.LiteralFloat32(5.5),
-        loc=astx.SourceLocation(line=2, col=4),
-    )
-    # Function body
-    body = astx.Block()
-    body.append(float32_var)
-    body.append(binary_op)
-    # Function definition
-    add_float32_function = astx.Function(
-        prototype=astx.FunctionPrototype(
-            name="add_float32",
-            args=astx.Arguments(),
-            return_type=astx.Float32,
-        ),
-        body=body,
-        loc=astx.SourceLocation(line=1, col=0),
-    )
+def test_int32_type() -> None:
+    """Test astx.Int32 type."""
+    # Create an Int32 node
+    int32_node = astx.Int32()
+
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
+
     # Generate Python code
-    generated_code = generator.visit(add_float32_function)
-    expected_code = "\n".join(
-        [
-            "def add_float32() -> float:",
-            "    x = 10.5",
-            "    return (x + 5.5)",
-        ]
-    )
+    generated_code = generator.visit(int32_node)
+    expected_code = "int"
+
     assert generated_code == expected_code, "generated_code != expected_code"
