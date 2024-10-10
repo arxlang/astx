@@ -60,6 +60,7 @@ def test_function() -> None:
 
     assert generated_code == expected_code, "generated_code != expected_code"
 
+
 def test_literal_int32() -> None:
     """Test astx.LiteralInt32."""
     # Create a LiteralInt32 node
@@ -71,5 +72,50 @@ def test_literal_int32() -> None:
     # Generate Python code
     generated_code = generator.visit(literal_int32_node)
     expected_code = "42"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_float16() -> None:
+    """Test astx.LiteralFloat16."""
+    # Create a LiteralFloat16 node
+    literal_float16_node = astx.LiteralFloat16(value=3.14)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_float16_node)
+    expected_code = "3.14"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_float32() -> None:
+    """Test astx.LiteralFloat32."""
+    # Create a LiteralFloat32 node
+    literal_float32_node = astx.LiteralFloat32(value=2.718)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_float32_node)
+    expected_code = "2.718"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_float64() -> None:
+    """Test astx.LiteralFloat64."""
+    # Create a LiteralFloat64 node
+    literal_float64_node = astx.LiteralFloat64(value=1.414)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_float64_node)
+    expected_code = "1.414"
 
     assert generated_code == expected_code, "generated_code != expected_code"
