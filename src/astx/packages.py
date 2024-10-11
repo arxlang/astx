@@ -161,7 +161,7 @@ class AliasExpr(Expr):
     """Represents an alias in an import statement."""
 
     name: str
-    asname: Optional[str]
+    asname: str
 
     @typechecked
     def __init__(
