@@ -90,6 +90,37 @@ class ASTxPythonTranspiler:
         return f"import {names_str}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportFromExpr) -> str:
+        """Handle ImportFromExpr nodes."""
+        names = [self.visit(name) for name in node.names]
+        level_dots = "." * node.level
+        module_str = (
+            f"{level_dots}{node.module}" if node.module else level_dots
+        )
+        names_str = []
+        for name in names:
+            s = (
+                f"getattr(__import__('{module_str}', "
+                f"fromlist=['{name}']), '{name}'),"
+            )
+            names_str.append(s)
+
+        call = ["name" + str(n) for n in range(1, len(names) + 1)]
+        call_str = ", ".join(x for x in call)
+
+        if len(names) == 1:
+            return f"{call_str} = ({names_str})"
+        else:
+            return f"{call_str} = {names_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportExpr) -> str:
+        """Handle ImportExpr nodes."""
+        names = [self.visit(name) for name in node.names]
+        names_str = ", ".join(x for x in names)
+        return f"module = __import__('{names_str}')"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Int32]) -> str:
         """Handle Int32 nodes."""
         return "int"
