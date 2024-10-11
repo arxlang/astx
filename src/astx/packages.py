@@ -284,38 +284,46 @@ class ImportFromStmt(StatementType):
 class ImportExpr(Expr):
     """Represents an import operation as an expression."""
 
-    name: str
-    asname: str
+    # name: str
+    # asname: str
+    names: list[AliasExpr]
 
     # maybe put @typechecked here?
     def __init__(
         self,
-        name: str,
-        asname: str = "",
+        names: list[AliasExpr],
+        # name: str,
+        # asname: str = "",
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
-        self.name = name
-        self.asname = asname
+        self.names = names
+        # self.name = name
+        # self.asname = asname
         self.kind = ASTKind.ImportExprKind
         # You can set the type_ attribute if needed
         # self.type_ = ModuleType or similar
 
     def __str__(self) -> str:
         """Return a string representation of the import expression."""
-        if self.asname:
-            return f"import {self.name} as {self.asname}"
-        else:
-            return f"import {self.name}"
+        names_str = ", ".join(str(name) for name in self.names)
+        return f"import {names_str}"
+        # if self.asname:
+        #     return f"import {self.name} as {self.asname}"
+        # else:
+        #     return f"import {self.name}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the import expression."""
         key = "ImportExpr"
-        value: ReprStruct = {
-            "name": self.name,
-            "asname": self.asname,
-        }
+        value = cast(
+            ReprStruct, [name.get_struct(simplified) for name in self.names]
+        )
+        # value: ReprStruct = {
+        #     "name": self.name,
+        #     "asname": self.asname,
+        # }
         return self._prepare_struct(key, value, simplified)
 
 
