@@ -286,6 +286,7 @@ class ImportExpr(Expr):
 
     names: list[AliasExpr]
 
+    @typechecked
     def __init__(
         self,
         names: list[AliasExpr],
@@ -320,6 +321,7 @@ class ImportFromExpr(Expr):
     names: list[AliasExpr]
     level: int  # Number of leading dots for relative imports
 
+    @typechecked
     def __init__(
         self,
         names: list[AliasExpr],
