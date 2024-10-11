@@ -109,10 +109,10 @@ class ASTxPythonTranspiler:
         call = ["name" + str(n) for n in range(1, len(names) + 1)]
         call_str = ", ".join(x for x in call)
 
-        if len(names) == 1:
-            return f"{call_str} = ({names_str})"
-        else:
+        if len(names_list) == 1:
             return f"{call_str} = {names_str}"
+        else:
+            return f"{call_str} = ({names_str})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportExpr) -> str:
