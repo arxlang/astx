@@ -284,23 +284,16 @@ class ImportFromStmt(StatementType):
 class ImportExpr(Expr):
     """Represents an import operation as an expression."""
 
-    # name: str
-    # asname: str
     names: list[AliasExpr]
 
-    # maybe put @typechecked here?
     def __init__(
         self,
         names: list[AliasExpr],
-        # name: str,
-        # asname: str = "",
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.names = names
-        # self.name = name
-        # self.asname = asname
         self.kind = ASTKind.ImportExprKind
         # You can set the type_ attribute if needed
         # self.type_ = ModuleType or similar
@@ -309,10 +302,6 @@ class ImportExpr(Expr):
         """Return a string representation of the import expression."""
         names_str = ", ".join(str(name) for name in self.names)
         return f"import {names_str}"
-        # if self.asname:
-        #     return f"import {self.name} as {self.asname}"
-        # else:
-        #     return f"import {self.name}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the import expression."""
@@ -320,10 +309,6 @@ class ImportExpr(Expr):
         value = cast(
             ReprStruct, [name.get_struct(simplified) for name in self.names]
         )
-        # value: ReprStruct = {
-        #     "name": self.name,
-        #     "asname": self.asname,
-        # }
         return self._prepare_struct(key, value, simplified)
 
 
@@ -332,17 +317,13 @@ class ImportFromExpr(Expr):
     """Represents a 'from ... import ...' operation as an expression."""
 
     module: str
-    # names: list[str]
-    # asnames: dict[str, str]  # Mapping from name to alias
     names: list[AliasExpr]
     level: int  # Number of leading dots for relative imports
 
     def __init__(
         self,
-        # names: list[str],
         names: list[AliasExpr],
         module: str = "",
-        # asnames: dict[str, str] = {},
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -350,7 +331,6 @@ class ImportFromExpr(Expr):
         super().__init__(loc=loc, parent=parent)
         self.names = names
         self.module = module
-        # self.asnames = asnames
         self.level = level
         self.kind = ASTKind.ImportFromExprKind
         # You can set the type_ attribute if needed
@@ -362,14 +342,6 @@ class ImportFromExpr(Expr):
             f"{level_dots}{self.module}" if self.module else level_dots
         )
         names_str = ", ".join(str(name) for name in self.names)
-        # imports = []
-        # for name in self.names:
-        #     asname = self.asnames.get(name)
-        #     if asname:
-        #         imports.append(f"{name} as {asname}")
-        #     else:
-        #         imports.append(name)
-        # names_str = ", ".join(imports)
 
         return f"from {module_str} import {names_str}"
 
@@ -384,15 +356,6 @@ class ImportFromExpr(Expr):
             [name.get_struct(simplified) for name in self.names],
         )
         names_dict = {"names": names_values}
-
-        # names_values = cast(
-        #     ReprStruct,
-        #     [
-        #         {"name": name, "alias": self.asnames.get(name)}
-        #         for name in self.names
-        #     ],
-        # )
-        # names_dict = {"names": names_values}
 
         value: ReprStruct = {
             **module_dict,
