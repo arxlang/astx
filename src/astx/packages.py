@@ -296,8 +296,6 @@ class ImportExpr(Expr):
         super().__init__(loc=loc, parent=parent)
         self.names = names
         self.kind = ASTKind.ImportExprKind
-        # You can set the type_ attribute if needed
-        # self.type_ = ModuleType or similar
 
     def __str__(self) -> str:
         """Return a string representation of the import expression."""
@@ -335,7 +333,6 @@ class ImportFromExpr(Expr):
         self.module = module
         self.level = level
         self.kind = ASTKind.ImportFromExprKind
-        # You can set the type_ attribute if needed
 
     def __str__(self) -> str:
         """Return a string representation of the import-from expression."""
