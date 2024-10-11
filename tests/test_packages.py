@@ -139,7 +139,7 @@ def test_future_import_from_stmt() -> None:
 
 
 def test_multiple_imports_expr() -> None:
-    """Test ImportStmt multiple imports."""
+    """Test ImportExpr multiple imports."""
     alias1 = AliasExpr(name="sqrt", asname="square_root")
     alias2 = AliasExpr(name="pi")
 
@@ -174,6 +174,17 @@ def test_future_import_from_expr() -> None:
     alias1 = AliasExpr(name="division")
 
     import_from_expr = ImportFromExpr(module="__future__", names=[alias1])
+
+    assert import_from_expr.get_struct()
+    assert import_from_expr.get_struct(simplified=True)
+
+
+def test_relative_import_from_expr() -> None:
+    """Test ImportFromExpr relative imports."""
+    alias1 = AliasExpr(name="division")
+    alias2 = AliasExpr(name="matplotlib", asname="mtlb")
+
+    import_from_expr = ImportFromExpr(names=[alias1, alias2], level=1)
 
     assert import_from_expr.get_struct()
     assert import_from_expr.get_struct(simplified=True)
