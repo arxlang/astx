@@ -134,7 +134,7 @@ class ASTxPythonTranspiler:
         num = [
             "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
         ]
-        call = ["name" + str(n) for n in num]
+        call = ["module" + str(n) for n in num]
         call_str = ", ".join(x for x in call)
 
         # assign tuple if multiple imports
