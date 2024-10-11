@@ -324,15 +324,17 @@ class ImportFromExpr(Expr):
     """Represents a 'from ... import ...' operation as an expression."""
 
     module: str
-    names: list[str]
-    asnames: dict[str, str]  # Mapping from name to alias
+    # names: list[str]
+    # asnames: dict[str, str]  # Mapping from name to alias
+    names: list[AliasExpr]
     level: int  # Number of leading dots for relative imports
 
     def __init__(
         self,
-        names: list[str],
+        # names: list[str],
+        names: list[AliasExpr],
         module: str = "",
-        asnames: dict[str, str] = {},
+        # asnames: dict[str, str] = {},
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -340,7 +342,7 @@ class ImportFromExpr(Expr):
         super().__init__(loc=loc, parent=parent)
         self.names = names
         self.module = module
-        self.asnames = asnames
+        # self.asnames = asnames
         self.level = level
         self.kind = ASTKind.ImportFromExprKind
         # You can set the type_ attribute if needed
@@ -351,14 +353,16 @@ class ImportFromExpr(Expr):
         module_str = (
             f"{level_dots}{self.module}" if self.module else level_dots
         )
-        imports = []
-        for name in self.names:
-            asname = self.asnames.get(name)
-            if asname:
-                imports.append(f"{name} as {asname}")
-            else:
-                imports.append(name)
-        names_str = ", ".join(imports)
+        names_str = ", ".join(str(name) for name in self.names)
+        # imports = []
+        # for name in self.names:
+        #     asname = self.asnames.get(name)
+        #     if asname:
+        #         imports.append(f"{name} as {asname}")
+        #     else:
+        #         imports.append(name)
+        # names_str = ", ".join(imports)
+
         return f"from {module_str} import {names_str}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -369,12 +373,18 @@ class ImportFromExpr(Expr):
         level_dict = {"level": self.level}
         names_values = cast(
             ReprStruct,
-            [
-                {"name": name, "alias": self.asnames.get(name)}
-                for name in self.names
-            ],
+            [name.get_struct(simplified) for name in self.names],
         )
         names_dict = {"names": names_values}
+
+        # names_values = cast(
+        #     ReprStruct,
+        #     [
+        #         {"name": name, "alias": self.asnames.get(name)}
+        #         for name in self.names
+        #     ],
+        # )
+        # names_dict = {"names": names_values}
 
         value: ReprStruct = {
             **module_dict,
