@@ -93,6 +93,8 @@ from astx.operators import (
 )
 from astx.packages import (
     AliasExpr,
+    ImportExpr,
+    ImportFromExpr,
     ImportFromStmt,
     ImportStmt,
     Module,
@@ -149,6 +151,8 @@ __all__ = [
     "FunctionReturn",
     "get_version",
     "If",
+    "ImportFromExpr",
+    "ImportExpr",
     "ImportStmt",
     "ImportFromStmt",
     "InlineVariableDeclaration",
