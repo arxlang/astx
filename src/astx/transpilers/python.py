@@ -97,13 +97,14 @@ class ASTxPythonTranspiler:
         module_str = (
             f"{level_dots}{node.module}" if node.module else level_dots
         )
-        names_str = []
+        names_list = []
         for name in names:
             s = (
                 f"getattr(__import__('{module_str}', "
-                f"fromlist=['{name}']), '{name}'),"
+                f"fromlist=['{name}']), '{name}')"
             )
-            names_str.append(s)
+            names_list.append(s)
+        names_str = ", ".join(x for x in names_list)
 
         call = ["name" + str(n) for n in range(1, len(names) + 1)]
         call_str = ", ".join(x for x in call)
