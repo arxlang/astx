@@ -159,7 +159,7 @@ class ASTxPythonTranspiler:
         """Handle LiteralComplex32 nodes."""
         real = node.value.real
         imag = node.value.imag
-        return f"({real}, {imag})"
+        return f"complex({real}, {imag})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex64) -> str:
