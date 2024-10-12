@@ -131,7 +131,7 @@ def test_literal_complex32() -> None:
 
     # Generate Python code
     generated_code = generator.visit(literal_complex32_node)
-    expected_code = "(1, 2.8)"
+    expected_code = "complex(1, 2.8)"
 
     assert (
         generated_code == expected_code
