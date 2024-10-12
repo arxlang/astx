@@ -166,4 +166,4 @@ class ASTxPythonTranspiler:
         """Handle LiteralComplex64 nodes."""
         real = node.value.real
         imag = node.value.imag
-        return f"({real}, {imag})"
+        return f"complex({real}, {imag})"
