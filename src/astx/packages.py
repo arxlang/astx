@@ -185,14 +185,18 @@ class AliasExpr(Expr):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the alias."""
-        key = "Alias"
+        str_asname = f", {self.asname}" if self.asname else ""
+        str_name_asname = f"[{self.name}{str_asname}]"
+        key = f"Alias {str_name_asname}"
+        value = ""
 
-        name_dict = {"name": self.name}
-        asname_dict = {"asname": self.asname} if self.asname else {}
-        value: ReprStruct = {
-            **name_dict,
-            **asname_dict,
-        }
+        # key = "Alias"
+        # name_dict = {"name": {self.name:[]}}
+        # asname_dict = {"asname": {self.asname:[]}} if self.asname else {}
+        # value: ReprStruct = {
+        #     **name_dict,
+        #     **asname_dict,
+        # }
         return self._prepare_struct(key, value, simplified)
 
 
