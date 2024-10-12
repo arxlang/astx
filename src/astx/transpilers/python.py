@@ -152,7 +152,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Complex64]) -> str:
         """Handle Complex64 nodes."""
-        return "(float, float)"
+        return "Complex"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex32) -> str:
