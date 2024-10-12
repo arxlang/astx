@@ -148,7 +148,7 @@ def test_literal_complex64() -> None:
 
     # Generate Python code
     generated_code = generator.visit(literal_complex64_node)
-    expected_code = "(3.5, 4)"
+    expected_code = "complex(3.5, 4)"
 
     assert (
         generated_code == expected_code
