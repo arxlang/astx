@@ -224,7 +224,7 @@ class ImportStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the import statement."""
-        key = "Import"
+        key = "ImportStmt"
         value = cast(
             ReprStruct, [name.get_struct(simplified) for name in self.names]
         )
@@ -270,7 +270,7 @@ class ImportFromStmt(StatementType):
             f"{level_dots}{self.module}" if self.module else level_dots
         )
 
-        key = f"ImportFrom [{module_str}]"
+        key = f"ImportFromStmt [{module_str}]"
 
         names_dicts_list = [name.get_struct(simplified) for name in self.names]
 
@@ -358,7 +358,7 @@ class ImportFromExpr(Expr):
             f"{level_dots}{self.module}" if self.module else level_dots
         )
 
-        key = f"ImportFrom [{module_str}]"
+        key = f"ImportFromExpr [{module_str}]"
 
         names_dicts_list = [name.get_struct(simplified) for name in self.names]
 
