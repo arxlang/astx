@@ -190,13 +190,6 @@ class AliasExpr(Expr):
         key = f"Alias {str_name_asname}"
         value = ""
 
-        # key = "Alias"
-        # name_dict = {"name": {self.name:[]}}
-        # asname_dict = {"asname": {self.asname:[]}} if self.asname else {}
-        # value: ReprStruct = {
-        #     **name_dict,
-        #     **asname_dict,
-        # }
         return self._prepare_struct(key, value, simplified)
 
 
@@ -271,18 +264,9 @@ class ImportFromStmt(StatementType):
         )
 
         key = f"ImportFromStmt [{module_str}]"
-
-        names_dicts_list = [name.get_struct(simplified) for name in self.names]
-
-        name_keys = [
-            key
-            for item in names_dicts_list
-            for key, value in item.items()  # type: ignore[union-attr]
-        ]
-        name_values = [""] * len(name_keys)
-        name_dict = dict(zip(name_keys, name_values))
-
-        value = name_dict
+        value = cast(
+            ReprStruct, [name.get_struct(simplified) for name in self.names]
+        )
 
         return self._prepare_struct(key, value, simplified)
 
@@ -359,17 +343,8 @@ class ImportFromExpr(Expr):
         )
 
         key = f"ImportFromExpr [{module_str}]"
-
-        names_dicts_list = [name.get_struct(simplified) for name in self.names]
-
-        name_keys = [
-            key
-            for item in names_dicts_list
-            for key, value in item.items()  # type: ignore[union-attr]
-        ]
-        name_values = [""] * len(name_keys)
-        name_dict = dict(zip(name_keys, name_values))
-
-        value = name_dict
+        value = cast(
+            ReprStruct, [name.get_struct(simplified) for name in self.names]
+        )
 
         return self._prepare_struct(key, value, simplified)
