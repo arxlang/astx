@@ -265,21 +265,24 @@ class ImportFromStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the import-from statement."""
-        key = "ImportFrom"
-
-        module_dict = {"module": self.module} if self.module else {}
-        level_dict = {"level": self.level}
-        names_values = cast(
-            ReprStruct,
-            [name.get_struct(simplified) for name in self.names],
+        level_dots = "." * self.level
+        module_str = (
+            f"{level_dots}{self.module}" if self.module else level_dots
         )
-        names_dict = {"names": names_values}
 
-        value: ReprStruct = {
-            **module_dict,
-            **level_dict,
-            **names_dict,
-        }
+        key = f"ImportFrom [{module_str}]"
+
+        names_dicts_list = [name.get_struct(simplified) for name in self.names]
+
+        name_keys = [
+            key
+            for item in names_dicts_list
+            for key, value in item.items()  # type: ignore[union-attr]
+        ]
+        name_values = [""] * len(name_keys)
+        name_dict = dict(zip(name_keys, name_values))
+
+        value = name_dict
 
         return self._prepare_struct(key, value, simplified)
 
@@ -350,19 +353,23 @@ class ImportFromExpr(Expr):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the import-from expression."""
-        key = "ImportFromExpr"
-
-        module_dict = {"module": self.module} if self.module else {}
-        level_dict = {"level": self.level}
-        names_values = cast(
-            ReprStruct,
-            [name.get_struct(simplified) for name in self.names],
+        level_dots = "." * self.level
+        module_str = (
+            f"{level_dots}{self.module}" if self.module else level_dots
         )
-        names_dict = {"names": names_values}
 
-        value: ReprStruct = {
-            **module_dict,
-            **level_dict,
-            **names_dict,
-        }
+        key = f"ImportFrom [{module_str}]"
+
+        names_dicts_list = [name.get_struct(simplified) for name in self.names]
+
+        name_keys = [
+            key
+            for item in names_dicts_list
+            for key, value in item.items()  # type: ignore[union-attr]
+        ]
+        name_values = [""] * len(name_keys)
+        name_dict = dict(zip(name_keys, name_values))
+
+        value = name_dict
+
         return self._prepare_struct(key, value, simplified)
