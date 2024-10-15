@@ -161,7 +161,7 @@ class AliasExpr(Expr):
     """Represents an alias in an import statement."""
 
     name: str
-    asname: Optional[str]
+    asname: str
 
     @typechecked
     def __init__(
@@ -185,14 +185,11 @@ class AliasExpr(Expr):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the alias."""
-        key = "Alias"
+        str_asname = f", {self.asname}" if self.asname else ""
+        str_name_asname = f"[{self.name}{str_asname}]"
+        key = f"Alias {str_name_asname}"
+        value = ""
 
-        name_dict = {"name": self.name}
-        asname_dict = {"asname": self.asname} if self.asname else {}
-        value: ReprStruct = {
-            **name_dict,
-            **asname_dict,
-        }
         return self._prepare_struct(key, value, simplified)
 
 
@@ -220,7 +217,7 @@ class ImportStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the import statement."""
-        key = "Import"
+        key = "ImportStmt"
         value = cast(
             ReprStruct, [name.get_struct(simplified) for name in self.names]
         )
@@ -261,20 +258,93 @@ class ImportFromStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the import-from statement."""
-        key = "ImportFrom"
-
-        module_dict = {"module": self.module} if self.module else {}
-        level_dict = {"level": self.level}
-        names_values = cast(
-            ReprStruct,
-            [name.get_struct(simplified) for name in self.names],
+        level_dots = "." * self.level
+        module_str = (
+            f"{level_dots}{self.module}" if self.module else level_dots
         )
-        names_dict = {"names": names_values}
 
-        value: ReprStruct = {
-            **module_dict,
-            **level_dict,
-            **names_dict,
-        }
+        key = f"ImportFromStmt [{module_str}]"
+        value = cast(
+            ReprStruct, [name.get_struct(simplified) for name in self.names]
+        )
+
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+class ImportExpr(Expr):
+    """Represents an import operation as an expression."""
+
+    names: list[AliasExpr]
+
+    @typechecked
+    def __init__(
+        self,
+        names: list[AliasExpr],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.names = names
+        self.kind = ASTKind.ImportExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the import expression."""
+        names_str = ", ".join(str(name) for name in self.names)
+        return f"import {names_str}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the import expression."""
+        key = "ImportExpr"
+        value = cast(
+            ReprStruct, [name.get_struct(simplified) for name in self.names]
+        )
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+class ImportFromExpr(Expr):
+    """Represents a 'from ... import ...' operation as an expression."""
+
+    module: str
+    names: list[AliasExpr]
+    level: int  # Number of leading dots for relative imports
+
+    @typechecked
+    def __init__(
+        self,
+        names: list[AliasExpr],
+        module: str = "",
+        level: int = 0,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.names = names
+        self.module = module
+        self.level = level
+        self.kind = ASTKind.ImportFromExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the import-from expression."""
+        level_dots = "." * self.level
+        module_str = (
+            f"{level_dots}{self.module}" if self.module else level_dots
+        )
+        names_str = ", ".join(str(name) for name in self.names)
+
+        return f"from {module_str} import {names_str}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the import-from expression."""
+        level_dots = "." * self.level
+        module_str = (
+            f"{level_dots}{self.module}" if self.module else level_dots
+        )
+
+        key = f"ImportFromExpr [{module_str}]"
+        value = cast(
+            ReprStruct, [name.get_struct(simplified) for name in self.names]
+        )
 
         return self._prepare_struct(key, value, simplified)

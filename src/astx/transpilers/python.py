@@ -90,6 +90,61 @@ class ASTxPythonTranspiler:
         return f"import {names_str}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportFromExpr) -> str:
+        """Handle ImportFromExpr nodes."""
+        names = [self.visit(name) for name in node.names]
+        level_dots = "." * node.level
+        module_str = (
+            f"{level_dots}{node.module}" if node.module else level_dots
+        )
+        names_list = []
+        for name in names:
+            str_ = (
+                f"getattr(__import__('{module_str}', "
+                f"fromlist=['{name}']), '{name}')"
+            )
+            names_list.append(str_)
+        names_str = ", ".join(x for x in names_list)
+
+        # name if one import or name1, name2, etc if multiple imports
+        num = [
+            "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
+        ]
+        call = ["name" + str(n) for n in num]
+        call_str = ", ".join(x for x in call)
+
+        # assign tuple if multiple imports
+        names_str = (
+            names_str if len(names_list) == 1 else "(" + names_str + ")"
+        )
+
+        return f"{call_str} = {names_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportExpr) -> str:
+        """Handle ImportExpr nodes."""
+        names = [self.visit(name) for name in node.names]
+        names_list = []
+        for name in names:
+            str_ = f"__import__('{name}') "
+            names_list.append(str_)
+        names_str = ", ".join(x for x in names_list)
+
+        # name if one import or name1, name2, etc if multiple imports
+        num = [
+            "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
+        ]
+        call = ["module" + str(n) for n in num]
+        call_str = ", ".join(x for x in call)
+
+        # assign tuple if multiple imports
+        names_str = (
+            names_str if len(names_list) == 1 else "(" + names_str + ")"
+        )
+
+        return f"{call_str} = {names_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Int32]) -> str:
         """Handle Int32 nodes."""
         return "int"

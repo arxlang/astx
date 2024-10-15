@@ -5,7 +5,7 @@ import astx
 from astx.transpilers import python as astx2py
 
 
-def test_transpiler_multiple_imports() -> None:
+def test_transpiler_multiple_imports_stmt() -> None:
     """Test astx.ImportStmt multiple imports."""
     alias1 = astx.AliasExpr(name="math")
     alias2 = astx.AliasExpr(name="matplotlib", asname="mtlb")
@@ -24,7 +24,7 @@ def test_transpiler_multiple_imports() -> None:
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
-def test_transpiler_import_from() -> None:
+def test_transpiler_import_from_stmt() -> None:
     """Test astx.ImportFromStmt importing from module."""
     alias = astx.AliasExpr(name="pyplot", asname="plt")
 
@@ -38,15 +38,12 @@ def test_transpiler_import_from() -> None:
     # Generate Python code
     generated_code = generator.visit(import_from_stmt)
 
-    # print generated code
-    generated_code
-
     expected_code = "from matplotlib import pyplot as plt"
 
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
-def test_transpiler_wildcard_import_from() -> None:
+def test_transpiler_wildcard_import_from_stmt() -> None:
     """Test astx.ImportFromStmt wildcard import from module."""
     alias = astx.AliasExpr(name="*")
 
@@ -63,7 +60,7 @@ def test_transpiler_wildcard_import_from() -> None:
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
-def test_transpiler_future_import_from() -> None:
+def test_transpiler_future_import_from_stmt() -> None:
     """Test astx.ImportFromStmt from future import."""
     alias = astx.AliasExpr(name="division")
 
@@ -76,6 +73,115 @@ def test_transpiler_future_import_from() -> None:
     generated_code = generator.visit(import_from_stmt)
 
     expected_code = "from __future__ import division"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_transpiler_multiple_imports_expr() -> None:
+    """Test astx.ImportExpr multiple imports."""
+    alias1 = astx.AliasExpr(name="sqrt", asname="square_root")
+    alias2 = astx.AliasExpr(name="pi")
+
+    import_expr = astx.ImportExpr([alias1, alias2])
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(import_expr)
+
+    expected_code = (
+        "module1, module2 = "
+        "(__import__('sqrt as square_root') , "
+        "__import__('pi') )"
+    )
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_transpiler_import_from_expr() -> None:
+    """Test astx.ImportFromExpr importing from module."""
+    alias1 = astx.AliasExpr(name="sqrt", asname="square_root")
+
+    import_from_expr = astx.ImportFromExpr(module="math", names=[alias1])
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(import_from_expr)
+
+    expected_code = (
+        "name = "
+        "getattr(__import__('math', "
+        "fromlist=['sqrt as square_root']), "
+        "'sqrt as square_root')"
+    )
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_transpiler_wildcard_import_from_expr() -> None:
+    """Test astx.ImportFromExpr wildcard import from module."""
+    alias1 = astx.AliasExpr(name="*")
+
+    import_from_expr = astx.ImportFromExpr(module="math", names=[alias1])
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(import_from_expr)
+
+    expected_code = "name = getattr(__import__('math', fromlist=['*']), '*')"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_transpiler_future_import_from_expr() -> None:
+    """Test astx.ImportFromExpr from future import."""
+    alias1 = astx.AliasExpr(name="division")
+
+    import_from_expr = astx.ImportFromExpr(module="__future__", names=[alias1])
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(import_from_expr)
+
+    expected_code = (
+        "name = "
+        "getattr(__import__('__future__', "
+        "fromlist=['division']), "
+        "'division')"
+    )
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_transpiler_relative_import_from_expr() -> None:
+    """Test astx.ImportFromExpr relative imports."""
+    alias1 = astx.AliasExpr(name="division")
+    alias2 = astx.AliasExpr(name="matplotlib", asname="mtlb")
+
+    import_from_expr = astx.ImportFromExpr(names=[alias1, alias2], level=1)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(import_from_expr)
+
+    expected_code = (
+        "name1, name2 = "
+        "(getattr("
+        "__import__('.', fromlist=['division']), "
+        "'division'), "
+        "getattr("
+        "__import__('.', fromlist=['matplotlib as mtlb']), "
+        "'matplotlib as mtlb'))"
+    )
 
     assert generated_code == expected_code, "generated_code != expected_code"
 
