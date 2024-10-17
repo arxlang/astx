@@ -252,3 +252,36 @@ class Function(StatementType):
 
         value: ReprStruct = {**args_struct, **body_struct}
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+class LambdaExpr(Expr):
+    """AST class for lambda expressions."""
+
+    params: Arguments
+    body: Expr
+
+    def __init__(
+        self,
+        params: Arguments,
+        body: Expr,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.params = params
+        self.body = body
+        self.kind = ASTKind.LambdaExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f" lambda x: {self.body}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the import-from expression."""
+        body = self.body
+        # body_str = body.get_struct(simplified)
+        key = "LambdaExpr"
+
+        value = cast(ReprStruct, body.get_struct(simplified))
+        return self._prepare_struct(key, value, simplified)
