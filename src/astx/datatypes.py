@@ -6,6 +6,7 @@ from typing import Any
 from uuid import uuid4
 
 from public import public
+from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -27,69 +28,70 @@ class DataTypeOps(DataType):
 
     def __add__(self, other: DataType) -> BinaryOp:
         """Overload the magic `add` method."""
-        return BinaryOp("+", self, other)
+        return BinaryOp("+", self, other)  # type: ignore[no-any-return]
 
     def __eq__(self, other: DataType) -> BinaryOp:  # type: ignore
         """Overload the magic `eq` method."""
-        return BinaryOp("==", self, other)
+        return BinaryOp("==", self, other)  # type: ignore[no-any-return]
 
     def __floordiv__(self, other: DataType) -> BinaryOp:
         """Overload the magic `floordiv` method."""
-        return BinaryOp("//", self, other)
+        return BinaryOp("//", self, other)  # type: ignore[no-any-return]
 
     def __ge__(self, other: DataType) -> BinaryOp:
         """Overload the magic `ge` method."""
-        return BinaryOp(">=", self, other)
+        return BinaryOp(">=", self, other)  # type: ignore[no-any-return]
 
     def __gt__(self, other: DataType) -> BinaryOp:
         """Overload the magic `gt` method."""
-        return BinaryOp(">", self, other)
+        return BinaryOp(">", self, other)  # type: ignore[no-any-return]
 
     def __le__(self, other: DataType) -> BinaryOp:
         """Overload the magic `le` method."""
-        return BinaryOp("<=", self, other)
+        return BinaryOp("<=", self, other)  # type: ignore[no-any-return]
 
     def __lt__(self, other: DataType) -> BinaryOp:
         """Overload the magic `lt` method."""
-        return BinaryOp("<", self, other)
+        return BinaryOp("<", self, other)  # type: ignore[no-any-return]
 
     def __mod__(self, other: DataType) -> BinaryOp:
         """Overload the magic `mod` method."""
-        return BinaryOp("%", self, other)
+        return BinaryOp("%", self, other)  # type: ignore[no-any-return]
 
     def __mul__(self, other: DataType) -> BinaryOp:
         """Overload the magic `mul` method."""
-        return BinaryOp("*", self, other)
+        return BinaryOp("*", self, other)  # type: ignore[no-any-return]
 
     def __ne__(self, other: DataType) -> BinaryOp:  # type: ignore
         """Overload the magic `ne` method."""
-        return BinaryOp("!=", self, other)
+        return BinaryOp("!=", self, other)  # type: ignore[no-any-return]
 
     def __neg__(self) -> UnaryOp:
         """Overload the magic `neg` method."""
-        return UnaryOp("-", self)
+        return UnaryOp("-", self)  # type: ignore[no-any-return]
 
     def __pos__(self) -> UnaryOp:
         """Overload the magic `pos` method."""
-        return UnaryOp("+", self)
+        return UnaryOp("+", self)  # type: ignore[no-any-return]
 
     def __pow__(self, other: DataType) -> BinaryOp:
         """Overload the magic `pow` method."""
-        return BinaryOp("^", self, other)
+        return BinaryOp("^", self, other)  # type: ignore[no-any-return]
 
     def __sub__(self, other: DataType) -> BinaryOp:
         """Overload the magic `sub` method."""
-        return BinaryOp("-", self, other)
+        return BinaryOp("-", self, other)  # type: ignore[no-any-return]
 
     def __truediv__(self, other: DataType) -> BinaryOp:
         """Overload the magic `truediv` method."""
-        return BinaryOp("/", self, other)
+        return BinaryOp("/", self, other)  # type: ignore[no-any-return]
 
 
 @public
 class UnaryOp(DataTypeOps):
     """AST class for the unary operator."""
 
+    @typechecked
     def __init__(
         self,
         op_code: str,
@@ -120,6 +122,7 @@ class BinaryOp(DataTypeOps):
 
     type_: ExprType
 
+    @typechecked
     def __init__(
         self,
         op_code: str,
@@ -296,6 +299,7 @@ class Literal(DataTypeOps):
     loc: SourceLocation
     value: Any
 
+    @typechecked
     def __init__(self, *args, **kwargs) -> None:  # type: ignore
         super().__init__(*args, **kwargs)
         self.ref = uuid4().hex
@@ -318,6 +322,7 @@ class LiteralInt8(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -334,6 +339,7 @@ class LiteralInt16(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -350,6 +356,7 @@ class LiteralInt32(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -366,6 +373,7 @@ class LiteralInt64(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -382,6 +390,7 @@ class LiteralInt128(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -398,6 +407,7 @@ class LiteralUInt8(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -414,6 +424,7 @@ class LiteralUInt16(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -430,6 +441,7 @@ class LiteralUInt32(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -446,6 +458,7 @@ class LiteralUInt64(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -462,6 +475,7 @@ class LiteralUInt128(Literal):
 
     value: int
 
+    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -478,6 +492,7 @@ class LiteralBoolean(Literal):
 
     value: bool
 
+    @typechecked
     def __init__(
         self, value: bool, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -494,6 +509,7 @@ class LiteralFloat16(Literal):
 
     value: float
 
+    @typechecked
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -510,6 +526,7 @@ class LiteralFloat32(Literal):
 
     value: float
 
+    @typechecked
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -526,6 +543,7 @@ class LiteralFloat64(Literal):
 
     value: float
 
+    @typechecked
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:

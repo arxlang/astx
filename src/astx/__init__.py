@@ -97,7 +97,17 @@ from astx.operators import (
     BinaryOp,
     UnaryOp,
 )
-from astx.packages import Module, Package, Program, Target
+from astx.packages import (
+    AliasExpr,
+    ImportExpr,
+    ImportFromExpr,
+    ImportFromStmt,
+    ImportStmt,
+    Module,
+    Package,
+    Program,
+    Target,
+)
 from astx.variables import (
     InlineVariableDeclaration,
     Variable,
@@ -115,6 +125,7 @@ def get_version() -> str:
 
 
 __all__ = [
+    "AliasExpr",
     "Argument",
     "Arguments",
     "AST",
@@ -146,6 +157,10 @@ __all__ = [
     "FunctionReturn",
     "get_version",
     "If",
+    "ImportFromExpr",
+    "ImportExpr",
+    "ImportStmt",
+    "ImportFromStmt",
     "InlineVariableDeclaration",
     "Int16",
     "Int32",

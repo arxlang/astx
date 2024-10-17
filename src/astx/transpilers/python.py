@@ -3,6 +3,7 @@
 from typing import Type
 
 from plum import dispatch
+from typeguard import typechecked
 
 import astx
 
@@ -17,6 +18,7 @@ class ASTxPythonTranspiler:
     The visit method for astx.AST should be the first one.
     """
 
+    @typechecked
     def __init__(self) -> None:
         self.indent_level = 0
         self.indent_str = "    "  # 4 spaces
@@ -40,6 +42,13 @@ class ASTxPythonTranspiler:
         raise Exception(f"Not implemented yet ({expr}).")
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AliasExpr) -> str:
+        """Handle AliasExpr nodes."""
+        if node.asname:
+            return f"{node.name} as {node.asname}"
+        return f"{node.name}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Argument) -> str:
         """Handle UnaryOp nodes."""
         type_ = self.visit(node.type_)
@@ -61,6 +70,79 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.Block) -> str:
         """Handle Block nodes."""
         return self._generate_block(node)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportFromStmt) -> str:
+        """Handle ImportFromStmt nodes."""
+        names = [self.visit(name) for name in node.names]
+        level_dots = "." * node.level
+        module_str = (
+            f"{level_dots}{node.module}" if node.module else level_dots
+        )
+        names_str = ", ".join(str(name) for name in names)
+        return f"from {module_str} import {names_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportStmt) -> str:
+        """Handle ImportStmt nodes."""
+        names = [self.visit(name) for name in node.names]
+        names_str = ", ".join(x for x in names)
+        return f"import {names_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportFromExpr) -> str:
+        """Handle ImportFromExpr nodes."""
+        names = [self.visit(name) for name in node.names]
+        level_dots = "." * node.level
+        module_str = (
+            f"{level_dots}{node.module}" if node.module else level_dots
+        )
+        names_list = []
+        for name in names:
+            str_ = (
+                f"getattr(__import__('{module_str}', "
+                f"fromlist=['{name}']), '{name}')"
+            )
+            names_list.append(str_)
+        names_str = ", ".join(x for x in names_list)
+
+        # name if one import or name1, name2, etc if multiple imports
+        num = [
+            "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
+        ]
+        call = ["name" + str(n) for n in num]
+        call_str = ", ".join(x for x in call)
+
+        # assign tuple if multiple imports
+        names_str = (
+            names_str if len(names_list) == 1 else "(" + names_str + ")"
+        )
+
+        return f"{call_str} = {names_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportExpr) -> str:
+        """Handle ImportExpr nodes."""
+        names = [self.visit(name) for name in node.names]
+        names_list = []
+        for name in names:
+            str_ = f"__import__('{name}') "
+            names_list.append(str_)
+        names_str = ", ".join(x for x in names_list)
+
+        # name if one import or name1, name2, etc if multiple imports
+        num = [
+            "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
+        ]
+        call = ["module" + str(n) for n in num]
+        call_str = ", ".join(x for x in call)
+
+        # assign tuple if multiple imports
+        names_str = (
+            names_str if len(names_list) == 1 else "(" + names_str + ")"
+        )
+
+        return f"{call_str} = {names_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: Type[astx.Int32]) -> str:

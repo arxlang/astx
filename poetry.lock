@@ -1463,13 +1463,13 @@ rapidfuzz = ">=3.8.0,<4.0.0"
 
 [[package]]
 name = "makim"
-version = "1.15.1"
+version = "1.17.0"
 description = "Simplify the usage of containers"
 optional = false
 python-versions = "<4,>=3.8.1"
 files = [
-    {file = "makim-1.15.1-py3-none-any.whl", hash = "sha256:c5e9b8f09b2f8287679ac865bcb54d42d321bb0c8ea0225fe1464147de79afa5"},
-    {file = "makim-1.15.1.tar.gz", hash = "sha256:1dd3b4e93a10902772b9f0072f70660a041a835cf2212e95336d08239fc84ec5"},
+    {file = "makim-1.17.0-py3-none-any.whl", hash = "sha256:ad0c7009e3e5a8cd4a186c487e1b69db5f9325d60f0053daf4676742e665cfa5"},
+    {file = "makim-1.17.0.tar.gz", hash = "sha256:97e8fabf76bcba25a6f36be6ce360da743cdd75db4457827d24a1fee782e659f"},
 ]
 
 [package.dependencies]
@@ -1478,7 +1478,7 @@ jinja2 = ">=2.0"
 python-dotenv = ">=0.21.1"
 python-levenshtein = ">=0.23.0"
 pyyaml = ">=5.0"
-rich = ">=13.7.0"
+rich = ">=10.11.0"
 sh = ">=2.0.0"
 shellingham = ">=1.5.4"
 typer = ">=0.9.0"
@@ -3443,6 +3443,25 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,<8.2)", "pytest-mock", "pytest-mypy-testing"]
 
 [[package]]
+name = "typeguard"
+version = "4.3.0"
+description = "Run-time type checker for Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "typeguard-4.3.0-py3-none-any.whl", hash = "sha256:4d24c5b39a117f8a895b9da7a9b3114f04eb63bade45a4492de49b175b6f7dfa"},
+    {file = "typeguard-4.3.0.tar.gz", hash = "sha256:92ee6a0aec9135181eae6067ebd617fd9de8d75d714fb548728a4933b1dea651"},
+]
+
+[package.dependencies]
+importlib-metadata = {version = ">=3.6", markers = "python_version < \"3.10\""}
+typing-extensions = ">=4.10.0"
+
+[package.extras]
+doc = ["Sphinx (>=7)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme (>=1.3.0)"]
+test = ["coverage[toml] (>=7)", "mypy (>=1.2.0)", "pytest (>=7)"]
+
+[[package]]
 name = "typer"
 version = "0.12.3"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
@@ -3732,4 +3751,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4"
-content-hash = "35e3f96ffe77f066e05a99a5652341dc128bdd33c023aaf5e3c466edb1c15426"
+content-hash = "8f718aba176dddd21cc1885cf109e8d762c2a35e1d11870c86bad5e3a42a76ee"
