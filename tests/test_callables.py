@@ -10,9 +10,12 @@ from astx.callables import (
     FunctionCall,
     FunctionPrototype,
     FunctionReturn,
+    LambdaExpr,
 )
 from astx.datatypes import Int32, LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
+from astx.operators import BinaryOp
+from astx.variables import Variable
 from astx.viz import visualize
 
 
@@ -91,3 +94,14 @@ def test_function_return() -> None:
     assert str(fn_return)
     assert fn_return.get_struct()
     assert fn_return.get_struct(simplified=True)
+
+
+def test_lambdaexpr() -> None:
+    """Test the LambdaExpr class."""
+    params = Arguments(Argument(name="a", type_=Int32))
+    body = BinaryOp(op_code="+", lhs=Variable(name="x"), rhs=LiteralInt32(1))
+    lambda_expr = LambdaExpr(params=params, body=body)
+
+    assert str(lambda_expr)
+    assert lambda_expr.get_struct()
+    assert lambda_expr.get_struct(simplified=True)
