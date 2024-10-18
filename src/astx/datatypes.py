@@ -552,3 +552,103 @@ class LiteralFloat64(Literal):
         self.value = value
         self.type_ = Float64
         self.loc = loc
+
+
+@public
+class Complex(Number):
+    """Base class for complex numbers."""
+
+    def __init__(self, real: float, imag: float) -> None:
+        """Initialize a complex number with real and imaginary parts."""
+        self.real = real
+        self.imag = imag
+
+    def __str__(self) -> str:
+        """Return a string representation of the complex number."""
+        return f"{self.real} + {self.imag}j"
+
+
+@public
+class Complex32(Complex):
+    """Complex32 data type class."""
+
+    nbytes: int = 8
+
+    def __init__(self, real: float, imag: float) -> None:
+        """Initialize a 32-bit complex number."""
+        super().__init__(real, imag)
+
+
+@public
+class Complex64(Complex):
+    """Complex64 data type class."""
+
+    nbytes: int = 16
+
+    def __init__(self, real: float, imag: float) -> None:
+        """Initialize a 64-bit complex number."""
+        super().__init__(real, imag)
+
+
+@public
+class LiteralComplex(Literal):
+    """Base class for literal complex numbers."""
+
+    value: Complex
+
+    def __init__(
+        self, value: Complex, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralComplex with a complex number."""
+        super().__init__(loc)
+        if isinstance(value, Complex):
+            self.value = value
+            self.type_ = (
+                Complex64 if isinstance(value, Complex64) else Complex32
+            )
+        else:
+            raise TypeError("Value must be an instance of Complex.")
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"LiteralComplex({self.value.real} + {self.value.imag}j)"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST representation for the complex literal."""
+        key = f"{self.__class__.__name__}: {self.value}"
+        value: ReprStruct = {
+            "real": self.value.real,
+            "imag": self.value.imag,
+        }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+class LiteralComplex32(LiteralComplex):
+    """LiteralComplex32 data type class."""
+
+    def __init__(
+        self,
+        real: float,
+        imag: float,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize LiteralComplex32."""
+        super().__init__(Complex32(real, imag), loc)
+        self.type_ = Complex32
+
+
+@public
+class LiteralComplex64(LiteralComplex):
+    """LiteralComplex64 data type class."""
+
+    def __init__(
+        self,
+        real: float,
+        imag: float,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize LiteralComplex64."""
+        super().__init__(Complex64(real, imag), loc)
+        self.type_ = Complex64

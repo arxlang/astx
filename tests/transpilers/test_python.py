@@ -240,3 +240,97 @@ def test_transpiler_function() -> None:
     )
 
     assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_int32() -> None:
+    """Test astx.LiteralInt32."""
+    # Create a LiteralInt32 node
+    literal_int32_node = astx.LiteralInt32(value=42)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_int32_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_float16() -> None:
+    """Test astx.LiteralFloat16."""
+    # Create a LiteralFloat16 node
+    literal_float16_node = astx.LiteralFloat16(value=3.14)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_float16_node)
+    expected_code = "3.14"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_float32() -> None:
+    """Test astx.LiteralFloat32."""
+    # Create a LiteralFloat32 node
+    literal_float32_node = astx.LiteralFloat32(value=2.718)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_float32_node)
+    expected_code = "2.718"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_float64() -> None:
+    """Test astx.LiteralFloat64."""
+    # Create a LiteralFloat64 node
+    literal_float64_node = astx.LiteralFloat64(value=1.414)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_float64_node)
+    expected_code = "1.414"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_complex32() -> None:
+    """Test astx.LiteralComplex32."""
+    # Create a LiteralComplex32 node
+    literal_complex32_node = astx.LiteralComplex32(real=1, imag=2.8)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_complex32_node)
+    expected_code = "complex(1, 2.8)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_literal_complex64() -> None:
+    """Test astx.LiteralComplex64."""
+    # Create a LiteralComplex64 node
+    literal_complex64_node = astx.LiteralComplex64(real=3.5, imag=4)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_complex64_node)
+    expected_code = "complex(3.5, 4)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"

@@ -39,6 +39,9 @@ from astx.callables import (
 )
 from astx.datatypes import (
     Boolean,
+    Complex,
+    Complex32,
+    Complex64,
     DataTypeOps,
     Float16,
     Float32,
@@ -51,6 +54,9 @@ from astx.datatypes import (
     Integer,
     Literal,
     LiteralBoolean,
+    LiteralComplex,
+    LiteralComplex32,
+    LiteralComplex64,
     LiteralFloat16,
     LiteralFloat32,
     LiteralFloat64,
@@ -203,6 +209,12 @@ __all__ = [
     "variables",
     "VisibilityKind",
     "While",
+    "Complex",
+    "Complex32",
+    "Complex64",
+    "LiteralComplex",
+    "LiteralComplex32",
+    "LiteralComplex64",
 ]
 
 

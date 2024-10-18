@@ -195,3 +195,57 @@ class ASTxPythonTranspiler:
         target = node.name
         value = self.visit(node.value)
         return f"{target} = {value}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Float16]) -> str:
+        """Handle Float nodes."""
+        return "float"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Float32]) -> str:
+        """Handle Float nodes."""
+        return "float"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Float64]) -> str:
+        """Handle Float nodes."""
+        return "float"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralFloat16) -> str:
+        """Handle LiteralFloat nodes."""
+        return str(node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralFloat32) -> str:
+        """Handle LiteralFloat nodes."""
+        return str(node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralFloat64) -> str:
+        """Handle LiteralFloat nodes."""
+        return str(node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Complex32]) -> str:
+        """Handle Complex32 nodes."""
+        return "Complex"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Complex64]) -> str:
+        """Handle Complex64 nodes."""
+        return "Complex"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralComplex32) -> str:
+        """Handle LiteralComplex32 nodes."""
+        real = node.value.real
+        imag = node.value.imag
+        return f"complex({real}, {imag})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralComplex64) -> str:
+        """Handle LiteralComplex64 nodes."""
+        real = node.value.real
+        imag = node.value.imag
+        return f"complex({real}, {imag})"
