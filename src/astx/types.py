@@ -4,23 +4,13 @@ from __future__ import annotations
 <<<<<<< HEAD
 =======
 
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 try:
     from typing_extensions import TypeAlias
 except ImportError:
     from typing import TypeAlias  # type: ignore[no-redef,attr-defined]
 
-from public import public
-from typeguard import typechecked
-
-from astx.base import (
-    ASTKind,
-    ASTNodes,
-    DataType,
-    Expr,
-    SourceLocation,
-)
 
 PrimitivesStruct: TypeAlias = Union[int, str, float, bool]
 DataTypesStruct: TypeAlias = Union[
@@ -28,6 +18,7 @@ DataTypesStruct: TypeAlias = Union[
 ]
 DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
 ReprStruct: TypeAlias = Union[List[DataTypesStruct], DictDataTypesStruct]
+<<<<<<< HEAD
 
 
 @public
@@ -50,3 +41,5 @@ class TypeCastExpr(Expr):
         self.target_type = target_type
         self.kind = ASTKind.TypeCastExprKind
 >>>>>>> 01275a9 (create TypeCastExpr class)
+=======
+>>>>>>> 03a27d4 (move TypeCastExpr to from types.py to datatypes.py)

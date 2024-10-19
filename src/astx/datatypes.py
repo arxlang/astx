@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 from uuid import uuid4
 
 from public import public
@@ -11,7 +11,9 @@ from typeguard import typechecked
 from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
+    ASTNodes,
     DataType,
+    Expr,
     ExprType,
     ReprStruct,
     SourceLocation,
@@ -679,3 +681,38 @@ class LiteralComplex64(LiteralComplex):
         """Initialize LiteralComplex64."""
         super().__init__(Complex64(real, imag), loc)
         self.type_ = Complex64
+
+
+@public
+class TypeCastExpr(Expr):
+    """AST class for type casting expressions."""
+
+    expr: Expr
+    target_type: DataType
+
+    @typechecked
+    def __init__(
+        self,
+        expr: Expr,
+        target_type: DataType,
+        loc: SourceLocation = SourceLocation(-1, -1),
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.expr = expr
+        self.target_type = target_type
+        self.kind = ASTKind.TypeCastExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the TypeCast expression."""
+        return f"TypeCastExpr ({self.expr}, {self.target_type})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the TypeCast expression."""
+        key = "TypeCastExpr"
+        value: ReprStruct = {
+            "expression": self.expr.get_struct(),
+            "target_type": self.target_type.get_struct(),
+        }
+
+        return self._prepare_struct(key, value, simplified)
