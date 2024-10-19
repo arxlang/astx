@@ -105,3 +105,13 @@ def test_lambdaexpr() -> None:
     assert str(lambda_expr)
     assert lambda_expr.get_struct()
     assert lambda_expr.get_struct(simplified=True)
+
+
+def test_lambdaexpr_noparams() -> None:
+    """Test the LambdaExpr class without params."""
+    body = LiteralInt32(1)
+    lambda_expr = LambdaExpr(body=body)
+
+    assert str(lambda_expr)
+    assert lambda_expr.get_struct()
+    assert lambda_expr.get_struct(simplified=True)
