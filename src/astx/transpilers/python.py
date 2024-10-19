@@ -187,8 +187,12 @@ class ASTxPythonTranspiler:
 =======
     def visit(self, node: astx.TypeCastExpr) -> str:
         """Handle TypeCastExpr nodes."""
+<<<<<<< HEAD
         return f"cast ({node.target_type}, {node.expr})"
 >>>>>>> 763bb08 (add transpiler visit method for TypeCastExpr)
+=======
+        return f"cast ({node.target_type.__str__()}, {node.expr})"
+>>>>>>> 4ae1770 (fix transpiler visit method for TypeCastExpr)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> str:
