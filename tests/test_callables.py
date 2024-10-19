@@ -98,7 +98,7 @@ def test_function_return() -> None:
 
 def test_lambdaexpr() -> None:
     """Test the LambdaExpr class."""
-    params = Arguments(Argument(name="a", type_=Int32))
+    params = Arguments(Argument(name="x", type_=Int32))
     body = BinaryOp(op_code="+", lhs=Variable(name="x"), rhs=LiteralInt32(1))
     lambda_expr = LambdaExpr(params=params, body=body)
 
