@@ -78,6 +78,10 @@ from astx.datatypes import (
     UInt64,
     UInt128,
     UnsignedInteger,
+    LiteralUTF8Char,
+    LiteralUTF8String,
+    UTF8Char,
+    UTF8String,
 )
 from astx.flows import (
     ForCountLoop,
