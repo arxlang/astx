@@ -70,6 +70,8 @@ from astx.datatypes import (
     LiteralUInt32,
     LiteralUInt64,
     LiteralUInt128,
+    LiteralUTF8Char,
+    LiteralUTF8String,
     Number,
     SignedInteger,
     UInt8,
@@ -78,8 +80,6 @@ from astx.datatypes import (
     UInt64,
     UInt128,
     UnsignedInteger,
-    LiteralUTF8Char,
-    LiteralUTF8String,
     UTF8Char,
     UTF8String,
 )
@@ -219,6 +219,10 @@ __all__ = [
     "LiteralComplex",
     "LiteralComplex32",
     "LiteralComplex64",
+    "LiteralUTF8Char",
+    "LiteralUTF8String",
+    "UTF8Char",
+    "UTF8String",
 ]
 
 

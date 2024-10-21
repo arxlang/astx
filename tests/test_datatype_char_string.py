@@ -1,10 +1,12 @@
 """Tests for UTF-8 character and string data types."""
 
 from __future__ import annotations
+
 from typing import Callable, Type
 
 import astx
 import pytest
+
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
 
@@ -30,25 +32,25 @@ def test_variable() -> None:
 @pytest.mark.parametrize("literal_class", UTF8_CHAR_LITERAL_CLASSES)
 def test_utf8_char_literal(literal_class: Type[astx.Literal]) -> None:
     """Test UTF-8 character literals."""
-    lit_a = literal_class('A')
-    lit_b = literal_class('B')
+    lit_a = literal_class("A")
+    lit_b = literal_class("B")
     BinaryOp(op_code="+", lhs=lit_a, rhs=lit_b)
 
 
 @pytest.mark.parametrize("literal_class", UTF8_STRING_LITERAL_CLASSES)
 def test_utf8_string_literal(literal_class: Type[astx.Literal]) -> None:
     """Test UTF-8 string literals."""
-    lit_a = literal_class('Hello')
-    lit_b = literal_class('World')
+    lit_a = literal_class("Hello")
+    lit_b = literal_class("World")
     BinaryOp(op_code="+", lhs=lit_a, rhs=lit_b)
 
 
 @pytest.mark.parametrize(
     "fn_bin_op,op_code",
     [
-        (lambda literal_class: VAR_A + literal_class('A'), "+"),
-        (lambda literal_class: VAR_A == literal_class('A'), "=="),
-        (lambda literal_class: VAR_A != literal_class('A'), "!="),
+        (lambda literal_class: VAR_A + literal_class("A"), "+"),
+        (lambda literal_class: VAR_A == literal_class("A"), "=="),
+        (lambda literal_class: VAR_A != literal_class("A"), "!="),
     ],
 )
 @pytest.mark.parametrize("literal_class", UTF8_CHAR_LITERAL_CLASSES)
@@ -69,9 +71,9 @@ def test_bin_ops_char(
 @pytest.mark.parametrize(
     "fn_bin_op,op_code",
     [
-        (lambda literal_class: VAR_A + literal_class('Hello'), "+"),
-        (lambda literal_class: VAR_A == literal_class('Hello'), "=="),
-        (lambda literal_class: VAR_A != literal_class('Hello'), "!="),
+        (lambda literal_class: VAR_A + literal_class("Hello"), "+"),
+        (lambda literal_class: VAR_A == literal_class("Hello"), "=="),
+        (lambda literal_class: VAR_A != literal_class("Hello"), "!="),
     ],
 )
 @pytest.mark.parametrize("literal_class", UTF8_STRING_LITERAL_CLASSES)
@@ -92,7 +94,7 @@ def test_bin_ops_string(
 @pytest.mark.parametrize(
     "fn_unary_op,op_code",
     [
-        (lambda literal_class: +literal_class('A'), "+"),
+        (lambda literal_class: +literal_class("A"), "+"),
     ],
 )
 @pytest.mark.parametrize("literal_class", UTF8_CHAR_LITERAL_CLASSES)
@@ -113,7 +115,7 @@ def test_unary_ops_char(
 @pytest.mark.parametrize(
     "fn_unary_op,op_code",
     [
-        (lambda literal_class: +literal_class('Hello'), "+"),
+        (lambda literal_class: +literal_class("Hello"), "+"),
     ],
 )
 @pytest.mark.parametrize("literal_class", UTF8_STRING_LITERAL_CLASSES)
