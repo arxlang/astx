@@ -179,6 +179,12 @@ class ASTxPythonTranspiler:
         return f"return {value}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LambdaExpr) -> str:
+        """Handle LambdaExpr nodes."""
+        params_str = ", ".join(param.name for param in node.params)
+        return f"lambda {params_str}: {self.visit(node.body)}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> str:
         """Handle UnaryOp nodes."""
         operand = self.visit(node.operand)

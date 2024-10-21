@@ -186,6 +186,43 @@ def test_transpiler_relative_import_from_expr() -> None:
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
+def test_transpiler_lambdaexpr() -> None:
+    """Test astx.LambdaExpr."""
+    params = astx.Arguments(astx.Argument(name="x", type_=astx.Int32))
+    body = astx.BinaryOp(
+        op_code="+", lhs=astx.Variable(name="x"), rhs=astx.LiteralInt32(1)
+    )
+
+    lambda_expr = astx.LambdaExpr(params=params, body=body)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(lambda_expr)
+
+    expected_code = "lambda x: (x + 1)"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_transpiler_lambdaexpr_noparams() -> None:
+    """Test astx.LambdaExpr without params."""
+    body = astx.LiteralInt32(1)
+
+    lambda_expr = astx.LambdaExpr(body=body)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(lambda_expr)
+
+    expected_code = "lambda : 1"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
 def test_transpiler_function() -> None:
     """Test astx.Function."""
     # Function parameters

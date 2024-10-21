@@ -36,6 +36,7 @@ from astx.callables import (
     FunctionCall,
     FunctionPrototype,
     FunctionReturn,
+    LambdaExpr,
 )
 from astx.datatypes import (
     Boolean,
@@ -173,6 +174,7 @@ __all__ = [
     "UInt32",
     "UInt64",
     "UInt128",
+    "LambdaExpr",
     "Literal",
     "LiteralBoolean",
     "LiteralInt8",
