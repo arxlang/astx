@@ -255,3 +255,41 @@ class ASTxPythonTranspiler:
         real = node.value.real
         imag = node.value.imag
         return f"complex({real}, {imag})"
+    
+    class ASTxPythonTranspiler:
+    # ... existing code ...
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.UTF8String) -> str:
+        """Handle UTF8String nodes."""
+        return f'"{node.value}"'
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.UTF8Char) -> str:
+        """Handle UTF8Char nodes."""
+        return f'"{node.value}"'
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralUTF8Char) -> str:
+        """Handle LiteralUTF8String nodes."""
+        return f'"{node.value}"'
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.UTF8String) -> str:
+        """Handle UTF8String nodes."""
+        return f'"{node.value}"'
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.UTF8Char) -> str:
+        """Handle UTF8Char nodes."""
+        return f'"{node.value}"'
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralUTF8String) -> str:
+        """Handle LiteralUTF8String nodes."""
+        return f'"{node.value}"'
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralUTF8Char) -> str:
+        """Handle LiteralUTF8Char nodes."""
+        return f'"{node.value}"'
