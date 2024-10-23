@@ -558,6 +558,7 @@ class LiteralFloat64(Literal):
 class Complex(Number):
     """Base class for complex numbers."""
 
+    @typechecked
     def __init__(self, real: float, imag: float) -> None:
         """Initialize a complex number with real and imaginary parts."""
         self.real = real
@@ -574,6 +575,7 @@ class Complex32(Complex):
 
     nbytes: int = 8
 
+    @typechecked
     def __init__(self, real: float, imag: float) -> None:
         """Initialize a 32-bit complex number."""
         super().__init__(real, imag)
@@ -585,6 +587,7 @@ class Complex64(Complex):
 
     nbytes: int = 16
 
+    @typechecked
     def __init__(self, real: float, imag: float) -> None:
         """Initialize a 64-bit complex number."""
         super().__init__(real, imag)
@@ -596,6 +599,7 @@ class LiteralComplex(Literal):
 
     value: Complex
 
+    @typechecked
     def __init__(
         self, value: Complex, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -628,6 +632,7 @@ class LiteralComplex(Literal):
 class LiteralComplex32(LiteralComplex):
     """LiteralComplex32 data type class."""
 
+    @typechecked
     def __init__(
         self,
         real: float,
@@ -643,6 +648,7 @@ class LiteralComplex32(LiteralComplex):
 class LiteralComplex64(LiteralComplex):
     """LiteralComplex64 data type class."""
 
+    @typechecked
     def __init__(
         self,
         real: float,

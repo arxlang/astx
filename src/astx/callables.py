@@ -261,6 +261,7 @@ class LambdaExpr(Expr):
     params: Arguments = Arguments()
     body: Expr
 
+    @typechecked
     def __init__(
         self,
         body: Expr,
