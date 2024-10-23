@@ -298,27 +298,34 @@ class Expr(AST):
 
 ExprType: TypeAlias = Type[Expr]
 
+PrimitivesStruct: TypeAlias = Union[
+    int,
+    str,
+    float,
+    bool,
+    "astx.base.Undefined",  # type: ignore[name-defined]  # noqa: F821
+]
+DataTypesStruct: TypeAlias = Union[
+    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
+]
+DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
+ReprStruct: TypeAlias = Union[
+    List[DataTypesStruct],
+    DictDataTypesStruct,
+    "astx.base.Undefined",  # type: ignore[name-defined]  # noqa: F821
+]
+
 
 @public
 @typechecked
 class Undefined(Expr):
     """Undefined expression class."""
 
-    def get_struct(self, simplified: bool = False) -> "ReprStruct":
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a simple structure that represents the object."""
         value = "UNDEFINED"
         key = "UNDEFINED"
         return self._prepare_struct(key, value, simplified)
-
-
-PrimitivesStruct: TypeAlias = Union[int, str, float, bool, Undefined]
-DataTypesStruct: TypeAlias = Union[
-    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
-]
-DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
-ReprStruct: TypeAlias = Union[
-    List[DataTypesStruct], DictDataTypesStruct, Undefined
-]
 
 
 @public
