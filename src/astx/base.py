@@ -11,8 +11,6 @@ from typing import ClassVar, Dict, List, Optional, Type, Union, cast
 
 from typeguard import typechecked
 
-from astx.viz import graph_to_ascii, traverse_ast_ascii
-
 try:
     from typing_extensions import TypeAlias
 except ImportError:
@@ -177,6 +175,8 @@ class AST(metaclass=ASTMeta):
     def __repr__(self) -> str:
         """Return an string that represents the object."""
         if not is_using_jupyter_notebook():
+            from astx.viz import graph_to_ascii, traverse_ast_ascii
+
             graph = traverse_ast_ascii(self.get_struct(simplified=True))
             return graph_to_ascii(graph)
         return ""
@@ -298,26 +298,27 @@ class Expr(AST):
 
 ExprType: TypeAlias = Type[Expr]
 
-PrimitivesStruct: TypeAlias = Union[int, str, float, bool, "Undefined"]
-DataTypesStruct: TypeAlias = Union[
-    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
-]
-DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
-ReprStruct: TypeAlias = Union[
-    List[DataTypesStruct], DictDataTypesStruct, "Undefined"
-]
-
 
 @public
 @typechecked
 class Undefined(Expr):
     """Undefined expression class."""
 
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
+    def get_struct(self, simplified: bool = False) -> "ReprStruct":
         """Return a simple structure that represents the object."""
         value = "UNDEFINED"
         key = "UNDEFINED"
         return self._prepare_struct(key, value, simplified)
+
+
+PrimitivesStruct: TypeAlias = Union[int, str, float, bool, Undefined]
+DataTypesStruct: TypeAlias = Union[
+    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
+]
+DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
+ReprStruct: TypeAlias = Union[
+    List[DataTypesStruct], DictDataTypesStruct, Undefined
+]
 
 
 @public
