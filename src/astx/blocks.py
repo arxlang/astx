@@ -5,14 +5,16 @@ from __future__ import annotations
 from typing import cast
 
 from public import public
+from typeguard import typechecked
 
 from astx.base import (
     ASTNodes,
+    ReprStruct,
 )
-from astx.types import ReprStruct
 
 
 @public
+@typechecked
 class Block(ASTNodes):
     """The AST tree."""
 
