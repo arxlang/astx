@@ -14,10 +14,12 @@ VAR_A = Variable("a")
 
 UTF8_CHAR_LITERAL_CLASSES = [
     astx.LiteralUTF8Char,
+    astx.UTF8Char,
 ]
 
 UTF8_STRING_LITERAL_CLASSES = [
     astx.LiteralUTF8String,
+    astx.UTF8String,
 ]
 
 
