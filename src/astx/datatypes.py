@@ -13,12 +13,13 @@ from astx.base import (
     ASTKind,
     DataType,
     ExprType,
+    ReprStruct,
     SourceLocation,
 )
-from astx.types import ReprStruct
 
 
 @public
+@typechecked
 class DataTypeOps(DataType):
     """Overload some magic functions used for the main operations."""
 
@@ -28,70 +29,70 @@ class DataTypeOps(DataType):
 
     def __add__(self, other: DataType) -> BinaryOp:
         """Overload the magic `add` method."""
-        return BinaryOp("+", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("+", self, other)
 
     def __eq__(self, other: DataType) -> BinaryOp:  # type: ignore
         """Overload the magic `eq` method."""
-        return BinaryOp("==", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("==", self, other)
 
     def __floordiv__(self, other: DataType) -> BinaryOp:
         """Overload the magic `floordiv` method."""
-        return BinaryOp("//", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("//", self, other)
 
     def __ge__(self, other: DataType) -> BinaryOp:
         """Overload the magic `ge` method."""
-        return BinaryOp(">=", self, other)  # type: ignore[no-any-return]
+        return BinaryOp(">=", self, other)
 
     def __gt__(self, other: DataType) -> BinaryOp:
         """Overload the magic `gt` method."""
-        return BinaryOp(">", self, other)  # type: ignore[no-any-return]
+        return BinaryOp(">", self, other)
 
     def __le__(self, other: DataType) -> BinaryOp:
         """Overload the magic `le` method."""
-        return BinaryOp("<=", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("<=", self, other)
 
     def __lt__(self, other: DataType) -> BinaryOp:
         """Overload the magic `lt` method."""
-        return BinaryOp("<", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("<", self, other)
 
     def __mod__(self, other: DataType) -> BinaryOp:
         """Overload the magic `mod` method."""
-        return BinaryOp("%", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("%", self, other)
 
     def __mul__(self, other: DataType) -> BinaryOp:
         """Overload the magic `mul` method."""
-        return BinaryOp("*", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("*", self, other)
 
     def __ne__(self, other: DataType) -> BinaryOp:  # type: ignore
         """Overload the magic `ne` method."""
-        return BinaryOp("!=", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("!=", self, other)
 
     def __neg__(self) -> UnaryOp:
         """Overload the magic `neg` method."""
-        return UnaryOp("-", self)  # type: ignore[no-any-return]
+        return UnaryOp("-", self)
 
     def __pos__(self) -> UnaryOp:
         """Overload the magic `pos` method."""
-        return UnaryOp("+", self)  # type: ignore[no-any-return]
+        return UnaryOp("+", self)
 
     def __pow__(self, other: DataType) -> BinaryOp:
         """Overload the magic `pow` method."""
-        return BinaryOp("^", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("^", self, other)
 
     def __sub__(self, other: DataType) -> BinaryOp:
         """Overload the magic `sub` method."""
-        return BinaryOp("-", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("-", self, other)
 
     def __truediv__(self, other: DataType) -> BinaryOp:
         """Overload the magic `truediv` method."""
-        return BinaryOp("/", self, other)  # type: ignore[no-any-return]
+        return BinaryOp("/", self, other)
 
 
 @public
+@typechecked
 class UnaryOp(DataTypeOps):
     """AST class for the unary operator."""
 
-    @typechecked
     def __init__(
         self,
         op_code: str,
@@ -117,12 +118,12 @@ class UnaryOp(DataTypeOps):
 
 
 @public
+@typechecked
 class BinaryOp(DataTypeOps):
     """AST class for the binary operator."""
 
     type_: ExprType
 
-    @typechecked
     def __init__(
         self,
         op_code: str,
@@ -172,31 +173,37 @@ class BinaryOp(DataTypeOps):
 
 
 @public
+@typechecked
 class AnyExpr(DataTypeOps):
     """Generic data type expression."""
 
 
 @public
+@typechecked
 class Number(DataTypeOps):
     """Number data type expression."""
 
 
 @public
+@typechecked
 class Integer(Number):
     """Integer number data type expression."""
 
 
 @public
+@typechecked
 class UnsignedInteger(Integer):
     """Unsigned integer number data type expression."""
 
 
 @public
+@typechecked
 class SignedInteger(Integer):
     """Signed integer number data type expression."""
 
 
 @public
+@typechecked
 class Int8(SignedInteger):
     """Int8 data type expression."""
 
@@ -204,6 +211,7 @@ class Int8(SignedInteger):
 
 
 @public
+@typechecked
 class Int16(SignedInteger):
     """Int16 data type expression."""
 
@@ -211,6 +219,7 @@ class Int16(SignedInteger):
 
 
 @public
+@typechecked
 class Int32(SignedInteger):
     """Int32 data type expression."""
 
@@ -218,6 +227,7 @@ class Int32(SignedInteger):
 
 
 @public
+@typechecked
 class Int64(SignedInteger):
     """Int64 data type expression."""
 
@@ -225,6 +235,7 @@ class Int64(SignedInteger):
 
 
 @public
+@typechecked
 class Int128(SignedInteger):
     """Int128 data type expression."""
 
@@ -232,6 +243,7 @@ class Int128(SignedInteger):
 
 
 @public
+@typechecked
 class UInt8(UnsignedInteger):
     """UInt8 data type expression."""
 
@@ -239,6 +251,7 @@ class UInt8(UnsignedInteger):
 
 
 @public
+@typechecked
 class UInt16(UnsignedInteger):
     """UInt8 data type expression."""
 
@@ -246,6 +259,7 @@ class UInt16(UnsignedInteger):
 
 
 @public
+@typechecked
 class UInt32(UnsignedInteger):
     """UInt8 data type expression."""
 
@@ -253,6 +267,7 @@ class UInt32(UnsignedInteger):
 
 
 @public
+@typechecked
 class UInt64(UnsignedInteger):
     """UInt8 data type expression."""
 
@@ -260,6 +275,7 @@ class UInt64(UnsignedInteger):
 
 
 @public
+@typechecked
 class UInt128(UnsignedInteger):
     """UInt8 data type expression."""
 
@@ -267,31 +283,37 @@ class UInt128(UnsignedInteger):
 
 
 @public
+@typechecked
 class Floating(Number):
     """AST for the literal float number."""
 
 
 @public
+@typechecked
 class Float16(Floating):
     """Float16 data type expression."""
 
 
 @public
+@typechecked
 class Float32(Floating):
     """Float32 data type expression."""
 
 
 @public
+@typechecked
 class Float64(Floating):
     """Float64 data type expression."""
 
 
 @public
+@typechecked
 class Boolean(DataType):
     """Boolean data type expression."""
 
 
 @public
+@typechecked
 class Literal(DataTypeOps):
     """Literal Data type."""
 
@@ -299,7 +321,6 @@ class Literal(DataTypeOps):
     loc: SourceLocation
     value: Any
 
-    @typechecked
     def __init__(self, *args, **kwargs) -> None:  # type: ignore
         super().__init__(*args, **kwargs)
         self.ref = uuid4().hex
@@ -317,12 +338,12 @@ class Literal(DataTypeOps):
 
 
 @public
+@typechecked
 class LiteralInt8(Literal):
     """LiteralInt8 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -334,12 +355,12 @@ class LiteralInt8(Literal):
 
 
 @public
+@typechecked
 class LiteralInt16(Literal):
     """LiteralInt16 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -351,12 +372,12 @@ class LiteralInt16(Literal):
 
 
 @public
+@typechecked
 class LiteralInt32(Literal):
     """LiteralInt32 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -368,12 +389,12 @@ class LiteralInt32(Literal):
 
 
 @public
+@typechecked
 class LiteralInt64(Literal):
     """LiteralInt64 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -385,12 +406,12 @@ class LiteralInt64(Literal):
 
 
 @public
+@typechecked
 class LiteralInt128(Literal):
     """LiteralInt128 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -402,12 +423,12 @@ class LiteralInt128(Literal):
 
 
 @public
+@typechecked
 class LiteralUInt8(Literal):
     """LiteralUInt8 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -419,12 +440,12 @@ class LiteralUInt8(Literal):
 
 
 @public
+@typechecked
 class LiteralUInt16(Literal):
     """LiteralUInt16 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -436,12 +457,12 @@ class LiteralUInt16(Literal):
 
 
 @public
+@typechecked
 class LiteralUInt32(Literal):
     """LiteralUInt32 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -453,12 +474,12 @@ class LiteralUInt32(Literal):
 
 
 @public
+@typechecked
 class LiteralUInt64(Literal):
     """LiteralUInt64 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -470,12 +491,12 @@ class LiteralUInt64(Literal):
 
 
 @public
+@typechecked
 class LiteralUInt128(Literal):
     """LiteralUInt128 data type class."""
 
     value: int
 
-    @typechecked
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -487,12 +508,12 @@ class LiteralUInt128(Literal):
 
 
 @public
+@typechecked
 class LiteralBoolean(Literal):
     """LiteralBoolean data type class."""
 
     value: bool
 
-    @typechecked
     def __init__(
         self, value: bool, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -504,12 +525,12 @@ class LiteralBoolean(Literal):
 
 
 @public
+@typechecked
 class LiteralFloat16(Literal):
     """LiteralFloat16 data type class."""
 
     value: float
 
-    @typechecked
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -521,12 +542,12 @@ class LiteralFloat16(Literal):
 
 
 @public
+@typechecked
 class LiteralFloat32(Literal):
     """LiteralFloat32 data type class."""
 
     value: float
 
-    @typechecked
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -538,12 +559,12 @@ class LiteralFloat32(Literal):
 
 
 @public
+@typechecked
 class LiteralFloat64(Literal):
     """LiteralFloat64 data type class."""
 
     value: float
 
-    @typechecked
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -555,10 +576,10 @@ class LiteralFloat64(Literal):
 
 
 @public
+@typechecked
 class Complex(Number):
     """Base class for complex numbers."""
 
-    @typechecked
     def __init__(self, real: float, imag: float) -> None:
         """Initialize a complex number with real and imaginary parts."""
         self.real = real
@@ -570,36 +591,36 @@ class Complex(Number):
 
 
 @public
+@typechecked
 class Complex32(Complex):
     """Complex32 data type class."""
 
     nbytes: int = 8
 
-    @typechecked
     def __init__(self, real: float, imag: float) -> None:
         """Initialize a 32-bit complex number."""
         super().__init__(real, imag)
 
 
 @public
+@typechecked
 class Complex64(Complex):
     """Complex64 data type class."""
 
     nbytes: int = 16
 
-    @typechecked
     def __init__(self, real: float, imag: float) -> None:
         """Initialize a 64-bit complex number."""
         super().__init__(real, imag)
 
 
 @public
+@typechecked
 class LiteralComplex(Literal):
     """Base class for literal complex numbers."""
 
     value: Complex
 
-    @typechecked
     def __init__(
         self, value: Complex, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -629,10 +650,10 @@ class LiteralComplex(Literal):
 
 
 @public
+@typechecked
 class LiteralComplex32(LiteralComplex):
     """LiteralComplex32 data type class."""
 
-    @typechecked
     def __init__(
         self,
         real: float,
@@ -645,10 +666,10 @@ class LiteralComplex32(LiteralComplex):
 
 
 @public
+@typechecked
 class LiteralComplex64(LiteralComplex):
     """LiteralComplex64 data type class."""
 
-    @typechecked
     def __init__(
         self,
         real: float,

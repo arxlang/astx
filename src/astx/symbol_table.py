@@ -18,6 +18,7 @@ from astx.mixes import NamedExpr
 
 
 @public
+@typechecked
 class ScopeNodeBase:
     """ScopeNodeBase is the base used for the nodes (levels) in the scope."""
 
@@ -26,7 +27,6 @@ class ScopeNodeBase:
     default_parent: Optional[ScopeNodeBase] = None
     named_expr: dict[str, NamedExpr]
 
-    @typechecked
     def __init__(
         self, name: str, parent: Optional[ScopeNodeBase] = None
     ) -> None:
@@ -39,6 +39,7 @@ class ScopeNodeBase:
 
 
 @public
+@typechecked
 class ScopeNode(ScopeNodeBase):
     """Scope node organize the scope in different levels in the stack."""
 
@@ -46,6 +47,7 @@ class ScopeNode(ScopeNodeBase):
 
 
 @public
+@typechecked
 class Scope:
     """Organize the ASTx objects according to the scope."""
 
@@ -54,7 +56,6 @@ class Scope:
     previous: Optional[ScopeNodeBase]
     scope_node_class: Type[ScopeNodeBase]
 
-    @typechecked
     def __init__(
         self,
         scope_node_class: Type[ScopeNodeBase] = ScopeNode,
@@ -113,12 +114,12 @@ class Scope:
 
 
 @public
+@typechecked
 class SymbolTable:
     """Symbol Table for ASTx."""
 
     scopes: Scope
 
-    @typechecked
     def __init__(self) -> None:
         self.scopes = Scope()
 

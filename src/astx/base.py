@@ -7,12 +7,9 @@ import json
 from abc import abstractmethod
 from enum import Enum
 from hashlib import sha256
-from typing import ClassVar, Optional, Type, Union, cast
+from typing import ClassVar, Dict, List, Optional, Type, Union, cast
 
 from typeguard import typechecked
-
-from astx.types import ReprStruct
-from astx.viz import graph_to_ascii, traverse_ast_ascii
 
 try:
     from typing_extensions import TypeAlias
@@ -30,7 +27,13 @@ import yaml
 
 from public import public
 
-__all__ = ["ExprType"]
+__all__ = [
+    "ExprType",
+    "PrimitivesStruct",
+    "DataTypesStruct",
+    "DictDataTypesStruct",
+    "ReprStruct",
+]
 
 
 def is_using_jupyter_notebook() -> bool:
@@ -46,11 +49,11 @@ def is_using_jupyter_notebook() -> bool:
 
 
 @public
+@typechecked
 class SourceLocation:
     line: int
     col: int
 
-    @typechecked
     def __init__(self, line: int, col: int):
         self.line = line
         self.col = col
@@ -138,6 +141,7 @@ class ASTMeta(type):
 
 
 @public
+@typechecked
 class AST(metaclass=ASTMeta):
     """AST main expression class."""
 
@@ -147,7 +151,6 @@ class AST(metaclass=ASTMeta):
     parent: Optional[ASTNodes] = None
     ref: str
 
-    @typechecked
     def __init__(
         self,
         loc: SourceLocation = NO_SOURCE_LOCATION,
@@ -172,6 +175,8 @@ class AST(metaclass=ASTMeta):
     def __repr__(self) -> str:
         """Return an string that represents the object."""
         if not is_using_jupyter_notebook():
+            from astx.viz import graph_to_ascii, traverse_ast_ascii
+
             graph = traverse_ast_ascii(self.get_struct(simplified=True))
             return graph_to_ascii(graph)
         return ""
@@ -233,6 +238,7 @@ class AST(metaclass=ASTMeta):
 
 
 @public
+@typechecked
 class ASTNodes(AST):
     """AST with a list of nodes."""
 
@@ -240,7 +246,6 @@ class ASTNodes(AST):
     nodes: list[AST]
     position: int = 0
 
-    @typechecked
     def __init__(
         self,
         name: str = "entry",
@@ -284,6 +289,7 @@ class ASTNodes(AST):
 
 
 @public
+@typechecked
 class Expr(AST):
     """AST main expression class."""
 
@@ -292,8 +298,26 @@ class Expr(AST):
 
 ExprType: TypeAlias = Type[Expr]
 
+PrimitivesStruct: TypeAlias = Union[
+    int,
+    str,
+    float,
+    bool,
+    "astx.base.Undefined",  # type: ignore[name-defined]  # noqa: F821
+]
+DataTypesStruct: TypeAlias = Union[
+    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
+]
+DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
+ReprStruct: TypeAlias = Union[
+    List[DataTypesStruct],
+    DictDataTypesStruct,
+    "astx.base.Undefined",  # type: ignore[name-defined]  # noqa: F821
+]
+
 
 @public
+@typechecked
 class Undefined(Expr):
     """Undefined expression class."""
 
@@ -305,6 +329,7 @@ class Undefined(Expr):
 
 
 @public
+@typechecked
 class DataType(Expr):
     """AST main expression class."""
 
@@ -312,7 +337,6 @@ class DataType(Expr):
     name: str
     _tmp_id: ClassVar[int] = 0
 
-    @typechecked
     def __init__(
         self,
         loc: SourceLocation = NO_SOURCE_LOCATION,
@@ -337,10 +361,12 @@ class DataType(Expr):
 
 
 @public
+@typechecked
 class OperatorType(DataType):
     """AST main expression class."""
 
 
 @public
+@typechecked
 class StatementType(AST):
     """AST main expression class."""
