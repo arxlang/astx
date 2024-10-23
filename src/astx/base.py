@@ -130,6 +130,8 @@ class ASTKind(Enum):
     ImportExprKind = -800
     ImportFromExprKind = -801
 
+    LambdaExprKind = -807
+
 
 class ASTMeta(type):
     def __str__(cls) -> str:
