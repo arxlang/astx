@@ -371,3 +371,24 @@ def test_literal_complex64() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_typecastexpr() -> None:
+    """Test astx.TypeCastExpr."""
+    # Expression to cast
+    expr = astx.Variable(name="x")
+    # Target type for casting
+    target_type = astx.Int32()
+    # Create the TypeCastExpr
+    cast_expr = astx.TypeCastExpr(expr=expr, target_type=target_type)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(cast_expr)
+    expected_code = "cast(Int32, x)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
