@@ -684,13 +684,13 @@ class LiteralComplex64(LiteralComplex):
 
 
 @public
+@typechecked
 class TypeCastExpr(Expr):
     """AST class for type casting expressions."""
 
     expr: Expr
     target_type: DataType
 
-    @typechecked
     def __init__(
         self,
         expr: Expr,
