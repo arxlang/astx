@@ -132,6 +132,7 @@ class ASTKind(Enum):
     ImportFromExprKind = -801
 
     LambdaExprKind = -807
+    TypeCastExprKind = -809
 
 
 class ASTMeta(type):
