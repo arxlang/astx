@@ -400,7 +400,7 @@ def test_transpiler_utf8_string() -> None:
 
     # Generate Python code
     generated_code = generator.visit(utf8_string_node)
-    expected_code = "'hello'"
+    expected_code = '"hello"'
 
     assert (
         generated_code == expected_code
@@ -417,7 +417,7 @@ def test_transpiler_literal_utf8_char() -> None:
 
     # Generate Python code
     generated_code = generator.visit(literal_utf8_char_node)
-    expected_code = "'a'"
+    expected_code = '"a"'
 
     assert (
         generated_code == expected_code
@@ -434,7 +434,7 @@ def test_transpiler_literal_utf8_string() -> None:
 
     # Generate Python code
     generated_code = generator.visit(literal_utf8_string_node)
-    expected_code = "'world'"
+    expected_code = '"world"'
 
     assert (
         generated_code == expected_code
