@@ -383,7 +383,7 @@ def test_transpiler_utf8_char() -> None:
 
     # Generate Python code
     generated_code = generator.visit(utf8_char_node)
-    expected_code = "'c'"
+    expected_code = '"c"'
 
     assert (
         generated_code == expected_code
