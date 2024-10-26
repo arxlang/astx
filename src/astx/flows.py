@@ -11,16 +11,18 @@ from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
+    DictDataTypesStruct,
     Expr,
+    ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
-from astx.types import DictDataTypesStruct, ReprStruct
 from astx.variables import InlineVariableDeclaration
 
 
 @public
+@typechecked
 class If(StatementType):
     """AST class for `if` statement."""
 
@@ -28,7 +30,6 @@ class If(StatementType):
     then: Block
     else_: Optional[Block]
 
-    @typechecked
     def __init__(
         self,
         condition: Expr,
@@ -69,6 +70,7 @@ class If(StatementType):
 
 
 @public
+@typechecked
 class ForRangeLoop(StatementType):
     """AST class for `For` Loop Range statement."""
 
@@ -78,7 +80,6 @@ class ForRangeLoop(StatementType):
     step: Expr
     body: Block
 
-    @typechecked
     def __init__(
         self,
         variable: InlineVariableDeclaration,
@@ -125,6 +126,7 @@ class ForRangeLoop(StatementType):
 
 
 @public
+@typechecked
 class ForCountLoop(StatementType):
     """
     AST class for a simple Count-Controlled `For` Loop statement.
@@ -137,7 +139,6 @@ class ForCountLoop(StatementType):
     update: Expr
     body: Block
 
-    @typechecked
     def __init__(
         self,
         initializer: InlineVariableDeclaration,
@@ -181,13 +182,13 @@ class ForCountLoop(StatementType):
 
 
 @public
+@typechecked
 class While(StatementType):
     """AST class for `while` statement."""
 
     condition: Expr
     body: Block
 
-    @typechecked
     def __init__(
         self,
         condition: Expr,

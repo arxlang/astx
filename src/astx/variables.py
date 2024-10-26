@@ -13,18 +13,19 @@ from astx.base import (
     ASTNodes,
     Expr,
     ExprType,
+    ReprStruct,
     SourceLocation,
     StatementType,
     Undefined,
 )
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
 from astx.operators import DataTypeOps
-from astx.types import ReprStruct
 
 UNDEFINED = Undefined()
 
 
 @public
+@typechecked
 class VariableDeclaration(StatementType):
     """AST class for variable declaration."""
 
@@ -35,7 +36,6 @@ class VariableDeclaration(StatementType):
     type_: ExprType
     value: Expr
 
-    @typechecked
     def __init__(
         self,
         name: str,
@@ -70,6 +70,7 @@ class VariableDeclaration(StatementType):
 
 
 @public
+@typechecked
 class InlineVariableDeclaration(Expr):
     """
     AST class for inline variable declaration expression.
@@ -82,7 +83,6 @@ class InlineVariableDeclaration(Expr):
     type_: ExprType
     value: Expr
 
-    @typechecked
     def __init__(
         self,
         name: str,
@@ -117,13 +117,13 @@ class InlineVariableDeclaration(Expr):
 
 
 @public
+@typechecked
 class VariableAssignment(StatementType):
     """AST class for variable declaration."""
 
     name: str
     value: Expr
 
-    @typechecked
     def __init__(
         self,
         name: str,
@@ -150,12 +150,12 @@ class VariableAssignment(StatementType):
 
 
 @public
+@typechecked
 class Variable(DataTypeOps):
     """AST class for the variable usage."""
 
     name: str
 
-    @typechecked
     def __init__(
         self,
         name: str,

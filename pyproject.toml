@@ -15,7 +15,7 @@ packages = [
 include = ["src/astx/py.typed"]
 
 [tool.poetry.dependencies]
-python = ">=3.8.1,<4"
+python = ">=3.9,<4"
 atpublic = ">=4.0"
 typing-extensions = { version = ">=4", python = "<3.9" }
 graphviz = ">=0.20.1"
@@ -44,7 +44,7 @@ mkdocs-macros-plugin = ">=0.7.0,<1"
 mkdocs-material = ">=9.1.15"
 mkdocstrings = {version=">=0.24.3", extras=["python"]}
 jupyterlab = ">=4.0.5"
-makim = "1.17.0"
+makim = "1.18.1"
 umlizer = ">=0.1.0"
 nbmake = ">=1.4.6"
 mkdocs-gen-files = ">=0.5.0"

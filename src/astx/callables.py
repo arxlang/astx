@@ -14,19 +14,20 @@ from astx.base import (
     DataType,
     Expr,
     ExprType,
+    ReprStruct,
     SourceLocation,
     StatementType,
     Undefined,
 )
 from astx.blocks import Block
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
-from astx.types import ReprStruct
 from astx.variables import Variable
 
 UNDEFINED = Undefined()
 
 
 @public
+@typechecked
 class Argument(Variable):
     """AST class for argument definition."""
 
@@ -35,7 +36,6 @@ class Argument(Variable):
     type_: ExprType
     default: Expr
 
-    @typechecked
     def __init__(
         self,
         name: str,
@@ -65,10 +65,10 @@ class Argument(Variable):
 
 
 @public
+@typechecked
 class Arguments(ASTNodes):
     """AST class for argument definition."""
 
-    @typechecked
     def __init__(self, *args: Argument, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         for arg in args:
@@ -91,13 +91,13 @@ class Arguments(ASTNodes):
 
 
 @public
+@typechecked
 class FunctionCall(DataType):
     """AST class for function call."""
 
     fn: Function
     args: tuple[DataType, ...]
 
-    @typechecked
     def __init__(
         self,
         fn: Function,
@@ -138,6 +138,7 @@ class FunctionCall(DataType):
 
 
 @public
+@typechecked
 class FunctionPrototype(StatementType):
     """AST class for function prototype declaration."""
 
@@ -147,7 +148,6 @@ class FunctionPrototype(StatementType):
     scope: ScopeKind
     visibility: VisibilityKind
 
-    @typechecked
     def __init__(
         self,
         name: str,
@@ -174,12 +174,12 @@ class FunctionPrototype(StatementType):
 
 
 @public
+@typechecked
 class FunctionReturn(StatementType):
     """AST class for function `return` statement."""
 
     value: DataType
 
-    @typechecked
     def __init__(
         self,
         value: DataType,
@@ -203,13 +203,13 @@ class FunctionReturn(StatementType):
 
 
 @public
+@typechecked
 class Function(StatementType):
     """AST class for function definition."""
 
     prototype: FunctionPrototype
     body: Block
 
-    @typechecked
     def __init__(
         self,
         prototype: FunctionPrototype,
@@ -255,6 +255,7 @@ class Function(StatementType):
 
 
 @public
+@typechecked
 class LambdaExpr(Expr):
     """AST class for lambda expressions."""
 

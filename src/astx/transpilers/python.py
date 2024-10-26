@@ -8,6 +8,7 @@ from typeguard import typechecked
 import astx
 
 
+@typechecked
 class ASTxPythonTranspiler:
     """
     Transpiler that converts ASTx nodes to Python code.
@@ -18,7 +19,6 @@ class ASTxPythonTranspiler:
     The visit method for astx.AST should be the first one.
     """
 
-    @typechecked
     def __init__(self) -> None:
         self.indent_level = 0
         self.indent_str = "    "  # 4 spaces

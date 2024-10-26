@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 from astx.tools import typing
-from typeguard import typechecked
 
 
 def test_skip_unused() -> None:
@@ -20,7 +19,6 @@ def test_copy_type() -> None:
     class A:
         """Class A."""
 
-        @typechecked
         def __init__(self, any_var: str = "") -> None:
             """Initialize class A."""
             pass
@@ -29,7 +27,6 @@ def test_copy_type() -> None:
         """Class B."""
 
         @typing.copy_type(A.__init__)
-        @typechecked
         def __init__(self, *args: Any, **kwargs: Any) -> None:
             """Initialize class B."""
             super().__init__(*args, **kwargs)

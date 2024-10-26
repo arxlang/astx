@@ -15,21 +15,21 @@ from astx.base import (
     ASTKind,
     ASTNodes,
     Expr,
+    ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
-from astx.types import ReprStruct
 
 
 @public
+@typechecked
 class Target(Expr):
     """Define the Architecture target for the program."""
 
     datalayout: str
     triple: str
 
-    @typechecked
     def __init__(self, datalayout: str, triple: str) -> None:
         """Initialize the AST instance."""
         super().__init__()
@@ -44,12 +44,12 @@ class Target(Expr):
 
 
 @public
+@typechecked
 class Module(Block):
     """AST main expression class."""
 
     name: str
 
-    @typechecked
     def __init__(
         self,
         name: str = "main",
@@ -82,6 +82,7 @@ class Module(Block):
 
 
 @public
+@typechecked
 class Package(ASTNodes):
     """AST class for Package."""
 
@@ -89,7 +90,6 @@ class Package(ASTNodes):
     modules: list[Module]
     packages: list[Package]
 
-    @typechecked
     def __init__(
         self,
         name: str = "main",
@@ -131,12 +131,12 @@ class Package(ASTNodes):
 
 
 @public
+@typechecked
 class Program(Package):
     """AST class for Program."""
 
     target: Target
 
-    @typechecked
     def __init__(
         self,
         name: str = "main",
@@ -157,13 +157,13 @@ class Program(Package):
 
 
 @public
+@typechecked
 class AliasExpr(Expr):
     """Represents an alias in an import statement."""
 
     name: str
     asname: str
 
-    @typechecked
     def __init__(
         self,
         name: str,
@@ -194,12 +194,12 @@ class AliasExpr(Expr):
 
 
 @public
+@typechecked
 class ImportStmt(StatementType):
     """Represents an import statement."""
 
     names: list[AliasExpr]
 
-    @typechecked
     def __init__(
         self,
         names: list[AliasExpr],
@@ -225,6 +225,7 @@ class ImportStmt(StatementType):
 
 
 @public
+@typechecked
 class ImportFromStmt(StatementType):
     """Represents an import-from statement."""
 
@@ -232,7 +233,6 @@ class ImportFromStmt(StatementType):
     names: list[AliasExpr]
     level: int
 
-    @typechecked
     def __init__(
         self,
         names: list[AliasExpr],
@@ -272,12 +272,12 @@ class ImportFromStmt(StatementType):
 
 
 @public
+@typechecked
 class ImportExpr(Expr):
     """Represents an import operation as an expression."""
 
     names: list[AliasExpr]
 
-    @typechecked
     def __init__(
         self,
         names: list[AliasExpr],
@@ -303,6 +303,7 @@ class ImportExpr(Expr):
 
 
 @public
+@typechecked
 class ImportFromExpr(Expr):
     """Represents a 'from ... import ...' operation as an expression."""
 
@@ -310,7 +311,6 @@ class ImportFromExpr(Expr):
     names: list[AliasExpr]
     level: int  # Number of leading dots for relative imports
 
-    @typechecked
     def __init__(
         self,
         names: list[AliasExpr],
