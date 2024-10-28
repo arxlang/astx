@@ -682,6 +682,7 @@ class LiteralComplex64(LiteralComplex):
 
 
 @public
+@typechecked
 class UTF8String(DataTypeOps):
     """Class for UTF-8 encoded strings."""
 
@@ -708,6 +709,7 @@ class UTF8String(DataTypeOps):
 
 
 @public
+@typechecked
 class UTF8Char(DataTypeOps):
     """Class for UTF-8 encoded characters."""
 
@@ -734,6 +736,7 @@ class UTF8Char(DataTypeOps):
 
 
 @public
+@typechecked
 class LiteralUTF8String(Literal):
     """Literal class for UTF-8 strings."""
 
@@ -758,6 +761,7 @@ class LiteralUTF8String(Literal):
 
 
 @public
+@typechecked
 class LiteralUTF8Char(Literal):
     """Literal class for UTF-8 characters."""
 
