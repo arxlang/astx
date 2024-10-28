@@ -73,7 +73,6 @@ from astx.datatypes import (
     LiteralUInt128,
     Number,
     SignedInteger,
-    TypeCastExpr,
     UInt8,
     UInt16,
     UInt32,
@@ -109,6 +108,9 @@ from astx.packages import (
     Package,
     Program,
     Target,
+)
+from astx.types import (
+    TypeCastExpr,
 )
 from astx.variables import (
     InlineVariableDeclaration,

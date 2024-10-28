@@ -1,8 +1,9 @@
-"""Tests for complex number data types."""
+"""Tests for classes in types.py."""
 
 from __future__ import annotations
 
-from astx.datatypes import Int32, TypeCastExpr
+from astx.datatypes import Int32
+from astx.types import TypeCastExpr
 from astx.variables import Variable
 from astx.viz import visualize
 
