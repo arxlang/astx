@@ -387,7 +387,7 @@ def test_transpiler_typecastexpr() -> None:
 
     # Generate Python code
     generated_code = generator.visit(cast_expr)
-    expected_code = "cast(Int32, x)"
+    expected_code = "cast(int, x)"
 
     assert (
         generated_code == expected_code
