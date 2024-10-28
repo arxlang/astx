@@ -22,7 +22,7 @@ from asciinet import (
     _AsciiGraphProxy,
 )
 from graphviz import Digraph
-from IPython.display import Image, display
+from IPython.display import Image, display# type: ignore[attr-defined]
 from msgpack import dumps, loads
 
 from astx.base import DictDataTypesStruct, ReprStruct
