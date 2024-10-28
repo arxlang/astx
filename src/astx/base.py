@@ -123,6 +123,8 @@ class ASTKind(Enum):
     Time64DTKind = -619
     Decimal128DTKind = -620
     Decimal256DTKind = -621
+    UTF8CharDTKind = -622
+    UTF8StringDTKind = -623
 
     # imports
     ImportStmtKind = -700
