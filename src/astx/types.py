@@ -46,8 +46,8 @@ class TypeCastExpr(Expr):
         """Return the AST structure of the TypeCast expression."""
         key = "TypeCastExpr"
         value: ReprStruct = {
-            "expression": self.expr.get_struct(),
-            "target_type": self.target_type.get_struct(),
+            "expression": self.expr.get_struct(simplified),
+            "target_type": self.target_type.get_struct(simplified),
         }
 
         return self._prepare_struct(key, value, simplified)
