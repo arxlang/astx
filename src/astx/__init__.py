@@ -83,6 +83,8 @@ from astx.datatypes import (
     UnsignedInteger,
     UTF8Char,
     UTF8String,
+    Date,
+    Time,
 )
 from astx.flows import (
     ForCountLoop,
@@ -225,6 +227,8 @@ __all__ = [
     "LiteralUTF8String",
     "UTF8Char",
     "UTF8String",
+    "Date",
+    "Time",
 ]
 
 

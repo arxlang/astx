@@ -783,3 +783,47 @@ class LiteralUTF8Char(Literal):
         key = f"LiteralUTF8Char: {self.value}"
         value = self.value
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class Date(DataTypeOps):
+    """Date data type expression."""
+
+    def __init__(self, value: str, format: str = "yyyy-mm-dd", loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
+        """Initialize Date."""
+        self.value = value
+        self.format = format
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"Date(value='{self.value}', format='{self.format}')"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST representation for the object."""
+        key = f"Date: {self.value} (format: {self.format})"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class Time(DataTypeOps):
+    """Time data type expression."""
+
+    def __init__(self, value: str, format: str = "HH:mm:ss", loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
+        """Initialize Time."""
+        self.value = value
+        self.format = format
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"Time(value='{self.value}', format='{self.format}')"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST representation for the object."""
+        key = f"Time: {self.value} (format: {self.format})"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
