@@ -1,10 +1,9 @@
-version: 1.0
 groups:
   clean:
     tasks:
       tmp:
         help: remove build artifacts, compiled files, and cache
-        shell: bash
+        backend: bash
         run: |
           find . -name '*.egg-info' -exec rm -rf {} +
           find . -name '*.egg' -exec rm -f {} +
@@ -40,7 +39,7 @@ groups:
             help: Specify parameters to be used for tests
             type: string
             default: "-vv"
-        shell: bash
+        backend: bash
         run: |
           pytest \
             --cov=astx \
@@ -54,10 +53,11 @@ groups:
 
       ci:
         help: run the sames tests executed on CI
-        dependencies:
-          - task: tests.unit
-          - task: tests.notebooks
-          - task: tests.linter
+        hooks:
+          pre-run:
+            - task: tests.unit
+            - task: tests.notebooks
+            - task: tests.linter
 
   docs:
     tasks:
