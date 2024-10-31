@@ -796,6 +796,7 @@ class AnyType(DataTypeOps):
         self.value = value
         self.loc = loc
         self.kind = ASTKind.AnyDTKind
+        self.type_ = type(value)
 
     def __str__(self) -> str:
         """Return a string representation of the Any object."""
