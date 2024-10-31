@@ -452,7 +452,9 @@ def test_transpiler_date() -> None:
     generated_code = generator.visit(date_node)
 
     expected_code = "date('2024-10-31')"
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_time() -> None:
@@ -467,7 +469,9 @@ def test_transpiler_time() -> None:
 
     expected_code = "time('15:30:00')"
 
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_timestamp() -> None:
@@ -482,7 +486,9 @@ def test_transpiler_timestamp() -> None:
 
     expected_code = "timestamp('2024-10-31T15:30:00')"
 
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_datetime() -> None:
@@ -497,7 +503,9 @@ def test_transpiler_datetime() -> None:
 
     expected_code = "datetime('2024-10-31T15:30:00')"
 
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_date() -> None:
@@ -512,7 +520,9 @@ def test_transpiler_literal_date() -> None:
 
     expected_code = repr("2024-10-31")
 
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_time() -> None:
@@ -527,7 +537,9 @@ def test_transpiler_literal_time() -> None:
 
     expected_code = repr("15:30:00")
 
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_timestamp() -> None:
@@ -541,7 +553,9 @@ def test_transpiler_literal_timestamp() -> None:
     generated_code = generator.visit(literal_timestamp_node)
 
     expected_code = repr("2024-10-31T15:30:00")
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_datetime() -> None:
@@ -556,4 +570,6 @@ def test_transpiler_literal_datetime() -> None:
 
     expected_code = repr("2024-10-31T15:30:00")
 
-    assert generated_code == expected_code, f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
