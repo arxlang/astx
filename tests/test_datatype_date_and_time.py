@@ -8,13 +8,13 @@ import astx
 import pytest
 
 from astx.datatypes import (
+    Date,
+    DateTime,
     LiteralDate,
     LiteralDateTime,
     LiteralTime,
     LiteralTimestamp,
-    Date,
     Time,
-    DateTime,
     Timestamp,
 )
 from astx.operators import BinaryOp, UnaryOp
