@@ -783,3 +783,26 @@ class LiteralUTF8Char(Literal):
         key = f"LiteralUTF8Char: {self.value}"
         value = self.value
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class AnyType(DataTypeOps):
+    """Class for Any data type."""
+
+    def __init__(self, value: Any, loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
+        """Initialize Any with a value of any type."""
+        super().__init__()
+        self.value = value
+        self.loc = loc
+        self.kind = ASTKind.AnyDTKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the Any object."""
+        return f"Any({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the Any object."""
+        key = "Any"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
