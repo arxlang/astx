@@ -790,7 +790,9 @@ class LiteralUTF8Char(Literal):
 class AnyType(DataTypeOps):
     """Class for Any data type."""
 
-    def __init__(self, value: Any, loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
+    def __init__(
+        self, value: Any, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
         """Initialize Any with a value of any type."""
         super().__init__()
         self.value = value
