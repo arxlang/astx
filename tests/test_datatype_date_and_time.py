@@ -14,8 +14,8 @@ from astx.datatypes import (
     LiteralTimestamp,
     Date,
     Time,
-    Timestamp,
     DateTime,
+    Timestamp,
 )
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
@@ -27,6 +27,10 @@ DATE_LITERAL_CLASSES = [
     LiteralTime,
     LiteralTimestamp,
     LiteralDateTime,
+    Date,
+    Time,
+    DateTime,
+    Timestamp,
 ]
 
 
