@@ -12,6 +12,10 @@ from astx.datatypes import (
     LiteralDateTime,
     LiteralTime,
     LiteralTimestamp,
+    Date,
+    Time,
+    Timestamp,
+    DateTime,
 )
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
