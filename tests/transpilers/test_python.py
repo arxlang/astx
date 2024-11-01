@@ -500,7 +500,7 @@ def test_transpiler_binary_op() -> None:
     generated_code = generator.visit(binary_op)
 
     # Expected code for the binary operation
-    expected_code = repr("x + y")
+    expected_code = "(x + y)"
 
     assert (
         generated_code == expected_code
