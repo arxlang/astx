@@ -141,8 +141,8 @@ class BinaryOp(DataTypeOps):
         self.kind = ASTKind.BinaryOpKind
 
         if not (
-            issubclass(lhs.type_, (Number, BinaryOp, DataType))
-            and issubclass(rhs.type_, (Number, BinaryOp, DataType))
+            issubclass(lhs.type_, (Number, BinaryOp, DataType, AnyType))
+            and issubclass(rhs.type_, (Number, BinaryOp, DataType, AnyType))
         ):
             raise Exception(
                 "For now, binary operators are just allowed for numbers."
