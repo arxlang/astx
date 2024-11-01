@@ -297,3 +297,8 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.LiteralBoolean) -> str:
         """Handle LiteralBoolean nodes."""
         return "True" if node.value else "False"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AnyType) -> str:
+        """Handle AnyType nodes."""
+        return repr(node.value)

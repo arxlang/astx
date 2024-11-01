@@ -501,6 +501,19 @@ def test_transpiler_binary_op() -> None:
 
     # Expected code for the binary operation
     expected_code = "(x + y)"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+def test_transpiler_anytype_with_value() -> None:
+    """Test astx.AnyType with a specific value."""
+    any_type_node = astx.AnyType(value="5")
+
+    generator = astx2py.ASTxPythonTranspiler()
+
+    generated_code = generator.visit(any_type_node)
+
+    expected_code = repr("5")
 
     assert (
         generated_code == expected_code
