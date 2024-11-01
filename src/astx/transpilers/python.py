@@ -277,24 +277,24 @@ class ASTxPythonTranspiler:
         return repr(node.value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Date) -> str:
+    def visit(self, node: Type[astx.Date]) -> str:
         """Handle Date nodes."""
-        return f"date({node.value!r})"
+        return "date"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Time) -> str:
+    def visit(self, node: Type[astx.Time]) -> str:
         """Handle Time nodes."""
-        return f"time({node.value!r})"
+        return "time"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Timestamp) -> str:
+    def visit(self, node: Type[astx.Timestamp]) -> str:
         """Handle Timestamp nodes."""
-        return f"timestamp({node.value!r})"
+        return "timestamp"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.DateTime) -> str:
+    def visit(self, node: Type[astx.DateTime]) -> str:
         """Handle DateTime nodes."""
-        return f"datetime({node.value!r})"
+        return "datetime"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDate) -> str:

@@ -807,7 +807,7 @@ class Date(Temporal):
 
     def __str__(self) -> str:
         """Return a string representation of the Date object."""
-        return f"Date({self.value})"
+        return f"Date[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the Date object."""
@@ -832,7 +832,7 @@ class Time(Temporal):
 
     def __str__(self) -> str:
         """Return a string representation of the Time object."""
-        return f"Time({self.value})"
+        return f"Time[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the Time object."""
@@ -857,7 +857,7 @@ class Timestamp(Temporal):
 
     def __str__(self) -> str:
         """Return a string representation of the Timestamp object."""
-        return f"Timestamp({self.value})"
+        return f"Timestamp[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the Timestamp object."""
@@ -882,7 +882,7 @@ class DateTime(Temporal):
 
     def __str__(self) -> str:
         """Return a string representation of the DateTime object."""
-        return f"DateTime({self.value})"
+        return f"DateTime[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the DateTime object."""
@@ -907,7 +907,7 @@ class LiteralDate(Literal):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"LiteralDate({self.value})"
+        return f"LiteralDate[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the structure of the LiteralDate object."""
@@ -931,7 +931,7 @@ class LiteralTime(Literal):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"LiteralTime({self.value})"
+        return f"LiteralTime[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the structure of the LiteralTime object."""
@@ -955,7 +955,7 @@ class LiteralTimestamp(Literal):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"LiteralTimestamp({self.value})"
+        return f"LiteralTimestamp[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the structure of the LiteralTimestamp object."""
@@ -979,7 +979,7 @@ class LiteralDateTime(Literal):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"LiteralDateTime({self.value})"
+        return f"LiteralDateTime[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the structure of the LiteralDateTime object."""
