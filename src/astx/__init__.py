@@ -113,6 +113,9 @@ from astx.packages import (
     Program,
     Target,
 )
+from astx.types import (
+    TypeCastExpr,
+)
 from astx.variables import (
     InlineVariableDeclaration,
     Variable,
@@ -207,6 +210,7 @@ __all__ = [
     "StatementType",
     "symbol_table",
     "Target",
+    "TypeCastExpr",
     "UnaryOp",
     "Undefined",
     "VariableAssignment",
