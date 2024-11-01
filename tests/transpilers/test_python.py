@@ -381,16 +381,17 @@ def test_transpiler_typecastexpr() -> None:
     target_type = astx.Int32()
     # Create the TypeCastExpr
     cast_expr = astx.TypeCastExpr(expr=expr, target_type=target_type)
-    
+
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
-    
+
     generated_code = generator.visit(cast_expr)
     expected_code = "cast(int, x)"
-    
+
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
 
 def test_transpiler_utf8_char() -> None:
     """Test astx.Utf8Char."""
