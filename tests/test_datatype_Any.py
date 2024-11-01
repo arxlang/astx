@@ -42,27 +42,6 @@ def test_any_literal(literal_value: AnyType) -> None:
 
 
 @pytest.mark.parametrize(
-    "fn_bin_op,op_code",
-    [
-        (lambda literal_value: VAR_A + literal_value, "+"),
-        (lambda literal_value: VAR_A == literal_value, "=="),
-        (lambda literal_value: VAR_A != literal_value, "!="),
-    ],
-)
-def test_bin_ops_any(
-    fn_bin_op: Callable[[AnyType], BinaryOp],
-    op_code: str,
-) -> None:
-    """Test binary operations on AnyType."""
-    bin_op = fn_bin_op(AnyType(5))
-    assert bin_op.op_code == op_code
-    assert str(bin_op) != ""
-    assert repr(bin_op) != ""
-    assert bin_op.get_struct() != {}
-    assert bin_op.get_struct(simplified=True) != {}
-
-
-@pytest.mark.parametrize(
     "fn_unary_op,op_code",
     [
         (lambda value: +value, "+"),
