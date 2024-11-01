@@ -478,9 +478,29 @@ def test_transpiler_for_range_loop_expr() -> None:
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
-    # Generate Python code
     generated_code = generator.visit(for_expr)
     expected_code = "result = [    2 for  a in range (0,10,1)]"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_binary_op() -> None:
+    """Test astx.BinaryOp for addition operation."""
+    # Create a BinaryOp node for the expression "x + y"
+    lhs = astx.Variable(name="x")
+    rhs = astx.Variable(name="y")
+    binary_op = astx.BinaryOp(op_code="+", lhs=lhs, rhs=rhs)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(binary_op)
+
+    # Expected code for the binary operation
+    expected_code = "x + y"
 
     assert (
         generated_code == expected_code
