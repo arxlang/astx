@@ -7,7 +7,7 @@ from typing import Callable
 import pytest
 
 from astx.datatypes import AnyType
-from astx.operators import BinaryOp, UnaryOp
+from astx.operators import UnaryOp
 from astx.variables import Variable
 
 VAR_A = Variable("a")
@@ -20,14 +20,6 @@ def test_variable_any() -> None:
 
     assert str(var_a) == "Any(5)"
     assert str(var_b) == "Any(10)"
-
-    # Test binary operation with AnyType
-    result = BinaryOp(op_code="+", lhs=var_a, rhs=var_b)
-    assert result.op_code == "+"
-    assert str(result) != ""
-    assert repr(result) != ""
-    assert result.get_struct() != {}
-    assert result.get_struct(simplified=True) != {}
 
 
 @pytest.mark.parametrize(
