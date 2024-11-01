@@ -679,3 +679,107 @@ class LiteralComplex64(LiteralComplex):
         """Initialize LiteralComplex64."""
         super().__init__(Complex64(real, imag), loc)
         self.type_ = Complex64
+
+
+@public
+@typechecked
+class UTF8String(DataTypeOps):
+    """Class for UTF-8 encoded strings."""
+
+    def __init__(
+        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        if not isinstance(value, str):
+            raise TypeError("Expected a valid UTF-8 string.")
+        value.encode("utf-8")
+        super().__init__()
+        self.value = value
+        self.loc = loc
+        self.kind = ASTKind.UTF8StringDTKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"UTF8String({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the structure of the object in a simplified."""
+        key = "UTF8String"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class UTF8Char(DataTypeOps):
+    """Class for UTF-8 encoded characters."""
+
+    def __init__(
+        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        if len(value) != 1:
+            raise ValueError("Expected a single UTF-8 character.")
+        value.encode("utf-8")
+        super().__init__()
+        self.value = value
+        self.loc = loc
+        self.kind = ASTKind.UTF8CharDTKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"UTF8Char({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the structure of the object in a simplified."""
+        key = "UTF8Char"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class LiteralUTF8String(Literal):
+    """Literal class for UTF-8 strings."""
+
+    def __init__(
+        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        super().__init__(loc)
+        value.encode("utf-8")
+        self.value = value
+        self.type_ = UTF8String
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"LiteralUTF8String({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the structure of the object in a simplified."""
+        key = f"LiteralUTF8String: {self.value}"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class LiteralUTF8Char(Literal):
+    """Literal class for UTF-8 characters."""
+
+    def __init__(
+        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        super().__init__(loc)
+        value.encode("utf-8")
+        self.value = value
+        self.type_ = UTF8Char
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"LiteralUTF8Char({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the structure of the object in a simplified."""
+        key = f"LiteralUTF8Char: {self.value}"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)

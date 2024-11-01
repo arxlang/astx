@@ -381,13 +381,79 @@ def test_transpiler_typecastexpr() -> None:
     target_type = astx.Int32()
     # Create the TypeCastExpr
     cast_expr = astx.TypeCastExpr(expr=expr, target_type=target_type)
+    
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+    
+    generated_code = generator.visit(cast_expr)
+    expected_code = "cast(int, x)"
+    
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+def test_transpiler_utf8_char() -> None:
+    """Test astx.Utf8Char."""
+    # Create a Utf8Char node
+    utf8_char_node = astx.UTF8Char(value="c")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
-    generated_code = generator.visit(cast_expr)
-    expected_code = "cast(int, x)"
+    generated_code = generator.visit(utf8_char_node)
+    expected_code = repr("c")
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_utf8_string() -> None:
+    """Test astx.Utf8String."""
+    # Create a Utf8String node
+    utf8_string_node = astx.UTF8String(value="hello")
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(utf8_string_node)
+    expected_code = repr("hello")
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_utf8_char() -> None:
+    """Test astx.LiteralUtf8Char."""
+    # Create a LiteralUtf8Char node
+    literal_utf8_char_node = astx.LiteralUTF8Char(value="a")
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_utf8_char_node)
+    expected_code = repr("a")
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_utf8_string() -> None:
+    """Test astx.LiteralUtf8String."""
+    # Create a LiteralUtf8String node
+    literal_utf8_string_node = astx.LiteralUTF8String(value="world")
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_utf8_string_node)
+    expected_code = repr("world")
 
     assert (
         generated_code == expected_code
