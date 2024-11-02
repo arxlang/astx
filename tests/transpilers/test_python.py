@@ -480,3 +480,23 @@ def test_transpiler_for_range_expr() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_for_range_expr_nostep() -> None:
+    """Test astx.ForRangeExpr without step."""
+    # Create a ForRangeExpr node
+    range_expr = astx.ForRangeExpr(
+        start=astx.LiteralInt32(0),
+        end=astx.LiteralInt32(10),
+    )
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(range_expr)
+    expected_code = "range(0,10,1)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
