@@ -459,3 +459,24 @@ def test_transpiler_literal_utf8_string() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_for_range_expr() -> None:
+    """Test astx.ForRangeExpr."""
+    # Create a ForRangeExpr node
+    range_expr = astx.ForRangeExpr(
+        start=astx.LiteralInt32(0),
+        end=astx.LiteralInt32(10),
+        step=astx.LiteralInt32(1),
+    )
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(range_expr)
+    expected_code = "range(0,10,1)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"

@@ -72,6 +72,11 @@ class ASTxPythonTranspiler:
         return self._generate_block(node)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ForRangeExpr) -> str:
+        """Handle ForRangeExpr nodes."""
+        return f"range({node.start.value},{node.end.value},{node.step.value})"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromStmt) -> str:
         """Handle ImportFromStmt nodes."""
         names = [self.visit(name) for name in node.names]
