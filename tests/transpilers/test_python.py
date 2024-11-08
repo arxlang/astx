@@ -461,7 +461,7 @@ def test_transpiler_literal_utf8_string() -> None:
     ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
-def test_transpiler_for_range_expr() -> None:
+def test_transpiler_for_range_loop_expr() -> None:
     """Test `For Range Loop` expression`."""
     decl_a = astx.InlineVariableDeclaration(
         "a", type_=astx.Int32, value=astx.LiteralInt32(-1)
@@ -480,7 +480,7 @@ def test_transpiler_for_range_expr() -> None:
 
     # Generate Python code
     generated_code = generator.visit(for_expr)
-    expected_code = "range(0,10,1)"
+    expected_code = "result = [    2 for  a in range (0,10,1)]"
 
     assert (
         generated_code == expected_code

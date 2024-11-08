@@ -74,7 +74,12 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeExpr nodes."""
-        return f"range({node.start.value},{node.end.value},{node.step.value})"
+        return (
+            f"result = [{self.visit(node.body)} for "
+            f" {node.variable.name} in range "
+            f"({self.visit(node.start)},{self.visit(node.end)},"
+            f"{self.visit(node.step)})]"
+        )
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromStmt) -> str:
