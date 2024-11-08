@@ -73,7 +73,7 @@ class If(StatementType):
 @public
 @typechecked
 class ForRangeLoop(StatementType):
-    """AST class for `For` Loop using a range expression."""
+    """AST class for `For` Range Statement."""
 
     variable: InlineVariableDeclaration
     start: Expr
@@ -128,7 +128,7 @@ class ForRangeLoop(StatementType):
 @public
 @typechecked
 class ForRangeExpr(Expr):
-    """AST class for range expressions used in loops or other contexts."""
+    """AST class for `For` Range Expression."""
 
     start: Expr
     end: Expr
