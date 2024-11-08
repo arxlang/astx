@@ -2,7 +2,7 @@
 
 from astx.blocks import Block
 from astx.datatypes import Int32, LiteralInt32
-from astx.flows import ForCountLoop, ForRangeExpr, ForRangeLoop, If
+from astx.flows import ForCountLoop, ForRangeExpr, ForRangeLoopStmt, If
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
 from astx.viz import visualize
@@ -55,7 +55,7 @@ def test_for_range_loop_stmt() -> None:
     step = LiteralInt32(1)
     body = Block()
     body.append(LiteralInt32(2))
-    for_stmt = ForRangeLoop(
+    for_stmt = ForRangeLoopStmt(
         variable=decl_a, start=start, end=end, step=step, body=body
     )
 

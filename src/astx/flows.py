@@ -72,7 +72,7 @@ class If(StatementType):
 
 @public
 @typechecked
-class ForRangeLoop(StatementType):
+class ForRangeLoopStmt(StatementType):
     """AST class for `For` Range Statement."""
 
     variable: InlineVariableDeclaration
