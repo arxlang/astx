@@ -466,7 +466,7 @@ def test_transpiler_for_range_expr() -> None:
     decl_a = astx.InlineVariableDeclaration(
         "a", type_=astx.Int32, value=astx.LiteralInt32(-1)
     )
-    start = astx.LiteralInt32(1)
+    start = astx.LiteralInt32(0)
     end = astx.LiteralInt32(10)
     step = astx.LiteralInt32(1)
     body = astx.Block()
