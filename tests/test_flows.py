@@ -46,10 +46,7 @@ def test_for_range_loop_expr() -> None:
     for_expr = ForRangeLoopExpr(
         variable=decl_a, start=start, end=end, step=step, body=body
     )
-    #
-    # range_expr = ForRangeExpr(
-    #     start=LiteralInt32(0), end=LiteralInt32(10), step=LiteralInt32(1)
-    # )
+
     assert str(for_expr)
     assert for_expr.get_struct()
     assert for_expr.get_struct(simplified=True)
