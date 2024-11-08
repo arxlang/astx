@@ -2,7 +2,7 @@
 
 from astx.blocks import Block
 from astx.datatypes import Int32, LiteralInt32
-from astx.flows import ForCountLoop, ForRangeExpr, ForRangeLoopStmt, If
+from astx.flows import ForCountLoop, ForRangeLoopExpr, ForRangeLoopStmt, If
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
 from astx.viz import visualize
@@ -33,16 +33,27 @@ def test_if_else() -> None:
     visualize(if_stmt.get_struct())
 
 
-def test_for_range_expr() -> None:
-    """Test `For Range` expression`."""
-    range_expr = ForRangeExpr(
-        start=LiteralInt32(0), end=LiteralInt32(10), step=LiteralInt32(1)
+def test_for_range_loop_expr() -> None:
+    """Test `For Range Loop` expression`."""
+    decl_a = InlineVariableDeclaration(
+        "a", type_=Int32, value=LiteralInt32(-1)
     )
-
-    assert str(range_expr)
-    assert range_expr.get_struct()
-    assert range_expr.get_struct(simplified=True)
-    visualize(range_expr.get_struct())
+    start = LiteralInt32(1)
+    end = LiteralInt32(10)
+    step = LiteralInt32(1)
+    body = Block()
+    body.append(LiteralInt32(2))
+    for_expr = ForRangeLoopExpr(
+        variable=decl_a, start=start, end=end, step=step, body=body
+    )
+    #
+    # range_expr = ForRangeExpr(
+    #     start=LiteralInt32(0), end=LiteralInt32(10), step=LiteralInt32(1)
+    # )
+    assert str(for_expr)
+    assert for_expr.get_struct()
+    assert for_expr.get_struct(simplified=True)
+    visualize(for_expr.get_struct())
 
 
 def test_for_range_loop_stmt() -> None:

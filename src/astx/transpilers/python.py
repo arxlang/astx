@@ -72,7 +72,7 @@ class ASTxPythonTranspiler:
         return self._generate_block(node)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.ForRangeExpr) -> str:
+    def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeExpr nodes."""
         return f"range({node.start.value},{node.end.value},{node.step.value})"
 

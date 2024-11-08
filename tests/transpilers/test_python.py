@@ -462,39 +462,24 @@ def test_transpiler_literal_utf8_string() -> None:
 
 
 def test_transpiler_for_range_expr() -> None:
-    """Test astx.ForRangeExpr."""
-    # Create a ForRangeExpr node
-    range_expr = astx.ForRangeExpr(
-        start=astx.LiteralInt32(0),
-        end=astx.LiteralInt32(10),
-        step=astx.LiteralInt32(1),
+    """Test `For Range Loop` expression`."""
+    decl_a = astx.InlineVariableDeclaration(
+        "a", type_=astx.Int32, value=astx.LiteralInt32(-1)
+    )
+    start = astx.LiteralInt32(1)
+    end = astx.LiteralInt32(10)
+    step = astx.LiteralInt32(1)
+    body = astx.Block()
+    body.append(astx.LiteralInt32(2))
+    for_expr = astx.ForRangeLoopExpr(
+        variable=decl_a, start=start, end=end, step=step, body=body
     )
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
-    generated_code = generator.visit(range_expr)
-    expected_code = "range(0,10,1)"
-
-    assert (
-        generated_code == expected_code
-    ), f"Expected '{expected_code}', but got '{generated_code}'"
-
-
-def test_transpiler_for_range_expr_nostep() -> None:
-    """Test astx.ForRangeExpr without step."""
-    # Create a ForRangeExpr node
-    range_expr = astx.ForRangeExpr(
-        start=astx.LiteralInt32(0),
-        end=astx.LiteralInt32(10),
-    )
-
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
-    # Generate Python code
-    generated_code = generator.visit(range_expr)
+    generated_code = generator.visit(for_expr)
     expected_code = "range(0,10,1)"
 
     assert (
