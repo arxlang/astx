@@ -157,14 +157,16 @@ class ForRangeLoopExpr(Expr):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        start = self.start
-        end = self.end
-        step = self.step
         var_name = self.variable.name
-        return f"ForRangeLoopExpr({var_name}=[{start}:{end}:{step}])"
+        # note: it would be nice to have the following structure
+        #    ForRangeLoopExpr({var_name}=[{start}:{end}:{step}])
+        #    but we would need to have first something like a resolver
+        #    otherwise it could be a very large output
+        return f"ForRangeLoopExpr[{var_name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
+        for_var = {"var": self.variable.get_struct(simplified)}
         for_start = {"start": self.start.get_struct(simplified)}
         for_end = {"end": self.end.get_struct(simplified)}
         for_step = {"step": self.step.get_struct(simplified)}
@@ -172,6 +174,7 @@ class ForRangeLoopExpr(Expr):
 
         key = "FOR-RANGE-LOOP-EXPR"
         value: ReprStruct = {
+            **cast(DictDataTypesStruct, for_var),
             **cast(DictDataTypesStruct, for_start),
             **cast(DictDataTypesStruct, for_end),
             **cast(DictDataTypesStruct, for_step),

@@ -73,7 +73,7 @@ class ASTxPythonTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
-        """Handle ForRangeExpr nodes."""
+        """Handle ForRangeLoopExpr nodes."""
         return (
             f"result = [{self.visit(node.body)} for "
             f" {node.variable.name} in range "
