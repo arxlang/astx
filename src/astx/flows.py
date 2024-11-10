@@ -71,8 +71,8 @@ class If(StatementType):
 
 @public
 @typechecked
-class ForRangeLoop(StatementType):
-    """AST class for `For` Loop Range statement."""
+class ForRangeLoopStmt(StatementType):
+    """AST class for `For` Range Statement."""
 
     variable: InlineVariableDeclaration
     start: Expr
@@ -90,14 +90,14 @@ class ForRangeLoop(StatementType):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the ForStmt instance."""
+        """Initialize the ForRangeLoopStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.variable = variable
         self.start = start
         self.end = end
         self.step = step
         self.body = body
-        self.kind = ASTKind.ForRangeKind
+        self.kind = ASTKind.ForRangeLoopStmtKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
@@ -105,7 +105,7 @@ class ForRangeLoop(StatementType):
         end = self.end
         step = self.step
         var_name = self.variable.name
-        return f"ForRangeLoop({var_name}=[{start}:{end}:{step}])"
+        return f"ForRangeLoopStmt({var_name}=[{start}:{end}:{step}])"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -114,14 +114,69 @@ class ForRangeLoop(StatementType):
         for_step = {"step": self.step.get_struct(simplified)}
         for_body = self.body.get_struct(simplified)
 
-        key = "FOR-RANGE-STMT"
+        key = "FOR-RANGE-LOOP-STMT"
         value: ReprStruct = {
             **cast(DictDataTypesStruct, for_start),
             **cast(DictDataTypesStruct, for_end),
             **cast(DictDataTypesStruct, for_step),
             **cast(DictDataTypesStruct, for_body),
         }
+        return self._prepare_struct(key, value, simplified)
 
+
+@public
+@typechecked
+class ForRangeLoopExpr(Expr):
+    """AST class for `For` Range Expression."""
+
+    variable: InlineVariableDeclaration
+    start: Expr
+    end: Expr
+    step: Expr
+    body: Block
+
+    def __init__(
+        self,
+        variable: InlineVariableDeclaration,
+        start: Expr,
+        end: Expr,
+        step: Expr,
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the ForRangeLoopExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.variable = variable
+        self.start = start
+        self.end = end
+        self.step = step
+        self.body = body
+        self.kind = ASTKind.ForRangeLoopExprKind
+        # self.step = step if step is not None else LiteralInt32(1)
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        start = self.start
+        end = self.end
+        step = self.step
+        var_name = self.variable.name
+        return f"ForRangeLoopExpr({var_name}=[{start}:{end}:{step}])"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        for_start = {"start": self.start.get_struct(simplified)}
+        for_end = {"end": self.end.get_struct(simplified)}
+        for_step = {"step": self.step.get_struct(simplified)}
+        for_body = self.body.get_struct(simplified)
+
+        key = "FOR-RANGE-LOOP-EXPR"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, for_start),
+            **cast(DictDataTypesStruct, for_end),
+            **cast(DictDataTypesStruct, for_step),
+            **cast(DictDataTypesStruct, for_body),
+        }
         return self._prepare_struct(key, value, simplified)
 
 

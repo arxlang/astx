@@ -459,3 +459,29 @@ def test_transpiler_literal_utf8_string() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_for_range_loop_expr() -> None:
+    """Test `For Range Loop` expression`."""
+    decl_a = astx.InlineVariableDeclaration(
+        "a", type_=astx.Int32, value=astx.LiteralInt32(-1)
+    )
+    start = astx.LiteralInt32(0)
+    end = astx.LiteralInt32(10)
+    step = astx.LiteralInt32(1)
+    body = astx.Block()
+    body.append(astx.LiteralInt32(2))
+    for_expr = astx.ForRangeLoopExpr(
+        variable=decl_a, start=start, end=end, step=step, body=body
+    )
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(for_expr)
+    expected_code = "result = [    2 for  a in range (0,10,1)]"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
