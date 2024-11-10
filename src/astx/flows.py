@@ -161,7 +161,7 @@ class ForRangeLoopExpr(Expr):
         # note: it would be nice to have the following structure
         #    ForRangeLoopExpr({var_name}=[{start}:{end}:{step}])
         #    but we would need to have first something like a resolver
-        #    otherwise it could be very large output
+        #    otherwise it could be a very large output
         return f"ForRangeLoopExpr[{var_name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
