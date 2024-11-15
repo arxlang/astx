@@ -185,7 +185,7 @@ class ForRangeLoopExpr(Expr):
 
 @public
 @typechecked
-class ForCountLoop(StatementType):
+class ForCountLoopStmt(StatementType):
     """
     AST class for a simple Count-Controlled `For` Loop statement.
 
@@ -206,20 +206,20 @@ class ForCountLoop(StatementType):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the ForStmt instance."""
+        """Initialize the ForCountLoopStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.initializer = initializer
         self.condition = condition
         self.update = update
         self.body = body
-        self.kind = ASTKind.ForCountKind
+        self.kind = ASTKind.ForCountLoopStmtKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
         init = self.initializer
         cond = self.condition
         update = self.update
-        return f"ForCountLoop({init};{cond};{update})"
+        return f"ForCountLoopStmt({init};{cond};{update})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -236,6 +236,61 @@ class ForCountLoop(StatementType):
             **cast(DictDataTypesStruct, for_body),
         }
 
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class ForCountLoopExpr(Expr):
+    """
+    AST class for a simple Count-Controlled `For` Loop expression.
+
+    This is a very basic `for` loop, used by languages like C or C++.
+    """
+
+    initializer: InlineVariableDeclaration
+    condition: Expr
+    update: Expr
+    body: Block
+
+    def __init__(
+        self,
+        initializer: InlineVariableDeclaration,
+        condition: Expr,
+        update: Expr,
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the ForLoopCountExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.initializer = initializer
+        self.condition = condition
+        self.update = update
+        self.body = body
+        self.kind = ASTKind.ForCountLoopExprKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        init = self.initializer
+        cond = self.condition
+        update = self.update
+        return f"ForCountLoopExpr({init};{cond};{update})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        for_init = {"initialization": self.initializer.get_struct(simplified)}
+        for_cond = {"condition": self.condition.get_struct(simplified)}
+        for_update = {"update": self.update.get_struct(simplified)}
+        for_body = self.body.get_struct(simplified)
+
+        key = "FOR-COUNT-EXPR"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, for_init),
+            **cast(DictDataTypesStruct, for_cond),
+            **cast(DictDataTypesStruct, for_update),
+            **cast(DictDataTypesStruct, for_body),
+        }
         return self._prepare_struct(key, value, simplified)
 
 

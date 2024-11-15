@@ -2,7 +2,13 @@
 
 from astx.blocks import Block
 from astx.datatypes import Int32, LiteralInt32
-from astx.flows import ForCountLoop, ForRangeLoopExpr, ForRangeLoopStmt, If
+from astx.flows import (
+    ForCountLoopExpr,
+    ForCountLoopStmt,
+    ForRangeLoopExpr,
+    ForRangeLoopStmt,
+    If,
+)
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
 from astx.viz import visualize
@@ -73,7 +79,7 @@ def test_for_range_loop_stmt() -> None:
     visualize(for_stmt.get_struct())
 
 
-def test_for_count() -> None:
+def test_for_count_loop_stmt() -> None:
     """Test `For Count Loop` statement."""
     decl_a = InlineVariableDeclaration("a", type_=Int32, value=LiteralInt32(0))
     var_a = Variable("a")
@@ -81,7 +87,7 @@ def test_for_count() -> None:
     update = UnaryOp(op_code="++", operand=var_a)
     body = Block()
     body.append(LiteralInt32(2))
-    for_stmt = ForCountLoop(
+    for_stmt = ForCountLoopStmt(
         initializer=decl_a, condition=cond, update=update, body=body
     )
 
@@ -89,3 +95,21 @@ def test_for_count() -> None:
     assert for_stmt.get_struct()
     assert for_stmt.get_struct(simplified=True)
     visualize(for_stmt.get_struct())
+
+
+def test_for_count_loop_expr() -> None:
+    """Test `For Count Loop` expression."""
+    decl_a = InlineVariableDeclaration("a", type_=Int32, value=LiteralInt32(0))
+    var_a = Variable("a")
+    cond = BinaryOp(op_code="<", lhs=var_a, rhs=LiteralInt32(10))
+    update = UnaryOp(op_code="++", operand=var_a)
+    body = Block()
+    body.append(LiteralInt32(2))
+    for_expr = ForCountLoopExpr(
+        initializer=decl_a, condition=cond, update=update, body=body
+    )
+
+    assert str(for_expr)
+    assert for_expr.get_struct()
+    assert for_expr.get_struct(simplified=True)
+    visualize(for_expr.get_struct())

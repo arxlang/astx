@@ -97,10 +97,11 @@ class ASTKind(Enum):
 
     # control flow
     IfKind = -500
-    ForCountKind = -501
+    ForCountLoopStmtKind = -501
     ForRangeLoopStmtKind = -502
     WhileKind = -503
     ForRangeLoopExprKind = -504
+    ForCountLoopExprKind = -505
 
     # data types
     NullDTKind = -600
