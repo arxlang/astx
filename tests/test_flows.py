@@ -98,7 +98,7 @@ def test_for_count_loop_stmt() -> None:
 
 
 def test_for_count_loop_expr() -> None:
-    """Test `For Count Loop` statement."""
+    """Test `For Count Loop` expression."""
     decl_a = InlineVariableDeclaration("a", type_=Int32, value=LiteralInt32(0))
     var_a = Variable("a")
     cond = BinaryOp(op_code="<", lhs=var_a, rhs=LiteralInt32(10))
