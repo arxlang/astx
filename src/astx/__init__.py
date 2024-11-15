@@ -90,7 +90,8 @@ from astx.flows import (
     ForRangeLoopExpr,
     ForRangeLoopStmt,
     If,
-    While,
+    WhileExpr,
+    WhileStmt,
 )
 from astx.mixes import (
     NamedExpr,
@@ -222,7 +223,8 @@ __all__ = [
     "Variable",
     "variables",
     "VisibilityKind",
-    "While",
+    "WhileStmt",
+    "WhileExpr",
     "Complex",
     "Complex32",
     "Complex64",
