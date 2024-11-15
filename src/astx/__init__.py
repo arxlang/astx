@@ -85,6 +85,7 @@ from astx.datatypes import (
     UTF8String,
 )
 from astx.flows import (
+    ForCountLoopExpr,
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
@@ -159,6 +160,7 @@ __all__ = [
     "Floating",
     "flows",
     "ForCountLoopStmt",
+    "ForCountLoopExpr",
     "ForRangeLoopStmt",
     "ForRangeLoopExpr",
     "Function",
