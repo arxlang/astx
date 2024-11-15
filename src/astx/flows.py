@@ -206,7 +206,7 @@ class ForCountLoopStmt(StatementType):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the ForStmt instance."""
+        """Initialize the ForCountLoopStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.initializer = initializer
         self.condition = condition
@@ -219,7 +219,7 @@ class ForCountLoopStmt(StatementType):
         init = self.initializer
         cond = self.condition
         update = self.update
-        return f"ForCountLoop({init};{cond};{update})"
+        return f"ForCountLoopStmt({init};{cond};{update})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -262,7 +262,7 @@ class ForCountLoopExpr(Expr):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the ForStmt instance."""
+        """Initialize the ForLoopCountExpr instance."""
         super().__init__(loc=loc, parent=parent)
         self.initializer = initializer
         self.condition = condition
@@ -275,7 +275,7 @@ class ForCountLoopExpr(Expr):
         init = self.initializer
         cond = self.condition
         update = self.update
-        return f"ForCountLoop({init};{cond};{update})"
+        return f"ForCountLoopExpr({init};{cond};{update})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -284,7 +284,7 @@ class ForCountLoopExpr(Expr):
         for_update = {"update": self.update.get_struct(simplified)}
         for_body = self.body.get_struct(simplified)
 
-        key = "FOR-COUNT-STMT"
+        key = "FOR-COUNT-EXPR"
         value: ReprStruct = {
             **cast(DictDataTypesStruct, for_init),
             **cast(DictDataTypesStruct, for_cond),
