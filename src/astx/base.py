@@ -101,7 +101,7 @@ class ASTKind(Enum):
     ForRangeLoopStmtKind = -502
     WhileKind = -503
     ForRangeLoopExprKind = -504
-    ForCountLoopExprKind = -501
+    ForCountLoopExprKind = -505
 
     # data types
     NullDTKind = -600
