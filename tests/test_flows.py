@@ -2,7 +2,7 @@
 
 from astx.blocks import Block
 from astx.datatypes import Int32, LiteralInt32
-from astx.flows import ForCountLoop, ForRangeLoopExpr, ForRangeLoopStmt, If
+from astx.flows import ForCountLoopStmt, ForRangeLoopExpr, ForRangeLoopStmt, If
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
 from astx.viz import visualize
@@ -81,7 +81,7 @@ def test_for_count() -> None:
     update = UnaryOp(op_code="++", operand=var_a)
     body = Block()
     body.append(LiteralInt32(2))
-    for_stmt = ForCountLoop(
+    for_stmt = ForCountLoopStmt(
         initializer=decl_a, condition=cond, update=update, body=body
     )
 

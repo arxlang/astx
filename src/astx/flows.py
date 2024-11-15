@@ -185,7 +185,7 @@ class ForRangeLoopExpr(Expr):
 
 @public
 @typechecked
-class ForCountLoop(StatementType):
+class ForCountLoopStmt(StatementType):
     """
     AST class for a simple Count-Controlled `For` Loop statement.
 
@@ -212,7 +212,7 @@ class ForCountLoop(StatementType):
         self.condition = condition
         self.update = update
         self.body = body
-        self.kind = ASTKind.ForCountKind
+        self.kind = ASTKind.ForCountLoopStmtKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
