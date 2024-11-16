@@ -96,13 +96,14 @@ class ASTKind(Enum):
     LambdaExprKind = -404
 
     # control flow
-    IfKind = -500
+    IfStmtKind = -500
     ForCountLoopStmtKind = -501
     ForRangeLoopStmtKind = -502
     WhileStmtKind = -503
     ForRangeLoopExprKind = -504
     ForCountLoopExprKind = -505
     WhileExprKind = -506
+    IfExprKind = -507
 
     # data types
     NullDTKind = -600

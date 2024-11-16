@@ -8,20 +8,21 @@ from astx.flows import (
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
-    If,
     WhileExpr,
     WhileStmt,
+    IfExpr,
+    IfStmt,
 )
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
 from astx.viz import visualize
 
 
-def test_if() -> None:
+def test_if_stmt() -> None:
     """Test `if` statement."""
     op = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
     then_block = Block()
-    if_stmt = If(condition=op, then=then_block)
+    if_stmt = IfStmt(condition=op, then=then_block)
 
     assert str(if_stmt)
     assert if_stmt.get_struct()
@@ -29,17 +30,42 @@ def test_if() -> None:
     visualize(if_stmt.get_struct())
 
 
-def test_if_else() -> None:
+def test_if_else_stmt() -> None:
     """Test `if`/`else` statement."""
     cond = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
     then_block = Block()
     else_block = Block()
-    if_stmt = If(condition=cond, then=then_block, else_=else_block)
+    if_stmt = IfStmt(condition=cond, then=then_block, else_=else_block)
 
     assert str(if_stmt)
     assert if_stmt.get_struct()
     assert if_stmt.get_struct(simplified=True)
     visualize(if_stmt.get_struct())
+
+
+def test_if_expr() -> None:
+    """Test `if` expression."""
+    op = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
+    then_block = Block()
+    if_expr = IfExpr(condition=op, then=then_block)
+
+    assert str(if_expr)
+    assert if_expr.get_struct()
+    assert if_expr.get_struct(simplified=True)
+    visualize(if_expr.get_struct())
+
+
+def test_if_else_expr() -> None:
+    """Test `if`/`else` expression."""
+    cond = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
+    then_block = Block()
+    else_block = Block()
+    if_expr = IfExpr(condition=cond, then=then_block, else_=else_block)
+
+    assert str(if_expr)
+    assert if_expr.get_struct()
+    assert if_expr.get_struct(simplified=True)
+    visualize(if_expr.get_struct())
 
 
 def test_for_range_loop_expr() -> None:

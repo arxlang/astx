@@ -23,7 +23,7 @@ from astx.variables import InlineVariableDeclaration
 
 @public
 @typechecked
-class If(StatementType):
+class IfStmt(StatementType):
     """AST class for `if` statement."""
 
     condition: Expr
@@ -38,17 +38,17 @@ class If(StatementType):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the If instance."""
+        """Initialize the IfStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.loc = loc
         self.condition = condition
         self.then = then
         self.else_ = else_
-        self.kind = ASTKind.IfKind
+        self.kind = ASTKind.IfStmtKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"If[{self.condition}]"
+        return f"IfStmt[{self.condition}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -60,6 +60,54 @@ class If(StatementType):
             if_else = {"else-block": self.else_.get_struct(simplified)}
 
         key = "IF-STMT"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, if_condition),
+            **cast(DictDataTypesStruct, if_then),
+            **cast(DictDataTypesStruct, if_else),
+        }
+
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class IfExpr(Expr):
+    """AST class for `if` expression."""
+
+    condition: Expr
+    then: Block
+    else_: Optional[Block]
+
+    def __init__(
+        self,
+        condition: Expr,
+        then: Block,
+        else_: Optional[Block] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the IfExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.loc = loc
+        self.condition = condition
+        self.then = then
+        self.else_ = else_
+        self.kind = ASTKind.IfExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"IfExpr[{self.condition}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        if_condition = {"condition": self.condition.get_struct(simplified)}
+        if_then = {"then-block": self.then.get_struct(simplified)}
+        if_else: ReprStruct = {}
+
+        if self.else_ is not None:
+            if_else = {"else-block": self.else_.get_struct(simplified)}
+
+        key = "IF-EXPR"
         value: ReprStruct = {
             **cast(DictDataTypesStruct, if_condition),
             **cast(DictDataTypesStruct, if_then),

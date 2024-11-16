@@ -554,6 +554,46 @@ def test_transpiler_while_stmt() -> None:
     ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
+def test_transpiler_ifexpr_with_else() -> None:
+    """Test astx.IfExpr with else block."""
+    # determine condition
+    cond = astx.BinaryOp(
+        op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
+    )
+
+    # create then and else blocks
+    then_block = astx.Block()
+    else_block = astx.Block()
+
+    # define literals
+    lit_2 = astx.LiteralInt32(2)
+    lit_3 = astx.LiteralInt32(3)
+
+    # define operations
+    op1 = lit_2 + lit_3
+    op2 = lit_2 - lit_3
+
+    # Add statements to the then and else blocks
+    then_block.append(op1)
+    else_block.append(op2)
+
+    # define if Expr
+    if_expr = astx.IfExpr(condition=cond, then=then_block, else_=else_block)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(if_expr)
+
+    # Expected code for the binary operation
+    expected_code = "result =     (2 + 3) if  (1 > 2) else     (2 - 3)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
 def test_transpiler_while_expr() -> None:
     """Test astx.WhileExpr."""
     # Define a condition: x < 5
@@ -595,6 +635,120 @@ def test_transpiler_while_expr() -> None:
 
     # Expected code for the WhileExpr
     expected_code = "[    x = (x + 1) for _ in iter(lambda: (x < 5), False)]"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_ifexpr_without_else() -> None:
+    """Test astx.IfExpr without else block."""
+    # determine condition
+    cond = astx.BinaryOp(
+        op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
+    )
+
+    # create then block
+    then_block = astx.Block()
+
+    # define literals
+    lit_2 = astx.LiteralInt32(2)
+    lit_3 = astx.LiteralInt32(3)
+
+    # define operation
+    op1 = lit_2 + lit_3
+
+    # Add statement to the then block
+    then_block.append(op1)
+
+    # define if Expr
+    if_expr = astx.IfExpr(condition=cond, then=then_block)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(if_expr)
+
+    # Expected code for the binary operation
+    expected_code = "result =     (2 + 3) if  (1 > 2)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_ifstmt_with_else() -> None:
+    """Test astx.IfStmt with else block."""
+    # determine condition
+    cond = astx.BinaryOp(
+        op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
+    )
+
+    # create then and else blocks
+    then_block = astx.Block()
+    else_block = astx.Block()
+
+    # define literals
+    lit_2 = astx.LiteralInt32(2)
+    lit_3 = astx.LiteralInt32(3)
+
+    # define operations
+    op1 = lit_2 + lit_3
+    op2 = lit_2 - lit_3
+
+    # Add statements to the then and else blocks
+    then_block.append(op1)
+    else_block.append(op2)
+
+    # define if Stmt
+    if_stmt = astx.IfStmt(condition=cond, then=then_block, else_=else_block)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(if_stmt)
+
+    # Expected code for the binary operation
+    expected_code = "if (1 > 2):\n    (2 + 3)\nelse:\n    (2 - 3)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_ifstmt_without_else() -> None:
+    """Test astx.IfStmt without else block."""
+    # determine condition
+    cond = astx.BinaryOp(
+        op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
+    )
+
+    # create then block
+    then_block = astx.Block()
+
+    # define literals
+    lit_2 = astx.LiteralInt32(2)
+    lit_3 = astx.LiteralInt32(3)
+
+    # define operation
+    op1 = lit_2 + lit_3
+
+    # Add statement to the then block
+    then_block.append(op1)
+
+    # define if Stmt
+    if_stmt = astx.IfStmt(condition=cond, then=then_block)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(if_stmt)
+
+    # Expected code for the binary operation
+    expected_code = "if (1 > 2):\n    (2 + 3)"
 
     assert (
         generated_code == expected_code

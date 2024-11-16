@@ -89,9 +89,10 @@ from astx.flows import (
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
-    If,
     WhileExpr,
     WhileStmt,
+    IfExpr,
+    IfStmt,
 )
 from astx.mixes import (
     NamedExpr,
@@ -169,7 +170,8 @@ __all__ = [
     "FunctionPrototype",
     "FunctionReturn",
     "get_version",
-    "If",
+    "IfStmt",
+    "IfExpr",
     "ImportFromExpr",
     "ImportExpr",
     "ImportStmt",
