@@ -69,7 +69,7 @@ def test_function_call_fibonacci() -> None:
     loop_block.append(inc_i)
 
     # Create the loop statement
-    loop = astx.While(condition=cond, body=loop_block)
+    loop = astx.WhileStmt(condition=cond, body=loop_block)
     fib_block.append(loop)
 
     # Add return statement

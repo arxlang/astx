@@ -505,3 +505,97 @@ def test_transpiler_binary_op() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_while_stmt() -> None:
+    """Test astx.WhileStmt."""
+    # Define a condition: x < 5
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=astx.LiteralInt32(5),
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Define the loop body: x = x + 1
+    update_expr = astx.VariableAssignment(
+        name="x",
+        value=astx.BinaryOp(
+            op_code="+",
+            lhs=x_var,
+            rhs=astx.LiteralInt32(1),
+            loc=astx.SourceLocation(line=2, col=4),
+        ),
+        loc=astx.SourceLocation(line=2, col=4),
+    )
+
+    # Create the body block
+    body_block = astx.Block(name="while_body")
+    body_block.append(update_expr)
+
+    while_stmt = astx.WhileStmt(
+        condition=condition,
+        body=body_block,
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(while_stmt)
+
+    # Expected code for the WhileStmt
+    expected_code = "while (x < 5):\n    x = (x + 1)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_while_expr() -> None:
+    """Test astx.WhileExpr."""
+    # Define a condition: x < 5
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=astx.LiteralInt32(5),
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Define the loop body: x = x + 1
+    update_expr = astx.VariableAssignment(
+        name="x",
+        value=astx.BinaryOp(
+            op_code="+",
+            lhs=x_var,
+            rhs=astx.LiteralInt32(1),
+            loc=astx.SourceLocation(line=2, col=4),
+        ),
+        loc=astx.SourceLocation(line=2, col=4),
+    )
+
+    # Create the body block
+    body_block = astx.Block(name="while_body")
+    body_block.append(update_expr)
+
+    while_stmt = astx.WhileExpr(
+        condition=condition,
+        body=body_block,
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(while_stmt)
+
+    # Expected code for the WhileExpr
+    expected_code = "[    x = (x + 1) for _ in iter(lambda: (x < 5), False)]"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"

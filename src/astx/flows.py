@@ -296,7 +296,7 @@ class ForCountLoopExpr(Expr):
 
 @public
 @typechecked
-class While(StatementType):
+class WhileStmt(StatementType):
     """AST class for `while` statement."""
 
     condition: Expr
@@ -309,15 +309,15 @@ class While(StatementType):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the While instance."""
+        """Initialize the WhileStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.condition = condition
         self.body = body
-        self.kind = ASTKind.WhileKind
+        self.kind = ASTKind.WhileStmtKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"While[{self.condition}]"
+        return f"WhileStmt[{self.condition}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -325,6 +325,45 @@ class While(StatementType):
         while_body = self.body.get_struct(simplified)
 
         key = "WHILE-STMT"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, while_condition),
+            **cast(DictDataTypesStruct, while_body),
+        }
+
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class WhileExpr(Expr):
+    """AST class for `while` expression."""
+
+    condition: Expr
+    body: Block
+
+    def __init__(
+        self,
+        condition: Expr,
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the WhileExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.condition = condition
+        self.body = body
+        self.kind = ASTKind.WhileExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"WhileExpr[{self.condition}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        while_condition = self.condition.get_struct(simplified)
+        while_body = self.body.get_struct(simplified)
+
+        key = "WHILE-EXPR"
         value: ReprStruct = {
             **cast(DictDataTypesStruct, while_condition),
             **cast(DictDataTypesStruct, while_body),

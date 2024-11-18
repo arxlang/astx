@@ -1,5 +1,6 @@
 """Tests for control flow statements."""
 
+from astx.base import SourceLocation
 from astx.blocks import Block
 from astx.datatypes import Int32, LiteralInt32
 from astx.flows import (
@@ -8,6 +9,8 @@ from astx.flows import (
     ForRangeLoopExpr,
     ForRangeLoopStmt,
     If,
+    WhileExpr,
+    WhileStmt,
 )
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
@@ -113,3 +116,51 @@ def test_for_count_loop_expr() -> None:
     assert for_expr.get_struct()
     assert for_expr.get_struct(simplified=True)
     visualize(for_expr.get_struct())
+
+
+def test_while_expr() -> None:
+    """Test `WhileExpr` class."""
+    # Define a condition: x < 5
+    x_var = Variable(name="x")
+    condition = BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=LiteralInt32(5),
+        loc=SourceLocation(line=1, col=0),
+    )
+
+    body_block = Block(name="while_body")
+
+    # Create the WhileExpr
+    while_expr = WhileExpr(
+        condition=condition, body=body_block, loc=SourceLocation(line=1, col=0)
+    )
+
+    assert str(while_expr)
+    assert while_expr.get_struct()
+    assert while_expr.get_struct(simplified=True)
+    visualize(while_expr.get_struct())
+
+
+def test_while_stmt() -> None:
+    """Test `WhileStmt` class."""
+    # Define a condition: x < 5
+    x_var = Variable(name="x")
+    condition = BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=LiteralInt32(5),
+        loc=SourceLocation(line=1, col=0),
+    )
+
+    body_block = Block(name="while_body")
+
+    # Create the WhileStmt
+    while_stmt = WhileStmt(
+        condition=condition, body=body_block, loc=SourceLocation(line=1, col=0)
+    )
+
+    assert str(while_stmt)
+    assert while_stmt.get_struct()
+    assert while_stmt.get_struct(simplified=True)
+    visualize(while_stmt.get_struct())
