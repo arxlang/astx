@@ -8,10 +8,10 @@ from astx.flows import (
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
-    WhileExpr,
-    WhileStmt,
     IfExpr,
     IfStmt,
+    WhileExpr,
+    WhileStmt,
 )
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable

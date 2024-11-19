@@ -89,10 +89,10 @@ from astx.flows import (
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
-    WhileExpr,
-    WhileStmt,
     IfExpr,
     IfStmt,
+    WhileExpr,
+    WhileStmt,
 )
 from astx.mixes import (
     NamedExpr,
