@@ -587,7 +587,7 @@ def test_transpiler_ifexpr_with_else() -> None:
     generated_code = generator.visit(if_expr)
 
     # Expected code for the binary operation
-    expected_code = "result =     (2 + 3) if  (1 > 2) else     (2 - 3)"
+    expected_code = "    (2 + 3) if  (1 > 2) else     (2 - 3)"
 
     assert (
         generated_code == expected_code
@@ -671,7 +671,7 @@ def test_transpiler_ifexpr_without_else() -> None:
     generated_code = generator.visit(if_expr)
 
     # Expected code for the binary operation
-    expected_code = "result =     (2 + 3) if  (1 > 2)"
+    expected_code = "    (2 + 3) if  (1 > 2)"
 
     assert (
         generated_code == expected_code
