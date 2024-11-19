@@ -101,6 +101,46 @@ class ASTxPythonTranspiler:
         return f"return {value}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.IfExpr) -> str:
+        """Handle IfExpr nodes."""
+        if node.else_:
+            return (
+                f"{self.visit(node.then)} if "
+                f" {self.visit(node.condition)}"
+                f" else {self.visit(node.else_)}"
+            )
+        return (
+            f"{self.visit(node.then)} if "
+            f" {self.visit(node.condition)} else None"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.IfStmt) -> str:
+        """Handle IfStmt nodes."""
+        if node.else_:
+            return (
+                f"if {self.visit(node.condition)}:"
+                f"\n{self._generate_block(node.then)}"
+                f"\nelse:"
+                f"\n{self._generate_block(node.else_)}"
+            )
+        return (
+            f"if {self.visit(node.condition)}:"
+            f"\n{self._generate_block(node.then)}"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportFromStmt) -> str:
+        """Handle ImportFromStmt nodes."""
+        names = [self.visit(name) for name in node.names]
+        level_dots = "." * node.level
+        module_str = (
+            f"{level_dots}{node.module}" if node.module else level_dots
+        )
+        names_str = ", ".join(str(name) for name in names)
+        return f"from {module_str} import {names_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportExpr) -> str:
         """Handle ImportExpr nodes."""
         names = [self.visit(name) for name in node.names]
