@@ -100,6 +100,7 @@ class ASTxPythonTranspiler:
         value = self.visit(node.value) if node.value else ""
         return f"return {value}"
 
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> str:
         """Handle IfExpr nodes."""
         if node.else_:
