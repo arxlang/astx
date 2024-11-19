@@ -109,7 +109,10 @@ class ASTxPythonTranspiler:
                 f" {self.visit(node.condition)}"
                 f" else {self.visit(node.else_)}"
             )
-        return f"{self.visit(node.then)} if " f" {self.visit(node.condition)}"
+        return (
+            f"{self.visit(node.then)} if "
+            f" {self.visit(node.condition)} else None"
+        )
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfStmt) -> str:
