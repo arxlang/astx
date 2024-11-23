@@ -72,6 +72,64 @@ class ASTxPythonTranspiler:
         return self._generate_block(node)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ForRangeLoopExpr) -> str:
+        """Handle ForRangeLoopExpr nodes."""
+        return (
+            f"result = [{self.visit(node.body)} for "
+            f" {node.variable.name} in range "
+            f"({self.visit(node.start)},{self.visit(node.end)},"
+            f"{self.visit(node.step)})]"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Function) -> str:
+        """Handle Function nodes."""
+        args = self.visit(node.prototype.args)
+        returns = (
+            f" -> {self.visit(node.prototype.return_type)}"
+            if node.prototype.return_type
+            else ""
+        )
+        header = f"def {node.name}({args}){returns}:"
+        body = self.visit(node.body)
+        return f"{header}\n{body}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FunctionReturn) -> str:
+        """Handle FunctionReturn nodes."""
+        value = self.visit(node.value) if node.value else ""
+        return f"return {value}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.IfExpr) -> str:
+        """Handle IfExpr nodes."""
+        if node.else_:
+            return (
+                f"{self.visit(node.then)} if "
+                f" {self.visit(node.condition)}"
+                f" else {self.visit(node.else_)}"
+            )
+        return (
+            f"{self.visit(node.then)} if "
+            f" {self.visit(node.condition)} else None"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.IfStmt) -> str:
+        """Handle IfStmt nodes."""
+        if node.else_:
+            return (
+                f"if {self.visit(node.condition)}:"
+                f"\n{self._generate_block(node.then)}"
+                f"\nelse:"
+                f"\n{self._generate_block(node.else_)}"
+            )
+        return (
+            f"if {self.visit(node.condition)}:"
+            f"\n{self._generate_block(node.then)}"
+        )
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromStmt) -> str:
         """Handle ImportFromStmt nodes."""
         names = [self.visit(name) for name in node.names]
@@ -83,11 +141,28 @@ class ASTxPythonTranspiler:
         return f"from {module_str} import {names_str}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.ImportStmt) -> str:
-        """Handle ImportStmt nodes."""
+    def visit(self, node: astx.ImportExpr) -> str:
+        """Handle ImportExpr nodes."""
         names = [self.visit(name) for name in node.names]
-        names_str = ", ".join(x for x in names)
-        return f"import {names_str}"
+        names_list = []
+        for name in names:
+            str_ = f"__import__('{name}') "
+            names_list.append(str_)
+        names_str = ", ".join(x for x in names_list)
+
+        # name if one import or name1, name2, etc if multiple imports
+        num = [
+            "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
+        ]
+        call = ["module" + str(n) for n in num]
+        call_str = ", ".join(x for x in call)
+
+        # assign tuple if multiple imports
+        names_str = (
+            names_str if len(names_list) == 1 else "(" + names_str + ")"
+        )
+
+        return f"{call_str} = {names_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromExpr) -> str:
@@ -121,62 +196,22 @@ class ASTxPythonTranspiler:
         return f"{call_str} = {names_str}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.ImportExpr) -> str:
-        """Handle ImportExpr nodes."""
+    def visit(self, node: astx.ImportStmt) -> str:
+        """Handle ImportStmt nodes."""
         names = [self.visit(name) for name in node.names]
-        names_list = []
-        for name in names:
-            str_ = f"__import__('{name}') "
-            names_list.append(str_)
-        names_str = ", ".join(x for x in names_list)
+        names_str = ", ".join(x for x in names)
+        return f"import {names_str}"
 
-        # name if one import or name1, name2, etc if multiple imports
-        num = [
-            "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
-        ]
-        call = ["module" + str(n) for n in num]
-        call_str = ", ".join(x for x in call)
-
-        # assign tuple if multiple imports
-        names_str = (
-            names_str if len(names_list) == 1 else "(" + names_str + ")"
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ImportFromStmt) -> str:
+        """Handle ImportFromStmt nodes."""
+        names = [self.visit(name) for name in node.names]
+        level_dots = "." * node.level
+        module_str = (
+            f"{level_dots}{node.module}" if node.module else level_dots
         )
-
-        return f"{call_str} = {names_str}"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Int32]) -> str:
-        """Handle Int32 nodes."""
-        return "int"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralBoolean) -> str:
-        """Handle LiteralBoolean nodes."""
-        return "True" if node.value else "False"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralInt32) -> str:
-        """Handle LiteralInt32 nodes."""
-        return str(node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Function) -> str:
-        """Handle Function nodes."""
-        args = self.visit(node.prototype.args)
-        returns = (
-            f" -> {self.visit(node.prototype.return_type)}"
-            if node.prototype.return_type
-            else ""
-        )
-        header = f"def {node.name}({args}){returns}:"
-        body = self.visit(node.body)
-        return f"{header}\n{body}"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.FunctionReturn) -> str:
-        """Handle FunctionReturn nodes."""
-        value = self.visit(node.value) if node.value else ""
-        return f"return {value}"
+        names_str = ", ".join(str(name) for name in names)
+        return f"from {module_str} import {names_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LambdaExpr) -> str:
@@ -185,44 +220,23 @@ class ASTxPythonTranspiler:
         return f"lambda {params_str}: {self.visit(node.body)}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.TypeCastExpr) -> str:
-        """Handle TypeCastExpr nodes."""
-        return (
-            f"cast({self.visit(node.target_type.__class__)}, {node.expr.name})"
-        )
+    def visit(self, node: astx.LiteralBoolean) -> str:
+        """Handle LiteralBoolean nodes."""
+        return "True" if node.value else "False"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.UnaryOp) -> str:
-        """Handle UnaryOp nodes."""
-        operand = self.visit(node.operand)
-        return f"({node.op_code}{operand})"
+    def visit(self, node: astx.LiteralComplex32) -> str:
+        """Handle LiteralComplex32 nodes."""
+        real = node.value.real
+        imag = node.value.imag
+        return f"complex({real}, {imag})"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Variable) -> str:
-        """Handle Variable nodes."""
-        return node.name
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.VariableAssignment) -> str:
-        """Handle VariableAssignment nodes."""
-        target = node.name
-        value = self.visit(node.value)
-        return f"{target} = {value}"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Float16]) -> str:
-        """Handle Float nodes."""
-        return "float"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Float32]) -> str:
-        """Handle Float nodes."""
-        return "float"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Float64]) -> str:
-        """Handle Float nodes."""
-        return "float"
+    def visit(self, node: astx.LiteralComplex64) -> str:
+        """Handle LiteralComplex64 nodes."""
+        real = node.value.real
+        imag = node.value.imag
+        return f"complex({real}, {imag})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralFloat16) -> str:
@@ -240,38 +254,9 @@ class ASTxPythonTranspiler:
         return str(node.value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Complex32]) -> str:
-        """Handle Complex32 nodes."""
-        return "Complex"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Complex64]) -> str:
-        """Handle Complex64 nodes."""
-        return "Complex"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralComplex32) -> str:
-        """Handle LiteralComplex32 nodes."""
-        real = node.value.real
-        imag = node.value.imag
-        return f"complex({real}, {imag})"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralComplex64) -> str:
-        """Handle LiteralComplex64 nodes."""
-        real = node.value.real
-        imag = node.value.imag
-        return f"complex({real}, {imag})"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.UTF8String) -> str:
-        """Handle UTF8String nodes."""
-        return repr(node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.UTF8Char) -> str:
-        """Handle UTF8Char nodes."""
-        return repr(node.value)
+    def visit(self, node: astx.LiteralInt32) -> str:
+        """Handle LiteralInt32 nodes."""
+        return str(node.value)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralUTF8String) -> str:
@@ -322,3 +307,80 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.LiteralDateTime) -> str:
         """Handle LiteralDateTime nodes."""
         return f"datetime.strptime({node.value!r}, '%Y-%m-%dT%H:%M:%S')"
+    def visit(self, node: Type[astx.Complex32]) -> str:
+        """Handle Complex32 nodes."""
+        return "Complex"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Complex64]) -> str:
+        """Handle Complex64 nodes."""
+        return "Complex"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Float16]) -> str:
+        """Handle Float nodes."""
+        return "float"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Float32]) -> str:
+        """Handle Float nodes."""
+        return "float"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Float64]) -> str:
+        """Handle Float nodes."""
+        return "float"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Int32]) -> str:
+        """Handle Int32 nodes."""
+        return "int"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.TypeCastExpr) -> str:
+        """Handle TypeCastExpr nodes."""
+        return (
+            f"cast({self.visit(node.target_type.__class__)}, {node.expr.name})"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.UnaryOp) -> str:
+        """Handle UnaryOp nodes."""
+        operand = self.visit(node.operand)
+        return f"({node.op_code}{operand})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.UTF8Char) -> str:
+        """Handle UTF8Char nodes."""
+        return repr(node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.UTF8String) -> str:
+        """Handle UTF8String nodes."""
+        return repr(node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Variable) -> str:
+        """Handle Variable nodes."""
+        return node.name
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.VariableAssignment) -> str:
+        """Handle VariableAssignment nodes."""
+        target = node.name
+        value = self.visit(node.value)
+        return f"{target} = {value}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.WhileExpr) -> str:
+        """Handle WhileExpr nodes."""
+        condition = self.visit(node.condition)
+        body = self.visit(node.body)
+        return f"[{body} for _ in iter(lambda: {condition}, False)]"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.WhileStmt) -> str:
+        """Handle WhileStmt nodes."""
+        condition = self.visit(node.condition)
+        body = self._generate_block(node.body)
+        return f"while {condition}:\n{body}"

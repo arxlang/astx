@@ -93,12 +93,17 @@ class ASTKind(Enum):
     FunctionKind = -401
     CallKind = -402
     ReturnKind = -403
+    LambdaExprKind = -404
 
     # control flow
-    IfKind = -500
-    ForCountKind = -501
-    ForRangeKind = -502
-    WhileKind = -503
+    IfStmtKind = -500
+    ForCountLoopStmtKind = -501
+    ForRangeLoopStmtKind = -502
+    WhileStmtKind = -503
+    ForRangeLoopExprKind = -504
+    ForCountLoopExprKind = -505
+    WhileExprKind = -506
+    IfExprKind = -507
 
     # data types
     NullDTKind = -600
@@ -129,14 +134,13 @@ class ASTKind(Enum):
     DateDTKind = -625
     DateTimeDTKind = -626
 
-    # imports
+    # imports(packages)
     ImportStmtKind = -700
     ImportFromStmtKind = -701
     AliasExprKind = -702
     ImportExprKind = -800
     ImportFromExprKind = -801
 
-    LambdaExprKind = -807
     TypeCastExprKind = -809
 
 

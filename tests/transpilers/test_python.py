@@ -464,6 +464,19 @@ def test_transpiler_literal_utf8_string() -> None:
 def test_transpiler_date() -> None:
     """Test astx.Date."""
     date_node = astx.Date(value="2024-10-31")
+def test_transpiler_for_range_loop_expr() -> None:
+    """Test `For Range Loop` expression`."""
+    decl_a = astx.InlineVariableDeclaration(
+        "a", type_=astx.Int32, value=astx.LiteralInt32(-1)
+    )
+    start = astx.LiteralInt32(0)
+    end = astx.LiteralInt32(10)
+    step = astx.LiteralInt32(1)
+    body = astx.Block()
+    body.append(astx.LiteralInt32(2))
+    for_expr = astx.ForRangeLoopExpr(
+        variable=decl_a, start=start, end=end, step=step, body=body
+    )
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
@@ -488,6 +501,8 @@ def test_transpiler_time() -> None:
     generated_code = generator.visit(time_node)
 
     expected_code = "time('15:30:00')"
+    generated_code = generator.visit(for_expr)
+    expected_code = "result = [    2 for  a in range (0,10,1)]"
 
     assert (
         generated_code == expected_code
@@ -497,6 +512,12 @@ def test_transpiler_time() -> None:
 def test_transpiler_timestamp() -> None:
     """Test astx.Timestamp."""
     timestamp_node = astx.Timestamp(value="2024-10-31T15:30:00")
+def test_transpiler_binary_op() -> None:
+    """Test astx.BinaryOp for addition operation."""
+    # Create a BinaryOp node for the expression "x + y"
+    lhs = astx.Variable(name="x")
+    rhs = astx.Variable(name="y")
+    binary_op = astx.BinaryOp(op_code="+", lhs=lhs, rhs=rhs)
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
@@ -505,6 +526,10 @@ def test_transpiler_timestamp() -> None:
     generated_code = generator.visit(timestamp_node)
 
     expected_code = "timestamp('2024-10-31T15:30:00')"
+    generated_code = generator.visit(binary_op)
+
+    # Expected code for the binary operation
+    expected_code = "(x + y)"
 
     assert (
         generated_code == expected_code
@@ -514,6 +539,38 @@ def test_transpiler_timestamp() -> None:
 def test_transpiler_datetime() -> None:
     """Test astx.DateTime."""
     datetime_node = astx.DateTime(value="2024-10-31T15:30:00")
+def test_transpiler_while_stmt() -> None:
+    """Test astx.WhileStmt."""
+    # Define a condition: x < 5
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=astx.LiteralInt32(5),
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Define the loop body: x = x + 1
+    update_expr = astx.VariableAssignment(
+        name="x",
+        value=astx.BinaryOp(
+            op_code="+",
+            lhs=x_var,
+            rhs=astx.LiteralInt32(1),
+            loc=astx.SourceLocation(line=2, col=4),
+        ),
+        loc=astx.SourceLocation(line=2, col=4),
+    )
+
+    # Create the body block
+    body_block = astx.Block(name="while_body")
+    body_block.append(update_expr)
+
+    while_stmt = astx.WhileStmt(
+        condition=condition,
+        body=body_block,
+        loc=astx.SourceLocation(line=1, col=0),
+    )
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
@@ -522,6 +579,10 @@ def test_transpiler_datetime() -> None:
     generated_code = generator.visit(datetime_node)
 
     expected_code = "datetime('2024-10-31T15:30:00')"
+    generated_code = generator.visit(while_stmt)
+
+    # Expected code for the WhileStmt
+    expected_code = "while (x < 5):\n    x = (x + 1)"
 
     assert (
         generated_code == expected_code
@@ -531,6 +592,31 @@ def test_transpiler_datetime() -> None:
 def test_transpiler_literal_date() -> None:
     """Test astx.LiteralDate."""
     literal_date_node = astx.LiteralDate(value="2024-10-31")
+def test_transpiler_ifexpr_with_else() -> None:
+    """Test astx.IfExpr with else block."""
+    # determine condition
+    cond = astx.BinaryOp(
+        op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
+    )
+
+    # create then and else blocks
+    then_block = astx.Block()
+    else_block = astx.Block()
+
+    # define literals
+    lit_2 = astx.LiteralInt32(2)
+    lit_3 = astx.LiteralInt32(3)
+
+    # define operations
+    op1 = lit_2 + lit_3
+    op2 = lit_2 - lit_3
+
+    # Add statements to the then and else blocks
+    then_block.append(op1)
+    else_block.append(op2)
+
+    # define if Expr
+    if_expr = astx.IfExpr(condition=cond, then=then_block, else_=else_block)
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
@@ -539,6 +625,10 @@ def test_transpiler_literal_date() -> None:
     generated_code = generator.visit(literal_date_node)
 
     expected_code = repr("2024-10-31")
+    generated_code = generator.visit(if_expr)
+
+    # Expected code for the binary operation
+    expected_code = "    (2 + 3) if  (1 > 2) else     (2 - 3)"
 
     assert (
         generated_code == expected_code
@@ -548,6 +638,38 @@ def test_transpiler_literal_date() -> None:
 def test_transpiler_literal_time() -> None:
     """Test astx.LiteralTime."""
     literal_time_node = astx.LiteralTime(value="15:30:00")
+def test_transpiler_while_expr() -> None:
+    """Test astx.WhileExpr."""
+    # Define a condition: x < 5
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=astx.LiteralInt32(5),
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Define the loop body: x = x + 1
+    update_expr = astx.VariableAssignment(
+        name="x",
+        value=astx.BinaryOp(
+            op_code="+",
+            lhs=x_var,
+            rhs=astx.LiteralInt32(1),
+            loc=astx.SourceLocation(line=2, col=4),
+        ),
+        loc=astx.SourceLocation(line=2, col=4),
+    )
+
+    # Create the body block
+    body_block = astx.Block(name="while_body")
+    body_block.append(update_expr)
+
+    while_stmt = astx.WhileExpr(
+        condition=condition,
+        body=body_block,
+        loc=astx.SourceLocation(line=1, col=0),
+    )
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
@@ -556,6 +678,10 @@ def test_transpiler_literal_time() -> None:
     generated_code = generator.visit(literal_time_node)
 
     expected_code = repr("15:30:00")
+    generated_code = generator.visit(while_stmt)
+
+    # Expected code for the WhileExpr
+    expected_code = "[    x = (x + 1) for _ in iter(lambda: (x < 5), False)]"
 
     assert (
         generated_code == expected_code
@@ -565,6 +691,28 @@ def test_transpiler_literal_time() -> None:
 def test_transpiler_literal_timestamp() -> None:
     """Test astx.LiteralTimestamp."""
     literal_timestamp_node = astx.LiteralTimestamp(value="2024-10-31T15:30:00")
+def test_transpiler_ifexpr_without_else() -> None:
+    """Test astx.IfExpr without else block."""
+    # determine condition
+    cond = astx.BinaryOp(
+        op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
+    )
+
+    # create then block
+    then_block = astx.Block()
+
+    # define literals
+    lit_2 = astx.LiteralInt32(2)
+    lit_3 = astx.LiteralInt32(3)
+
+    # define operation
+    op1 = lit_2 + lit_3
+
+    # Add statement to the then block
+    then_block.append(op1)
+
+    # define if Expr
+    if_expr = astx.IfExpr(condition=cond, then=then_block)
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
@@ -573,6 +721,11 @@ def test_transpiler_literal_timestamp() -> None:
     generated_code = generator.visit(literal_timestamp_node)
 
     expected_code = repr("2024-10-31T15:30:00")
+    generated_code = generator.visit(if_expr)
+
+    # Expected code for the binary operation
+    expected_code = "    (2 + 3) if  (1 > 2) else None"
+
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
@@ -581,6 +734,31 @@ def test_transpiler_literal_timestamp() -> None:
 def test_transpiler_literal_datetime() -> None:
     """Test astx.LiteralDateTime."""
     literal_datetime_node = astx.LiteralDateTime(value="2024-10-31T15:30:00")
+def test_transpiler_ifstmt_with_else() -> None:
+    """Test astx.IfStmt with else block."""
+    # determine condition
+    cond = astx.BinaryOp(
+        op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
+    )
+
+    # create then and else blocks
+    then_block = astx.Block()
+    else_block = astx.Block()
+
+    # define literals
+    lit_2 = astx.LiteralInt32(2)
+    lit_3 = astx.LiteralInt32(3)
+
+    # define operations
+    op1 = lit_2 + lit_3
+    op2 = lit_2 - lit_3
+
+    # Add statements to the then and else blocks
+    then_block.append(op1)
+    else_block.append(op2)
+
+    # define if Stmt
+    if_stmt = astx.IfStmt(condition=cond, then=then_block, else_=else_block)
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
@@ -589,6 +767,47 @@ def test_transpiler_literal_datetime() -> None:
     generated_code = generator.visit(literal_datetime_node)
 
     expected_code = repr("2024-10-31T15:30:00")
+    generated_code = generator.visit(if_stmt)
+
+    # Expected code for the binary operation
+    expected_code = "if (1 > 2):\n    (2 + 3)\nelse:\n    (2 - 3)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_ifstmt_without_else() -> None:
+    """Test astx.IfStmt without else block."""
+    # determine condition
+    cond = astx.BinaryOp(
+        op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
+    )
+
+    # create then block
+    then_block = astx.Block()
+
+    # define literals
+    lit_2 = astx.LiteralInt32(2)
+    lit_3 = astx.LiteralInt32(3)
+
+    # define operation
+    op1 = lit_2 + lit_3
+
+    # Add statement to the then block
+    then_block.append(op1)
+
+    # define if Stmt
+    if_stmt = astx.IfStmt(condition=cond, then=then_block)
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(if_stmt)
+
+    # Expected code for the binary operation
+    expected_code = "if (1 > 2):\n    (2 + 3)"
 
     assert (
         generated_code == expected_code

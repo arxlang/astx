@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional, cast
+from typing import Any, Iterable, Optional, cast
 
 from public import public
 from typeguard import typechecked
@@ -96,12 +96,12 @@ class FunctionCall(DataType):
     """AST class for function call."""
 
     fn: Function
-    args: tuple[DataType, ...]
+    args: Iterable[DataType]
 
     def __init__(
         self,
         fn: Function,
-        args: tuple[DataType, ...],
+        args: Iterable[DataType],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
