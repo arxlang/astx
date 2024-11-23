@@ -39,6 +39,7 @@ from astx.callables import (
     LambdaExpr,
 )
 from astx.datatypes import (
+    AnyType,
     Boolean,
     Complex,
     Complex32,
@@ -237,6 +238,7 @@ __all__ = [
     "LiteralUTF8String",
     "UTF8Char",
     "UTF8String",
+    "AnyType",
 ]
 
 

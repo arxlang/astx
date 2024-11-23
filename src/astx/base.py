@@ -130,6 +130,7 @@ class ASTKind(Enum):
     Decimal256DTKind = -621
     UTF8CharDTKind = -622
     UTF8StringDTKind = -623
+    AnyDTKind = -627
 
     # imports(packages)
     ImportStmtKind = -700

@@ -753,3 +753,23 @@ def test_transpiler_ifstmt_without_else() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_any_type() -> None:
+    """Test the transpiler's handling of AnyType."""
+    # Create an AnyType instance with default source location
+    any_type_value = astx.AnyType()
+
+    # Initialize the transpiler
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(any_type_value)
+
+    # Expected code - "Any" representation
+    expected_code = "Any"
+
+    # Assert that the generated code matches the expected output
+    assert (
+        generated_code == expected_code
+    ), f"Generated code '{generated_code}' but expected '{expected_code}'"

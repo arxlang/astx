@@ -346,3 +346,8 @@ class ASTxPythonTranspiler:
         condition = self.visit(node.condition)
         body = self._generate_block(node.body)
         return f"while {condition}:\n{body}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AnyType) -> str:
+        """Handle AnyType nodes."""
+        return repr(node.value)
