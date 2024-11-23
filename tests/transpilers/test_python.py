@@ -757,15 +757,16 @@ def test_transpiler_ifstmt_without_else() -> None:
 
 def test_transpiler_date() -> None:
     """Test astx.Date."""
-    date_node = astx.Date(value="2024-10-31")
+    # Create a Date node
+    date_node = astx.Date(value="2024-11-24")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
     generated_code = generator.visit(date_node)
+    expected_code = "date"
 
-    expected_code = "date('2024-10-31')"
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
@@ -773,15 +774,15 @@ def test_transpiler_date() -> None:
 
 def test_transpiler_time() -> None:
     """Test astx.Time."""
-    time_node = astx.Time(value="15:30:00")
+    # Create a Time node
+    time_node = astx.Time(value="14:30:00")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
     generated_code = generator.visit(time_node)
-
-    expected_code = "time('15:30:00')"
+    expected_code = "time"
 
     assert (
         generated_code == expected_code
@@ -790,15 +791,15 @@ def test_transpiler_time() -> None:
 
 def test_transpiler_timestamp() -> None:
     """Test astx.Timestamp."""
-    timestamp_node = astx.Timestamp(value="2024-10-31T15:30:00")
+    # Create a Timestamp node
+    timestamp_node = astx.Timestamp(value="2024-11-24 14:30:00")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
     generated_code = generator.visit(timestamp_node)
-
-    expected_code = "timestamp('2024-10-31T15:30:00')"
+    expected_code = "timestamp"
 
     assert (
         generated_code == expected_code
@@ -807,15 +808,15 @@ def test_transpiler_timestamp() -> None:
 
 def test_transpiler_datetime() -> None:
     """Test astx.DateTime."""
-    datetime_node = astx.DateTime(value="2024-10-31T15:30:00")
+    # Create a DateTime node
+    datetime_node = astx.DateTime(value="2024-11-24T14:30:00")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
     generated_code = generator.visit(datetime_node)
-
-    expected_code = "datetime('2024-10-31T15:30:00')"
+    expected_code = "datetime"
 
     assert (
         generated_code == expected_code
@@ -824,15 +825,15 @@ def test_transpiler_datetime() -> None:
 
 def test_transpiler_literal_date() -> None:
     """Test astx.LiteralDate."""
-    literal_date_node = astx.LiteralDate(value="2024-10-31")
+    # Create a LiteralDate node
+    literal_date_node = astx.LiteralDate(value="2024-11-24")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
     generated_code = generator.visit(literal_date_node)
-
-    expected_code = repr("2024-10-31")
+    expected_code = "datetime.strptime('2024-11-24', '%Y-%m-%d').date()"
 
     assert (
         generated_code == expected_code
@@ -841,15 +842,15 @@ def test_transpiler_literal_date() -> None:
 
 def test_transpiler_literal_time() -> None:
     """Test astx.LiteralTime."""
-    literal_time_node = astx.LiteralTime(value="15:30:00")
+    # Create a LiteralTime node
+    literal_time_node = astx.LiteralTime(value="14:30:00")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
     generated_code = generator.visit(literal_time_node)
-
-    expected_code = repr("15:30:00")
+    expected_code = "datetime.strptime('14:30:00', '%H:%M:%S').time()"
 
     assert (
         generated_code == expected_code
@@ -858,15 +859,18 @@ def test_transpiler_literal_time() -> None:
 
 def test_transpiler_literal_timestamp() -> None:
     """Test astx.LiteralTimestamp."""
-    literal_timestamp_node = astx.LiteralTimestamp(value="2024-10-31T15:30:00")
+    # Create a LiteralTimestamp node
+    literal_timestamp_node = astx.LiteralTimestamp(value="2024-11-24 14:30:00")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
     generated_code = generator.visit(literal_timestamp_node)
+    expected_code = (
+        "datetime.strptime('2024-11-24 14:30:00', '%Y-%m-%d %H:%M:%S')"
+    )
 
-    expected_code = repr("2024-10-31T15:30:00")
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
@@ -874,15 +878,17 @@ def test_transpiler_literal_timestamp() -> None:
 
 def test_transpiler_literal_datetime() -> None:
     """Test astx.LiteralDateTime."""
-    literal_datetime_node = astx.LiteralDateTime(value="2024-10-31T15:30:00")
+    # Create a LiteralDateTime node
+    literal_datetime_node = astx.LiteralDateTime(value="2024-11-24T14:30:00")
 
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
     # Generate Python code
     generated_code = generator.visit(literal_datetime_node)
-
-    expected_code = repr("2024-10-31T15:30:00")
+    expected_code = (
+        "datetime.strptime('2024-11-24T14:30:00', '%Y-%m-%dT%H:%M:%S')"
+    )
 
     assert (
         generated_code == expected_code
