@@ -755,16 +755,13 @@ def test_transpiler_ifstmt_without_else() -> None:
     ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
-def test_transpiler_date() -> None:
-    """Test astx.Date."""
-    # Create a Date node
-    date_node = astx.Date(value="2024-11-24")
-
+def test_transpiler_date_type() -> None:
+    """Test Type[astx.Date]."""
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
-    # Generate Python code
-    generated_code = generator.visit(date_node)
+    # Generate Python code for the type
+    generated_code = generator.visit(astx.Date)
     expected_code = "date"
 
     assert (
@@ -772,16 +769,13 @@ def test_transpiler_date() -> None:
     ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
-def test_transpiler_time() -> None:
-    """Test astx.Time."""
-    # Create a Time node
-    time_node = astx.Time(value="14:30:00")
-
+def test_transpiler_time_type() -> None:
+    """Test Type[astx.Time]."""
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
-    # Generate Python code
-    generated_code = generator.visit(time_node)
+    # Generate Python code for the type
+    generated_code = generator.visit(astx.Time)
     expected_code = "time"
 
     assert (
@@ -789,16 +783,13 @@ def test_transpiler_time() -> None:
     ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
-def test_transpiler_timestamp() -> None:
-    """Test astx.Timestamp."""
-    # Create a Timestamp node
-    timestamp_node = astx.Timestamp(value="2024-11-24 14:30:00")
-
+def test_transpiler_timestamp_type() -> None:
+    """Test Type[astx.Timestamp]."""
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
-    # Generate Python code
-    generated_code = generator.visit(timestamp_node)
+    # Generate Python code for the type
+    generated_code = generator.visit(astx.Timestamp)
     expected_code = "timestamp"
 
     assert (
@@ -806,16 +797,13 @@ def test_transpiler_timestamp() -> None:
     ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
-def test_transpiler_datetime() -> None:
-    """Test astx.DateTime."""
-    # Create a DateTime node
-    datetime_node = astx.DateTime(value="2024-11-24T14:30:00")
-
+def test_transpiler_datetime_type() -> None:
+    """Test Type[astx.DateTime]."""
     # Initialize the generator
     generator = astx2py.ASTxPythonTranspiler()
 
-    # Generate Python code
-    generated_code = generator.visit(datetime_node)
+    # Generate Python code for the type
+    generated_code = generator.visit(astx.DateTime)
     expected_code = "datetime"
 
     assert (
