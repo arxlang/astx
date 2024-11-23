@@ -306,19 +306,19 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDate) -> str:
         """Handle LiteralDate nodes."""
-        return repr(node.value)
+        return f"datetime.strptime({node.value!r}, '%Y-%m-%d').date()"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTime) -> str:
         """Handle LiteralTime nodes."""
-        return repr(node.value)
+        return f"datetime.strptime({node.value!r}, '%H:%M:%S').time()"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTimestamp) -> str:
         """Handle LiteralTimestamp nodes."""
-        return repr(node.value)
+        return f"datetime.strptime({node.value!r}, '%Y-%m-%d %H:%M:%S')"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDateTime) -> str:
         """Handle LiteralDateTime nodes."""
-        return repr(node.value)
+        return f"datetime.strptime({node.value!r}, '%Y-%m-%dT%H:%M:%S')"
