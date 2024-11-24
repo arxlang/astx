@@ -795,11 +795,15 @@ class AnyType(DataTypeOps):
         super().__init__()
         self.loc = loc
         self.kind = ASTKind.AnyDTKind
+        self.value = None
 
     def __str__(self) -> str:
         """Return a simplified string representation for Any."""
         return "Any"
 
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure for the Any type."""
-        return self._prepare_struct("Any", None, simplified)
+    def get_struct(self, simplified: bool = False) -> dict[str, str]:
+        """Return the AST structure of the AnyType object."""
+        if simplified:
+            return {"key": "Any"}
+        else:
+            return {"type": "Any", "value": repr(self.value)}

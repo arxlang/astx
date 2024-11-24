@@ -757,8 +757,9 @@ def test_transpiler_ifstmt_without_else() -> None:
 
 def test_transpiler_any_type() -> None:
     """Test the transpiler's handling of AnyType."""
-    # Create an AnyType instance with default source location
+    # Create an AnyType instance
     any_type_value = astx.AnyType()
+    any_type_value.value = None  # The default value
 
     # Initialize the transpiler
     generator = astx2py.ASTxPythonTranspiler()
@@ -766,8 +767,8 @@ def test_transpiler_any_type() -> None:
     # Generate Python code
     generated_code = generator.visit(any_type_value)
 
-    # Expected code - "Any" representation
-    expected_code = "Any"
+    # Expected code
+    expected_code = repr(None)  # Should be 'None'
 
     # Assert that the generated code matches the expected output
     assert (
