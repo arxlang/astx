@@ -4,6 +4,8 @@ import astx
 
 from astx.transpilers import python as astx2py
 
+transpiler = astx2py.ASTxPythonTranspiler()
+
 
 def test_transpiler_multiple_imports_stmt() -> None:
     """Test astx.ImportStmt multiple imports."""
@@ -13,11 +15,8 @@ def test_transpiler_multiple_imports_stmt() -> None:
     # Create an import statement
     import_stmt = astx.ImportStmt(names=[alias1, alias2])
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_stmt)
+    generated_code = transpiler.visit(import_stmt)
 
     expected_code = "import math, matplotlib as mtlb"
 
@@ -32,11 +31,8 @@ def test_transpiler_import_from_stmt() -> None:
         module="matplotlib", names=[alias], level=0
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_from_stmt)
+    generated_code = transpiler.visit(import_from_stmt)
 
     expected_code = "from matplotlib import pyplot as plt"
 
@@ -49,11 +45,8 @@ def test_transpiler_wildcard_import_from_stmt() -> None:
 
     import_from_stmt = astx.ImportFromStmt(module="matplotlib", names=[alias])
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_from_stmt)
+    generated_code = transpiler.visit(import_from_stmt)
 
     expected_code = "from matplotlib import *"
 
@@ -66,11 +59,8 @@ def test_transpiler_future_import_from_stmt() -> None:
 
     import_from_stmt = astx.ImportFromStmt(module="__future__", names=[alias])
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_from_stmt)
+    generated_code = transpiler.visit(import_from_stmt)
 
     expected_code = "from __future__ import division"
 
@@ -84,11 +74,8 @@ def test_transpiler_multiple_imports_expr() -> None:
 
     import_expr = astx.ImportExpr([alias1, alias2])
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_expr)
+    generated_code = transpiler.visit(import_expr)
 
     expected_code = (
         "module1, module2 = "
@@ -105,11 +92,8 @@ def test_transpiler_import_from_expr() -> None:
 
     import_from_expr = astx.ImportFromExpr(module="math", names=[alias1])
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_from_expr)
+    generated_code = transpiler.visit(import_from_expr)
 
     expected_code = (
         "name = "
@@ -127,11 +111,8 @@ def test_transpiler_wildcard_import_from_expr() -> None:
 
     import_from_expr = astx.ImportFromExpr(module="math", names=[alias1])
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_from_expr)
+    generated_code = transpiler.visit(import_from_expr)
 
     expected_code = "name = getattr(__import__('math', fromlist=['*']), '*')"
 
@@ -144,11 +125,8 @@ def test_transpiler_future_import_from_expr() -> None:
 
     import_from_expr = astx.ImportFromExpr(module="__future__", names=[alias1])
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_from_expr)
+    generated_code = transpiler.visit(import_from_expr)
 
     expected_code = (
         "name = "
@@ -167,11 +145,8 @@ def test_transpiler_relative_import_from_expr() -> None:
 
     import_from_expr = astx.ImportFromExpr(names=[alias1, alias2], level=1)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(import_from_expr)
+    generated_code = transpiler.visit(import_from_expr)
 
     expected_code = (
         "name1, name2 = "
@@ -195,11 +170,8 @@ def test_transpiler_lambdaexpr() -> None:
 
     lambda_expr = astx.LambdaExpr(params=params, body=body)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(lambda_expr)
+    generated_code = transpiler.visit(lambda_expr)
 
     expected_code = "lambda x: (x + 1)"
 
@@ -212,11 +184,8 @@ def test_transpiler_lambdaexpr_noparams() -> None:
 
     lambda_expr = astx.LambdaExpr(body=body)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(lambda_expr)
+    generated_code = transpiler.visit(lambda_expr)
 
     expected_code = "lambda : 1"
 
@@ -263,11 +232,8 @@ def test_transpiler_function() -> None:
         loc=astx.SourceLocation(line=1, col=0),
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(add_function)
+    generated_code = transpiler.visit(add_function)
     expected_code = "\n".join(
         [
             "def add(x: int, y: int) -> int:",
@@ -284,11 +250,8 @@ def test_literal_int32() -> None:
     # Create a LiteralInt32 node
     literal_int32_node = astx.LiteralInt32(value=42)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_int32_node)
+    generated_code = transpiler.visit(literal_int32_node)
     expected_code = "42"
 
     assert generated_code == expected_code, "generated_code != expected_code"
@@ -299,11 +262,8 @@ def test_literal_float16() -> None:
     # Create a LiteralFloat16 node
     literal_float16_node = astx.LiteralFloat16(value=3.14)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_float16_node)
+    generated_code = transpiler.visit(literal_float16_node)
     expected_code = "3.14"
 
     assert generated_code == expected_code, "generated_code != expected_code"
@@ -314,11 +274,8 @@ def test_literal_float32() -> None:
     # Create a LiteralFloat32 node
     literal_float32_node = astx.LiteralFloat32(value=2.718)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_float32_node)
+    generated_code = transpiler.visit(literal_float32_node)
     expected_code = "2.718"
 
     assert generated_code == expected_code, "generated_code != expected_code"
@@ -329,11 +286,8 @@ def test_literal_float64() -> None:
     # Create a LiteralFloat64 node
     literal_float64_node = astx.LiteralFloat64(value=1.414)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_float64_node)
+    generated_code = transpiler.visit(literal_float64_node)
     expected_code = "1.414"
 
     assert generated_code == expected_code, "generated_code != expected_code"
@@ -344,11 +298,8 @@ def test_literal_complex32() -> None:
     # Create a LiteralComplex32 node
     literal_complex32_node = astx.LiteralComplex32(real=1, imag=2.8)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_complex32_node)
+    generated_code = transpiler.visit(literal_complex32_node)
     expected_code = "complex(1, 2.8)"
 
     assert (
@@ -361,11 +312,8 @@ def test_literal_complex64() -> None:
     # Create a LiteralComplex64 node
     literal_complex64_node = astx.LiteralComplex64(real=3.5, imag=4)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_complex64_node)
+    generated_code = transpiler.visit(literal_complex64_node)
     expected_code = "complex(3.5, 4)"
 
     assert (
@@ -382,10 +330,7 @@ def test_transpiler_typecastexpr() -> None:
     # Create the TypeCastExpr
     cast_expr = astx.TypeCastExpr(expr=expr, target_type=target_type)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
-    generated_code = generator.visit(cast_expr)
+    generated_code = transpiler.visit(cast_expr)
     expected_code = "cast(int, x)"
 
     assert (
@@ -398,11 +343,8 @@ def test_transpiler_utf8_char() -> None:
     # Create a Utf8Char node
     utf8_char_node = astx.UTF8Char(value="c")
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(utf8_char_node)
+    generated_code = transpiler.visit(utf8_char_node)
     expected_code = repr("c")
 
     assert (
@@ -415,11 +357,8 @@ def test_transpiler_utf8_string() -> None:
     # Create a Utf8String node
     utf8_string_node = astx.UTF8String(value="hello")
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(utf8_string_node)
+    generated_code = transpiler.visit(utf8_string_node)
     expected_code = repr("hello")
 
     assert (
@@ -432,11 +371,8 @@ def test_transpiler_literal_utf8_char() -> None:
     # Create a LiteralUtf8Char node
     literal_utf8_char_node = astx.LiteralUTF8Char(value="a")
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_utf8_char_node)
+    generated_code = transpiler.visit(literal_utf8_char_node)
     expected_code = repr("a")
 
     assert (
@@ -449,11 +385,8 @@ def test_transpiler_literal_utf8_string() -> None:
     # Create a LiteralUtf8String node
     literal_utf8_string_node = astx.LiteralUTF8String(value="world")
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_utf8_string_node)
+    generated_code = transpiler.visit(literal_utf8_string_node)
     expected_code = repr("world")
 
     assert (
@@ -475,10 +408,7 @@ def test_transpiler_for_range_loop_expr() -> None:
         variable=decl_a, start=start, end=end, step=step, body=body
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
-    generated_code = generator.visit(for_expr)
+    generated_code = transpiler.visit(for_expr)
     expected_code = "result = [    2 for  a in range (0,10,1)]"
 
     assert (
@@ -493,11 +423,8 @@ def test_transpiler_binary_op() -> None:
     rhs = astx.Variable(name="y")
     binary_op = astx.BinaryOp(op_code="+", lhs=lhs, rhs=rhs)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(binary_op)
+    generated_code = transpiler.visit(binary_op)
 
     # Expected code for the binary operation
     expected_code = "(x + y)"
@@ -540,11 +467,8 @@ def test_transpiler_while_stmt() -> None:
         loc=astx.SourceLocation(line=1, col=0),
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(while_stmt)
+    generated_code = transpiler.visit(while_stmt)
 
     # Expected code for the WhileStmt
     expected_code = "while (x < 5):\n    x = (x + 1)"
@@ -580,11 +504,8 @@ def test_transpiler_ifexpr_with_else() -> None:
     # define if Expr
     if_expr = astx.IfExpr(condition=cond, then=then_block, else_=else_block)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(if_expr)
+    generated_code = transpiler.visit(if_expr)
 
     # Expected code for the binary operation
     expected_code = "    (2 + 3) if  (1 > 2) else     (2 - 3)"
@@ -627,11 +548,8 @@ def test_transpiler_while_expr() -> None:
         loc=astx.SourceLocation(line=1, col=0),
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(while_stmt)
+    generated_code = transpiler.visit(while_stmt)
 
     # Expected code for the WhileExpr
     expected_code = "[    x = (x + 1) for _ in iter(lambda: (x < 5), False)]"
@@ -664,11 +582,8 @@ def test_transpiler_ifexpr_without_else() -> None:
     # define if Expr
     if_expr = astx.IfExpr(condition=cond, then=then_block)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(if_expr)
+    generated_code = transpiler.visit(if_expr)
 
     # Expected code for the binary operation
     expected_code = "    (2 + 3) if  (1 > 2) else None"
@@ -704,11 +619,8 @@ def test_transpiler_ifstmt_with_else() -> None:
     # define if Stmt
     if_stmt = astx.IfStmt(condition=cond, then=then_block, else_=else_block)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(if_stmt)
+    generated_code = transpiler.visit(if_stmt)
 
     # Expected code for the binary operation
     expected_code = "if (1 > 2):\n    (2 + 3)\nelse:\n    (2 - 3)"
@@ -741,11 +653,8 @@ def test_transpiler_ifstmt_without_else() -> None:
     # define if Stmt
     if_stmt = astx.IfStmt(condition=cond, then=then_block)
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(if_stmt)
+    generated_code = transpiler.visit(if_stmt)
 
     # Expected code for the binary operation
     expected_code = "if (1 > 2):\n    (2 + 3)"
@@ -757,11 +666,8 @@ def test_transpiler_ifstmt_without_else() -> None:
 
 def test_transpiler_date_type() -> None:
     """Test Type[astx.Date]."""
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code for the type
-    generated_code = generator.visit(astx.Date)
+    generated_code = transpiler.visit(astx.Date)
     expected_code = "date"
 
     assert (
@@ -771,11 +677,8 @@ def test_transpiler_date_type() -> None:
 
 def test_transpiler_time_type() -> None:
     """Test Type[astx.Time]."""
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code for the type
-    generated_code = generator.visit(astx.Time)
+    generated_code = transpiler.visit(astx.Time)
     expected_code = "time"
 
     assert (
@@ -785,11 +688,8 @@ def test_transpiler_time_type() -> None:
 
 def test_transpiler_timestamp_type() -> None:
     """Test Type[astx.Timestamp]."""
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code for the type
-    generated_code = generator.visit(astx.Timestamp)
+    generated_code = transpiler.visit(astx.Timestamp)
     expected_code = "timestamp"
 
     assert (
@@ -799,11 +699,8 @@ def test_transpiler_timestamp_type() -> None:
 
 def test_transpiler_datetime_type() -> None:
     """Test Type[astx.DateTime]."""
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code for the type
-    generated_code = generator.visit(astx.DateTime)
+    generated_code = transpiler.visit(astx.DateTime)
     expected_code = "datetime"
 
     assert (
@@ -816,11 +713,8 @@ def test_transpiler_literal_date() -> None:
     # Create a LiteralDate node
     literal_date_node = astx.LiteralDate(value="2024-11-24")
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_date_node)
+    generated_code = transpiler.visit(literal_date_node)
     expected_code = "datetime.strptime('2024-11-24', '%Y-%m-%d').date()"
 
     assert (
@@ -833,11 +727,8 @@ def test_transpiler_literal_time() -> None:
     # Create a LiteralTime node
     literal_time_node = astx.LiteralTime(value="14:30:00")
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_time_node)
+    generated_code = transpiler.visit(literal_time_node)
     expected_code = "datetime.strptime('14:30:00', '%H:%M:%S').time()"
 
     assert (
@@ -850,11 +741,8 @@ def test_transpiler_literal_timestamp() -> None:
     # Create a LiteralTimestamp node
     literal_timestamp_node = astx.LiteralTimestamp(value="2024-11-24 14:30:00")
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_timestamp_node)
+    generated_code = transpiler.visit(literal_timestamp_node)
     expected_code = (
         "datetime.strptime('2024-11-24 14:30:00', '%Y-%m-%d %H:%M:%S')"
     )
@@ -869,11 +757,8 @@ def test_transpiler_literal_datetime() -> None:
     # Create a LiteralDateTime node
     literal_datetime_node = astx.LiteralDateTime(value="2024-11-24T14:30:00")
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(literal_datetime_node)
+    generated_code = transpiler.visit(literal_datetime_node)
     expected_code = (
         "datetime.strptime('2024-11-24T14:30:00', '%Y-%m-%dT%H:%M:%S')"
     )
