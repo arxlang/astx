@@ -1,6 +1,33 @@
 # Release Notes
 ---
 
+# [0.16.0](https://github.com/arxlang/astx/compare/0.15.0...0.16.0) (2024-11-27)
+
+
+### Bug Fixes
+
+* Add missing typechecked ([#126](https://github.com/arxlang/astx/issues/126)) ([031de47](https://github.com/arxlang/astx/commit/031de472c7cd81453b3c774ca460d758baca1f78))
+* change args type in FunctionCall class ([#140](https://github.com/arxlang/astx/issues/140)) ([89feb55](https://github.com/arxlang/astx/commit/89feb5507e9e50cefd9018e0de4d7ca23d8ae05d))
+* Improve the usage of typechecked ([#127](https://github.com/arxlang/astx/issues/127)) ([97fb87c](https://github.com/arxlang/astx/commit/97fb87cb3901e5e3974c86b6265a0b3be06b33b8))
+
+
+### Features
+
+* `ImportExpr` and `ImportFromExpr` ([#122](https://github.com/arxlang/astx/issues/122)) ([7785ba7](https://github.com/arxlang/astx/commit/7785ba7198fb55aecb2a68e856308c72028a702c))
+* add `IfExpr` class ([#143](https://github.com/arxlang/astx/issues/143)) ([4301e2a](https://github.com/arxlang/astx/commit/4301e2a05178f61d73336c9dcd78e71ed2024dc6))
+* add ForCountLoopExpr class ([#141](https://github.com/arxlang/astx/issues/141)) ([0bdebdd](https://github.com/arxlang/astx/commit/0bdebdd98bad723eb09738d7bc566dba4a517938))
+* Add Python Transpiler ([#115](https://github.com/arxlang/astx/issues/115)) ([225f398](https://github.com/arxlang/astx/commit/225f398fc860b23af7bc3e8db4925f46b67ff47c))
+* Add support for char and string ([#125](https://github.com/arxlang/astx/issues/125)) ([7b8f52d](https://github.com/arxlang/astx/commit/7b8f52dd5ea9601f743e7fc3b445741bc4a99445))
+* Add support for complex32 and complex64 ([#124](https://github.com/arxlang/astx/issues/124)) ([d9df755](https://github.com/arxlang/astx/commit/d9df755e3bb0cc6ae9378647c47f230c066e6b91))
+* Add support for date, time, datetime, timestamp ([#146](https://github.com/arxlang/astx/issues/146)) ([e5ffb9b](https://github.com/arxlang/astx/commit/e5ffb9b4e5283103178f3b7104ab56364e6fd96e))
+* Add support for ForRangeLoopExpr ([#133](https://github.com/arxlang/astx/issues/133)) ([5fb1805](https://github.com/arxlang/astx/commit/5fb1805c924a147a0fc3e648d0db6c2588d23d33))
+* Add support for LambdaExpr ([#123](https://github.com/arxlang/astx/issues/123)) ([3ec145f](https://github.com/arxlang/astx/commit/3ec145fe28f006a89703a609df9d2a7287cb3c9a))
+* Add support for WhileExpr class ([#142](https://github.com/arxlang/astx/issues/142)) ([e94ca1a](https://github.com/arxlang/astx/commit/e94ca1ac481abd723b7759faa44b0ba13b4c881e))
+* Add support to `Import`, and `ImportFrom` statement and `Alias` expression  ([#118](https://github.com/arxlang/astx/issues/118)) ([617f506](https://github.com/arxlang/astx/commit/617f5064645f0121e4f41e3ce6a26349acc360b9))
+* add TypeCastExpr class ([#130](https://github.com/arxlang/astx/issues/130)) ([3a18439](https://github.com/arxlang/astx/commit/3a184396244100ade955e3d40d5f46d40bfc2fdd))
+* Implement runtime type checking with typeguard ([#119](https://github.com/arxlang/astx/issues/119)) ([b03014e](https://github.com/arxlang/astx/commit/b03014eac9cb571346545c5557408fdc130ac614))
+* **transpiler:** Add support for bool operators ([#137](https://github.com/arxlang/astx/issues/137)) ([18a0e2f](https://github.com/arxlang/astx/commit/18a0e2f1093610a90fd5926f776d39d00d691cb7))
+
 # [0.15.0](https://github.com/arxlang/astx/compare/0.14.0...0.15.0) (2024-09-14)
 
 
