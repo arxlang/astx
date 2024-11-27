@@ -19,7 +19,7 @@ def test_variable() -> None:
 def test_variable_decl() -> None:
     """Test function creation with modifiers."""
     decl_a = astx.VariableDeclaration(
-        "a", type_=astx.Int32, value=astx.LiteralInt32(1)
+        "a", type_=astx.Int32(), value=astx.LiteralInt32(1)
     )
 
     assert str(decl_a)
@@ -32,7 +32,7 @@ def test_variable_decl() -> None:
 def test_inline_variable_decl() -> None:
     """Test function creation with modifiers."""
     decl_a = astx.InlineVariableDeclaration(
-        "a", type_=astx.Int32, value=astx.LiteralInt32(1)
+        "a", type_=astx.Int32(), value=astx.LiteralInt32(1)
     )
 
     assert str(decl_a)
@@ -55,7 +55,9 @@ def test_variable_assign() -> None:
 
 def test_argument() -> None:
     """Test function creation with modifiers."""
-    arg_a = astx.Argument("a", type_=astx.Int32, default=astx.LiteralInt32(1))
+    arg_a = astx.Argument(
+        "a", type_=astx.Int32(), default=astx.LiteralInt32(1)
+    )
 
     assert str(arg_a)
     assert arg_a.get_struct()
@@ -66,9 +68,15 @@ def test_argument() -> None:
 
 def test_arguments() -> None:
     """Test function creation with modifiers."""
-    arg_a = astx.Argument("a", type_=astx.Int32, default=astx.LiteralInt32(1))
-    arg_b = astx.Argument("b", type_=astx.Int32, default=astx.LiteralInt32(2))
-    arg_c = astx.Argument("c", type_=astx.Int32, default=astx.LiteralInt32(3))
+    arg_a = astx.Argument(
+        "a", type_=astx.Int32(), default=astx.LiteralInt32(1)
+    )
+    arg_b = astx.Argument(
+        "b", type_=astx.Int32(), default=astx.LiteralInt32(2)
+    )
+    arg_c = astx.Argument(
+        "c", type_=astx.Int32(), default=astx.LiteralInt32(3)
+    )
 
     args = astx.Arguments(arg_a, arg_b)
     args.append(arg_c)

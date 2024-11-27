@@ -54,7 +54,7 @@ class Argument(Variable):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        type_ = self.type_.__name__
+        type_ = self.type_.__class__.__name__
         return f"Argument[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:

@@ -25,14 +25,14 @@ def test_source_location() -> None:
 def test_ast_parent() -> None:
     """Test AST parent usage."""
     block = astx.Block()
-    decl_a = astx.VariableDeclaration("a", type_=astx.Int32, parent=block)
+    decl_a = astx.VariableDeclaration("a", type_=astx.Int32(), parent=block)
     assert block.nodes[0] == decl_a
 
 
 def test_ast_to_json() -> None:
     """Test AST object to json."""
     block = astx.Block()
-    astx.VariableDeclaration("a", type_=astx.Int32, parent=block)
+    astx.VariableDeclaration("a", type_=astx.Int32(), parent=block)
     assert block.to_json(simplified=True) != ""
     # assert block.to_json(simplified=False) != ""
 
@@ -40,7 +40,7 @@ def test_ast_to_json() -> None:
 def test_ast_to_yaml() -> None:
     """Test AST object to yaml."""
     block = astx.Block()
-    astx.VariableDeclaration("a", type_=astx.Int32, parent=block)
+    astx.VariableDeclaration("a", type_=astx.Int32(), parent=block)
     assert block.to_yaml(simplified=True) != ""
     # assert block.to_json(simplified=False) != ""
 
@@ -48,7 +48,7 @@ def test_ast_to_yaml() -> None:
 def test_ast_nodes() -> None:
     """Test ASTNodes class."""
     block = astx.Block()
-    astx.VariableDeclaration("a", type_=astx.Int32, parent=block)
+    astx.VariableDeclaration("a", type_=astx.Int32(), parent=block)
 
     for item in block:
         assert item is not None

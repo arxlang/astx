@@ -141,8 +141,8 @@ class BinaryOp(DataTypeOps):
         self.kind = ASTKind.BinaryOpKind
 
         if not (
-            issubclass(lhs.type_, (Number, BinaryOp, DataType))
-            and issubclass(rhs.type_, (Number, BinaryOp, DataType))
+            isinstance(lhs.type_, (Number, BinaryOp, DataType))
+            and isinstance(rhs.type_, (Number, BinaryOp, DataType))
         ):
             raise Exception(
                 "For now, binary operators are just allowed for numbers."
@@ -350,7 +350,7 @@ class LiteralInt8(Literal):
         """Initialize LiteralInt8."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Int8
+        self.type_ = Int8()
         self.loc = loc
 
 
@@ -367,7 +367,7 @@ class LiteralInt16(Literal):
         """Initialize LiteralInt16."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Int16
+        self.type_ = Int16()
         self.loc = loc
 
 
@@ -384,7 +384,7 @@ class LiteralInt32(Literal):
         """Initialize LiteralInt32."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Int32
+        self.type_ = Int32()
         self.loc = loc
 
 
@@ -401,7 +401,7 @@ class LiteralInt64(Literal):
         """Initialize LiteralInt64."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Int64
+        self.type_ = Int64()
         self.loc = loc
 
 
@@ -418,7 +418,7 @@ class LiteralInt128(Literal):
         """Initialize LiteralInt128."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Int128
+        self.type_ = Int128()
         self.loc = loc
 
 
@@ -435,7 +435,7 @@ class LiteralUInt8(Literal):
         """Initialize LiteralUInt8."""
         super().__init__(loc)
         self.value = value
-        self.type_ = UInt8
+        self.type_ = UInt8()
         self.loc = loc
 
 
@@ -452,7 +452,7 @@ class LiteralUInt16(Literal):
         """Initialize LiteralUInt16."""
         super().__init__(loc)
         self.value = value
-        self.type_ = UInt16
+        self.type_ = UInt16()
         self.loc = loc
 
 
@@ -469,7 +469,7 @@ class LiteralUInt32(Literal):
         """Initialize LiteralUInt32."""
         super().__init__(loc)
         self.value = value
-        self.type_ = UInt32
+        self.type_ = UInt32()
         self.loc = loc
 
 
@@ -486,7 +486,7 @@ class LiteralUInt64(Literal):
         """Initialize LiteralUInt64."""
         super().__init__(loc)
         self.value = value
-        self.type_ = UInt64
+        self.type_ = UInt64()
         self.loc = loc
 
 
@@ -503,7 +503,7 @@ class LiteralUInt128(Literal):
         """Initialize LiteralUInt128."""
         super().__init__(loc)
         self.value = value
-        self.type_ = UInt128
+        self.type_ = UInt128()
         self.loc = loc
 
 
@@ -520,7 +520,7 @@ class LiteralBoolean(Literal):
         """Initialize LiteralBoolean."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Boolean
+        self.type_ = Boolean()
         self.loc = loc
 
 
@@ -537,7 +537,7 @@ class LiteralFloat16(Literal):
         """Initialize LiteralFloat16."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Float16
+        self.type_ = Float16()
         self.loc = loc
 
 
@@ -554,7 +554,7 @@ class LiteralFloat32(Literal):
         """Initialize LiteralFloat32."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Float32
+        self.type_ = Float32()
         self.loc = loc
 
 
@@ -571,7 +571,7 @@ class LiteralFloat64(Literal):
         """Initialize LiteralFloat64."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Float64
+        self.type_ = Float64()
         self.loc = loc
 
 
@@ -579,15 +579,6 @@ class LiteralFloat64(Literal):
 @typechecked
 class Complex(Number):
     """Base class for complex numbers."""
-
-    def __init__(self, real: float, imag: float) -> None:
-        """Initialize a complex number with real and imaginary parts."""
-        self.real = real
-        self.imag = imag
-
-    def __str__(self) -> str:
-        """Return a string representation of the complex number."""
-        return f"{self.real} + {self.imag}j"
 
 
 @public
@@ -597,10 +588,6 @@ class Complex32(Complex):
 
     nbytes: int = 8
 
-    def __init__(self, real: float, imag: float) -> None:
-        """Initialize a 32-bit complex number."""
-        super().__init__(real, imag)
-
 
 @public
 @typechecked
@@ -609,42 +596,35 @@ class Complex64(Complex):
 
     nbytes: int = 16
 
-    def __init__(self, real: float, imag: float) -> None:
-        """Initialize a 64-bit complex number."""
-        super().__init__(real, imag)
-
 
 @public
 @typechecked
 class LiteralComplex(Literal):
     """Base class for literal complex numbers."""
 
-    value: Complex
+    type_: Complex
+    value: tuple[float, float]
 
     def __init__(
-        self, value: Complex, loc: SourceLocation = NO_SOURCE_LOCATION
+        self,
+        real: float,
+        imag: float,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize LiteralComplex with a complex number."""
+        """Initialize a generic complex number."""
         super().__init__(loc)
-        if isinstance(value, Complex):
-            self.value = value
-            self.type_ = (
-                Complex64 if isinstance(value, Complex64) else Complex32
-            )
-        else:
-            raise TypeError("Value must be an instance of Complex.")
-        self.loc = loc
+        self.value = real, imag
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"LiteralComplex({self.value.real} + {self.value.imag}j)"
+        return f"LiteralComplex({self.value[0]} + {self.value[1]}j)"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST representation for the complex literal."""
         key = f"{self.__class__.__name__}: {self.value}"
         value: ReprStruct = {
-            "real": self.value.real,
-            "imag": self.value.imag,
+            "real": self.value[0],
+            "imag": self.value[1],
         }
         return self._prepare_struct(key, value, simplified)
 
@@ -661,8 +641,8 @@ class LiteralComplex32(LiteralComplex):
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize LiteralComplex32."""
-        super().__init__(Complex32(real, imag), loc)
-        self.type_ = Complex32
+        super().__init__(real, imag, loc)
+        self.type_ = Complex32()
 
 
 @public
@@ -677,8 +657,8 @@ class LiteralComplex64(LiteralComplex):
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize LiteralComplex64."""
-        super().__init__(Complex64(real, imag), loc)
-        self.type_ = Complex64
+        super().__init__(real, imag, loc)
+        self.type_ = Complex64()
 
 
 @public
@@ -686,53 +666,11 @@ class LiteralComplex64(LiteralComplex):
 class UTF8String(DataTypeOps):
     """Class for UTF-8 encoded strings."""
 
-    def __init__(
-        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
-    ) -> None:
-        if not isinstance(value, str):
-            raise TypeError("Expected a valid UTF-8 string.")
-        value.encode("utf-8")
-        super().__init__()
-        self.value = value
-        self.loc = loc
-        self.kind = ASTKind.UTF8StringDTKind
-
-    def __str__(self) -> str:
-        """Return a string representation of the object."""
-        return f"UTF8String({self.value})"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the object in a simplified."""
-        key = "UTF8String"
-        value = self.value
-        return self._prepare_struct(key, value, simplified)
-
 
 @public
 @typechecked
 class UTF8Char(DataTypeOps):
     """Class for UTF-8 encoded characters."""
-
-    def __init__(
-        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
-    ) -> None:
-        if len(value) != 1:
-            raise ValueError("Expected a single UTF-8 character.")
-        value.encode("utf-8")
-        super().__init__()
-        self.value = value
-        self.loc = loc
-        self.kind = ASTKind.UTF8CharDTKind
-
-    def __str__(self) -> str:
-        """Return a string representation of the object."""
-        return f"UTF8Char({self.value})"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the object in a simplified."""
-        key = "UTF8Char"
-        value = self.value
-        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -740,13 +678,14 @@ class UTF8Char(DataTypeOps):
 class LiteralUTF8String(Literal):
     """Literal class for UTF-8 strings."""
 
+    value: str
+
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         super().__init__(loc)
-        value.encode("utf-8")
         self.value = value
-        self.type_ = UTF8String
+        self.type_ = UTF8String()
         self.loc = loc
 
     def __str__(self) -> str:
@@ -765,13 +704,14 @@ class LiteralUTF8String(Literal):
 class LiteralUTF8Char(Literal):
     """Literal class for UTF-8 characters."""
 
+    value: str
+
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         super().__init__(loc)
-        value.encode("utf-8")
         self.value = value
-        self.type_ = UTF8Char
+        self.type_ = UTF8Char()
         self.loc = loc
 
     def __str__(self) -> str:
@@ -796,49 +736,11 @@ class Temporal(DataTypeOps):
 class Date(Temporal):
     """Date data type expression."""
 
-    def __init__(
-        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
-    ) -> None:
-        """Initialize Date with a string format 'YYYY-MM-DD'."""
-        super().__init__()
-        self.value = value
-        self.loc = loc
-        self.kind = ASTKind.DateDTKind
-
-    def __str__(self) -> str:
-        """Return a string representation of the Date object."""
-        return f"Date[{self.value}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the Date object."""
-        key = "Date"
-        value = self.value
-        return self._prepare_struct(key, value, simplified)
-
 
 @public
 @typechecked
 class Time(Temporal):
     """Time data type expression."""
-
-    def __init__(
-        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
-    ) -> None:
-        """Initialize Time with a string format 'HH:MM:SS'."""
-        super().__init__()
-        self.value = value
-        self.loc = loc
-        self.kind = ASTKind.TimeDTKind
-
-    def __str__(self) -> str:
-        """Return a string representation of the Time object."""
-        return f"Time[{self.value}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the Time object."""
-        key = "Time"
-        value = self.value
-        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -846,49 +748,11 @@ class Time(Temporal):
 class Timestamp(Temporal):
     """Timestamp data type expression."""
 
-    def __init__(
-        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
-    ) -> None:
-        """Initialize Timestamp with a string format 'YYYY-MM-DD HH:MM:SS'."""
-        super().__init__()
-        self.value = value
-        self.loc = loc
-        self.kind = ASTKind.TimestampDTKind
-
-    def __str__(self) -> str:
-        """Return a string representation of the Timestamp object."""
-        return f"Timestamp[{self.value}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the Timestamp object."""
-        key = "Timestamp"
-        value = self.value
-        return self._prepare_struct(key, value, simplified)
-
 
 @public
 @typechecked
 class DateTime(Temporal):
     """DateTime data type expression."""
-
-    def __init__(
-        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
-    ) -> None:
-        """Initialize DateTime with a string format."""
-        super().__init__()
-        self.value = value
-        self.loc = loc
-        self.kind = ASTKind.DateTimeDTKind
-
-    def __str__(self) -> str:
-        """Return a string representation of the DateTime object."""
-        return f"DateTime[{self.value}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the DateTime object."""
-        key = "DateTime"
-        value = self.value
-        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -902,7 +766,7 @@ class LiteralDate(Literal):
         """Initialize LiteralDate."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Date
+        self.type_ = Date()
         self.loc = loc
 
     def __str__(self) -> str:
@@ -926,7 +790,7 @@ class LiteralTime(Literal):
         """Initialize LiteralTime."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Time
+        self.type_ = Time()
         self.loc = loc
 
     def __str__(self) -> str:
@@ -950,7 +814,7 @@ class LiteralTimestamp(Literal):
         """Initialize LiteralTimestamp."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Timestamp
+        self.type_ = Timestamp()
         self.loc = loc
 
     def __str__(self) -> str:
@@ -974,7 +838,7 @@ class LiteralDateTime(Literal):
         """Initialize LiteralDateTime."""
         super().__init__(loc)
         self.value = value
-        self.type_ = DateTime
+        self.type_ = DateTime()
         self.loc = loc
 
     def __str__(self) -> str:

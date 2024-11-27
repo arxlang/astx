@@ -13,8 +13,8 @@ def test_function_call_fibonacci() -> None:
     # Define the Fibonacci function prototype
     fib_proto = astx.FunctionPrototype(
         name="fib",
-        args=astx.Arguments(astx.Argument("n", astx.Int32)),
-        return_type=astx.Int32,
+        args=astx.Arguments(astx.Argument("n", astx.Int32())),
+        return_type=astx.Int32(),
     )
 
     # Create the function body block
@@ -22,13 +22,13 @@ def test_function_call_fibonacci() -> None:
 
     # Declare the variables
     decl_a = astx.VariableDeclaration(
-        name="a", type_=astx.Int32, value=astx.LiteralInt32(0)
+        name="a", type_=astx.Int32(), value=astx.LiteralInt32(0)
     )
     decl_b = astx.VariableDeclaration(
-        name="b", type_=astx.Int32, value=astx.LiteralInt32(1)
+        name="b", type_=astx.Int32(), value=astx.LiteralInt32(1)
     )
     decl_i = astx.VariableDeclaration(
-        name="i", type_=astx.Int32, value=astx.LiteralInt32(2)
+        name="i", type_=astx.Int32(), value=astx.LiteralInt32(2)
     )
 
     # Initialize the block with declarations

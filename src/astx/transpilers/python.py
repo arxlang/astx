@@ -1,7 +1,5 @@
 """ASTx Python transpiler."""
 
-from typing import Type
-
 from plum import dispatch
 from typeguard import typechecked
 
@@ -269,32 +267,32 @@ class ASTxPythonTranspiler:
         return repr(node.value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Complex32]) -> str:
+    def visit(self, node: astx.Complex32) -> str:
         """Handle Complex32 nodes."""
         return "Complex"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Complex64]) -> str:
+    def visit(self, node: astx.Complex64) -> str:
         """Handle Complex64 nodes."""
         return "Complex"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Float16]) -> str:
+    def visit(self, node: astx.Float16) -> str:
         """Handle Float nodes."""
         return "float"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Float32]) -> str:
+    def visit(self, node: astx.Float32) -> str:
         """Handle Float nodes."""
         return "float"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Float64]) -> str:
+    def visit(self, node: astx.Float64) -> str:
         """Handle Float nodes."""
         return "float"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Int32]) -> str:
+    def visit(self, node: astx.Int32) -> str:
         """Handle Int32 nodes."""
         return "int"
 
@@ -348,22 +346,22 @@ class ASTxPythonTranspiler:
         return f"while {condition}:\n{body}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Date]) -> str:
+    def visit(self, node: astx.Date) -> str:
         """Handle Date nodes."""
         return "date"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Time]) -> str:
+    def visit(self, node: astx.Time) -> str:
         """Handle Time nodes."""
         return "time"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.Timestamp]) -> str:
+    def visit(self, node: astx.Timestamp) -> str:
         """Handle Timestamp nodes."""
         return "timestamp"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Type[astx.DateTime]) -> str:
+    def visit(self, node: astx.DateTime) -> str:
         """Handle DateTime nodes."""
         return "datetime"
 

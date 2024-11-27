@@ -7,7 +7,7 @@ import json
 from abc import abstractmethod
 from enum import Enum
 from hashlib import sha256
-from typing import ClassVar, Dict, List, Optional, Type, Union, cast
+from typing import ClassVar, Dict, List, Optional, Union, cast
 
 from typeguard import typechecked
 
@@ -306,7 +306,17 @@ class Expr(AST):
     nbytes: int = 0
 
 
-ExprType: TypeAlias = Type[Expr]
+@public
+@typechecked
+class ExprType(Expr):
+    """ExprType expression class."""
+
+    nbytes: int = 0
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structure that represents the node object."""
+        return {"Type": self.__class__.__name__}
+
 
 PrimitivesStruct: TypeAlias = Union[
     int,
@@ -340,7 +350,7 @@ class Undefined(Expr):
 
 @public
 @typechecked
-class DataType(Expr):
+class DataType(ExprType):
     """AST main expression class."""
 
     type_: ExprType
@@ -356,7 +366,7 @@ class DataType(Expr):
         self.name = f"temp_{DataType._tmp_id}"
         DataType._tmp_id += 1
         # set it as a generic data type
-        self.type_: ExprType = DataType
+        self.type_: ExprType = ExprType()
         self.parent = parent
 
     def __str__(self) -> str:
