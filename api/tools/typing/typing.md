@@ -1,1 +1,0 @@
-::: astx.tools.typing
