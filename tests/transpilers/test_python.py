@@ -753,3 +753,131 @@ def test_transpiler_ifstmt_without_else() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_date_type() -> None:
+    """Test Type[astx.Date]."""
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code for the type
+    generated_code = generator.visit(astx.Date)
+    expected_code = "date"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_time_type() -> None:
+    """Test Type[astx.Time]."""
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code for the type
+    generated_code = generator.visit(astx.Time)
+    expected_code = "time"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_timestamp_type() -> None:
+    """Test Type[astx.Timestamp]."""
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code for the type
+    generated_code = generator.visit(astx.Timestamp)
+    expected_code = "timestamp"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_datetime_type() -> None:
+    """Test Type[astx.DateTime]."""
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code for the type
+    generated_code = generator.visit(astx.DateTime)
+    expected_code = "datetime"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_date() -> None:
+    """Test astx.LiteralDate."""
+    # Create a LiteralDate node
+    literal_date_node = astx.LiteralDate(value="2024-11-24")
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_date_node)
+    expected_code = "datetime.strptime('2024-11-24', '%Y-%m-%d').date()"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_time() -> None:
+    """Test astx.LiteralTime."""
+    # Create a LiteralTime node
+    literal_time_node = astx.LiteralTime(value="14:30:00")
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_time_node)
+    expected_code = "datetime.strptime('14:30:00', '%H:%M:%S').time()"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_timestamp() -> None:
+    """Test astx.LiteralTimestamp."""
+    # Create a LiteralTimestamp node
+    literal_timestamp_node = astx.LiteralTimestamp(value="2024-11-24 14:30:00")
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_timestamp_node)
+    expected_code = (
+        "datetime.strptime('2024-11-24 14:30:00', '%Y-%m-%d %H:%M:%S')"
+    )
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_datetime() -> None:
+    """Test astx.LiteralDateTime."""
+    # Create a LiteralDateTime node
+    literal_datetime_node = astx.LiteralDateTime(value="2024-11-24T14:30:00")
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(literal_datetime_node)
+    expected_code = (
+        "datetime.strptime('2024-11-24T14:30:00', '%Y-%m-%dT%H:%M:%S')"
+    )
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"

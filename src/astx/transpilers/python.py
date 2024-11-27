@@ -346,3 +346,43 @@ class ASTxPythonTranspiler:
         condition = self.visit(node.condition)
         body = self._generate_block(node.body)
         return f"while {condition}:\n{body}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Date]) -> str:
+        """Handle Date nodes."""
+        return "date"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Time]) -> str:
+        """Handle Time nodes."""
+        return "time"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.Timestamp]) -> str:
+        """Handle Timestamp nodes."""
+        return "timestamp"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Type[astx.DateTime]) -> str:
+        """Handle DateTime nodes."""
+        return "datetime"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralDate) -> str:
+        """Handle LiteralDate nodes."""
+        return f"datetime.strptime({node.value!r}, '%Y-%m-%d').date()"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralTime) -> str:
+        """Handle LiteralTime nodes."""
+        return f"datetime.strptime({node.value!r}, '%H:%M:%S').time()"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralTimestamp) -> str:
+        """Handle LiteralTimestamp nodes."""
+        return f"datetime.strptime({node.value!r}, '%Y-%m-%d %H:%M:%S')"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralDateTime) -> str:
+        """Handle LiteralDateTime nodes."""
+        return f"datetime.strptime({node.value!r}, '%Y-%m-%dT%H:%M:%S')"
