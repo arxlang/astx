@@ -6,6 +6,9 @@ from astx.types.base import (
 from astx.types.boolean import (
     Boolean,
 )
+from astx.types.casting import (
+    TypeCastExpr,
+)
 from astx.types.numeric import (
     Complex,
     Complex32,
@@ -29,7 +32,9 @@ from astx.types.numeric import (
     UnsignedInteger,
 )
 from astx.types.operators import (
+    BinaryOp,
     DataTypeOps,
+    UnaryOp,
 )
 from astx.types.string import (
     UTF8Char,
@@ -44,6 +49,7 @@ from astx.types.temporal import (
 
 __all__ = [
     "AnyType",
+    "BinaryOp",
     "Boolean",
     "Complex",
     "Complex32",
@@ -69,7 +75,9 @@ __all__ = [
     "UInt32",
     "UInt64",
     "UInt8",
+    "UnaryOp",
     "UTF8Char",
     "UTF8String",
     "UnsignedInteger",
+    "TypeCastExpr",
 ]
