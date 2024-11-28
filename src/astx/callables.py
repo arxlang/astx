@@ -13,13 +13,13 @@ from astx.base import (
     ASTNodes,
     DataType,
     Expr,
-    ExprType,
     ReprStruct,
     SourceLocation,
     StatementType,
     Undefined,
 )
 from astx.blocks import Block
+from astx.datatypes import AnyType
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
 from astx.variables import Variable
 
@@ -97,11 +97,13 @@ class FunctionCall(DataType):
 
     fn: Function
     args: Iterable[DataType]
+    type_: DataType = AnyType()
 
     def __init__(
         self,
         fn: Function,
         args: Iterable[DataType],
+        type_: DataType = AnyType(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -110,6 +112,7 @@ class FunctionCall(DataType):
         self.fn = fn
         self.args = args
         self.kind = ASTKind.CallKind
+        self.type_ = type_
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
@@ -144,7 +147,7 @@ class FunctionPrototype(StatementType):
 
     name: str
     args: Arguments
-    return_type: ExprType
+    return_type: AnyType
     scope: ScopeKind
     visibility: VisibilityKind
 
@@ -152,7 +155,7 @@ class FunctionPrototype(StatementType):
         self,
         name: str,
         args: Arguments,
-        return_type: ExprType,
+        return_type: AnyType,
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,

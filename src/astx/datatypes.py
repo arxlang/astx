@@ -180,13 +180,13 @@ class AnyType(DataType):
 
 @public
 @typechecked
-class Number(DataType):
+class Number(AnyType):
     """Number data type expression."""
 
 
 @public
 @typechecked
-class Integer(Number):
+class Integer(AnyType):
     """Integer number data type expression."""
 
 
@@ -308,7 +308,7 @@ class Float64(Floating):
 
 @public
 @typechecked
-class Boolean(DataType):
+class Boolean(AnyType):
     """Boolean data type expression."""
 
 
@@ -663,13 +663,13 @@ class LiteralComplex64(LiteralComplex):
 
 @public
 @typechecked
-class UTF8String(DataType):
+class UTF8String(AnyType):
     """Class for UTF-8 encoded strings."""
 
 
 @public
 @typechecked
-class UTF8Char(DataType):
+class UTF8Char(AnyType):
     """Class for UTF-8 encoded characters."""
 
 
@@ -727,7 +727,7 @@ class LiteralUTF8Char(Literal):
 
 @public
 @typechecked
-class Temporal(DataType):
+class Temporal(AnyType):
     """Base class for temporal data types (date, time, timestamp, datetime)."""
 
 
