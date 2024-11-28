@@ -174,13 +174,13 @@ class BinaryOp(DataTypeOps):
 
 @public
 @typechecked
-class AnyExpr(DataTypeOps):
+class AnyType(DataType):
     """Generic data type expression."""
 
 
 @public
 @typechecked
-class Number(DataTypeOps):
+class Number(DataType):
     """Number data type expression."""
 
 
@@ -663,13 +663,13 @@ class LiteralComplex64(LiteralComplex):
 
 @public
 @typechecked
-class UTF8String(DataTypeOps):
+class UTF8String(DataType):
     """Class for UTF-8 encoded strings."""
 
 
 @public
 @typechecked
-class UTF8Char(DataTypeOps):
+class UTF8Char(DataType):
     """Class for UTF-8 encoded characters."""
 
 
@@ -727,7 +727,7 @@ class LiteralUTF8Char(Literal):
 
 @public
 @typechecked
-class Temporal(DataTypeOps):
+class Temporal(DataType):
     """Base class for temporal data types (date, time, timestamp, datetime)."""
 
 

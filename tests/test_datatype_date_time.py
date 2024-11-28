@@ -8,14 +8,10 @@ import astx
 import pytest
 
 from astx.datatypes import (
-    Date,
-    DateTime,
     LiteralDate,
     LiteralDateTime,
     LiteralTime,
     LiteralTimestamp,
-    Time,
-    Timestamp,
 )
 from astx.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
@@ -27,10 +23,6 @@ DATE_LITERAL_CLASSES = [
     LiteralTime,
     LiteralTimestamp,
     LiteralDateTime,
-    Date,
-    Time,
-    DateTime,
-    Timestamp,
 ]
 
 

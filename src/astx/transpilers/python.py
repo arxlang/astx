@@ -225,15 +225,22 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex32) -> str:
         """Handle LiteralComplex32 nodes."""
-        real = node.value.real
-        imag = node.value.imag
+        real = node.value[0]
+        imag = node.value[1]
+        return f"complex({real}, {imag})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralComplex) -> str:
+        """Handle LiteralComplex nodes."""
+        real = node.value[0]
+        imag = node.value[1]
         return f"complex({real}, {imag})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex64) -> str:
         """Handle LiteralComplex64 nodes."""
-        real = node.value.real
-        imag = node.value.imag
+        real = node.value[0]
+        imag = node.value[1]
         return f"complex({real}, {imag})"
 
     @dispatch  # type: ignore[no-redef]
@@ -299,9 +306,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.TypeCastExpr) -> str:
         """Handle TypeCastExpr nodes."""
-        return (
-            f"cast({self.visit(node.target_type.__class__)}, {node.expr.name})"
-        )
+        return f"cast({self.visit(node.target_type)}, {node.expr.name})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> str:

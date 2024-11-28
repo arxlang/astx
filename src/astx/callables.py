@@ -33,13 +33,13 @@ class Argument(Variable):
 
     mutability: MutabilityKind
     name: str
-    type_: ExprType
+    type_: DataType
     default: Expr
 
     def __init__(
         self,
         name: str,
-        type_: ExprType,
+        type_: DataType,
         mutability: MutabilityKind = MutabilityKind.constant,
         default: Expr = UNDEFINED,
         loc: SourceLocation = NO_SOURCE_LOCATION,

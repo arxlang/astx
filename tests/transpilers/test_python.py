@@ -667,7 +667,7 @@ def test_transpiler_ifstmt_without_else() -> None:
 def test_transpiler_date_type() -> None:
     """Test Type[astx.Date]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Date)
+    generated_code = transpiler.visit(astx.Date())
     expected_code = "date"
 
     assert (
@@ -678,7 +678,7 @@ def test_transpiler_date_type() -> None:
 def test_transpiler_time_type() -> None:
     """Test Type[astx.Time]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Time)
+    generated_code = transpiler.visit(astx.Time())
     expected_code = "time"
 
     assert (
@@ -689,7 +689,7 @@ def test_transpiler_time_type() -> None:
 def test_transpiler_timestamp_type() -> None:
     """Test Type[astx.Timestamp]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Timestamp)
+    generated_code = transpiler.visit(astx.Timestamp())
     expected_code = "timestamp"
 
     assert (
@@ -700,7 +700,7 @@ def test_transpiler_timestamp_type() -> None:
 def test_transpiler_datetime_type() -> None:
     """Test Type[astx.DateTime]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.DateTime)
+    generated_code = transpiler.visit(astx.DateTime())
     expected_code = "datetime"
 
     assert (

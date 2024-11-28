@@ -9,7 +9,7 @@ def test_variable_boolean() -> None:
     decl_a = VariableDeclaration(
         name="a", type_=Boolean(), value=LiteralBoolean(value=True)
     )
-    assert decl_a.type_ == Boolean.__mro__[0]()
+    assert isinstance(decl_a.type_, Boolean)
     assert decl_a.get_struct()
 
 
