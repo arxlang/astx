@@ -1,6 +1,6 @@
 """Tests for i32 data type."""
 
-from astx.datatypes import LiteralInt32
+from astx.literals.numeric import LiteralInt32
 
 
 def test_literal_int32() -> None:

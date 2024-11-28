@@ -1,8 +1,9 @@
 """Tests visualization methods."""
 
 from astx.blocks import Block
-from astx.datatypes import Int32, LiteralInt32
-from astx.operators import BinaryOp
+from astx.literals.numeric import LiteralInt32
+from astx.types.numeric import Int32
+from astx.types.operators import BinaryOp
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import graph_to_ascii, traverse_ast_ascii
 

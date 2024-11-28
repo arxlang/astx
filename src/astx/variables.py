@@ -18,9 +18,9 @@ from astx.base import (
     StatementType,
     Undefined,
 )
-from astx.datatypes import AnyType
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
-from astx.operators import DataTypeOps
+from astx.types import AnyType
+from astx.types.operators import DataTypeOps
 
 UNDEFINED = Undefined()
 

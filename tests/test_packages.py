@@ -1,7 +1,6 @@
 """Module for testing different kind of ASTx blocks."""
 
-from astx.datatypes import Int32, LiteralInt32
-from astx.operators import BinaryOp
+from astx.literals.numeric import LiteralInt32
 from astx.packages import (
     AliasExpr,
     ImportExpr,
@@ -13,6 +12,8 @@ from astx.packages import (
     Program,
     Target,
 )
+from astx.types.numeric import Int32
+from astx.types.operators import BinaryOp
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize
 

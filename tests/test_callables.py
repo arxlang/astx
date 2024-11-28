@@ -12,9 +12,10 @@ from astx.callables import (
     FunctionReturn,
     LambdaExpr,
 )
-from astx.datatypes import Int32, LiteralInt32
+from astx.literals.numeric import LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
-from astx.operators import BinaryOp
+from astx.types.numeric import Int32
+from astx.types.operators import BinaryOp
 from astx.variables import Variable
 from astx.viz import visualize
 

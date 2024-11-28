@@ -2,8 +2,8 @@
 
 import pytest
 
-from astx.datatypes import LiteralInt32
-from astx.operators import BinaryOp, UnaryOp
+from astx.literals.numeric import LiteralInt32
+from astx.types.operators import BinaryOp, UnaryOp
 
 lit_1 = LiteralInt32(1)
 lit_2 = LiteralInt32(2)

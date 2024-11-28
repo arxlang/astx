@@ -2,7 +2,6 @@
 
 from astx.base import SourceLocation
 from astx.blocks import Block
-from astx.datatypes import Int32, LiteralInt32
 from astx.flows import (
     ForCountLoopExpr,
     ForCountLoopStmt,
@@ -13,7 +12,9 @@ from astx.flows import (
     WhileExpr,
     WhileStmt,
 )
-from astx.operators import BinaryOp, UnaryOp
+from astx.literals.numeric import LiteralInt32
+from astx.types.numeric import Int32
+from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
 from astx.viz import visualize
 
