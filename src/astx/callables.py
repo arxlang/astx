@@ -13,13 +13,13 @@ from astx.base import (
     ASTNodes,
     DataType,
     Expr,
-    ExprType,
     ReprStruct,
     SourceLocation,
     StatementType,
     Undefined,
 )
 from astx.blocks import Block
+from astx.datatypes import AnyType
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
 from astx.variables import Variable
 
@@ -33,13 +33,13 @@ class Argument(Variable):
 
     mutability: MutabilityKind
     name: str
-    type_: ExprType
+    type_: DataType
     default: Expr
 
     def __init__(
         self,
         name: str,
-        type_: ExprType,
+        type_: DataType,
         mutability: MutabilityKind = MutabilityKind.constant,
         default: Expr = UNDEFINED,
         loc: SourceLocation = NO_SOURCE_LOCATION,
@@ -54,7 +54,7 @@ class Argument(Variable):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        type_ = self.type_.__name__
+        type_ = self.type_.__class__.__name__
         return f"Argument[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -97,11 +97,13 @@ class FunctionCall(DataType):
 
     fn: Function
     args: Iterable[DataType]
+    type_: DataType = AnyType()
 
     def __init__(
         self,
         fn: Function,
         args: Iterable[DataType],
+        type_: DataType = AnyType(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -110,6 +112,7 @@ class FunctionCall(DataType):
         self.fn = fn
         self.args = args
         self.kind = ASTKind.CallKind
+        self.type_ = type_
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
@@ -144,7 +147,7 @@ class FunctionPrototype(StatementType):
 
     name: str
     args: Arguments
-    return_type: ExprType
+    return_type: AnyType
     scope: ScopeKind
     visibility: VisibilityKind
 
@@ -152,7 +155,7 @@ class FunctionPrototype(StatementType):
         self,
         name: str,
         args: Arguments,
-        return_type: ExprType,
+        return_type: AnyType,
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,

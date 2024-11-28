@@ -71,7 +71,7 @@ def test_if_else_expr() -> None:
 def test_for_range_loop_expr() -> None:
     """Test `For Range Loop` expression`."""
     decl_a = InlineVariableDeclaration(
-        "a", type_=Int32, value=LiteralInt32(-1)
+        "a", type_=Int32(), value=LiteralInt32(-1)
     )
     start = LiteralInt32(1)
     end = LiteralInt32(10)
@@ -91,7 +91,7 @@ def test_for_range_loop_expr() -> None:
 def test_for_range_loop_stmt() -> None:
     """Test `For Range Loop` statement."""
     decl_a = InlineVariableDeclaration(
-        "a", type_=Int32, value=LiteralInt32(-1)
+        "a", type_=Int32(), value=LiteralInt32(-1)
     )
     start = LiteralInt32(1)
     end = LiteralInt32(10)
@@ -110,7 +110,9 @@ def test_for_range_loop_stmt() -> None:
 
 def test_for_count_loop_stmt() -> None:
     """Test `For Count Loop` statement."""
-    decl_a = InlineVariableDeclaration("a", type_=Int32, value=LiteralInt32(0))
+    decl_a = InlineVariableDeclaration(
+        "a", type_=Int32(), value=LiteralInt32(0)
+    )
     var_a = Variable("a")
     cond = BinaryOp(op_code="<", lhs=var_a, rhs=LiteralInt32(10))
     update = UnaryOp(op_code="++", operand=var_a)
@@ -128,7 +130,9 @@ def test_for_count_loop_stmt() -> None:
 
 def test_for_count_loop_expr() -> None:
     """Test `For Count Loop` expression."""
-    decl_a = InlineVariableDeclaration("a", type_=Int32, value=LiteralInt32(0))
+    decl_a = InlineVariableDeclaration(
+        "a", type_=Int32(), value=LiteralInt32(0)
+    )
     var_a = Variable("a")
     cond = BinaryOp(op_code="<", lhs=var_a, rhs=LiteralInt32(10))
     update = UnaryOp(op_code="++", operand=var_a)

@@ -21,8 +21,8 @@ def test_module() -> None:
     """Test ASTx module."""
     module = Module()
 
-    decl_a = VariableDeclaration("a", type_=Int32, value=LiteralInt32(1))
-    decl_b = VariableDeclaration("b", type_=Int32, value=LiteralInt32(2))
+    decl_a = VariableDeclaration("a", type_=Int32(), value=LiteralInt32(1))
+    decl_b = VariableDeclaration("b", type_=Int32(), value=LiteralInt32(2))
 
     var_a = Variable("a")
     var_b = Variable("b")

@@ -26,8 +26,8 @@ def test_viz_graphviz() -> None:
 def test_viz_ascii() -> None:
     """Test ascii representation."""
     block = Block()
-    decl_a = VariableDeclaration("a", type_=Int32, value=LiteralInt32(1))
-    decl_b = VariableDeclaration("b", type_=Int32, value=LiteralInt32(2))
+    decl_a = VariableDeclaration("a", type_=Int32(), value=LiteralInt32(1))
+    decl_b = VariableDeclaration("b", type_=Int32(), value=LiteralInt32(2))
     var_a = Variable("a")
     var_b = Variable("b")
     sum_op = BinaryOp(op_code="+", lhs=var_a, rhs=var_b)

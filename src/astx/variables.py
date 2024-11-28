@@ -11,13 +11,14 @@ from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
+    DataType,
     Expr,
-    ExprType,
     ReprStruct,
     SourceLocation,
     StatementType,
     Undefined,
 )
+from astx.datatypes import AnyType
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
 from astx.operators import DataTypeOps
 
@@ -33,13 +34,13 @@ class VariableDeclaration(StatementType):
     visibility: VisibilityKind
     scope: ScopeKind
     name: str
-    type_: ExprType
+    type_: DataType
     value: Expr
 
     def __init__(
         self,
         name: str,
-        type_: ExprType,
+        type_: DataType,
         mutability: MutabilityKind = MutabilityKind.constant,
         visibility: VisibilityKind = VisibilityKind.public,
         scope: ScopeKind = ScopeKind.local,
@@ -59,7 +60,7 @@ class VariableDeclaration(StatementType):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        type_ = self.type_.__name__
+        type_ = self.type_.__class__.__name__
         return f"VariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -80,13 +81,13 @@ class InlineVariableDeclaration(Expr):
 
     mutability: MutabilityKind
     name: str
-    type_: ExprType
+    type_: DataType
     value: Expr
 
     def __init__(
         self,
         name: str,
-        type_: ExprType,
+        type_: DataType,
         mutability: MutabilityKind = MutabilityKind.constant,
         visibility: VisibilityKind = VisibilityKind.public,
         scope: ScopeKind = ScopeKind.local,
@@ -106,7 +107,7 @@ class InlineVariableDeclaration(Expr):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        type_ = self.type_.__name__
+        type_ = self.type_.__class__.__name__
         return f"InlineVariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -155,16 +156,19 @@ class Variable(DataTypeOps):
     """AST class for the variable usage."""
 
     name: str
+    type_: DataType = AnyType()
 
     def __init__(
         self,
         name: str,
+        type_: DataType = AnyType(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Variable instance."""
         super().__init__(loc=loc, parent=parent)
         self.name = name
+        self.type_ = type_
 
     def __str__(self) -> str:
         """Return a string that represents the object."""

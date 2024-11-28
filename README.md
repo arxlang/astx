@@ -72,8 +72,8 @@ import astx
 
 # Define a simple function `add(x, y): return x + y`
 args = astx.Arguments(
-    astx.Argument(name="x", type_=astx.Int32),
-    astx.Argument(name="y", type_=astx.Int32),
+    astx.Argument(name="x", type_=astx.Int32()),
+    astx.Argument(name="y", type_=astx.Int32()),
 )
 fn_body = astx.Block()
 fn_body.append(

@@ -21,13 +21,13 @@ from astx.viz import visualize
 
 def test_function_creation_with_no_modifiers() -> None:
     """Test function creation with no modifiers."""
-    var_a = Argument("a", type_=Int32, default=LiteralInt32(1))
-    var_b = Argument("b", type_=Int32, default=LiteralInt32(1))
+    var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
+    var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
 
     proto = FunctionPrototype(
         name="add",
         args=Arguments(var_a, var_b),
-        return_type=Int32,
+        return_type=Int32(),
     )
 
     with pytest.raises(Exception):
@@ -45,12 +45,12 @@ def test_function_creation_with_no_modifiers() -> None:
 
 def test_function_creation_with_modifiers() -> None:
     """Test function creation with modifiers."""
-    var_a = Argument("a", type_=Int32, default=LiteralInt32(1))
-    var_b = Argument("b", type_=Int32, default=LiteralInt32(1))
+    var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
+    var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
     proto = FunctionPrototype(
         name="add",
         args=Arguments(var_a, var_b),
-        return_type=Int32,
+        return_type=Int32(),
         visibility=VisibilityKind.public,
         scope=ScopeKind.global_,
     )
@@ -66,12 +66,12 @@ def test_function_creation_with_modifiers() -> None:
 
 def test_function_call() -> None:
     """Test the FunctionCall class."""
-    var_a = Argument("a", type_=Int32, default=LiteralInt32(1))
-    var_b = Argument("b", type_=Int32, default=LiteralInt32(1))
+    var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
+    var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
     proto = FunctionPrototype(
         name="add",
         args=Arguments(var_a, var_b),
-        return_type=Int32,
+        return_type=Int32(),
         visibility=VisibilityKind.public,
         scope=ScopeKind.global_,
     )
@@ -98,7 +98,7 @@ def test_function_return() -> None:
 
 def test_lambdaexpr() -> None:
     """Test the LambdaExpr class."""
-    params = Arguments(Argument(name="x", type_=Int32))
+    params = Arguments(Argument(name="x", type_=Int32()))
     body = BinaryOp(op_code="+", lhs=Variable(name="x"), rhs=LiteralInt32(1))
     lambda_expr = LambdaExpr(params=params, body=body)
 

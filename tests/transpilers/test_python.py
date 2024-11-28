@@ -163,7 +163,7 @@ def test_transpiler_relative_import_from_expr() -> None:
 
 def test_transpiler_lambdaexpr() -> None:
     """Test astx.LambdaExpr."""
-    params = astx.Arguments(astx.Argument(name="x", type_=astx.Int32))
+    params = astx.Arguments(astx.Argument(name="x", type_=astx.Int32()))
     body = astx.BinaryOp(
         op_code="+", lhs=astx.Variable(name="x"), rhs=astx.LiteralInt32(1)
     )
@@ -196,8 +196,8 @@ def test_transpiler_function() -> None:
     """Test astx.Function."""
     # Function parameters
     args = astx.Arguments(
-        astx.Argument(name="x", type_=astx.Int32),
-        astx.Argument(name="y", type_=astx.Int32),
+        astx.Argument(name="x", type_=astx.Int32()),
+        astx.Argument(name="y", type_=astx.Int32()),
     )
 
     # Function body
@@ -226,7 +226,7 @@ def test_transpiler_function() -> None:
         prototype=astx.FunctionPrototype(
             name="add",
             args=args,
-            return_type=astx.Int32,
+            return_type=astx.Int32(),
         ),
         body=body,
         loc=astx.SourceLocation(line=1, col=0),
@@ -341,7 +341,7 @@ def test_transpiler_typecastexpr() -> None:
 def test_transpiler_utf8_char() -> None:
     """Test astx.Utf8Char."""
     # Create a Utf8Char node
-    utf8_char_node = astx.UTF8Char(value="c")
+    utf8_char_node = astx.LiteralUTF8Char(value="c")
 
     # Generate Python code
     generated_code = transpiler.visit(utf8_char_node)
@@ -355,7 +355,7 @@ def test_transpiler_utf8_char() -> None:
 def test_transpiler_utf8_string() -> None:
     """Test astx.Utf8String."""
     # Create a Utf8String node
-    utf8_string_node = astx.UTF8String(value="hello")
+    utf8_string_node = astx.LiteralUTF8String(value="hello")
 
     # Generate Python code
     generated_code = transpiler.visit(utf8_string_node)
@@ -397,7 +397,7 @@ def test_transpiler_literal_utf8_string() -> None:
 def test_transpiler_for_range_loop_expr() -> None:
     """Test `For Range Loop` expression`."""
     decl_a = astx.InlineVariableDeclaration(
-        "a", type_=astx.Int32, value=astx.LiteralInt32(-1)
+        "a", type_=astx.Int32(), value=astx.LiteralInt32(-1)
     )
     start = astx.LiteralInt32(0)
     end = astx.LiteralInt32(10)
@@ -667,7 +667,7 @@ def test_transpiler_ifstmt_without_else() -> None:
 def test_transpiler_date_type() -> None:
     """Test Type[astx.Date]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Date)
+    generated_code = transpiler.visit(astx.Date())
     expected_code = "date"
 
     assert (
@@ -678,7 +678,7 @@ def test_transpiler_date_type() -> None:
 def test_transpiler_time_type() -> None:
     """Test Type[astx.Time]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Time)
+    generated_code = transpiler.visit(astx.Time())
     expected_code = "time"
 
     assert (
@@ -689,7 +689,7 @@ def test_transpiler_time_type() -> None:
 def test_transpiler_timestamp_type() -> None:
     """Test Type[astx.Timestamp]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Timestamp)
+    generated_code = transpiler.visit(astx.Timestamp())
     expected_code = "timestamp"
 
     assert (
@@ -700,7 +700,7 @@ def test_transpiler_timestamp_type() -> None:
 def test_transpiler_datetime_type() -> None:
     """Test Type[astx.DateTime]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.DateTime)
+    generated_code = transpiler.visit(astx.DateTime())
     expected_code = "datetime"
 
     assert (

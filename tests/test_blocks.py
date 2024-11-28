@@ -10,8 +10,8 @@ def test_block() -> None:
     """Test ASTx block."""
     block = Block()
 
-    decl_a = VariableDeclaration("a", type_=Int32, value=LiteralInt32(1))
-    decl_b = VariableDeclaration("b", type_=Int32, value=LiteralInt32(2))
+    decl_a = VariableDeclaration("a", type_=Int32(), value=LiteralInt32(1))
+    decl_b = VariableDeclaration("b", type_=Int32(), value=LiteralInt32(2))
 
     var_a = Variable("a")
     var_b = Variable("b")
