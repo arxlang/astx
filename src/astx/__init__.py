@@ -7,12 +7,12 @@ from astx import (
     base,
     blocks,
     callables,
-    datatypes,
     flows,
+    literals,
     mixes,
-    operators,
     packages,
     symbol_table,
+    types,
     variables,
 )
 from astx.base import (
@@ -38,23 +38,17 @@ from astx.callables import (
     FunctionReturn,
     LambdaExpr,
 )
-from astx.datatypes import (
-    Boolean,
-    Complex,
-    Complex32,
-    Complex64,
-    DataTypeOps,
-    Date,
-    DateTime,
-    Float16,
-    Float32,
-    Float64,
-    Floating,
-    Int8,
-    Int16,
-    Int32,
-    Int64,
-    Integer,
+from astx.flows import (
+    ForCountLoopExpr,
+    ForCountLoopStmt,
+    ForRangeLoopExpr,
+    ForRangeLoopStmt,
+    IfExpr,
+    IfStmt,
+    WhileExpr,
+    WhileStmt,
+)
+from astx.literals import (
     Literal,
     LiteralBoolean,
     LiteralComplex,
@@ -79,28 +73,6 @@ from astx.datatypes import (
     LiteralUInt128,
     LiteralUTF8Char,
     LiteralUTF8String,
-    Number,
-    SignedInteger,
-    Time,
-    Timestamp,
-    UInt8,
-    UInt16,
-    UInt32,
-    UInt64,
-    UInt128,
-    UnsignedInteger,
-    UTF8Char,
-    UTF8String,
-)
-from astx.flows import (
-    ForCountLoopExpr,
-    ForCountLoopStmt,
-    ForRangeLoopExpr,
-    ForRangeLoopStmt,
-    IfExpr,
-    IfStmt,
-    WhileExpr,
-    WhileStmt,
 )
 from astx.mixes import (
     NamedExpr,
@@ -109,10 +81,6 @@ from astx.modifiers import (
     MutabilityKind,
     ScopeKind,
     VisibilityKind,
-)
-from astx.operators import (
-    BinaryOp,
-    UnaryOp,
 )
 from astx.packages import (
     AliasExpr,
@@ -126,7 +94,37 @@ from astx.packages import (
     Target,
 )
 from astx.types import (
+    BinaryOp,
+    Boolean,
+    Complex,
+    Complex32,
+    Complex64,
+    DataTypeOps,
+    Date,
+    DateTime,
+    Float16,
+    Float32,
+    Float64,
+    Floating,
+    Int8,
+    Int16,
+    Int32,
+    Int64,
+    Integer,
+    Number,
+    SignedInteger,
+    Time,
+    Timestamp,
     TypeCastExpr,
+    UInt8,
+    UInt16,
+    UInt32,
+    UInt64,
+    UInt128,
+    UnaryOp,
+    UnsignedInteger,
+    UTF8Char,
+    UTF8String,
 )
 from astx.variables import (
     InlineVariableDeclaration,
@@ -214,7 +212,6 @@ __all__ = [
     "MutabilityKind",
     "NamedExpr",
     "Number",
-    "operators",
     "OperatorType",
     "packages",
     "Package",
@@ -253,6 +250,8 @@ __all__ = [
     "LiteralDateTime",
     "LiteralTimestamp",
     "LiteralTime",
+    "types",
+    "literals",
 ]
 
 

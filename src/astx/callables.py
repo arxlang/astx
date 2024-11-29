@@ -19,8 +19,8 @@ from astx.base import (
     Undefined,
 )
 from astx.blocks import Block
-from astx.datatypes import AnyType
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
+from astx.types import AnyType
 from astx.variables import Variable
 
 UNDEFINED = Undefined()

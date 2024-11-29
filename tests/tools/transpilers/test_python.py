@@ -2,7 +2,7 @@
 
 import astx
 
-from astx.transpilers import python as astx2py
+from astx.tools.transpilers import python as astx2py
 
 transpiler = astx2py.ASTxPythonTranspiler()
 
