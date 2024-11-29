@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.16.1](https://github.com/arxlang/astx/compare/0.16.0...0.16.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* **refactoring:** Split datatype module into types and literals packages ([#152](https://github.com/arxlang/astx/issues/152)) ([90e828f](https://github.com/arxlang/astx/commit/90e828f550bf65b2d82b189f7dba383a97609ba4))
+
 # [0.16.0](https://github.com/arxlang/astx/compare/0.15.0...0.16.0) (2024-11-27)
 
 
