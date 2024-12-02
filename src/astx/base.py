@@ -155,6 +155,10 @@ class ASTKind(Enum):
 
     TypeCastExprKind = -809
 
+    # classes
+    ClassDefStmtKind = -900
+    ClassDeclStmtKind = -901
+
 
 class ASTMeta(type):
     def __str__(cls) -> str:

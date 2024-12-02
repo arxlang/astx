@@ -58,7 +58,7 @@ class Argument(Variable):
         return f"Argument[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = f"Argument[{self.name}, {self.type_}] = {self.default}"
         value = self.default.get_struct()
         return self._prepare_struct(key, value, simplified)
@@ -79,7 +79,7 @@ class Arguments(ASTNodes[Argument]):
         return f"Arguments({len(self.nodes)})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         args_nodes = []
 
         for node in self.nodes:
