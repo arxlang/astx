@@ -150,13 +150,15 @@ class ClassDefStmt(ClassDeclStmt):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        value = super().get_struct(simplified)
+        # value = super().get_struct(simplified)
+        key = f"ClassDefinition[{self.name}]"
+        value = {}
         value["attributes"] = [
             attr.get_struct(simplified) for attr in self.attributes
         ]
         value["methods"] = [
             method.get_struct(simplified) for method in self.methods
         ]
-        value["body"] = self.body.get_struct(simplified)
-        key = f"ClassDefinition[{self.name}]"
+        value["body"] = [self.body.get_struct(simplified=True)]
+
         return self._prepare_struct(key, value, simplified)
