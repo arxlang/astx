@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, List, Optional
+from typing import Iterable, List, Optional, cast
 
 from public import public
 from typeguard import typechecked
@@ -11,6 +11,7 @@ from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
+    DictDataTypesStruct,
     Expr,
     ReprStruct,
     SourceLocation,
@@ -34,6 +35,9 @@ class ClassDeclStmt(StatementType):
     is_abstract: bool
     metaclass: Optional[Expr]
 
+    # just for consistency, shouldn't the default values for the methods
+    # be the default values for the instance? Specifically for bases and
+    # decorators,[] vs None
     def __init__(
         self,
         name: str,
@@ -80,19 +84,38 @@ class ClassDeclStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = f"ClassDeclaration[{self.name}]"
-        value = {
-            "visibility": self.visibility.name.lower(),
-            "is_abstract": self.is_abstract,
-            "bases": [base.get_struct(simplified) for base in self.bases],
-            "decorators": [
-                decorator.get_struct(simplified)
-                for decorator in self.decorators
-            ],
-            "metaclass": self.metaclass.get_struct(simplified)
-            if self.metaclass
-            else None,
+        abstract = ", abstract" if self.is_abstract else ""
+        vis = self.visibility.name.lower()
+        key = f"CLASS-DECL[{self.name}{abstract}, {vis}]"
+
+        bases_dict: ReprStruct = {}
+        decors_dict: ReprStruct = {}
+        metaclass_dict: ReprStruct = {}
+        # if self.bases is not XX:# none does not work,
+        # [] does not work. len(self.bases)>=1 works
+        if len(self.bases) != 0:  # default is empty list
+            bases_dict = {
+                "bases": [b.get_struct(simplified) for b in self.bases]
+            }
+
+        if len(self.decorators) != 0:  # default is empty list
+            decors_dict = {
+                "decorators": [
+                    d.get_struct(simplified) for d in self.decorators
+                ]
+            }
+
+        if self.metaclass:  # default is None
+            metaclass_dict = {
+                "metaclass": self.metaclass.get_struct(simplified)
+            }
+
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, bases_dict),
+            **cast(DictDataTypesStruct, decors_dict),
+            **cast(DictDataTypesStruct, metaclass_dict),
         }
+
         return self._prepare_struct(key, value, simplified)
 
 
@@ -105,7 +128,8 @@ class ClassDefStmt(ClassDeclStmt):
     methods: Iterable[Function]
     body: Block
 
-    def __init__(
+    # what does it mean to have body up here but not down?
+    def __init__(  # shouldn't there be body here?
         self,
         name: str,
         bases: Optional[List[Expr]] = None,
@@ -148,10 +172,11 @@ class ClassDefStmt(ClassDeclStmt):
             body_str = "\n    ".join(str(stmt) for stmt in self.body.nodes)
         return f"{class_decl_str}:\n    {body_str}"
 
+    # how can there be a body in the ast w/o a body in the init?
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        # value = super().get_struct(simplified)
-        key = f"ClassDefinition[{self.name}]"
+        # can I put the same way as above here, just to keep it consistent?
+        key = f"CLASS-DEF[{self.name}]"
         value = {}
         value["attributes"] = [
             attr.get_struct(simplified) for attr in self.attributes
