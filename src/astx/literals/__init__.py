@@ -34,6 +34,10 @@ from astx.literals.temporal import (
     LiteralTime,
     LiteralTimestamp,
 )
+from astx.literals.collection import (
+    LiteralSet,
+    LiteralList,
+)
 
 __all__ = [
     "Literal",
@@ -60,4 +64,6 @@ __all__ = [
     "LiteralTimestamp",
     "LiteralUTF8Char",
     "LiteralUTF8String",
+    "LiteralSet",
+    "LiteralList",
 ]
