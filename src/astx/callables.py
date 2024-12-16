@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any, Iterable, Optional, cast
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -20,6 +19,7 @@ from astx.base import (
 )
 from astx.blocks import Block
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
+from astx.tools.typing import typechecked
 from astx.types import AnyType
 from astx.variables import Variable
 

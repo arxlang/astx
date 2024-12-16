@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Optional
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -19,6 +18,7 @@ from astx.base import (
     Undefined,
 )
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
+from astx.tools.typing import typechecked
 from astx.types import AnyType
 from astx.types.operators import DataTypeOps
 

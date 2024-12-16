@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     DataType,
 )
+from astx.tools.typing import typechecked
 
 
 @public

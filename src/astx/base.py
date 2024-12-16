@@ -9,7 +9,7 @@ from enum import Enum
 from hashlib import sha256
 from typing import ClassVar, Dict, List, Optional, Union, cast
 
-from typeguard import typechecked
+from astx.tools.typing import typechecked
 
 try:
     from typing_extensions import TypeAlias
@@ -224,16 +224,17 @@ class AST(metaclass=ASTMeta):
         value: Union[PrimitivesStruct, ReprStruct],
         simplified: bool,
     ) -> ReprStruct:
-        if simplified:
-            struct = {key: value}
-        else:
-            struct = {
+        struct: ReprStruct = (
+            {
                 key: {
                     "content": value,
                     "metadata": self._get_metadata(),
                 }
             }
-        return cast(ReprStruct, struct)
+            if not simplified
+            else {key: value}
+        )
+        return struct
 
     @abstractmethod
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -340,7 +341,8 @@ PrimitivesStruct: TypeAlias = Union[
     bool,
     Undefined,
 ]
-DataTypesStruct: TypeAlias = Union[
+DataTypesStruct: TypeAlias = PrimitivesStruct
+DataTypesStruct = Union[
     PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
 ]
 DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]

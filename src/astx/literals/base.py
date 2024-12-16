@@ -6,13 +6,13 @@ from typing import Any
 from uuid import uuid4
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     ExprType,
     ReprStruct,
     SourceLocation,
 )
+from astx.tools.typing import typechecked
 from astx.types.operators import DataTypeOps
 
 

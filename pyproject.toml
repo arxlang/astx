@@ -23,6 +23,7 @@ asciinet = ">=0.3.1"
 msgpack = ">=1"
 plum-dispatch = ">=2.0"
 typeguard = ">=4"
+eval_type_backport = {version = ">=0.2", python = "<3.10"}
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.3.2"

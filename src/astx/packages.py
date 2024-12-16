@@ -7,7 +7,6 @@ import copy
 from typing import Optional, cast
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     AST,
@@ -20,6 +19,7 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
+from astx.tools.typing import typechecked
 
 
 @public
