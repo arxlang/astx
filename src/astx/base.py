@@ -9,7 +9,7 @@ from enum import Enum
 from hashlib import sha256
 from typing import ClassVar, Dict, List, Optional, Union, cast
 
-from typeguard import typechecked
+from astx.tools.typing import typechecked
 
 try:
     from typing_extensions import TypeAlias
@@ -211,26 +211,30 @@ class AST(metaclass=ASTMeta):
     def _get_metadata(self) -> ReprStruct:
         """Return the metadata for the requested AST."""
         metadata = {
-            "loc": self.loc,
+            "loc": {"line": self.loc.line, "col": self.loc.col},
             "comment": self.comment,
             "ref": self.ref,
-            "kind": self.kind,
+            "kind": self.kind.value,
         }
         return cast(ReprStruct, metadata)
 
     def _prepare_struct(
-        self, key: str, value: Union[str, ReprStruct], simplified: bool
+        self,
+        key: str,
+        value: Union[PrimitivesStruct, ReprStruct],
+        simplified: bool,
     ) -> ReprStruct:
-        if simplified:
-            struct = {key: value}
-        else:
-            struct = {
+        struct: ReprStruct = (
+            {
                 key: {
                     "content": value,
                     "metadata": self._get_metadata(),
                 }
             }
-        return cast(ReprStruct, struct)
+            if not simplified
+            else {key: value}
+        )
+        return struct
 
     @abstractmethod
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -318,24 +322,6 @@ class ExprType(Expr):
         return {"Type": self.__class__.__name__}
 
 
-PrimitivesStruct: TypeAlias = Union[
-    int,
-    str,
-    float,
-    bool,
-    "astx.base.Undefined",  # type: ignore[name-defined]  # noqa: F821
-]
-DataTypesStruct: TypeAlias = Union[
-    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
-]
-DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
-ReprStruct: TypeAlias = Union[
-    List[DataTypesStruct],
-    DictDataTypesStruct,
-    "astx.base.Undefined",  # type: ignore[name-defined]  # noqa: F821
-]
-
-
 @public
 @typechecked
 class Undefined(Expr):
@@ -346,6 +332,24 @@ class Undefined(Expr):
         value = "UNDEFINED"
         key = "UNDEFINED"
         return self._prepare_struct(key, value, simplified)
+
+
+PrimitivesStruct: TypeAlias = Union[
+    int,
+    str,
+    float,
+    bool,
+    Undefined,
+]
+DataTypesStruct: TypeAlias = Union[
+    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
+]
+DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
+ReprStruct: TypeAlias = Union[
+    List[DataTypesStruct],
+    DictDataTypesStruct,
+    Undefined,
+]
 
 
 @public

@@ -12,9 +12,9 @@ from __future__ import annotations
 from typing import Optional, Type
 
 from public import public
-from typeguard import typechecked
 
 from astx.mixes import NamedExpr
+from astx.tools.typing import typechecked
 
 
 @public

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -13,6 +12,7 @@ from astx.base import (
     ReprStruct,
     SourceLocation,
 )
+from astx.tools.typing import typechecked
 
 
 @public

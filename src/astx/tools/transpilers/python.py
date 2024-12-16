@@ -1,9 +1,10 @@
 """ASTx Python transpiler."""
 
 from plum import dispatch
-from typeguard import typechecked
 
 import astx
+
+from astx.tools.typing import typechecked
 
 
 @typechecked

@@ -5,12 +5,12 @@ from __future__ import annotations
 from typing import cast
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     ASTNodes,
     ReprStruct,
 )
+from astx.tools.typing import typechecked
 
 
 @public

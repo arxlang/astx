@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any, Iterable, Optional, cast
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -20,6 +19,7 @@ from astx.base import (
 )
 from astx.blocks import Block
 from astx.modifiers import MutabilityKind, ScopeKind, VisibilityKind
+from astx.tools.typing import typechecked
 from astx.types import AnyType
 from astx.variables import Variable
 
@@ -60,7 +60,7 @@ class Argument(Variable):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a string that represents the object."""
         key = f"Argument[{self.name}, {self.type_}] = {self.default}"
-        value = cast(ReprStruct, self.default)
+        value = self.default.get_struct()
         return self._prepare_struct(key, value, simplified)
 
 

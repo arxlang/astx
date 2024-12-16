@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -11,6 +10,7 @@ from astx.base import (
     SourceLocation,
 )
 from astx.literals.base import Literal
+from astx.tools.typing import typechecked
 from astx.types.string import UTF8Char, UTF8String
 
 
