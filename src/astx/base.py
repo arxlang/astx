@@ -341,8 +341,7 @@ PrimitivesStruct: TypeAlias = Union[
     bool,
     Undefined,
 ]
-DataTypesStruct: TypeAlias = PrimitivesStruct
-DataTypesStruct = Union[
+DataTypesStruct: TypeAlias = Union[
     PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
 ]
 DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
