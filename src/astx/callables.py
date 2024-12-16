@@ -60,7 +60,7 @@ class Argument(Variable):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return a string that represents the object."""
         key = f"Argument[{self.name}, {self.type_}] = {self.default}"
-        value = cast(ReprStruct, self.default)
+        value = self.default.get_struct()
         return self._prepare_struct(key, value, simplified)
 
 
