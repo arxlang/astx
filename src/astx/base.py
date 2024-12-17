@@ -305,6 +305,17 @@ class ASTNodes(AST):
         """Return the number of nodes, supports len function."""
         return len(self.nodes)
 
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a string that represents the object."""
+        args_nodes = []
+
+        for node in self.nodes:
+            args_nodes.append(node.get_struct(simplified))
+
+        key = str(self)
+        value = cast(ReprStruct, args_nodes)
+        return self._prepare_struct(key, value, simplified)
+
 
 @public
 @typechecked
