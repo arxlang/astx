@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import copy
+
 from typing import Iterable, List, Optional, cast
 
 from public import public
@@ -34,26 +36,48 @@ class ClassDeclStmt(StatementType):
     visibility: VisibilityKind
     is_abstract: bool
     metaclass: Optional[Expr]
+    attributes: Iterable[VariableDeclaration]
+    methods: Iterable[Function]
 
-    # just for consistency, shouldn't the default values for the methods
-    # be the default values for the instance? Specifically for bases and
-    # decorators,[] vs None
     def __init__(
         self,
         name: str,
-        bases: Optional[List[Expr]] = None,
-        decorators: Optional[List[Expr]] = None,
+        bases: Iterable[Expr] | ASTNodes = [],
+        decorators: Iterable[Expr] | ASTNodes = [],
         visibility: VisibilityKind = VisibilityKind.public,
         is_abstract: bool = False,
         metaclass: Optional[Expr] = None,
+        attributes: Iterable[VariableDeclaration] = [],
+        methods: Iterable[Function] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize ClassDeclStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.name = name
-        self.bases = bases or []
-        self.decorators = decorators or []
+
+        if isinstance(bases, ASTNodes):
+            self.bases = bases
+        else:
+            self.bases = ASTNodes()
+            for base in bases:
+                self.bases.append(base)
+
+        if isinstance(decorators, ASTNodes):
+            self.decorators = decorators
+        else:
+            self.decorators = ASTNodes()
+            for decorator in decorators:
+                self.decorators.append(decorator)
+
+        self.attributes = ASTNodes()
+        for item in attributes:
+            self.attributes.append(item)
+
+        self.methods = ASTNodes()
+        for item in methods:
+            self.methods.append(item)
+
         self.visibility = visibility
         self.is_abstract = is_abstract
         self.metaclass = metaclass
@@ -63,7 +87,7 @@ class ClassDeclStmt(StatementType):
         """Return a string that represents the object."""
         modifiers = []
         if self.visibility != VisibilityKind.public:
-            modifiers.append(self.visibility.name.lower())
+            modifiers.append(self.visibility.name)
         if self.is_abstract:
             modifiers.append("abstract")
         modifiers_str = " ".join(modifiers)
@@ -82,41 +106,53 @@ class ClassDeclStmt(StatementType):
         class_str += f"{metaclass_str}"
         return f"{decorators_str}{modifiers_str} {class_str}".strip()
 
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
-        abstract = ", abstract" if self.is_abstract else ""
-        vis = self.visibility.name.lower()
-        key = f"CLASS-DECL[{self.name}{abstract}, {vis}]"
-
+    def _get_struct_wrapper(self, simplified) -> ReprStruct:
         bases_dict: ReprStruct = {}
         decors_dict: ReprStruct = {}
         metaclass_dict: ReprStruct = {}
-        # if self.bases is not XX:# none does not work,
-        # [] does not work. len(self.bases)>=1 works
-        if len(self.bases) != 0:  # default is empty list
-            bases_dict = {
-                "bases": [b.get_struct(simplified) for b in self.bases]
-            }
+        attrs_dict: ReprStruct = {}
+        methods_dict: ReprStruct = {}
 
-        if len(self.decorators) != 0:  # default is empty list
+        if len(self.bases) != 0:
+            bases_dict = {"bases": self.bases.get_struct(simplified)}
+
+        if len(self.decorators) != 0:
             decors_dict = {
-                "decorators": [
-                    d.get_struct(simplified) for d in self.decorators
-                ]
+                "decorators": self.decorators.get_struct(simplified)
             }
 
-        if self.metaclass:  # default is None
+        if self.metaclass:
             metaclass_dict = {
                 "metaclass": self.metaclass.get_struct(simplified)
             }
+
+        if len(self.attributes) != 0:
+            attrs_dict = {"attributes": self.attributes.get_struct(simplified)}
+
+        if len(self.methods) != 0:
+            methods_dict = {"methods": self.methods.get_struct(simplified)}
 
         value: ReprStruct = {
             **cast(DictDataTypesStruct, bases_dict),
             **cast(DictDataTypesStruct, decors_dict),
             **cast(DictDataTypesStruct, metaclass_dict),
+            **cast(DictDataTypesStruct, attrs_dict),
+            **cast(DictDataTypesStruct, methods_dict),
         }
+        return value
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
+        abstract = ", abstract" if self.is_abstract else ""
+
+        key = f"CLASS-DECL[{vis[self.visibility.name]}{self.name}{abstract}]"
+        value = self._get_struct_wrapper(simplified)
 
         return self._prepare_struct(key, value, simplified)
+
+
+CLASS_BODY_DEFAULT = Block(name="class_body")
 
 
 @public
@@ -124,16 +160,14 @@ class ClassDeclStmt(StatementType):
 class ClassDefStmt(ClassDeclStmt):
     """AST class for class definition, including attributes and methods."""
 
-    attributes: Iterable[VariableDeclaration]
-    methods: Iterable[Function]
     body: Block
 
-    # what does it mean to have body up here but not down?
-    def __init__(  # shouldn't there be body here?
+    def __init__(
         self,
         name: str,
-        bases: Optional[List[Expr]] = None,
-        decorators: Optional[List[Expr]] = None,
+        bases: Iterable[Expr] | ASTNodes = [],
+        decorators: Iterable[Expr] | ASTNodes = [],
+        body: Block = CLASS_BODY_DEFAULT,
         visibility: VisibilityKind = VisibilityKind.public,
         is_abstract: bool = False,
         metaclass: Optional[Expr] = None,
@@ -150,17 +184,17 @@ class ClassDefStmt(ClassDeclStmt):
             visibility=visibility,
             is_abstract=is_abstract,
             metaclass=metaclass,
+            attributes=attributes,
+            methods=methods,
             loc=loc,
             parent=parent,
         )
-        self.attributes = attributes if attributes is not None else []
-        self.methods = methods if methods is not None else []
-        # Construct body as a block containing attributes and methods
-        self.body = Block(name=f"{name}_body")
-        for attr in self.attributes:
-            self.body.append(attr)
-        for method in self.methods:
-            self.body.append(method)
+
+        if body != CLASS_BODY_DEFAULT:
+            self.body = body
+        else:
+            self.body = copy.deepcopy(body)
+            self.body.name = f"{name}_body"
         self.kind = ASTKind.ClassDefStmtKind
 
     def __str__(self) -> str:
@@ -172,18 +206,15 @@ class ClassDefStmt(ClassDeclStmt):
             body_str = "\n    ".join(str(stmt) for stmt in self.body.nodes)
         return f"{class_decl_str}:\n    {body_str}"
 
-    # how can there be a body in the ast w/o a body in the init?
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        # can I put the same way as above here, just to keep it consistent?
-        key = f"CLASS-DEF[{self.name}]"
-        value = {}
-        value["attributes"] = [
-            attr.get_struct(simplified) for attr in self.attributes
-        ]
-        value["methods"] = [
-            method.get_struct(simplified) for method in self.methods
-        ]
-        value["body"] = [self.body.get_struct(simplified=True)]
+        vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
+        abstract = ", abstract" if self.is_abstract else ""
+
+        key = f"CLASS-DEF[{vis[self.visibility.name]}{self.name}{abstract}]"
+        value = self._get_struct_wrapper(simplified)
+
+        if self.body != CLASS_BODY_DEFAULT:
+            value["body"]: ReprStruct = self.body.get_struct(simplified)
 
         return self._prepare_struct(key, value, simplified)

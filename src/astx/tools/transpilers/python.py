@@ -71,6 +71,18 @@ class ASTxPythonTranspiler:
         return self._generate_block(node)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ClassDefStmt) -> str:
+        """Handle ClassDefStmt nodes."""
+        if node.is_abstract:
+            class_type = f"(ABC)"
+        else:
+            class_type = ""
+        return (
+            f"class {node.name}{class_type}:"
+            f"\n {self.visit(node.body)}"
+        )
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeLoopExpr nodes."""
         return (
