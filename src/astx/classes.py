@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 
-from typing import Iterable, List, Optional, cast
+from typing import Iterable, Optional, cast
 
 from public import public
 from typeguard import typechecked
@@ -31,12 +31,16 @@ class ClassDeclStmt(StatementType):
     """AST class for class declaration."""
 
     name: str
-    bases: List[Expr]
-    decorators: List[Expr]
+    # bases: List[Expr]
+    bases: Iterable[Expr] | ASTNodes = []
+    # decorators: List[Expr]
+    decorators: Iterable[Expr] | ASTNodes = []
     visibility: VisibilityKind
     is_abstract: bool
     metaclass: Optional[Expr]
-    attributes: Iterable[VariableDeclaration]
+    # attributes: Iterable[VariableDeclaration]
+    attributes: Iterable[VariableDeclaration] = []
+    # methods: Iterable[Function] = []
     methods: Iterable[Function]
 
     def __init__(
@@ -70,13 +74,20 @@ class ClassDeclStmt(StatementType):
             for decorator in decorators:
                 self.decorators.append(decorator)
 
-        self.attributes = ASTNodes()
-        for item in attributes:
-            self.attributes.append(item)
+        # self.attributes = cast(ASTNodes,self.attributes) # Cast target is not a type
+        # note: __iter__ of ASTNodes has conflicts
+        self.attributes = ASTNodes()  # expression has type "ASTNodes", variable has type "Iterable[VariableDeclaration]"
+        for a in attributes:
+            self.attributes.append(
+                a
+            )  # "Iterable[VariableDeclaration]" has no attribute "append"
 
-        self.methods = ASTNodes()
-        for item in methods:
-            self.methods.append(item)
+        # note:__iter__ of ASTNodes has conflicts
+        self.methods = ASTNodes()  # expression has type "ASTNodes", variable has type "Iterable[Function]"
+        for m in methods:
+            self.methods.append(
+                m
+            )  # "Iterable[Function]" has no attribute "append"
 
         self.visibility = visibility
         self.is_abstract = is_abstract
@@ -106,19 +117,23 @@ class ClassDeclStmt(StatementType):
         class_str += f"{metaclass_str}"
         return f"{decorators_str}{modifiers_str} {class_str}".strip()
 
-    def _get_struct_wrapper(self, simplified) -> ReprStruct:
+    def _get_struct_wrapper(self, simplified: bool) -> ReprStruct:
         bases_dict: ReprStruct = {}
         decors_dict: ReprStruct = {}
         metaclass_dict: ReprStruct = {}
         attrs_dict: ReprStruct = {}
         methods_dict: ReprStruct = {}
 
-        if len(self.bases) != 0:
-            bases_dict = {"bases": self.bases.get_struct(simplified)}
+        if self.bases:
+            bases_dict = {
+                "bases": self.bases.get_struct(simplified)
+            }  # "Item Iterable[Expr]" has no attribute "get_struct"
 
-        if len(self.decorators) != 0:
+        if self.decorators:
             decors_dict = {
-                "decorators": self.decorators.get_struct(simplified)
+                "decorators": self.decorators.get_struct(
+                    simplified
+                )  # "Item Iterable[Expr]" has no attribute "get_struct"
             }
 
         if self.metaclass:
@@ -126,11 +141,15 @@ class ClassDeclStmt(StatementType):
                 "metaclass": self.metaclass.get_struct(simplified)
             }
 
-        if len(self.attributes) != 0:
-            attrs_dict = {"attributes": self.attributes.get_struct(simplified)}
+        if self.attributes:
+            attrs_dict = {
+                "attributes": self.attributes.get_struct(simplified)
+            }  # "Iterable[VariableDeclaration]" has no attribute "get_struct"
 
-        if len(self.methods) != 0:
-            methods_dict = {"methods": self.methods.get_struct(simplified)}
+        if self.methods:
+            methods_dict = {
+                "methods": self.methods.get_struct(simplified)
+            }  # "Iterable[Function]" has no attribute "get_struct"
 
         value: ReprStruct = {
             **cast(DictDataTypesStruct, bases_dict),
@@ -215,6 +234,8 @@ class ClassDefStmt(ClassDeclStmt):
         value = self._get_struct_wrapper(simplified)
 
         if self.body != CLASS_BODY_DEFAULT:
-            value["body"]: ReprStruct = self.body.get_struct(simplified)
+            value["body"]: ReprStruct = self.body.get_struct(
+                simplified
+            )  #   Unexpected type declaration; No overload variant of "__setitem__" of "list" matches argument types "str", "Union[List[DataTypesStruct], DictDataTypesStruct, Any]"
 
         return self._prepare_struct(key, value, simplified)
