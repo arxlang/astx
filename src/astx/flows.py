@@ -7,7 +7,6 @@ from typing import Optional, cast
 from public import public
 
 from astx.base import (
-    AST,
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
@@ -37,7 +36,7 @@ class IfStmt(StatementType):
         then: Block,
         else_: Optional[Block] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the IfStmt instance."""
         super().__init__(loc=loc, parent=parent)
@@ -85,7 +84,7 @@ class IfExpr(Expr):
         then: Block,
         else_: Optional[Block] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the IfExpr instance."""
         super().__init__(loc=loc, parent=parent)
@@ -137,7 +136,7 @@ class ForRangeLoopStmt(StatementType):
         step: Expr,
         body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the ForRangeLoopStmt instance."""
         super().__init__(loc=loc, parent=parent)
@@ -192,7 +191,7 @@ class ForRangeLoopExpr(Expr):
         step: Expr,
         body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the ForRangeLoopExpr instance."""
         super().__init__(loc=loc, parent=parent)
@@ -253,7 +252,7 @@ class ForCountLoopStmt(StatementType):
         update: Expr,
         body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the ForCountLoopStmt instance."""
         super().__init__(loc=loc, parent=parent)
@@ -309,7 +308,7 @@ class ForCountLoopExpr(Expr):
         update: Expr,
         body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the ForLoopCountExpr instance."""
         super().__init__(loc=loc, parent=parent)
@@ -356,7 +355,7 @@ class WhileStmt(StatementType):
         condition: Expr,
         body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the WhileStmt instance."""
         super().__init__(loc=loc, parent=parent)
@@ -395,7 +394,7 @@ class WhileExpr(Expr):
         condition: Expr,
         body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the WhileExpr instance."""
         super().__init__(loc=loc, parent=parent)

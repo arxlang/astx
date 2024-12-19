@@ -7,7 +7,6 @@ from typing import Any, Iterable, Optional, cast
 from public import public
 
 from astx.base import (
-    AST,
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
@@ -44,7 +43,7 @@ class Argument(Variable):
         mutability: MutabilityKind = MutabilityKind.constant,
         default: Expr = UNDEFINED,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
         super().__init__(name=name, loc=loc, parent=parent)
@@ -106,7 +105,7 @@ class FunctionCall(DataType):
         args: Iterable[DataType],
         type_: DataType = AnyType(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Call instance."""
         super().__init__(loc=loc, parent=parent)
@@ -160,7 +159,7 @@ class FunctionPrototype(StatementType):
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the FunctionPrototype instance."""
         super().__init__(loc=loc, parent=parent)
@@ -188,7 +187,7 @@ class FunctionReturn(StatementType):
         self,
         value: DataType,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Return instance."""
         super().__init__(loc=loc, parent=parent)
@@ -219,7 +218,7 @@ class Function(StatementType):
         prototype: FunctionPrototype,
         body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Function instance."""
         super().__init__(loc=loc, parent=parent)
@@ -240,7 +239,7 @@ class Function(StatementType):
         self,
         args: tuple[DataType, ...],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> FunctionCall:
         """Initialize the Call instance."""
         return FunctionCall(fn=self, args=args, loc=loc, parent=parent)
@@ -271,7 +270,7 @@ class LambdaExpr(Expr):
         body: Expr,
         params: Arguments = Arguments(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.params = params

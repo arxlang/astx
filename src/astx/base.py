@@ -170,13 +170,13 @@ class AST(metaclass=ASTMeta):
     loc: SourceLocation
     kind: ASTKind
     comment: str
-    parent: Optional[ASTNodes[AST]] = None
+    parent: Optional[ASTNodes] = None
     ref: str
 
     def __init__(
         self,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the AST instance."""
         self.kind = ASTKind.GenericKind
@@ -275,7 +275,7 @@ class ASTNodes(Generic[ASTType], AST):
         self,
         name: str = "entry",
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the AST instance."""
         super().__init__(loc=loc, parent=parent)
@@ -373,7 +373,7 @@ class DataType(ExprType):
     def __init__(
         self,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc)
         self.name = f"temp_{DataType._tmp_id}"

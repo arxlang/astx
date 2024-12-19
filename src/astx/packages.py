@@ -170,7 +170,7 @@ class AliasExpr(Expr):
         name: str,
         asname: str = "",
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.name = name
@@ -205,7 +205,7 @@ class ImportStmt(StatementType):
         self,
         names: list[AliasExpr],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.names = names
@@ -240,7 +240,7 @@ class ImportFromStmt(StatementType):
         module: str = "",
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.module = module
@@ -283,7 +283,7 @@ class ImportExpr(Expr):
         self,
         names: list[AliasExpr],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.names = names
@@ -318,7 +318,7 @@ class ImportFromExpr(Expr):
         module: str = "",
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.names = names

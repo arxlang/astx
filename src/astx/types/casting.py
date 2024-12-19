@@ -7,7 +7,6 @@ from typing import Optional
 from public import public
 
 from astx.base import (
-    AST,
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
@@ -32,7 +31,7 @@ class TypeCastExpr(Expr):
         expr: Expr,
         target_type: DataType,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes[AST]] = None,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.expr = expr
