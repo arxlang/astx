@@ -13,6 +13,7 @@ from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
+    ASTType,
     Expr,
     ReprStruct,
     SourceLocation,
@@ -45,7 +46,7 @@ class Target(Expr):
 
 @public
 @typechecked
-class Module(Block):
+class Module(Block[ASTType]):
     """AST main expression class."""
 
     name: str
@@ -64,7 +65,7 @@ class Module(Block):
         return f"Module[{self.name}]"
 
     @property
-    def block(self) -> list[AST]:
+    def block(self) -> list[ASTType]:
         """Define an alias for self.nodes."""
         return self.nodes
 
@@ -83,18 +84,18 @@ class Module(Block):
 
 @public
 @typechecked
-class Package(ASTNodes):
+class Package(ASTNodes[ASTType]):
     """AST class for Package."""
 
     name: str
-    modules: list[Module]
-    packages: list[Package]
+    modules: list[Module[AST]]
+    packages: list[Package[AST]]
 
     def __init__(
         self,
         name: str = "main",
-        modules: list[Module] = [],
-        packages: list[Package] = [],
+        modules: list[Module[AST]] = [],
+        packages: list[Package[AST]] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
@@ -132,7 +133,7 @@ class Package(ASTNodes):
 
 @public
 @typechecked
-class Program(Package):
+class Program(Package[ASTType]):
     """AST class for Program."""
 
     target: Target
@@ -141,8 +142,8 @@ class Program(Package):
         self,
         name: str = "main",
         target: Target = Target("", ""),
-        modules: list[Module] = [],
-        packages: list[Package] = [],
+        modules: list[Module[AST]] = [],
+        packages: list[Package[AST]] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
@@ -169,7 +170,7 @@ class AliasExpr(Expr):
         name: str,
         asname: str = "",
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.name = name
@@ -204,7 +205,7 @@ class ImportStmt(StatementType):
         self,
         names: list[AliasExpr],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.names = names
@@ -239,7 +240,7 @@ class ImportFromStmt(StatementType):
         module: str = "",
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.module = module
@@ -282,7 +283,7 @@ class ImportExpr(Expr):
         self,
         names: list[AliasExpr],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.names = names
@@ -317,7 +318,7 @@ class ImportFromExpr(Expr):
         module: str = "",
         level: int = 0,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.names = names

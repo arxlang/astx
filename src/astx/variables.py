@@ -7,6 +7,7 @@ from typing import Optional
 from public import public
 
 from astx.base import (
+    AST,
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
@@ -45,7 +46,7 @@ class VariableDeclaration(StatementType):
         visibility: VisibilityKind = VisibilityKind.public,
         scope: ScopeKind = ScopeKind.local,
         value: Expr = UNDEFINED,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the VarExprAST instance."""
@@ -93,7 +94,7 @@ class InlineVariableDeclaration(Expr):
         scope: ScopeKind = ScopeKind.local,
         value: Expr = UNDEFINED,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
         super().__init__(loc=loc, parent=parent)
@@ -130,7 +131,7 @@ class VariableAssignment(StatementType):
         name: str,
         value: Expr,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
         super().__init__(loc=loc, parent=parent)
@@ -163,7 +164,7 @@ class Variable(DataTypeOps):
         name: str,
         type_: DataType = AnyType(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the Variable instance."""
         super().__init__(loc=loc, parent=parent)

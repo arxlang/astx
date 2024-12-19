@@ -7,6 +7,7 @@ from typing import Optional, cast
 from public import public
 
 from astx.base import (
+    AST,
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
@@ -27,16 +28,16 @@ class IfStmt(StatementType):
     """AST class for `if` statement."""
 
     condition: Expr
-    then: Block
-    else_: Optional[Block]
+    then: Block[AST]
+    else_: Optional[Block[AST]]
 
     def __init__(
         self,
         condition: Expr,
-        then: Block,
-        else_: Optional[Block] = None,
+        then: Block[AST],
+        else_: Optional[Block[AST]] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the IfStmt instance."""
         super().__init__(loc=loc, parent=parent)
@@ -75,16 +76,16 @@ class IfExpr(Expr):
     """AST class for `if` expression."""
 
     condition: Expr
-    then: Block
-    else_: Optional[Block]
+    then: Block[AST]
+    else_: Optional[Block[AST]]
 
     def __init__(
         self,
         condition: Expr,
-        then: Block,
-        else_: Optional[Block] = None,
+        then: Block[AST],
+        else_: Optional[Block[AST]] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the IfExpr instance."""
         super().__init__(loc=loc, parent=parent)
@@ -126,7 +127,7 @@ class ForRangeLoopStmt(StatementType):
     start: Expr
     end: Expr
     step: Expr
-    body: Block
+    body: Block[AST]
 
     def __init__(
         self,
@@ -134,9 +135,9 @@ class ForRangeLoopStmt(StatementType):
         start: Expr,
         end: Expr,
         step: Expr,
-        body: Block,
+        body: Block[AST],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the ForRangeLoopStmt instance."""
         super().__init__(loc=loc, parent=parent)
@@ -181,7 +182,7 @@ class ForRangeLoopExpr(Expr):
     start: Expr
     end: Expr
     step: Expr
-    body: Block
+    body: Block[AST]
 
     def __init__(
         self,
@@ -189,9 +190,9 @@ class ForRangeLoopExpr(Expr):
         start: Expr,
         end: Expr,
         step: Expr,
-        body: Block,
+        body: Block[AST],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the ForRangeLoopExpr instance."""
         super().__init__(loc=loc, parent=parent)
@@ -243,16 +244,16 @@ class ForCountLoopStmt(StatementType):
     initializer: InlineVariableDeclaration
     condition: Expr
     update: Expr
-    body: Block
+    body: Block[AST]
 
     def __init__(
         self,
         initializer: InlineVariableDeclaration,
         condition: Expr,
         update: Expr,
-        body: Block,
+        body: Block[AST],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the ForCountLoopStmt instance."""
         super().__init__(loc=loc, parent=parent)
@@ -299,16 +300,16 @@ class ForCountLoopExpr(Expr):
     initializer: InlineVariableDeclaration
     condition: Expr
     update: Expr
-    body: Block
+    body: Block[AST]
 
     def __init__(
         self,
         initializer: InlineVariableDeclaration,
         condition: Expr,
         update: Expr,
-        body: Block,
+        body: Block[AST],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the ForLoopCountExpr instance."""
         super().__init__(loc=loc, parent=parent)
@@ -348,14 +349,14 @@ class WhileStmt(StatementType):
     """AST class for `while` statement."""
 
     condition: Expr
-    body: Block
+    body: Block[AST]
 
     def __init__(
         self,
         condition: Expr,
-        body: Block,
+        body: Block[AST],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the WhileStmt instance."""
         super().__init__(loc=loc, parent=parent)
@@ -387,14 +388,14 @@ class WhileExpr(Expr):
     """AST class for `while` expression."""
 
     condition: Expr
-    body: Block
+    body: Block[AST]
 
     def __init__(
         self,
         condition: Expr,
-        body: Block,
+        body: Block[AST],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the WhileExpr instance."""
         super().__init__(loc=loc, parent=parent)

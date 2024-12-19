@@ -7,6 +7,7 @@ from typing import Any, Iterable, Optional, cast
 from public import public
 
 from astx.base import (
+    AST,
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
@@ -43,7 +44,7 @@ class Argument(Variable):
         mutability: MutabilityKind = MutabilityKind.constant,
         default: Expr = UNDEFINED,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the VarExprAST instance."""
         super().__init__(name=name, loc=loc, parent=parent)
@@ -66,7 +67,7 @@ class Argument(Variable):
 
 @public
 @typechecked
-class Arguments(ASTNodes):
+class Arguments(ASTNodes[Argument]):
     """AST class for argument definition."""
 
     def __init__(self, *args: Argument, **kwargs: Any) -> None:
@@ -105,7 +106,7 @@ class FunctionCall(DataType):
         args: Iterable[DataType],
         type_: DataType = AnyType(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the Call instance."""
         super().__init__(loc=loc, parent=parent)
@@ -159,7 +160,7 @@ class FunctionPrototype(StatementType):
         scope: ScopeKind = ScopeKind.global_,
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the FunctionPrototype instance."""
         super().__init__(loc=loc, parent=parent)
@@ -187,7 +188,7 @@ class FunctionReturn(StatementType):
         self,
         value: DataType,
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the Return instance."""
         super().__init__(loc=loc, parent=parent)
@@ -211,14 +212,14 @@ class Function(StatementType):
     """AST class for function definition."""
 
     prototype: FunctionPrototype
-    body: Block
+    body: Block[AST]
 
     def __init__(
         self,
         prototype: FunctionPrototype,
-        body: Block,
+        body: Block[AST],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         """Initialize the Function instance."""
         super().__init__(loc=loc, parent=parent)
@@ -239,7 +240,7 @@ class Function(StatementType):
         self,
         args: tuple[DataType, ...],
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> FunctionCall:
         """Initialize the Call instance."""
         return FunctionCall(fn=self, args=args, loc=loc, parent=parent)
@@ -270,7 +271,7 @@ class LambdaExpr(Expr):
         body: Expr,
         params: Arguments = Arguments(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
+        parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
         super().__init__(loc=loc, parent=parent)
         self.params = params
@@ -279,7 +280,7 @@ class LambdaExpr(Expr):
 
     def __str__(self) -> str:
         """Return a string representation of the lambda expression."""
-        params_str = ", ".join(param.name for param in self.params)  # type: ignore[attr-defined]
+        params_str = ", ".join(param.name for param in self.params)
         return f"lambda {params_str}: {self.body}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
