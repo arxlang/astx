@@ -71,13 +71,11 @@ class ClassDeclStmt(StatementType):
             for decorator in decorators:
                 self.decorators.append(decorator)
 
-        # expression has
-        # type "ASTNodes", variable has type "Iterable[VariableDeclaration]"
-        self.attributes = ASTNodes()  # ------------------->
+        self.attributes = ASTNodes()
         for a in attributes:
             self.attributes.append(a)
 
-        self.methods = ASTNodes()  # ------------------->
+        self.methods = ASTNodes()
         for m in methods:
             self.methods.append(m)
 
@@ -117,15 +115,11 @@ class ClassDeclStmt(StatementType):
         methods_dict: ReprStruct = {}
 
         if self.bases:
-            bases_dict = {
-                "bases": self.bases.get_struct(simplified)
-            }  # "Item Iterable[Expr]" has no attribute "get_struct" #-------->
+            bases_dict = {"bases": self.bases.get_struct(simplified)}
 
         if self.decorators:
             decors_dict = {
-                "decorators": self.decorators.get_struct(
-                    simplified
-                )  # "Item Iterable[Expr]" has no attribute "get_struct" #---->
+                "decorators": self.decorators.get_struct(simplified)
             }
 
         if self.metaclass:
@@ -134,14 +128,10 @@ class ClassDeclStmt(StatementType):
             }
 
         if self.attributes:
-            attrs_dict = {
-                "attributes": self.attributes.get_struct(simplified)
-            }  # "Iterable[VariableDeclaration]" has no attribute "get_struct"
+            attrs_dict = {"attributes": self.attributes.get_struct(simplified)}
 
         if self.methods:
-            methods_dict = {
-                "methods": self.methods.get_struct(simplified)
-            }  # "Iterable[Function]" has no attribute "get_struct"
+            methods_dict = {"methods": self.methods.get_struct(simplified)}
 
         value: ReprStruct = {
             **cast(DictDataTypesStruct, bases_dict),
@@ -150,8 +140,8 @@ class ClassDeclStmt(StatementType):
             **cast(DictDataTypesStruct, attrs_dict),
             **cast(DictDataTypesStruct, methods_dict),
         }
-        # return cast(DictDataTypesStruct, value) #----------
-        return cast(DictDataTypesStruct, value)
+        # return cast(DictDataTypesStruct, value)  # ----------
+        return value
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
