@@ -32,16 +32,14 @@ class ClassDeclStmt(StatementType):
 
     name: str
     # bases: List[Expr]
-    bases: Iterable[Expr] | ASTNodes = []
+    # bases: Iterable[Expr] | ASTNodes = [] #------------------>
     # decorators: List[Expr]
-    decorators: Iterable[Expr] | ASTNodes = []
+    # decorators: Iterable[Expr] | ASTNodes = [] #------------------>
     visibility: VisibilityKind
     is_abstract: bool
     metaclass: Optional[Expr]
-    # attributes: Iterable[VariableDeclaration]
-    attributes: Iterable[VariableDeclaration] = []
-    # methods: Iterable[Function] = []
-    methods: Iterable[Function]
+    # attributes: Iterable[VariableDeclaration] = [] #------------------>
+    # methods: Iterable[Function] = [] # ------------------>
 
     def __init__(
         self,
@@ -74,20 +72,15 @@ class ClassDeclStmt(StatementType):
             for decorator in decorators:
                 self.decorators.append(decorator)
 
-        # self.attributes = cast(ASTNodes,self.attributes) # Cast target is not a type
-        # note: __iter__ of ASTNodes has conflicts
-        self.attributes = ASTNodes()  # expression has type "ASTNodes", variable has type "Iterable[VariableDeclaration]"
+        # self.attributes = cast(ASTNodes, self.attributes)  # expression has
+        # type "ASTNodes", variable has type "Iterable[VariableDeclaration]"
+        self.attributes = ASTNodes()  # ------------------->
         for a in attributes:
-            self.attributes.append(
-                a
-            )  # "Iterable[VariableDeclaration]" has no attribute "append"
+            self.attributes.append(a)
 
-        # note:__iter__ of ASTNodes has conflicts
-        self.methods = ASTNodes()  # expression has type "ASTNodes", variable has type "Iterable[Function]"
+        self.methods = ASTNodes()  # ------------------->
         for m in methods:
-            self.methods.append(
-                m
-            )  # "Iterable[Function]" has no attribute "append"
+            self.methods.append(m)
 
         self.visibility = visibility
         self.is_abstract = is_abstract
@@ -127,13 +120,13 @@ class ClassDeclStmt(StatementType):
         if self.bases:
             bases_dict = {
                 "bases": self.bases.get_struct(simplified)
-            }  # "Item Iterable[Expr]" has no attribute "get_struct"
+            }  # "Item Iterable[Expr]" has no attribute "get_struct" #-------->
 
         if self.decorators:
             decors_dict = {
                 "decorators": self.decorators.get_struct(
                     simplified
-                )  # "Item Iterable[Expr]" has no attribute "get_struct"
+                )  # "Item Iterable[Expr]" has no attribute "get_struct" #---->
             }
 
         if self.metaclass:
@@ -158,7 +151,8 @@ class ClassDeclStmt(StatementType):
             **cast(DictDataTypesStruct, attrs_dict),
             **cast(DictDataTypesStruct, methods_dict),
         }
-        return value
+        # return cast(DictDataTypesStruct, value) #----------
+        return cast(DictDataTypesStruct, value)
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -232,10 +226,9 @@ class ClassDefStmt(ClassDeclStmt):
 
         key = f"CLASS-DEF[{vis[self.visibility.name]}{self.name}{abstract}]"
         value = self._get_struct_wrapper(simplified)
+        value = cast(DictDataTypesStruct, value)  # -------------------->
 
         if self.body != CLASS_BODY_DEFAULT:
-            value["body"]: ReprStruct = self.body.get_struct(
-                simplified
-            )  #   Unexpected type declaration; No overload variant of "__setitem__" of "list" matches argument types "str", "Union[List[DataTypesStruct], DictDataTypesStruct, Any]"
+            value["body"] = self.body.get_struct(simplified)
 
         return self._prepare_struct(key, value, simplified)
