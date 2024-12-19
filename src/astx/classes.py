@@ -32,9 +32,8 @@ class ClassDeclStmt(StatementType):
 
     name: str
     # bases: List[Expr]
-    # bases: Iterable[Expr] | ASTNodes = [] #------------------>
-    # decorators: List[Expr]
-    # decorators: Iterable[Expr] | ASTNodes = [] #------------------>
+    bases: ASTNodes
+    decorators: ASTNodes
     visibility: VisibilityKind
     is_abstract: bool
     metaclass: Optional[Expr]
@@ -49,8 +48,8 @@ class ClassDeclStmt(StatementType):
         visibility: VisibilityKind = VisibilityKind.public,
         is_abstract: bool = False,
         metaclass: Optional[Expr] = None,
-        attributes: Iterable[VariableDeclaration] = [],
-        methods: Iterable[Function] = [],
+        attributes: Iterable[VariableDeclaration] | ASTNodes = [],
+        methods: Iterable[Function] | ASTNodes = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
