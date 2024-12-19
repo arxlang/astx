@@ -38,8 +38,8 @@ class ClassDeclStmt(StatementType):
     visibility: VisibilityKind
     is_abstract: bool
     metaclass: Optional[Expr]
-    # attributes: Iterable[VariableDeclaration] = [] #------------------>
-    # methods: Iterable[Function] = [] # ------------------>
+    attributes: ASTNodes
+    methods: ASTNodes
 
     def __init__(
         self,
@@ -72,7 +72,7 @@ class ClassDeclStmt(StatementType):
             for decorator in decorators:
                 self.decorators.append(decorator)
 
-        # self.attributes = cast(ASTNodes, self.attributes)  # expression has
+        # expression has
         # type "ASTNodes", variable has type "Iterable[VariableDeclaration]"
         self.attributes = ASTNodes()  # ------------------->
         for a in attributes:
