@@ -84,18 +84,18 @@ class Module(Block[ASTType]):
 
 @public
 @typechecked
-class Package(ASTNodes[ASTType]):
+class Package(ASTNodes[AST]):
     """AST class for Package."""
 
     name: str
-    modules: list[Module[AST]]
-    packages: list[Package[AST]]
+    modules: list[Module]
+    packages: list[Package]
 
     def __init__(
         self,
         name: str = "main",
-        modules: list[Module[AST]] = [],
-        packages: list[Package[AST]] = [],
+        modules: list[Module] = [],
+        packages: list[Package] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""
@@ -133,7 +133,7 @@ class Package(ASTNodes[ASTType]):
 
 @public
 @typechecked
-class Program(Package[ASTType]):
+class Program(Package):
     """AST class for Program."""
 
     target: Target
@@ -142,8 +142,8 @@ class Program(Package[ASTType]):
         self,
         name: str = "main",
         target: Target = Target("", ""),
-        modules: list[Module[AST]] = [],
-        packages: list[Package[AST]] = [],
+        modules: list[Module] = [],
+        packages: list[Package] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the AST instance."""

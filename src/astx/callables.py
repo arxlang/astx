@@ -212,12 +212,12 @@ class Function(StatementType):
     """AST class for function definition."""
 
     prototype: FunctionPrototype
-    body: Block[AST]
+    body: Block
 
     def __init__(
         self,
         prototype: FunctionPrototype,
-        body: Block[AST],
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:

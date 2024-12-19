@@ -28,14 +28,14 @@ class IfStmt(StatementType):
     """AST class for `if` statement."""
 
     condition: Expr
-    then: Block[AST]
-    else_: Optional[Block[AST]]
+    then: Block
+    else_: Optional[Block]
 
     def __init__(
         self,
         condition: Expr,
-        then: Block[AST],
-        else_: Optional[Block[AST]] = None,
+        then: Block,
+        else_: Optional[Block] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
@@ -76,14 +76,14 @@ class IfExpr(Expr):
     """AST class for `if` expression."""
 
     condition: Expr
-    then: Block[AST]
-    else_: Optional[Block[AST]]
+    then: Block
+    else_: Optional[Block]
 
     def __init__(
         self,
         condition: Expr,
-        then: Block[AST],
-        else_: Optional[Block[AST]] = None,
+        then: Block,
+        else_: Optional[Block] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
@@ -127,7 +127,7 @@ class ForRangeLoopStmt(StatementType):
     start: Expr
     end: Expr
     step: Expr
-    body: Block[AST]
+    body: Block
 
     def __init__(
         self,
@@ -135,7 +135,7 @@ class ForRangeLoopStmt(StatementType):
         start: Expr,
         end: Expr,
         step: Expr,
-        body: Block[AST],
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
@@ -182,7 +182,7 @@ class ForRangeLoopExpr(Expr):
     start: Expr
     end: Expr
     step: Expr
-    body: Block[AST]
+    body: Block
 
     def __init__(
         self,
@@ -190,7 +190,7 @@ class ForRangeLoopExpr(Expr):
         start: Expr,
         end: Expr,
         step: Expr,
-        body: Block[AST],
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
@@ -244,14 +244,14 @@ class ForCountLoopStmt(StatementType):
     initializer: InlineVariableDeclaration
     condition: Expr
     update: Expr
-    body: Block[AST]
+    body: Block
 
     def __init__(
         self,
         initializer: InlineVariableDeclaration,
         condition: Expr,
         update: Expr,
-        body: Block[AST],
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
@@ -300,14 +300,14 @@ class ForCountLoopExpr(Expr):
     initializer: InlineVariableDeclaration
     condition: Expr
     update: Expr
-    body: Block[AST]
+    body: Block
 
     def __init__(
         self,
         initializer: InlineVariableDeclaration,
         condition: Expr,
         update: Expr,
-        body: Block[AST],
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
@@ -349,12 +349,12 @@ class WhileStmt(StatementType):
     """AST class for `while` statement."""
 
     condition: Expr
-    body: Block[AST]
+    body: Block
 
     def __init__(
         self,
         condition: Expr,
-        body: Block[AST],
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
@@ -388,12 +388,12 @@ class WhileExpr(Expr):
     """AST class for `while` expression."""
 
     condition: Expr
-    body: Block[AST]
+    body: Block
 
     def __init__(
         self,
         condition: Expr,
-        body: Block[AST],
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes[AST]] = None,
     ) -> None:
