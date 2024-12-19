@@ -107,7 +107,7 @@ class ClassDeclStmt(StatementType):
         class_str += f"{metaclass_str}"
         return f"{decorators_str}{modifiers_str} {class_str}".strip()
 
-    def _get_struct_wrapper(self, simplified: bool) -> ReprStruct:
+    def _get_struct_wrapper(self, simplified: bool) -> DictDataTypesStruct:
         bases_dict: ReprStruct = {}
         decors_dict: ReprStruct = {}
         metaclass_dict: ReprStruct = {}
@@ -133,7 +133,7 @@ class ClassDeclStmt(StatementType):
         if self.methods:
             methods_dict = {"methods": self.methods.get_struct(simplified)}
 
-        value: ReprStruct = {
+        value: DictDataTypesStruct = {
             **cast(DictDataTypesStruct, bases_dict),
             **cast(DictDataTypesStruct, decors_dict),
             **cast(DictDataTypesStruct, metaclass_dict),
@@ -215,7 +215,7 @@ class ClassDefStmt(ClassDeclStmt):
 
         key = f"CLASS-DEF[{vis[self.visibility.name]}{self.name}{abstract}]"
         value = self._get_struct_wrapper(simplified)
-        value = cast(DictDataTypesStruct, value)  # -------------------->
+        # value = cast(DictDataTypesStruct, value)  # -------------------->
 
         if self.body != CLASS_BODY_DEFAULT:
             value["body"] = self.body.get_struct(simplified)
