@@ -31,7 +31,6 @@ class ClassDeclStmt(StatementType):
     """AST class for class declaration."""
 
     name: str
-    # bases: List[Expr]
     bases: ASTNodes
     decorators: ASTNodes
     visibility: VisibilityKind
@@ -140,7 +139,6 @@ class ClassDeclStmt(StatementType):
             **cast(DictDataTypesStruct, attrs_dict),
             **cast(DictDataTypesStruct, methods_dict),
         }
-        # return cast(DictDataTypesStruct, value)  # ----------
         return value
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -173,8 +171,8 @@ class ClassDefStmt(ClassDeclStmt):
         visibility: VisibilityKind = VisibilityKind.public,
         is_abstract: bool = False,
         metaclass: Optional[Expr] = None,
-        attributes: Iterable[VariableDeclaration] = [],
-        methods: Iterable[Function] = [],
+        attributes: Iterable[VariableDeclaration] | ASTNodes = [],
+        methods: Iterable[Function] | ASTNodes = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -215,7 +213,6 @@ class ClassDefStmt(ClassDeclStmt):
 
         key = f"CLASS-DEF[{vis[self.visibility.name]}{self.name}{abstract}]"
         value = self._get_struct_wrapper(simplified)
-        # value = cast(DictDataTypesStruct, value)  # -------------------->
 
         if self.body != CLASS_BODY_DEFAULT:
             value["body"] = self.body.get_struct(simplified)
