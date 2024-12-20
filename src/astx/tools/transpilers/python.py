@@ -73,10 +73,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> str:
         """Handle ClassDefStmt nodes."""
-        if node.is_abstract:
-            class_type = "(ABC)"
-        else:
-            class_type = ""
+        class_type = "(ABC)" if node.is_abstract else ""
         return f"class {node.name}{class_type}:" f"\n {self.visit(node.body)}"
 
     @dispatch  # type: ignore[no-redef]
