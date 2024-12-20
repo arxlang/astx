@@ -13,7 +13,6 @@ from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
-    ASTType,
     Expr,
     ReprStruct,
     SourceLocation,
@@ -46,7 +45,7 @@ class Target(Expr):
 
 @public
 @typechecked
-class Module(Block[ASTType]):
+class Module(Block):
     """AST main expression class."""
 
     name: str
@@ -65,7 +64,7 @@ class Module(Block[ASTType]):
         return f"Module[{self.name}]"
 
     @property
-    def block(self) -> list[ASTType]:
+    def block(self) -> list[AST]:
         """Define an alias for self.nodes."""
         return self.nodes
 
@@ -84,7 +83,7 @@ class Module(Block[ASTType]):
 
 @public
 @typechecked
-class Package(ASTNodes[AST]):
+class Package(ASTNodes):
     """AST class for Package."""
 
     name: str

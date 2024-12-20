@@ -22,7 +22,7 @@ class ASTxPythonTranspiler:
         self.indent_level = 0
         self.indent_str = "    "  # 4 spaces
 
-    def _generate_block(self, block: astx.Block[astx.AST]) -> str:
+    def _generate_block(self, block: astx.Block) -> str:
         """Generate code for a block of statements with proper indentation."""
         self.indent_level += 1
         indent = self.indent_str * self.indent_level
@@ -66,7 +66,7 @@ class ASTxPythonTranspiler:
         return f"({lhs} {node.op_code} {rhs})"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Block[astx.AST]) -> str:
+    def visit(self, node: astx.Block) -> str:
         """Handle Block nodes."""
         return self._generate_block(node)
 
