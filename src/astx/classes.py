@@ -7,7 +7,6 @@ import copy
 from typing import Iterable, Optional, cast
 
 from public import public
-from typeguard import typechecked
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -22,6 +21,7 @@ from astx.base import (
 from astx.blocks import Block
 from astx.callables import Function
 from astx.modifiers import VisibilityKind
+from astx.tools.typing import typechecked
 from astx.variables import VariableDeclaration
 
 
