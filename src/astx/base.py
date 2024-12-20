@@ -7,7 +7,16 @@ import json
 from abc import abstractmethod
 from enum import Enum
 from hashlib import sha256
-from typing import ClassVar, Dict, List, Optional, Union, cast
+from typing import (
+    ClassVar,
+    Dict,
+    Generic,
+    Iterator,
+    List,
+    Optional,
+    Union,
+    cast,
+)
 
 from astx.tools.typing import typechecked
 
@@ -18,14 +27,17 @@ except ImportError:
 
 
 try:
-    from typing_extensions import Self
+    from typing_extensions import TypeVar
 except ImportError:
-    from typing import Self  # type: ignore[no-redef,attr-defined]
+    from typing import TypeVar  # type: ignore[assignment]
 
 
 import yaml
 
 from public import public
+
+ASTType = TypeVar("ASTType", bound="AST", default="AST")
+
 
 __all__ = [
     "ExprType",
@@ -251,13 +263,12 @@ class AST(metaclass=ASTMeta):
         return json.dumps(self.get_struct(simplified=simplified), indent=2)
 
 
-@public
 @typechecked
-class ASTNodes(AST):
-    """AST with a list of nodes."""
+class ASTNodes(Generic[ASTType], AST):
+    """AST with a list of nodes, supporting type-specific elements."""
 
     name: str
-    nodes: list[AST]
+    nodes: list[ASTType]
     position: int = 0
 
     def __init__(
@@ -269,17 +280,15 @@ class ASTNodes(AST):
         """Initialize the AST instance."""
         super().__init__(loc=loc, parent=parent)
         self.name = name
-        # note: maybe it would be nice to add options for rules, so
-        #       it could have specific rules for the type of AST
-        #       accepted
-        self.nodes: list[AST] = []
+        self.nodes: list[ASTType] = []
         self.position: int = 0
 
-    def __iter__(self) -> Self:
+    def __iter__(self) -> Iterator[ASTType]:
         """Overload `iter` magic function."""
+        self.position = 0  # Reset position for fresh iteration
         return self
 
-    def __next__(self) -> AST:
+    def __next__(self) -> ASTType:
         """Overload `next` magic function."""
         if self.position >= len(self.nodes):
             self.position = 0
@@ -289,11 +298,11 @@ class ASTNodes(AST):
         self.position += 1
         return self.nodes[i]
 
-    def append(self, value: AST) -> None:
+    def append(self, value: ASTType) -> None:
         """Append a new node to the stack."""
         self.nodes.append(value)
 
-    def __getitem__(self, index: int) -> AST:
+    def __getitem__(self, index: int) -> ASTType:
         """Support subscripting to get nodes by index."""
         return self.nodes[index]
 

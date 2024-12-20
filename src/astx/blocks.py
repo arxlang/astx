@@ -8,6 +8,7 @@ from public import public
 
 from astx.base import (
     ASTNodes,
+    ASTType,
     ReprStruct,
 )
 from astx.tools.typing import typechecked
@@ -15,7 +16,7 @@ from astx.tools.typing import typechecked
 
 @public
 @typechecked
-class Block(ASTNodes):
+class Block(ASTNodes[ASTType]):
     """The AST tree."""
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:

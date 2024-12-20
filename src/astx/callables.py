@@ -66,7 +66,7 @@ class Argument(Variable):
 
 @public
 @typechecked
-class Arguments(ASTNodes):
+class Arguments(ASTNodes[Argument]):
     """AST class for argument definition."""
 
     def __init__(self, *args: Argument, **kwargs: Any) -> None:
@@ -279,7 +279,7 @@ class LambdaExpr(Expr):
 
     def __str__(self) -> str:
         """Return a string representation of the lambda expression."""
-        params_str = ", ".join(param.name for param in self.params)  # type: ignore[attr-defined]
+        params_str = ", ".join(param.name for param in self.params)
         return f"lambda {params_str}: {self.body}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
