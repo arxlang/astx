@@ -46,6 +46,10 @@ from astx.types.temporal import (
     Time,
     Timestamp,
 )
+from astx.types.collection import (
+    Set,
+    List,
+)
 
 __all__ = [
     "AnyType",
@@ -80,4 +84,6 @@ __all__ = [
     "UTF8String",
     "UnsignedInteger",
     "TypeCastExpr",
+    "Set",
+    "List",
 ]
