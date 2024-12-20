@@ -768,10 +768,9 @@ def test_transpiler_literal_datetime() -> None:
     ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
-###->
 def test_transpiler_classdefstmt() -> None:
     """Test astx.ClassDefStmt."""
-    # Class body
+    # Create a class body
     class_body = astx.Block(name="MyClass_body")
     var1 = astx.Variable(name="var1")
     class_body.append(var1)
@@ -782,11 +781,8 @@ def test_transpiler_classdefstmt() -> None:
         body=class_body,
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(class_def)
+    generated_code = transpiler.visit(class_def)
     expected_code = "class MyClass:\n     var1"
 
     assert (
