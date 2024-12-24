@@ -1,6 +1,19 @@
 # Release Notes
 ---
 
+# [0.17.0](https://github.com/arxlang/astx/compare/0.16.1...0.17.0) (2024-12-24)
+
+
+### Bug Fixes
+
+* Fix warnings from ReprStruct/Undefined ([#155](https://github.com/arxlang/astx/issues/155)) ([bc48b00](https://github.com/arxlang/astx/commit/bc48b007cda50dff9da0e713bb5c4c3313709383))
+
+
+### Features
+
+* add ClassDeclStmt and ClassDefStmt ([#153](https://github.com/arxlang/astx/issues/153)) ([76739a9](https://github.com/arxlang/astx/commit/76739a9e428512c45a4c4649540293de0273bbf2))
+* Improve the ASTNodes type as a generic type ([#156](https://github.com/arxlang/astx/issues/156)) ([dc9e0ae](https://github.com/arxlang/astx/commit/dc9e0ae53746abcdfa5d2a9e98cbc0f84f0f9ffd))
+
 ## [0.16.1](https://github.com/arxlang/astx/compare/0.16.0...0.16.1) (2024-11-29)
 
 
