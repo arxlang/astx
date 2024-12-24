@@ -38,6 +38,10 @@ from astx.callables import (
     FunctionReturn,
     LambdaExpr,
 )
+from astx.classes import (
+    ClassDeclStmt,
+    ClassDefStmt,
+)
 from astx.flows import (
     ForCountLoopExpr,
     ForCountLoopStmt,
@@ -235,6 +239,8 @@ __all__ = [
     "Complex",
     "Complex32",
     "Complex64",
+    "ClassDefStmt",
+    "ClassDeclStmt",
     "LiteralComplex",
     "LiteralComplex32",
     "LiteralComplex64",

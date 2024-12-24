@@ -155,6 +155,10 @@ class ASTKind(Enum):
 
     TypeCastExprKind = -809
 
+    # classes
+    ClassDefStmtKind = -900
+    ClassDeclStmtKind = -901
+
 
 class ASTMeta(type):
     def __str__(cls) -> str:
@@ -309,6 +313,17 @@ class ASTNodes(Generic[ASTType], AST):
     def __len__(self) -> int:
         """Return the number of nodes, supports len function."""
         return len(self.nodes)
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a string that represents the object."""
+        args_nodes = []
+
+        for node in self.nodes:
+            args_nodes.append(node.get_struct(simplified))
+
+        key = str(self)
+        value = cast(ReprStruct, args_nodes)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public

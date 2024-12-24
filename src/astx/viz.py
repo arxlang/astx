@@ -295,12 +295,11 @@ def get_hash_labels(
             node_label = node_label.center(7, " ")
             len_label = len(node_label)
 
-            # each node modhash will have the same length as the node
-            # label and will consist of parts of the hash from both
-            # the parent (if it exists) and child nodes, separated by
-            # underscore.
+            # each node modhash will have the same length as the node label
+            # and will consist of parts of the hash from both the parent
+            # (if it exists) and child nodes, separated by underscore.
             node_hash = line.split("[")[0].strip().replace('"', "")
-            if "_" not in node_hash:
+            if "_" not in node_hash:  # if it's the first node
                 if len_label <= len(node_hash):
                     x = len_label
                     node_modhash = node_hash[:x]
@@ -308,17 +307,37 @@ def get_hash_labels(
                     node_modhash = node_hash + " " * (
                         len_label - len(node_hash)
                     )
-            else:
+            else:  # if it's connected before and after
                 hash1, hash2 = node_hash.split("_")
-                len_hash = len(hash2)
-                min_len_hash1 = 3
-                min_len_hash1_ = 4
-                if len_label <= (len_hash + min_len_hash1_):
-                    x = len_label - min_len_hash1_
-                    node_modhash = f"{hash1[:min_len_hash1]}_{hash2[:x]}"
+                len_hash2 = len(hash2)
+                len_hash1 = len(hash1)
+                min_chars_hash1 = 3
+
+                standard_label_len = (min_chars_hash1 + len_hash2) + 1
+                long_label_len = len_hash1 + len_hash2 + 1
+                # short label:
+                # modhash will have 3 chars of hash1 and some part of hash2
+                if len_label <= standard_label_len:
+                    nchars_hash2 = len_label - (min_chars_hash1 + 1)
+                    node_modhash = (
+                        f"{hash1[:min_chars_hash1]}_{hash2[:nchars_hash2]}"
+                    )
+                # medium label:
+                # modhash will have more than 3 chars of hash1 and all of hash2
+                elif (len_label > standard_label_len) & (
+                    len_label <= long_label_len
+                ):
+                    nchars_hash1 = (
+                        len_label - standard_label_len + min_chars_hash1
+                    )
+                    node_modhash = f"{hash1[:nchars_hash1]}_{hash2}"
+                # long label:
+                # modhash will have all of hash1, all of hash2,
+                # plus some additional chars
                 else:
-                    x = len_label - (len_hash + min_len_hash1_) + min_len_hash1
-                    node_modhash = f"{hash1[:x]}_{hash2}"
+                    nchars = len_label - long_label_len
+                    add_chars = "x" * nchars
+                    node_modhash = f"{hash1}_{hash2}{add_chars}"
 
             nodes_modhash.append(node_modhash)
             hash_modhash_mapping.append((node_hash, node_modhash))
