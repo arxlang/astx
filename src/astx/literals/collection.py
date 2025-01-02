@@ -8,6 +8,8 @@ from astx.base import ReprStruct
 from astx.literals.base import Literal
 
 
+@public
+@typechecked
 class LiteralList(Literal):
     """Represents a literal list."""
 
@@ -26,6 +28,8 @@ class LiteralList(Literal):
         return self._prepare_struct(key, self.value, simplified)
 
 
+@public
+@typechecked
 class LiteralSet(Literal):
     """Represents a literal set."""
 
@@ -44,6 +48,8 @@ class LiteralSet(Literal):
         return self._prepare_struct(key, self.value, simplified)
 
 
+@public
+@typechecked
 class LiteralMap(Literal):
     """Represents a literal map."""
 
@@ -62,6 +68,8 @@ class LiteralMap(Literal):
         return self._prepare_struct(key, self.value, simplified)
 
 
+@public
+@typechecked
 class LiteralTuple(Literal):
     """Represents a literal tuple."""
 
@@ -80,6 +88,8 @@ class LiteralTuple(Literal):
         return self._prepare_struct(key, self.value, simplified)
 
 
+@public
+@typechecked
 class LiteralDictionary(Literal):
     """Represents a literal dictionary."""
 
