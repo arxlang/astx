@@ -8,11 +8,11 @@ import astx
 import pytest
 
 from astx.literals.collection import (
-    LiteralList,
-    LiteralSet,
-    LiteralMap,
-    LiteralTuple,
     LiteralDictionary,
+    LiteralList,
+    LiteralMap,
+    LiteralSet,
+    LiteralTuple,
 )
 from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
@@ -27,6 +27,15 @@ COLLECTION_LITERAL_CLASSES = [
     LiteralDictionary,
 ]
 
+# Sample data specific to each Literal type
+SAMPLE_DATA = {
+    LiteralList: [1, 2, 3],
+    LiteralSet: {1, 2, 3},
+    LiteralMap: {"key1": "value1", "key2": "value2"},
+    LiteralTuple: (1, 2, 3),
+    LiteralDictionary: {"key1": "value1", "key2": 42},
+}
+
 
 def test_variable_collections() -> None:
     """Test variable declaration with collection types."""
@@ -38,14 +47,7 @@ def test_variable_collections() -> None:
 @pytest.mark.parametrize("literal_class", COLLECTION_LITERAL_CLASSES)
 def test_literal_initialization(literal_class: Type[astx.Literal]) -> None:
     """Test collection literals initialization."""
-    sample_data = {
-        LiteralList: [1, 2, 3],
-        LiteralSet: {1, 2, 3},
-        LiteralMap: {"key1": "value1", "key2": "value2"},
-        LiteralTuple: (1, 2, 3),
-        LiteralDictionary: {"key1": "value1", "key2": 42},
-    }
-    literal_instance = literal_class(sample_data[literal_class])
+    literal_instance = literal_class(SAMPLE_DATA[literal_class])
     assert str(literal_instance) != ""
     assert repr(literal_instance) != ""
     assert literal_instance.get_struct() != {}
@@ -55,13 +57,48 @@ def test_literal_initialization(literal_class: Type[astx.Literal]) -> None:
 @pytest.mark.parametrize(
     "fn_bin_op,op_code",
     [
-        (lambda literal_class: BinaryOp("+", VAR_A, literal_class([1, 2, 3])), "+"),
-        (lambda literal_class: BinaryOp("==", VAR_A, literal_class([1, 2, 3])), "=="),
-        (lambda literal_class: BinaryOp("!=", VAR_A, literal_class([1, 2, 3])), "!="),
-        (lambda literal_class: BinaryOp(">", VAR_A, literal_class([1, 2, 3])), ">"),
-        (lambda literal_class: BinaryOp(">=", VAR_A, literal_class([1, 2, 3])), ">="),
-        (lambda literal_class: BinaryOp("<", VAR_A, literal_class([1, 2, 3])), "<"),
-        (lambda literal_class: BinaryOp("<=", VAR_A, literal_class([1, 2, 3])), "<="),
+        (
+            lambda literal_class: BinaryOp(
+                "+", VAR_A, literal_class(SAMPLE_DATA[literal_class])
+            ),
+            "+",
+        ),
+        (
+            lambda literal_class: BinaryOp(
+                "==", VAR_A, literal_class(SAMPLE_DATA[literal_class])
+            ),
+            "==",
+        ),
+        (
+            lambda literal_class: BinaryOp(
+                "!=", VAR_A, literal_class(SAMPLE_DATA[literal_class])
+            ),
+            "!=",
+        ),
+        (
+            lambda literal_class: BinaryOp(
+                ">", VAR_A, literal_class(SAMPLE_DATA[literal_class])
+            ),
+            ">",
+        ),
+        (
+            lambda literal_class: BinaryOp(
+                ">=", VAR_A, literal_class(SAMPLE_DATA[literal_class])
+            ),
+            ">=",
+        ),
+        (
+            lambda literal_class: BinaryOp(
+                "<", VAR_A, literal_class(SAMPLE_DATA[literal_class])
+            ),
+            "<",
+        ),
+        (
+            lambda literal_class: BinaryOp(
+                "<=", VAR_A, literal_class(SAMPLE_DATA[literal_class])
+            ),
+            "<=",
+        ),
     ],
 )
 @pytest.mark.parametrize("literal_class", COLLECTION_LITERAL_CLASSES)
@@ -71,13 +108,6 @@ def test_binary_operations(
     op_code: str,
 ) -> None:
     """Test binary operations on collection literals."""
-    sample_data = {
-        LiteralList: [1, 2, 3],
-        LiteralSet: {1, 2, 3},
-        LiteralMap: {"key1": "value1"},
-        LiteralTuple: (1, 2, 3),
-        LiteralDictionary: {"key1": "value1"},
-    }
     bin_op = fn_bin_op(literal_class)
     assert bin_op.op_code == op_code
     assert str(bin_op) != ""
@@ -89,8 +119,18 @@ def test_binary_operations(
 @pytest.mark.parametrize(
     "fn_unary_op,op_code",
     [
-        (lambda literal_class: UnaryOp("+", literal_class([1, 2, 3])), "+"),
-        (lambda literal_class: UnaryOp("-", literal_class([1, 2, 3])), "-"),
+        (
+            lambda literal_class: UnaryOp(
+                "+", literal_class(SAMPLE_DATA[literal_class])
+            ),
+            "+",
+        ),
+        (
+            lambda literal_class: UnaryOp(
+                "-", literal_class(SAMPLE_DATA[literal_class])
+            ),
+            "-",
+        ),
     ],
 )
 @pytest.mark.parametrize("literal_class", COLLECTION_LITERAL_CLASSES)
@@ -100,13 +140,6 @@ def test_unary_operations(
     op_code: str,
 ) -> None:
     """Test unary operations on collection literals."""
-    sample_data = {
-        LiteralList: [1, 2, 3],
-        LiteralSet: {1, 2, 3},
-        LiteralMap: {"key1": "value1"},
-        LiteralTuple: (1, 2, 3),
-        LiteralDictionary: {"key1": "value1"},
-    }
     unary_op = fn_unary_op(literal_class)
     assert unary_op.op_code == op_code
     assert str(unary_op) != ""

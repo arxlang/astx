@@ -18,19 +18,19 @@ class Collection(AnyType):
 @typechecked
 class List(Collection):
     """List data type expression."""
-    
+
 
 @public
 @typechecked
 class Set(Collection):
     """Set data type expression."""
-    
+
 
 @public
 @typechecked
 class Map(Collection):
     """Map data type expression."""
-    
+
 
 @public
 @typechecked

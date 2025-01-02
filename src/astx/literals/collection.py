@@ -1,121 +1,98 @@
-"""ASTx Collection Literal Data Types module."""
+"""Collection Literals Module."""
 
 from __future__ import annotations
 
-from typing import List as TypingList, Set as TypingSet, Dict as TypingDict, Tuple as TypingTuple, Any
-from public import public
+from typing import Any
 
-from astx.base import (
-    NO_SOURCE_LOCATION,
-    ReprStruct,
-    SourceLocation,
-)
+from astx.base import ReprStruct
 from astx.literals.base import Literal
-from astx.tools.typing import typechecked
-from astx.types.collection import (
-    List,
-    Set,
-    Map,
-    Tuple,
-    Dictionary,
-)
 
 
-@public
-@typechecked
 class LiteralList(Literal):
-    """LiteralList data type class."""
+    """Represents a literal list."""
 
-    def __init__(self, value: TypingList[Any], loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
-        """Initialize LiteralList."""
-        super().__init__(loc)
+    def __init__(self, value: list[Any], loc: Any = None) -> None:
+        """Initialize a LiteralLis."""
         self.value = value
-        self.type_ = List()
         self.loc = loc
 
     def __str__(self) -> str:
+        """Return a string representatin."""
         return f"LiteralList[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structural representation."""
         key = f"LiteralList: {self.value}"
         return self._prepare_struct(key, self.value, simplified)
 
 
-@public
-@typechecked
 class LiteralSet(Literal):
-    """LiteralSet data type class."""
+    """Represents a literal set."""
 
-    def __init__(self, value: TypingSet[Any], loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
-        """Initialize LiteralSet."""
-        super().__init__(loc)
+    def __init__(self, value: set[Any], loc: Any = None) -> None:
+        """Initialize a LiteralSet."""
         self.value = value
-        self.type_ = Set()
         self.loc = loc
 
     def __str__(self) -> str:
+        """Return a string representation."""
         return f"LiteralSet[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structural representation."""
         key = f"LiteralSet: {self.value}"
         return self._prepare_struct(key, self.value, simplified)
 
 
-@public
-@typechecked
 class LiteralMap(Literal):
-    """LiteralMap data type class."""
+    """Represents a literal map."""
 
-    def __init__(self, value: TypingDict[Any, Any], loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
-        """Initialize LiteralMap."""
-        super().__init__(loc)
+    def __init__(self, value: dict[Any, Any], loc: Any = None) -> None:
+        """Initialize a LiteralMap."""
         self.value = value
-        self.type_ = Map()
         self.loc = loc
 
     def __str__(self) -> str:
+        """Return a string representation."""
         return f"LiteralMap[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structural representation."""
         key = f"LiteralMap: {self.value}"
         return self._prepare_struct(key, self.value, simplified)
 
 
-@public
-@typechecked
 class LiteralTuple(Literal):
-    """LiteralTuple data type class."""
+    """Represents a literal tuple."""
 
-    def __init__(self, value: TypingTuple[Any, ...], loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
-        """Initialize LiteralTuple."""
-        super().__init__(loc)
+    def __init__(self, value: tuple[Any, ...], loc: Any = None) -> None:
+        """Initialize a LiteralTuple."""
         self.value = value
-        self.type_ = Tuple()
         self.loc = loc
 
     def __str__(self) -> str:
+        """Return a string representation."""
         return f"LiteralTuple[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structural representation."""
         key = f"LiteralTuple: {self.value}"
         return self._prepare_struct(key, self.value, simplified)
 
 
-@public
-@typechecked
 class LiteralDictionary(Literal):
-    """LiteralDictionary data type class."""
+    """Represents a literal dictionary."""
 
-    def __init__(self, value: TypingDict[Any, Any], loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
-        """Initialize LiteralDictionary."""
-        super().__init__(loc)
+    def __init__(self, value: dict[Any, Any], loc: Any = None) -> None:
+        """Initialize a LiteralDictionary."""
         self.value = value
-        self.type_ = Dictionary()
         self.loc = loc
 
     def __str__(self) -> str:
+        """Return a string representation."""
         return f"LiteralDictionary[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structural representation."""
         key = f"LiteralDictionary: {self.value}"
         return self._prepare_struct(key, self.value, simplified)
