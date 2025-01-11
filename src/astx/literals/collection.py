@@ -4,9 +4,11 @@ from __future__ import annotations
 
 from typing import Any
 
+from public import public
+
 from astx.base import ReprStruct
 from astx.literals.base import Literal
-
+from astx.tools.typing import typechecked
 
 @public
 @typechecked
