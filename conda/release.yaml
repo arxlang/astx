@@ -6,7 +6,7 @@ dependencies:
   - graphviz
   - python >=3.9,<3.13
   - openjdk
-  - poetry >=1.5
+  - poetry >=2
   - nodejs >=18.17 # used by semantic-release
   - shellcheck
   - pip
