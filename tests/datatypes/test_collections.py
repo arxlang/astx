@@ -7,7 +7,7 @@ from typing import Any, Callable, Dict, List, Tuple, Type
 import astx
 import pytest
 
-from astx.literals.collection import (
+from astx.literals.collections import (
     LiteralDictionary,
     LiteralList,
     LiteralMap,

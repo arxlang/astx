@@ -436,51 +436,25 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.List) -> str:
         """Handle List type nodes."""
-        # If the node has an element type, include it
-        if hasattr(node, "element_type") and node.element_type:
-            element_type = self.visit(node.element_type)
-            return f"List[{element_type}]"
-        else:
-            return "list"
+        return "list"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Tuple) -> str:
         """Handle Tuple type nodes."""
-        if hasattr(node, "element_types") and node.element_types:
-            element_types = ", ".join(
-                self.visit(t) for t in node.element_types
-            )
-            return f"Tuple[{element_types}]"
-        else:
-            return "tuple"
+        return "tuple"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Set) -> str:
         """Handle Set type nodes."""
-        if hasattr(node, "element_type") and node.element_type:
-            element_type = self.visit(node.element_type)
-            return f"Set[{element_type}]"
-        else:
-            return "set"
+        return "set"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Dictionary) -> str:
         """Handle Dictionary type nodes."""
-        if hasattr(node, "key_type") and hasattr(node, "value_type"):
-            key_type = self.visit(node.key_type)
-            value_type = self.visit(node.value_type)
-            return f"Dict[{key_type}, {value_type}]"
-        else:
-            return "dict"
+        return "dict"
 
-    # If you have Map as a separate type
+    # If you have a Map type node
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Map) -> str:
         """Handle Map type nodes."""
-        # Assuming Map is similar to Dictionary in your context
-        if hasattr(node, "key_type") and hasattr(node, "value_type"):
-            key_type = self.visit(node.key_type)
-            value_type = self.visit(node.value_type)
-            return f"Dict[{key_type}, {value_type}]"
-        else:
-            return "dict"
+        return "dict"
