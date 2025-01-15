@@ -9,6 +9,13 @@ from astx.types.boolean import (
 from astx.types.casting import (
     TypeCastExpr,
 )
+from astx.types.collections import (
+    Dictionary,
+    List,
+    Map,
+    Set,
+    Tuple,
+)
 from astx.types.numeric import (
     Complex,
     Complex32,
@@ -80,4 +87,9 @@ __all__ = [
     "UTF8String",
     "UnsignedInteger",
     "TypeCastExpr",
+    "List",
+    "Set",
+    "Map",
+    "Tuple",
+    "Dictionary",
 ]

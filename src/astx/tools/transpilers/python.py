@@ -396,3 +396,91 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.LiteralDateTime) -> str:
         """Handle LiteralDateTime nodes."""
         return f"datetime.strptime({node.value!r}, '%Y-%m-%dT%H:%M:%S')"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralList) -> str:
+        """Handle LiteralList nodes."""
+        elements = ", ".join(self.visit(element) for element in node.value)
+        return f"[{elements}]"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralTuple) -> str:
+        """Handle LiteralTuple nodes."""
+        elements = ", ".join(self.visit(element) for element in node.value)
+        # Add a comma for single-element tuples
+        comma = "," if len(node.value) == 1 else ""
+        return f"({elements}{comma})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralSet) -> str:
+        """Handle LiteralSet nodes."""
+        elements = ", ".join(self.visit(element) for element in node.value)
+        return f"{{{elements}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralDictionary) -> str:
+        """Handle LiteralDictionary nodes."""
+        items = ", ".join(
+            f"{self.visit(k)}: {self.visit(v)}" for k, v in node.value.items()
+        )
+        return f"{{{items}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralMap) -> str:
+        """Handle LiteralMap nodes."""
+        items = ", ".join(
+            f"{self.visit(k)}: {self.visit(v)}" for k, v in node.value.items()
+        )
+        return f"{{{items}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.List) -> str:
+        """Handle List type nodes."""
+        # If the node has an element type, include it
+        if hasattr(node, "element_type") and node.element_type:
+            element_type = self.visit(node.element_type)
+            return f"List[{element_type}]"
+        else:
+            return "list"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Tuple) -> str:
+        """Handle Tuple type nodes."""
+        if hasattr(node, "element_types") and node.element_types:
+            element_types = ", ".join(
+                self.visit(t) for t in node.element_types
+            )
+            return f"Tuple[{element_types}]"
+        else:
+            return "tuple"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Set) -> str:
+        """Handle Set type nodes."""
+        if hasattr(node, "element_type") and node.element_type:
+            element_type = self.visit(node.element_type)
+            return f"Set[{element_type}]"
+        else:
+            return "set"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Dictionary) -> str:
+        """Handle Dictionary type nodes."""
+        if hasattr(node, "key_type") and hasattr(node, "value_type"):
+            key_type = self.visit(node.key_type)
+            value_type = self.visit(node.value_type)
+            return f"Dict[{key_type}, {value_type}]"
+        else:
+            return "dict"
+
+    # If you have Map as a separate type
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Map) -> str:
+        """Handle Map type nodes."""
+        # Assuming Map is similar to Dictionary in your context
+        if hasattr(node, "key_type") and hasattr(node, "value_type"):
+            key_type = self.visit(node.key_type)
+            value_type = self.visit(node.value_type)
+            return f"Dict[{key_type}, {value_type}]"
+        else:
+            return "dict"
