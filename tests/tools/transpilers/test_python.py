@@ -788,3 +788,251 @@ def test_transpiler_classdefstmt() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_list() -> None:
+    """Test astx.LiteralList."""
+    # Create a LiteralList node with integer elements
+    literal_list_node = astx.LiteralList(
+        value=[
+            astx.LiteralInt32(1),
+            astx.LiteralInt32(2),
+            astx.LiteralInt32(3),
+        ]
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(literal_list_node)
+    expected_code = "[1, 2, 3]"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_tuple() -> None:
+    """Test astx.LiteralTuple."""
+    # Create a LiteralTuple node with integer elements
+    literal_tuple_node = astx.LiteralTuple(
+        value=(
+            astx.LiteralInt32(4),
+            astx.LiteralInt32(5),
+            astx.LiteralInt32(6),
+        )
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(literal_tuple_node)
+    expected_code = "(4, 5, 6)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_tuple_single_element() -> None:
+    """Test astx.LiteralTuple with a single element."""
+    literal_tuple_node = astx.LiteralTuple(value=(astx.LiteralInt32(7),))
+
+    generated_code = transpiler.visit(literal_tuple_node)
+    expected_code = "(7,)"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_set() -> None:
+    """Test astx.LiteralSet."""
+    # Create a LiteralSet node with integer elements
+    literal_set_node = astx.LiteralSet(
+        value={
+            astx.LiteralInt32(8),
+            astx.LiteralInt32(9),
+            astx.LiteralInt32(10),
+        }
+    )
+
+    generated_code = transpiler.visit(literal_set_node)
+    possible_expected_codes = [
+        "{8, 9, 10}",
+        "{8, 10, 9}",
+        "{9, 8, 10}",
+        "{9, 10, 8}",
+        "{10, 8, 9}",
+        "{10, 9, 8}",
+    ]
+
+    assert (
+        generated_code in possible_expected_codes
+    ), f"Expected one of {possible_expected_codes}, but got '{generated_code}'"
+
+
+def test_transpiler_literal_dictionary() -> None:
+    """Test astx.LiteralDictionary."""
+    # Create a LiteralDictionary node with key-value pairs
+    literal_dict_node = astx.LiteralDictionary(
+        value={
+            astx.LiteralUTF8String("key1"): astx.LiteralInt32(11),
+            astx.LiteralUTF8String("key2"): astx.LiteralInt32(12),
+        }
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(literal_dict_node)
+    possible_expected_codes = [
+        "{'key1': 11, 'key2': 12}",
+        "{'key2': 12, 'key1': 11}",
+    ]
+
+    assert (
+        generated_code in possible_expected_codes
+    ), f"Expected one of {possible_expected_codes}, but got '{generated_code}'"
+
+
+def test_transpiler_literal_dictionary_with_mixed_keys() -> None:
+    """Test astx.LiteralDictionary with mixed key types."""
+    # Create a LiteralDictionary node with mixed key types
+    literal_dict_node = astx.LiteralDictionary(
+        value={
+            astx.LiteralInt32(1): astx.LiteralUTF8String("one"),
+            astx.LiteralUTF8String("two"): astx.LiteralInt32(2),
+        }
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(literal_dict_node)
+    possible_expected_codes = [
+        "{1: 'one', 'two': 2}",
+        "{'two': 2, 1: 'one'}",
+    ]
+
+    assert (
+        generated_code in possible_expected_codes
+    ), f"Expected one of {possible_expected_codes}, but got '{generated_code}'"
+
+
+def test_transpiler_empty_literal_list() -> None:
+    """Test astx.LiteralList with no elements."""
+    # Create a LiteralList node with no elements
+    literal_list_node = astx.LiteralList(value=[])
+
+    # Generate Python code
+    generated_code = transpiler.visit(literal_list_node)
+    expected_code = "[]"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_empty_literal_tuple() -> None:
+    """Test astx.LiteralTuple with no elements."""
+    # Create a LiteralTuple node with no elements
+    literal_tuple_node = astx.LiteralTuple(value=())
+
+    # Generate Python code
+    generated_code = transpiler.visit(literal_tuple_node)
+    expected_code = "()"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_empty_literal_set() -> None:
+    """Test astx.LiteralSet with no elements."""
+    # Create a LiteralSet node with no elements
+    literal_set_node = astx.LiteralSet(value=set())
+
+    # Generate Python code
+    generated_code = transpiler.visit(literal_set_node)
+    expected_code = "set()"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_empty_literal_dictionary() -> None:
+    """Test astx.LiteralDictionary with no elements."""
+    # Create a LiteralDictionary node with no elements
+    literal_dict_node = astx.LiteralDictionary(value={})
+
+    # Generate Python code
+    generated_code = transpiler.visit(literal_dict_node)
+    expected_code = "{}"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_list_type() -> None:
+    """Test astx.List type node."""
+    # Create a List type node
+    list_type_node = astx.List()
+
+    # Generate Python code
+    generated_code = transpiler.visit(list_type_node)
+    expected_code = "list"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_tuple_type() -> None:
+    """Test astx.Tuple type node."""
+    # Create a Tuple type node
+    tuple_type_node = astx.Tuple()
+
+    # Generate Python code
+    generated_code = transpiler.visit(tuple_type_node)
+    expected_code = "tuple"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_set_type() -> None:
+    """Test astx.Set type node."""
+    # Create a Set type node
+    set_type_node = astx.Set()
+
+    # Generate Python code
+    generated_code = transpiler.visit(set_type_node)
+    expected_code = "set"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_dictionary_type() -> None:
+    """Test astx.Dictionary type node."""
+    # Create a Dictionary type node
+    dict_type_node = astx.Dictionary()
+
+    # Generate Python code
+    generated_code = transpiler.visit(dict_type_node)
+    expected_code = "dict"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_map_type() -> None:
+    """Test astx.Map type node."""
+    # Create a Map type node
+    map_type_node = astx.Map()
+
+    # Generate Python code
+    generated_code = transpiler.visit(map_type_node)
+    expected_code = "dict"  # or "map" depending on your desired output
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
