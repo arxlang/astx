@@ -9,6 +9,7 @@ from public import public
 from astx.base import ReprStruct
 from astx.literals.base import Literal
 from astx.tools.typing import typechecked
+from astx.types import Dictionary, List, Set, Tuple
 
 
 @public
@@ -20,6 +21,7 @@ class LiteralList(Literal):
         """Initialize a LiteralLis."""
         self.value = value
         self.loc = loc
+        self.type_ = List()
 
     def __str__(self) -> str:
         """Return a string representatin."""
@@ -40,6 +42,7 @@ class LiteralSet(Literal):
         """Initialize a LiteralSet."""
         self.value = value
         self.loc = loc
+        self.type_ = Set()
 
     def __str__(self) -> str:
         """Return a string representation."""
@@ -60,6 +63,7 @@ class LiteralMap(Literal):
         """Initialize a LiteralMap."""
         self.value = value
         self.loc = loc
+        self.type_ = Dictionary()
 
     def __str__(self) -> str:
         """Return a string representation."""
@@ -80,6 +84,7 @@ class LiteralTuple(Literal):
         """Initialize a LiteralTuple."""
         self.value = value
         self.loc = loc
+        self.type_ = Tuple()
 
     def __str__(self) -> str:
         """Return a string representation."""
@@ -100,6 +105,7 @@ class LiteralDictionary(Literal):
         """Initialize a LiteralDictionary."""
         self.value = value
         self.loc = loc
+        self.type_ = Dictionary()
 
     def __str__(self) -> str:
         """Return a string representation."""
