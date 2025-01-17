@@ -40,9 +40,11 @@ class LiteralList(Literal):
         self.loc = loc
 
     def __str__(self) -> str:
+        """Return a string representation of the list."""
         return f"LiteralList({self.elements})"
 
     def __repr__(self) -> str:
+        """Return a structural representation of the list."""
         return self.__str__()
 
 
@@ -73,9 +75,11 @@ class LiteralSet(Literal):
         self.loc = loc
 
     def __str__(self) -> str:
+        """Return a string representation of the set."""
         return f"LiteralSet({self.elements})"
 
     def __repr__(self) -> str:
+        """Return a structural representation of the set."""
         return self.__str__()
 
 
@@ -113,9 +117,11 @@ class LiteralMap(Literal):
         self.loc = loc
 
     def __str__(self) -> str:
+        """Represent the map as a string."""
         return f"LiteralMap({self.elements})"
 
     def __repr__(self) -> str:
+        """Return a structural representation of the map."""
         return self.__str__()
 
 
@@ -143,7 +149,9 @@ class LiteralTuple(Literal):
         self.loc = loc
 
     def __str__(self) -> str:
+        """Represent the tuple as a string."""
         return f"LiteralTuple({self.elements})"
 
     def __repr__(self) -> str:
+        """Return a structural representation of the tuple."""
         return self.__str__()

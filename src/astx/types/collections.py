@@ -28,9 +28,11 @@ class ListType(CollectionType):
         self.element_type = element_type
 
     def __str__(self) -> str:
+        """Return a structural representation of the list type."""
         return f"ListType[{self.element_type}]"
 
     def __repr__(self) -> str:
+        """Return a string representation of the list type."""
         return self.__str__()
 
 
@@ -44,16 +46,18 @@ class SetType(CollectionType):
         self.element_type = element_type
 
     def __str__(self) -> str:
+        """Return a Structural representation of the set type."""
         return f"SetType[{self.element_type}]"
 
     def __repr__(self) -> str:
+        """Return a string representation of the set type."""
         return self.__str__()
 
 
 @public
 @typechecked
 class MapType(CollectionType):
-    """Type representation of a map/dictionary with specific key and value types."""
+    """Type representation of a map/dictionary."""
 
     def __init__(self, key_type: AST, value_type: AST) -> None:
         super().__init__()
@@ -61,9 +65,11 @@ class MapType(CollectionType):
         self.value_type = value_type
 
     def __str__(self) -> str:
+        """Return a structural representation of the map type."""
         return f"MapType[{self.key_type}, {self.value_type}]"
 
     def __repr__(self) -> str:
+        """Return a string representation of the map type."""
         return self.__str__()
 
 
@@ -77,8 +83,10 @@ class TupleType(CollectionType):
         self.element_types = element_types
 
     def __str__(self) -> str:
+        """Return a string representation of the tuple."""
         types_str = ", ".join(str(t) for t in self.element_types)
         return f"TupleType[{types_str}]"
 
     def __repr__(self) -> str:
+        """Return a string representation of the tuple."""
         return self.__str__()
