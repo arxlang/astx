@@ -1,16 +1,24 @@
 """ASTx collection types module."""
 
 from __future__ import annotations
+
 from typing import List
+
+from public import public
+
 from astx.base import AST, DataType
-from astx.base.types import AnyType
 from astx.tools.typing import typechecked
 
+
+@public
 @typechecked
 class CollectionType(DataType):
     """Base class for collection types."""
+
     pass
 
+
+@public
 @typechecked
 class ListType(CollectionType):
     """Type representation of a list of elements of a specific type."""
@@ -25,6 +33,8 @@ class ListType(CollectionType):
     def __repr__(self) -> str:
         return self.__str__()
 
+
+@public
 @typechecked
 class SetType(CollectionType):
     """Type representation of a set of elements of a specific type."""
@@ -39,6 +49,8 @@ class SetType(CollectionType):
     def __repr__(self) -> str:
         return self.__str__()
 
+
+@public
 @typechecked
 class MapType(CollectionType):
     """Type representation of a map/dictionary with specific key and value types."""
@@ -54,6 +66,8 @@ class MapType(CollectionType):
     def __repr__(self) -> str:
         return self.__str__()
 
+
+@public
 @typechecked
 class TupleType(CollectionType):
     """Type representation of a tuple of elements of specific types."""

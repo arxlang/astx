@@ -1,21 +1,31 @@
 """Tests for Collections number data types."""
 
-from typing import List, Set, Tuple, Dict
-import pytest
-from astx.literals.collections import LiteralList, LiteralSet, LiteralMap, LiteralTuple
-from astx.literals.numeric import LiteralInt32
+from typing import Dict, List, Set, Tuple
+
 from astx.literals.base import Literal
-from astx.types.collections import ListType, SetType, MapType, TupleType
+from astx.literals.collections import (
+    LiteralList,
+    LiteralMap,
+    LiteralSet,
+    LiteralTuple,
+)
+from astx.literals.numeric import LiteralInt32
+from astx.types.collections import ListType, MapType, SetType, TupleType
 from astx.types.numeric import Int32
-from astx.base import AST, NO_SOURCE_LOCATION
+
 
 def test_literal_list_creation() -> None:
-    elements: List[Literal] = [LiteralInt32(1), LiteralInt32(2), LiteralInt32(3)]
+    elements: List[Literal] = [
+        LiteralInt32(1),
+        LiteralInt32(2),
+        LiteralInt32(3),
+    ]
     lit_list = LiteralList(elements)
     assert isinstance(lit_list, LiteralList)
     assert isinstance(lit_list.type_, ListType)
     assert isinstance(lit_list.type_.element_type, Int32)
     assert lit_list.elements == elements
+
 
 def test_literal_list_binary_operation_addition() -> None:
     elements1: List[Literal] = [LiteralInt32(1), LiteralInt32(2)]
@@ -28,8 +38,13 @@ def test_literal_list_binary_operation_addition() -> None:
     assert isinstance(combined_list.type_, ListType)
     assert isinstance(combined_list.type_.element_type, Int32)
 
+
 def test_literal_list_unary_operation_negation() -> None:
-    elements: List[Literal] = [LiteralInt32(1), LiteralInt32(2), LiteralInt32(3)]
+    elements: List[Literal] = [
+        LiteralInt32(1),
+        LiteralInt32(2),
+        LiteralInt32(3),
+    ]
     lit_list = LiteralList(elements)
     reversed_list = -lit_list
     assert isinstance(reversed_list, LiteralList)
@@ -37,13 +52,17 @@ def test_literal_list_unary_operation_negation() -> None:
     assert isinstance(reversed_list.type_, ListType)
     assert isinstance(reversed_list.type_.element_type, Int32)
 
+
 def test_literal_set_creation() -> None:
-    elements: Set[Literal] = set([LiteralInt32(1), LiteralInt32(2), LiteralInt32(3)])
+    elements: Set[Literal] = set(
+        [LiteralInt32(1), LiteralInt32(2), LiteralInt32(3)]
+    )
     lit_set = LiteralSet(elements)
     assert isinstance(lit_set, LiteralSet)
     assert isinstance(lit_set.type_, SetType)
     assert isinstance(lit_set.type_.element_type, Int32)
     assert lit_set.elements == elements
+
 
 def test_literal_set_binary_operation_union() -> None:
     elements1: Set[Literal] = set([LiteralInt32(1), LiteralInt32(2)])
@@ -57,22 +76,35 @@ def test_literal_set_binary_operation_union() -> None:
     assert isinstance(union_set.type_, SetType)
     assert isinstance(union_set.type_.element_type, Int32)
 
+
 def test_literal_tuple_creation() -> None:
-    elements: Tuple[Literal, ...] = (LiteralInt32(1), LiteralInt32(2), LiteralInt32(3))
+    elements: Tuple[Literal, ...] = (
+        LiteralInt32(1),
+        LiteralInt32(2),
+        LiteralInt32(3),
+    )
     lit_tuple = LiteralTuple(elements)
     assert isinstance(lit_tuple, LiteralTuple)
     assert isinstance(lit_tuple.type_, TupleType)
     assert all(isinstance(t, Int32) for t in lit_tuple.type_.element_types)
     assert lit_tuple.elements == elements
 
+
 def test_literal_tuple_unary_operation_negation() -> None:
-    elements: Tuple[Literal, ...] = (LiteralInt32(1), LiteralInt32(2), LiteralInt32(3))
+    elements: Tuple[Literal, ...] = (
+        LiteralInt32(1),
+        LiteralInt32(2),
+        LiteralInt32(3),
+    )
     lit_tuple = LiteralTuple(elements)
     reversed_tuple = -lit_tuple
     assert isinstance(reversed_tuple, LiteralTuple)
     assert reversed_tuple.elements == tuple(reversed(elements))
     assert isinstance(reversed_tuple.type_, TupleType)
-    assert all(isinstance(t, Int32) for t in reversed_tuple.type_.element_types)
+    assert all(
+        isinstance(t, Int32) for t in reversed_tuple.type_.element_types
+    )
+
 
 def test_literal_map_creation() -> None:
     elements: Dict[Literal, Literal] = {
@@ -85,6 +117,7 @@ def test_literal_map_creation() -> None:
     assert isinstance(lit_map.type_.key_type, Int32)
     assert isinstance(lit_map.type_.value_type, Int32)
     assert lit_map.elements == elements
+
 
 def test_literal_map_binary_operation_merge() -> None:
     elements1: Dict[Literal, Literal] = {

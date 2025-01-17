@@ -1,13 +1,18 @@
 """ASTX literal representations of collection types."""
 
 from __future__ import annotations
-from typing import List, Set, Tuple, Dict
-from astx.base import SourceLocation, NO_SOURCE_LOCATION, AST
-from astx.literals.base import Literal
-from astx.types.base import AnyType
-from astx.types.collections import ListType, SetType, MapType, TupleType
-from astx.tools.typing import typechecked
 
+from typing import Dict, List, Set, Tuple
+
+from astx.base import AST, NO_SOURCE_LOCATION, SourceLocation
+from astx.literals.base import Literal
+from astx.tools.typing import typechecked
+from astx.types.base import AnyType
+from astx.types.collections import ListType, MapType, SetType, TupleType
+
+from public import public
+
+@public
 @typechecked
 class LiteralList(Literal):
     """Literal representation of a list."""
@@ -15,9 +20,7 @@ class LiteralList(Literal):
     elements: List[Literal]
 
     def __init__(
-        self,
-        elements: List[Literal],
-        loc: SourceLocation = NO_SOURCE_LOCATION
+        self, elements: List[Literal], loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         super().__init__(loc)
         self.elements = elements
@@ -37,6 +40,8 @@ class LiteralList(Literal):
     def __repr__(self) -> str:
         return self.__str__()
 
+
+@public
 @typechecked
 class LiteralSet(Literal):
     """Literal representation of a set."""
@@ -44,9 +49,7 @@ class LiteralSet(Literal):
     elements: Set[Literal]
 
     def __init__(
-        self,
-        elements: Set[Literal],
-        loc: SourceLocation = NO_SOURCE_LOCATION
+        self, elements: Set[Literal], loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         super().__init__(loc)
         self.elements = elements
@@ -66,6 +69,8 @@ class LiteralSet(Literal):
     def __repr__(self) -> str:
         return self.__str__()
 
+
+@public
 @typechecked
 class LiteralMap(Literal):
     """Literal representation of a map/dictionary."""
@@ -75,7 +80,7 @@ class LiteralMap(Literal):
     def __init__(
         self,
         elements: Dict[Literal, Literal],
-        loc: SourceLocation = NO_SOURCE_LOCATION
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         super().__init__(loc)
         self.elements = elements
@@ -101,6 +106,8 @@ class LiteralMap(Literal):
     def __repr__(self) -> str:
         return self.__str__()
 
+
+@public
 @typechecked
 class LiteralTuple(Literal):
     """Literal representation of a tuple."""
@@ -110,7 +117,7 @@ class LiteralTuple(Literal):
     def __init__(
         self,
         elements: Tuple[Literal, ...],
-        loc: SourceLocation = NO_SOURCE_LOCATION
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         super().__init__(loc)
         self.elements = elements
