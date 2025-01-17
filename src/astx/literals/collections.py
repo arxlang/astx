@@ -6,7 +6,11 @@ from typing import Any
 
 from public import public
 
-from astx.base import ReprStruct
+from astx.base import (
+    NO_SOURCE_LOCATION,
+    ReprStruct,
+    SourceLocation,
+)
 from astx.literals.base import Literal
 from astx.tools.typing import typechecked
 from astx.types import Dictionary, List, Set, Tuple
@@ -17,8 +21,11 @@ from astx.types import Dictionary, List, Set, Tuple
 class LiteralList(Literal):
     """Represents a literal list."""
 
-    def __init__(self, value: list[Any], loc: Any = None) -> None:
+    def __init__(
+        self, value: list[Any], loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
         """Initialize a LiteralLis."""
+        super().__init__(loc)
         self.value = value
         self.loc = loc
         self.type_ = List()
@@ -38,7 +45,9 @@ class LiteralList(Literal):
 class LiteralSet(Literal):
     """Represents a literal set."""
 
-    def __init__(self, value: set[Any], loc: Any = None) -> None:
+    def __init__(
+        self, value: set[Any], loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
         """Initialize a LiteralSet."""
         self.value = value
         self.loc = loc
@@ -59,7 +68,9 @@ class LiteralSet(Literal):
 class LiteralMap(Literal):
     """Represents a literal map."""
 
-    def __init__(self, value: dict[Any, Any], loc: Any = None) -> None:
+    def __init__(
+        self, value: dict[Any, Any], loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
         """Initialize a LiteralMap."""
         self.value = value
         self.loc = loc
@@ -80,7 +91,9 @@ class LiteralMap(Literal):
 class LiteralTuple(Literal):
     """Represents a literal tuple."""
 
-    def __init__(self, value: tuple[Any, ...], loc: Any = None) -> None:
+    def __init__(
+        self, value: tuple[Any, ...], loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
         """Initialize a LiteralTuple."""
         self.value = value
         self.loc = loc
@@ -101,7 +114,9 @@ class LiteralTuple(Literal):
 class LiteralDictionary(Literal):
     """Represents a literal dictionary."""
 
-    def __init__(self, value: dict[Any, Any], loc: Any = None) -> None:
+    def __init__(
+        self, value: dict[Any, Any], loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
         """Initialize a LiteralDictionary."""
         self.value = value
         self.loc = loc
