@@ -4,13 +4,14 @@ from __future__ import annotations
 
 from typing import Dict, List, Set, Tuple
 
+from public import public
+
 from astx.base import AST, NO_SOURCE_LOCATION, SourceLocation
 from astx.literals.base import Literal
 from astx.tools.typing import typechecked
 from astx.types.base import AnyType
 from astx.types.collections import ListType, MapType, SetType, TupleType
 
-from public import public
 
 @public
 @typechecked
@@ -20,14 +21,18 @@ class LiteralList(Literal):
     elements: List[Literal]
 
     def __init__(
-        self, elements: List[Literal], loc: SourceLocation = NO_SOURCE_LOCATION
+        self,
+        elements: List[Literal],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         super().__init__(loc)
         self.elements = elements
-        element_types = {elem.type_ for elem in elements}
 
-        if len(element_types) == 1:
-            element_type: AST = element_types.pop()
+        element_type_classes = {type(elem.type_) for elem in elements}
+
+        if len(element_type_classes) == 1:
+            element_type_class = element_type_classes.pop()
+            element_type: AST = element_type_class()
         else:
             element_type = AnyType()
 
@@ -49,14 +54,18 @@ class LiteralSet(Literal):
     elements: Set[Literal]
 
     def __init__(
-        self, elements: Set[Literal], loc: SourceLocation = NO_SOURCE_LOCATION
+        self,
+        elements: Set[Literal],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         super().__init__(loc)
         self.elements = elements
-        element_types = {elem.type_ for elem in elements}
 
-        if len(element_types) == 1:
-            element_type: AST = element_types.pop()
+        element_type_classes = {type(elem.type_) for elem in elements}
+
+        if len(element_type_classes) == 1:
+            element_type_class = element_type_classes.pop()
+            element_type: AST = element_type_class()
         else:
             element_type = AnyType()
 
@@ -84,16 +93,19 @@ class LiteralMap(Literal):
     ) -> None:
         super().__init__(loc)
         self.elements = elements
-        key_types = {key.type_ for key in elements}
-        value_types = {value.type_ for value in elements.values()}
 
-        if len(key_types) == 1:
-            key_type: AST = key_types.pop()
+        key_type_classes = {type(key.type_) for key in elements.keys()}
+        value_type_classes = {type(value.type_) for value in elements.values()}
+
+        if len(key_type_classes) == 1:
+            key_type_class = key_type_classes.pop()
+            key_type: AST = key_type_class()
         else:
             key_type = AnyType()
 
-        if len(value_types) == 1:
-            value_type: AST = value_types.pop()
+        if len(value_type_classes) == 1:
+            value_type_class = value_type_classes.pop()
+            value_type: AST = value_type_class()
         else:
             value_type = AnyType()
 
@@ -121,7 +133,12 @@ class LiteralTuple(Literal):
     ) -> None:
         super().__init__(loc)
         self.elements = elements
-        element_types: List[AST] = [elem.type_ for elem in elements]
+
+        element_type_classes = [type(elem.type_) for elem in elements]
+        element_types: List[AST] = [
+            type_class() for type_class in element_type_classes
+        ]
+
         self.type_ = TupleType(element_types)
         self.loc = loc
 
