@@ -3,6 +3,7 @@
 from astx.base import DataType
 from astx.blocks import Block
 from astx.callables import Arguments, Function, FunctionPrototype
+
 from astx.classes import (
     ClassDeclStmt,
     ClassDefStmt,
@@ -11,6 +12,7 @@ from astx.classes import (
     StructDefStmt,
 )
 from astx.literals import LiteralInt32
+
 from astx.types.base import AnyType
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize
@@ -67,7 +69,6 @@ def test_class_def() -> None:
     assert class_def.get_struct(simplified=True)
     visualize(class_def.get_struct())
 
-
 def test_enum_decl() -> None:
     """Test `EnumDeclStmt` class."""
     # Enum attributes
@@ -103,7 +104,8 @@ def test_enum_decl() -> None:
 
 def test_struct_decl() -> None:
     """Test `StructDeclStmt` class."""
-    # Define struct fields
+
+    # Define struct attributes
     attr1 = VariableDeclaration(name="id", type_=DataType())
 
     attr2 = VariableDeclaration(name="value", type_=DataType())
@@ -114,7 +116,7 @@ def test_struct_decl() -> None:
     # Create struct declaration
     struct_decl = StructDeclStmt(
         name="DataPoint",
-        attributes=[attr1, attr2],
+        attributes = [attr1, attr2],
         decorators=[decorator1],
     )
 
