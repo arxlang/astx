@@ -42,6 +42,8 @@ from astx.classes import (
     ClassDeclStmt,
     ClassDefStmt,
     EnumDeclStmt,
+    StructDeclStmt,
+    StructDefStmt,
 )
 from astx.flows import (
     ForCountLoopExpr,
@@ -245,6 +247,8 @@ __all__ = [
     "ClassDefStmt",
     "ClassDeclStmt",
     "EnumDeclStmt",
+    "StructDeclStmt",
+    "StructDefStmt",
     "LiteralComplex",
     "LiteralComplex32",
     "LiteralComplex64",

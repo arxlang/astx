@@ -3,8 +3,18 @@
 from astx.base import DataType
 from astx.blocks import Block
 from astx.callables import Arguments, Function, FunctionPrototype
+<<<<<<< HEAD
 from astx.classes import ClassDeclStmt, ClassDefStmt, EnumDeclStmt
 from astx.literals.numeric import LiteralInt32
+=======
+from astx.classes import (
+    ClassDeclStmt,
+    ClassDefStmt,
+    StructDeclStmt,
+    StructDefStmt,
+)
+from astx.literals import LiteralInt32
+>>>>>>> afc48b5 (add structdecl and structdef classes)
 from astx.types.base import AnyType
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize
@@ -61,7 +71,6 @@ def test_class_def() -> None:
     assert class_def.get_struct(simplified=True)
     visualize(class_def.get_struct())
 
-
 def test_enum_decl() -> None:
     """Test `EnumDeclStmt` class."""
     # Enum attributes
@@ -93,3 +102,49 @@ def test_enum_decl() -> None:
     assert enum_decl.get_struct()
     assert enum_decl.get_struct(simplified=True)
     visualize(enum_decl.get_struct())
+
+def test_struct_decl() -> None:
+    """Test `StructDeclStmt` class."""
+    # Define struct fields
+    field1 = VariableDeclaration(name="id", type_=DataType())
+
+    field2 = VariableDeclaration(name="value", type_=DataType())
+
+    # create decorator
+    decorator1 = Variable(name="decorator_one")
+
+    # Create struct declaration
+    struct_decl = StructDeclStmt(
+        name="DataPoint",
+        fields=[field1, field2],
+        decorators=[decorator1],
+    )
+
+    assert str(struct_decl)
+    assert struct_decl.get_struct()
+    assert struct_decl.get_struct(simplified=True)
+    visualize(struct_decl.get_struct())
+
+
+def test_struct_def() -> None:
+    """Test `StructDefStmt` class."""
+    # Define struct fields
+    field1 = VariableDeclaration(name="id", type_=DataType())
+
+    field2 = VariableDeclaration(name="value", type_=DataType())
+
+    # create decorator
+    decorator1 = Variable(name="decorator_one")
+
+    # Create struct declaration
+    struct_def = StructDefStmt(
+        name="DataPoint",
+        fields=[field1, field2],
+        decorators=[decorator1],
+    )
+
+    assert str(struct_def)
+    assert struct_def.get_struct()
+    assert struct_def.get_struct(simplified=True)
+    visualize(struct_def.get_struct())
+
