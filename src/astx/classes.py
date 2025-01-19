@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 
-from typing import Iterable, Optional, cast
+from typing import Dict, Iterable, Optional, cast
 
 from public import public
 
@@ -20,9 +20,12 @@ from astx.base import (
 )
 from astx.blocks import Block
 from astx.callables import Function
+from astx.literals.numeric import LiteralInt32
 from astx.modifiers import VisibilityKind
 from astx.tools.typing import typechecked
 from astx.variables import VariableDeclaration
+
+# from astx.literals import LiteralInt32
 
 
 @public
@@ -217,4 +220,62 @@ class ClassDefStmt(ClassDeclStmt):
         if self.body != CLASS_BODY_DEFAULT:
             value["body"] = self.body.get_struct(simplified)
 
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class EnumDeclStmt(StatementType):
+    """AST class for enum declaration."""
+
+    name: str
+    # attributes: ASTNodes
+    attributes: Dict[str, int | str | float | LiteralInt32]
+    visibility: VisibilityKind
+
+    def __init__(
+        self,
+        name: str,
+        # attributes: Iterable[VariableDeclaration],# | ASTNodes = {},
+        attributes: Dict[str, int | str | float | LiteralInt32],
+        visibility: VisibilityKind = VisibilityKind.public,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize EnumDeclStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.name = name
+        self.attributes = attributes
+        self.visibility = visibility
+        self.kind = ASTKind.EnumDeclStmtKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        visibility_str = (
+            self.visibility.name.lower()
+            if self.visibility != VisibilityKind.public
+            else ""
+        )
+        enum_header = f"{visibility_str} enum {self.name}".strip()
+        attrs_str = ",\n    ".join(
+            f"{key} = {value}" for key, value in self.attributes.items()
+        )
+        return f"{enum_header} {{\n    {attrs_str}\n}}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
+        key = f"ENUM-DECL[{vis[self.visibility.name]}{self.name}]"
+
+        value = cast(
+            ReprStruct,
+            {
+                "attributes": {
+                    k: v
+                    if isinstance(v, (int, float, str))
+                    else v.get_struct(simplified)
+                    for k, v in self.attributes.items()
+                },
+            },
+        )
         return self._prepare_struct(key, value, simplified)

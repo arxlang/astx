@@ -76,6 +76,11 @@ class ASTxPythonTranspiler:
         class_type = "(ABC)" if node.is_abstract else ""
         return f"class {node.name}{class_type}:" f"\n {self.visit(node.body)}"
 
+    # @dispatch  # type: ignore[no-redef]
+    # def visit(self, node: astx.EnumDeclStmt) -> str:
+    #     """Handle EnumDeclStmt nodes."""
+    #     return f"class {node.name}(Enum): \n {self.visit(node.attributes)}"
+
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeLoopExpr nodes."""
