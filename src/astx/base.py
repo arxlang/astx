@@ -159,6 +159,9 @@ class ASTKind(Enum):
     ClassDefStmtKind = -900
     ClassDeclStmtKind = -901
 
+    StructDeclStmtKind = -903
+    StructDefStmtKind = -904
+
 
 class ASTMeta(type):
     def __str__(cls) -> str:
