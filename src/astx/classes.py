@@ -107,6 +107,7 @@ class ClassDeclStmt(StatementType):
         return f"{decorators_str}{modifiers_str} {class_str}".strip()
 
     def _get_struct_wrapper(self, simplified: bool) -> DictDataTypesStruct:
+        """Return the AST structure of the object."""
         bases_dict: ReprStruct = {}
         decors_dict: ReprStruct = {}
         metaclass_dict: ReprStruct = {}
@@ -217,4 +218,135 @@ class ClassDefStmt(ClassDeclStmt):
         if self.body != CLASS_BODY_DEFAULT:
             value["body"] = self.body.get_struct(simplified)
 
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class StructDeclStmt(StatementType):
+    """AST class for struct declaration."""
+
+    name: str
+    fields: Iterable[VariableDeclaration]
+    visibility: VisibilityKind
+    decorators: ASTNodes
+    methods: ASTNodes
+
+    def __init__(
+        self,
+        name: str,
+        fields: Iterable[VariableDeclaration],
+        decorators: Iterable[Expr] | ASTNodes = [],
+        methods: Iterable[Function] | ASTNodes = [],
+        visibility: VisibilityKind = VisibilityKind.public,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize StructDeclStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.name = name
+        self.fields = fields
+
+        if isinstance(decorators, ASTNodes):
+            self.decorators = decorators
+        else:
+            self.decorators = ASTNodes()
+            for decorator in decorators:
+                self.decorators.append(decorator)
+
+        self.methods = ASTNodes()
+        for m in methods:
+            self.methods.append(m)
+
+        self.visibility = visibility
+        self.kind = ASTKind.StructDeclStmtKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        decorators_str = "".join(
+            f"@{decorator}\n" for decorator in self.decorators
+        )
+        visibility_str = (
+            self.visibility.name.lower()
+            if self.visibility != VisibilityKind.public
+            else ""
+        )
+        struct_header = f"{visibility_str} struct {self.name}".strip()
+        fields_str = "\n    ".join(str(field) for field in self.fields)
+        return f"{decorators_str}{struct_header} {{\n    {fields_str}\n}}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
+        key = f"STRUCT-DECL[{vis[self.visibility.name]}{self.name}]"
+
+        decors_dict: ReprStruct = {}
+        if self.decorators:
+            decors_dict = {
+                "decorators": self.decorators.get_struct(simplified)
+            }
+
+        value: DictDataTypesStruct = {
+            "fields": [field.get_struct(simplified) for field in self.fields],
+            **cast(DictDataTypesStruct, decors_dict),
+        }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class StructDefStmt(StructDeclStmt):
+    """AST class for struct definition."""
+
+    def __init__(
+        self,
+        name: str,
+        fields: Iterable[VariableDeclaration],
+        decorators: Iterable[Expr] | ASTNodes = [],
+        methods: Iterable[Function] | ASTNodes = [],
+        visibility: VisibilityKind = VisibilityKind.public,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize StructDefStmt instance."""
+        super().__init__(
+            name=name,
+            fields=fields,
+            decorators=decorators,
+            methods=methods,
+            visibility=visibility,
+            loc=loc,
+            parent=parent,
+        )
+        self.kind = ASTKind.StructDefStmtKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        decorators_str = "".join(
+            f"@{decorator}\n" for decorator in self.decorators
+        )
+        visibility_str = (
+            self.visibility.name.lower()
+            if self.visibility != VisibilityKind.public
+            else ""
+        )
+        struct_header = f"{visibility_str} struct {self.name}".strip()
+        fields_str = "\n    ".join(str(field) for field in self.fields)
+        return f"{decorators_str}{struct_header} {{\n    {fields_str}\n}}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
+        key = f"STRUCT-DEF[{vis[self.visibility.name]}{self.name}]"
+
+        decors_dict: ReprStruct = {}
+        if self.decorators:
+            decors_dict = {
+                "decorators": self.decorators.get_struct(simplified)
+            }
+
+        value: DictDataTypesStruct = {
+            "fields": [field.get_struct(simplified) for field in self.fields],
+            **cast(DictDataTypesStruct, decors_dict),
+        }
         return self._prepare_struct(key, value, simplified)
