@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Set, Tuple, Type
 
 from public import public
 
@@ -28,13 +28,18 @@ class LiteralList(Literal):
         super().__init__(loc)
         self.elements = elements
 
-        # Collect the unique element types from the elements
-        element_types: List[AST] = list({elem.type_ for elem in elements})
+        # Collect the unique type classes from the elements
+        type_classes: Set[Type[AST]] = {type(elem.type_) for elem in elements}
+
+        # Create instances of these types
+        element_types: List[AST] = [
+            type_class() for type_class in type_classes
+        ]
 
         # Sort the element types based on their string representation
         element_types.sort(key=lambda t: str(t))
 
-        # Assign the type_ attribute to a ListTyp
+        # Assign the type_ attribute to a ListType
         self.type_ = ListType(element_types)
         self.loc = loc
 

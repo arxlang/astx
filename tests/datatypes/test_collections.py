@@ -38,11 +38,11 @@ def test_literal_list_creation() -> None:
     assert isinstance(lit_list, LiteralList)
     assert isinstance(lit_list.type_, ListType)
     element_types = lit_list.type_.element_types
-    # Assert that there is exactly one element type
+    # After fixing deduplication, element_types should have length 1
     assert (
         len(element_types) == 1
     ), f"Expected 1 element type, got {len(element_types)}"
-    # Assert that the element type is Int32
+    # Check that the single element type is Int32
     assert isinstance(
         element_types[0], Int32
     ), f"Expected element type Int32, got {type(element_types[0])}"
