@@ -21,15 +21,21 @@ class CollectionType(DataType):
 @public
 @typechecked
 class ListType(CollectionType):
-    """Type representation of a list of elements of a specific type."""
+    """Type representation of a list of elements of specific types."""
 
-    def __init__(self, element_type: AST) -> None:
+    def __init__(self, element_types: List[AST]) -> None:
         super().__init__()
-        self.element_type = element_type
+        self.element_types = (
+            element_types  # Ensure this attribute is correctly defined
+        )
 
     def __str__(self) -> str:
         """Return a structural representation of the list type."""
-        return f"ListType[{self.element_type}]"
+        if not self.element_types:
+            element_types_str = "AnyType"
+        else:
+            element_types_str = ", ".join(str(t) for t in self.element_types)
+        return f"ListType[{element_types_str}]"
 
     def __repr__(self) -> str:
         """Return a string representation of the list type."""

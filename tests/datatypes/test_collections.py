@@ -37,7 +37,7 @@ def test_literal_list_creation() -> None:
     lit_list = LiteralList(elements)
     assert isinstance(lit_list, LiteralList)
     assert isinstance(lit_list.type_, ListType)
-    assert isinstance(lit_list.type_.element_type, Int32)
+    assert isinstance(lit_list.type_.element_types, Int32)
     assert lit_list.elements == elements
 
 

@@ -28,23 +28,22 @@ class LiteralList(Literal):
         super().__init__(loc)
         self.elements = elements
 
-        element_type_classes = {type(elem.type_) for elem in elements}
+        # Collect the unique element types from the elements
+        element_types: List[AST] = list({elem.type_ for elem in elements})
 
-        if len(element_type_classes) == 1:
-            element_type_class = element_type_classes.pop()
-            element_type: AST = element_type_class()
-        else:
-            element_type = AnyType()
+        # Sort the element types based on their string representation
+        element_types.sort(key=lambda t: str(t))
 
-        self.type_ = ListType(element_type)
+        # Assign the type_ attribute to a ListTyp
+        self.type_ = ListType(element_types)
         self.loc = loc
 
     def __str__(self) -> str:
-        """Return a string representation of the list."""
+        """Return a string representation of the literal list."""
         return f"LiteralList({self.elements})"
 
     def __repr__(self) -> str:
-        """Return a structural representation of the list."""
+        """Return a string representation of the literal list."""
         return self.__str__()
 
 
