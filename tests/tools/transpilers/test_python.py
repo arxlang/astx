@@ -819,3 +819,20 @@ def test_transpiler_enumdeclstmt() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_variabledeclaration() -> None:
+    """Test astx.VariableDeclaration."""
+    var_r = astx.VariableDeclaration(
+        name="RED",
+        type_=astx.DataType(),
+        value=astx.LiteralInt32(1),
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(var_r)
+    expected_code = "RED: Int32 = 1"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
