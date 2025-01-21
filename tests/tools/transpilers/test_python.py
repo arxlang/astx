@@ -788,3 +788,34 @@ def test_transpiler_classdefstmt() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_enumdeclstmt() -> None:
+    """Test astx.ClassDeclStmt."""
+    # Enum attributes
+    var_r = astx.VariableDeclaration(
+        name="RED",
+        type_=astx.DataType(),
+        value=astx.LiteralInt32(1),
+    )
+
+    var_g = astx.VariableDeclaration(
+        name="GREEN",
+        type_=astx.DataType(),
+        value=astx.LiteralInt32(2),
+    )
+
+    enum_decl = astx.EnumDeclStmt(
+        name="Color",
+        attributes=[var_r, var_g],
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(enum_decl)
+    expected_code = (
+        "class Color(Enum):\n    RED: Int32 = 1\n    GREEN: Int32 = 2"
+    )
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
