@@ -35,7 +35,7 @@ class LiteralString(Literal):
         return f"LiteralString({self.value})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the object in a simplified."""
+        """Return the AST structure of the object."""
         key = f"LiteralString: {self.value}"
         value = self.value
         return self._prepare_struct(key, value, simplified)

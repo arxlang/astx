@@ -20,7 +20,6 @@ UTF8_STRING_LITERAL_CLASSES = [
     astx.LiteralUTF8String,
 ]
 
-
 def test_variable() -> None:
     """Test variable UTF-8 character and string."""
     var_a = Variable("a")

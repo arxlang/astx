@@ -38,6 +38,7 @@ from astx.types.operators import (
 )
 from astx.types.string import (
     UTF8Char,
+    String,
     UTF8String,
 )
 from astx.types.temporal import (
@@ -77,6 +78,7 @@ __all__ = [
     "UInt8",
     "UnaryOp",
     "UTF8Char",
+    "String",
     "UTF8String",
     "UnsignedInteger",
     "TypeCastExpr",

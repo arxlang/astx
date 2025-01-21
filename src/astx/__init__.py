@@ -77,6 +77,7 @@ from astx.literals import (
     LiteralUInt64,
     LiteralUInt128,
     LiteralUTF8Char,
+    LiteralString,
     LiteralUTF8String,
 )
 from astx.mixes import (
@@ -129,6 +130,7 @@ from astx.types import (
     UnaryOp,
     UnsignedInteger,
     UTF8Char,
+    String,
     UTF8String,
 )
 from astx.variables import (
@@ -247,8 +249,10 @@ __all__ = [
     "LiteralComplex32",
     "LiteralComplex64",
     "LiteralUTF8Char",
+    "LiteralString",
     "LiteralUTF8String",
     "UTF8Char",
+    "String",
     "UTF8String",
     "Date",
     "DateTime",
