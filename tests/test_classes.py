@@ -65,16 +65,28 @@ def test_class_def() -> None:
 def test_enum_decl() -> None:
     """Test `EnumDeclStmt` class."""
     # Enum attributes
-    enum_attrs = {
-        "RED": LiteralInt32(1),
-        "GREEN": LiteralInt32(2),
-        "BLUE": LiteralInt32(3),
-    }
+    var_r = VariableDeclaration(
+        name="RED",
+        type_=DataType(),
+        value=LiteralInt32(1),
+    )
+
+    var_g = VariableDeclaration(
+        name="GREEN",
+        type_=DataType(),
+        value=LiteralInt32(2),
+    )
+
+    var_b = VariableDeclaration(
+        name="BLUE",
+        type_=DataType(),
+        value=LiteralInt32(3),
+    )
 
     # Create an enum declaration
     enum_decl = EnumDeclStmt(
         name="Color",
-        attributes=enum_attrs,
+        attributes=[var_r, var_g, var_b],
     )
 
     assert str(enum_decl)
