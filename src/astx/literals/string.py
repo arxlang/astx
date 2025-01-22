@@ -43,7 +43,7 @@ class LiteralString(Literal):
 
 @public
 @typechecked
-class LiteralUTF8String(Literal):
+class LiteralUTF8String(LiteralString):
     """Literal class for UTF-8 strings."""
 
     value: str
@@ -67,7 +67,7 @@ class LiteralUTF8String(Literal):
 
 @public
 @typechecked
-class LiteralUTF8Char(Literal):
+class LiteralUTF8Char(LiteralString):
     """Literal class for UTF-8 characters."""
 
     value: str
