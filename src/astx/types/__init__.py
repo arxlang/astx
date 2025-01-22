@@ -37,6 +37,7 @@ from astx.types.operators import (
     UnaryOp,
 )
 from astx.types.string import (
+    String,
     UTF8Char,
     UTF8String,
 )
@@ -77,6 +78,7 @@ __all__ = [
     "UInt8",
     "UnaryOp",
     "UTF8Char",
+    "String",
     "UTF8String",
     "UnsignedInteger",
     "TypeCastExpr",

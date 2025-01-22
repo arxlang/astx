@@ -10,6 +10,12 @@ from astx.types.base import AnyType
 
 @public
 @typechecked
+class String(AnyType):
+    """Base class for strings."""
+
+
+@public
+@typechecked
 class UTF8String(AnyType):
     """Class for UTF-8 encoded strings."""
 
