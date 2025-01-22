@@ -25,8 +25,8 @@ from astx.literals.numeric import (
     LiteralUInt128,
 )
 from astx.literals.string import (
-    LiteralUTF8Char,
     LiteralString,
+    LiteralUTF8Char,
     LiteralUTF8String,
 )
 from astx.literals.temporal import (

@@ -37,8 +37,8 @@ from astx.types.operators import (
     UnaryOp,
 )
 from astx.types.string import (
-    UTF8Char,
     String,
+    UTF8Char,
     UTF8String,
 )
 from astx.types.temporal import (

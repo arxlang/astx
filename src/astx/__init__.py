@@ -69,6 +69,7 @@ from astx.literals import (
     LiteralInt32,
     LiteralInt64,
     LiteralInt128,
+    LiteralString,
     LiteralTime,
     LiteralTimestamp,
     LiteralUInt8,
@@ -77,7 +78,6 @@ from astx.literals import (
     LiteralUInt64,
     LiteralUInt128,
     LiteralUTF8Char,
-    LiteralString,
     LiteralUTF8String,
 )
 from astx.mixes import (
@@ -119,6 +119,7 @@ from astx.types import (
     Integer,
     Number,
     SignedInteger,
+    String,
     Time,
     Timestamp,
     TypeCastExpr,
@@ -130,7 +131,6 @@ from astx.types import (
     UnaryOp,
     UnsignedInteger,
     UTF8Char,
-    String,
     UTF8String,
 )
 from astx.variables import (
