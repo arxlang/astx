@@ -234,6 +234,7 @@ __all__ = [
     "Variable",
     "variables",
     "VisibilityKind",
+    "WalrusOp",
     "WhileStmt",
     "WhileExpr",
     "Complex",

@@ -349,6 +349,11 @@ class ASTxPythonTranspiler:
         condition = self.visit(node.condition)
         body = self.visit(node.body)
         return f"[{body} for _ in iter(lambda: {condition}, False)]"
+    
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.WalrusOp) -> str:
+        """Handle Walrus operator."""
+        return f"({node.lhs} := {self.visit(node.rhs)})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileStmt) -> str:
