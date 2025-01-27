@@ -69,6 +69,7 @@ def test_class_def() -> None:
     assert class_def.get_struct(simplified=True)
     visualize(class_def.get_struct())
 
+
 def test_enum_decl() -> None:
     """Test `EnumDeclStmt` class."""
     # Enum attributes
