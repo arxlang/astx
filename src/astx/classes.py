@@ -24,8 +24,6 @@ from astx.modifiers import VisibilityKind
 from astx.tools.typing import typechecked
 from astx.variables import VariableDeclaration
 
-# from astx.literals import LiteralInt32
-
 
 @public
 @typechecked
@@ -231,7 +229,6 @@ class EnumDeclStmt(StatementType):
 
     name: str
     attributes: ASTNodes
-    # attributes: Dict[str, int | str | float | LiteralInt32] # old
     visibility: VisibilityKind
 
     def __init__(
@@ -239,7 +236,6 @@ class EnumDeclStmt(StatementType):
         name: str,
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
-        # attributes: Dict[str, int | str | float | LiteralInt32], # old
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -252,7 +248,6 @@ class EnumDeclStmt(StatementType):
         for a in attributes:
             self.attributes.append(a)
 
-        # self.attributes = attributes # old
         self.visibility = visibility
         self.kind = ASTKind.EnumDeclStmtKind
 
@@ -264,16 +259,8 @@ class EnumDeclStmt(StatementType):
             else ""
         )
         enum_header = f"{visibility_str} enum {self.name}".strip()
-
-        # attrs_str = ",\n    ".join( # I think this would be ideal
-        #     f"{attr.name} = {attr.value}" for attr in self.attributes
-        # )
-
         attrs_str = ",\n    ".join(f"{attr}" for attr in self.attributes)
 
-        # attrs_str = ",\n    ".join( # if attrs was a dict
-        #     f"{key} = {value}" for key, value in self.attributes.items()
-        # )
         return f"{enum_header} {{\n    {attrs_str}\n}}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -289,15 +276,4 @@ class EnumDeclStmt(StatementType):
             **cast(DictDataTypesStruct, attrs_dict),
         }
 
-        # value = cast( # if attrs was a dict
-        #     ReprStruct,
-        #     {
-        #         "attributes": {
-        #             k: v
-        #             if isinstance(v, (int, float, str))
-        #             else v.get_struct(simplified)
-        #             for k, v in self.attributes.items()
-        #         },
-        #     },
-        # )
         return self._prepare_struct(key, value, simplified)
