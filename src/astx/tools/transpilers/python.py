@@ -287,6 +287,12 @@ class ASTxPythonTranspiler:
         return repr(node.value)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.StructDeclStmt) -> str:
+        """Handle StructDeclStmt nodes."""
+        fields_str = "\n    ".join(self.visit(field) for field in node.fields)
+        return f"@dataclass {node.name}:\n    {fields_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:
         """Handle Complex32 nodes."""
         return "Complex"
