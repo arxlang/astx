@@ -107,7 +107,6 @@ def test_struct_decl() -> None:
 
     # Define struct attributes
     attr1 = VariableDeclaration(name="id", type_=DataType())
-
     attr2 = VariableDeclaration(name="value", type_=DataType())
 
     # create decorator
