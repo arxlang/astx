@@ -272,6 +272,7 @@ class EnumDeclStmt(StatementType):
         attrs_str = ",\n    ".join(f"{attr}" for attr in self.attributes)
 
         return f"{enum_header} {{\n    {attrs_str}\n}}"
+
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
