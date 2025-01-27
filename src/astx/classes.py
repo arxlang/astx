@@ -263,6 +263,7 @@ class EnumDeclStmt(StatementType):
         attrs_str = ",\n    ".join(f"{attr}" for attr in self.attributes)
 
         return f"{enum_header} {{\n    {attrs_str}\n}}"
+
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
@@ -284,7 +285,7 @@ class StructDeclStmt(StatementType):
     """AST class for struct declaration."""
 
     name: str
-    attributes: Iterable[VariableDeclaration]
+    attributes: ASTNodes
     visibility: VisibilityKind
     decorators: ASTNodes
     methods: ASTNodes
@@ -292,7 +293,8 @@ class StructDeclStmt(StatementType):
     def __init__(
         self,
         name: str,
-        attributes: Iterable[VariableDeclaration],
+        attributes: Iterable[VariableDeclaration]
+        | ASTNodes[VariableDeclaration] = [],
         decorators: Iterable[Expr] | ASTNodes = [],
         methods: Iterable[Function] | ASTNodes = [],
         visibility: VisibilityKind = VisibilityKind.public,
@@ -302,7 +304,10 @@ class StructDeclStmt(StatementType):
         """Initialize StructDeclStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.name = name
-        self.attributes = attributes
+
+        self.attributes = ASTNodes()
+        for a in attributes:
+            self.attributes.append(a)
 
         if isinstance(decorators, ASTNodes):
             self.decorators = decorators
@@ -343,12 +348,26 @@ class StructDeclStmt(StatementType):
                 "decorators": self.decorators.get_struct(simplified)
             }
 
+        attrs_dict: ReprStruct = {}
+        if self.attributes:
+            attrs_dict = {"attributes": self.attributes.get_struct(simplified)}
+
+        methods_dict: ReprStruct = {}
+        if self.methods:
+            methods_dict = {"methods": self.methods.get_struct(simplified)}
+
         value: DictDataTypesStruct = {
-            "attributes": [
-                attr.get_struct(simplified) for attr in self.attributes
-            ],
             **cast(DictDataTypesStruct, decors_dict),
+            **cast(DictDataTypesStruct, attrs_dict),
+            **cast(DictDataTypesStruct, methods_dict),
         }
+
+        # value: DictDataTypesStruct = {
+        #     "attributes": [
+        #         attr.get_struct(simplified) for attr in self.attributes
+        #     ],
+        #     **cast(DictDataTypesStruct, decors_dict),
+        # }
         return self._prepare_struct(key, value, simplified)
 
 
@@ -360,7 +379,8 @@ class StructDefStmt(StructDeclStmt):
     def __init__(
         self,
         name: str,
-        attributes: Iterable[VariableDeclaration],
+        attributes: Iterable[VariableDeclaration]
+        | ASTNodes[VariableDeclaration] = [],
         decorators: Iterable[Expr] | ASTNodes = [],
         methods: Iterable[Function] | ASTNodes = [],
         visibility: VisibilityKind = VisibilityKind.public,
@@ -404,11 +424,24 @@ class StructDefStmt(StructDeclStmt):
                 "decorators": self.decorators.get_struct(simplified)
             }
 
-        value: DictDataTypesStruct = {
-            "attributes": [
-                attr.get_struct(simplified) for attr in self.attributes
-            ],
-            **cast(DictDataTypesStruct, decors_dict),
-        }
-        return self._prepare_struct(key, value, simplified)
+        attrs_dict: ReprStruct = {}
+        if self.attributes:
+            attrs_dict = {"attributes": self.attributes.get_struct(simplified)}
 
+        methods_dict: ReprStruct = {}
+        if self.methods:
+            methods_dict = {"methods": self.methods.get_struct(simplified)}
+
+        value: DictDataTypesStruct = {
+            **cast(DictDataTypesStruct, decors_dict),
+            **cast(DictDataTypesStruct, attrs_dict),
+            **cast(DictDataTypesStruct, methods_dict),
+        }
+
+        # value: DictDataTypesStruct = {
+        #     "attributes": [
+        #         attr.get_struct(simplified) for attr in self.attributes
+        #     ],
+        #     **cast(DictDataTypesStruct, decors_dict),
+        # }
+        return self._prepare_struct(key, value, simplified)
