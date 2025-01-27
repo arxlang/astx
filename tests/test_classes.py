@@ -3,18 +3,14 @@
 from astx.base import DataType
 from astx.blocks import Block
 from astx.callables import Arguments, Function, FunctionPrototype
-<<<<<<< HEAD
-from astx.classes import ClassDeclStmt, ClassDefStmt, EnumDeclStmt
-from astx.literals.numeric import LiteralInt32
-=======
 from astx.classes import (
     ClassDeclStmt,
     ClassDefStmt,
+    EnumDeclStmt,
     StructDeclStmt,
     StructDefStmt,
 )
 from astx.literals import LiteralInt32
->>>>>>> afc48b5 (add structdecl and structdef classes)
 from astx.types.base import AnyType
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize
@@ -71,6 +67,7 @@ def test_class_def() -> None:
     assert class_def.get_struct(simplified=True)
     visualize(class_def.get_struct())
 
+
 def test_enum_decl() -> None:
     """Test `EnumDeclStmt` class."""
     # Enum attributes
@@ -102,6 +99,7 @@ def test_enum_decl() -> None:
     assert enum_decl.get_struct()
     assert enum_decl.get_struct(simplified=True)
     visualize(enum_decl.get_struct())
+
 
 def test_struct_decl() -> None:
     """Test `StructDeclStmt` class."""
@@ -147,4 +145,3 @@ def test_struct_def() -> None:
     assert struct_def.get_struct()
     assert struct_def.get_struct(simplified=True)
     visualize(struct_def.get_struct())
-
