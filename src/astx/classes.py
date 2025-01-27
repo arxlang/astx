@@ -47,7 +47,8 @@ class ClassDeclStmt(StatementType):
         visibility: VisibilityKind = VisibilityKind.public,
         is_abstract: bool = False,
         metaclass: Optional[Expr] = None,
-        attributes: Iterable[VariableDeclaration] | ASTNodes = [],
+        attributes: Iterable[VariableDeclaration]
+        | ASTNodes[VariableDeclaration] = [],
         methods: Iterable[Function] | ASTNodes = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -171,7 +172,8 @@ class ClassDefStmt(ClassDeclStmt):
         visibility: VisibilityKind = VisibilityKind.public,
         is_abstract: bool = False,
         metaclass: Optional[Expr] = None,
-        attributes: Iterable[VariableDeclaration] | ASTNodes = [],
+        attributes: Iterable[VariableDeclaration]
+        | ASTNodes[VariableDeclaration] = [],
         methods: Iterable[Function] | ASTNodes = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -216,5 +218,62 @@ class ClassDefStmt(ClassDeclStmt):
 
         if self.body != CLASS_BODY_DEFAULT:
             value["body"] = self.body.get_struct(simplified)
+
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class EnumDeclStmt(StatementType):
+    """AST class for enum declaration."""
+
+    name: str
+    attributes: ASTNodes
+    visibility: VisibilityKind
+
+    def __init__(
+        self,
+        name: str,
+        attributes: Iterable[VariableDeclaration]
+        | ASTNodes[VariableDeclaration] = [],
+        visibility: VisibilityKind = VisibilityKind.public,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize EnumDeclStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.name = name
+
+        self.attributes = ASTNodes()
+        for a in attributes:
+            self.attributes.append(a)
+
+        self.visibility = visibility
+        self.kind = ASTKind.EnumDeclStmtKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        visibility_str = (
+            self.visibility.name.lower()
+            if self.visibility != VisibilityKind.public
+            else ""
+        )
+        enum_header = f"{visibility_str} enum {self.name}".strip()
+        attrs_str = ",\n    ".join(f"{attr}" for attr in self.attributes)
+
+        return f"{enum_header} {{\n    {attrs_str}\n}}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
+        key = f"ENUM-DECL[{vis[self.visibility.name]}{self.name}]"
+
+        attrs_dict: ReprStruct = {}
+        if self.attributes:
+            attrs_dict = {"attributes": self.attributes.get_struct(simplified)}
+
+        value = {
+            **cast(DictDataTypesStruct, attrs_dict),
+        }
 
         return self._prepare_struct(key, value, simplified)

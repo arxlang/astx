@@ -11,12 +11,39 @@ from astx.base import (
 )
 from astx.literals.base import Literal
 from astx.tools.typing import typechecked
-from astx.types.string import UTF8Char, UTF8String
+from astx.types.string import String, UTF8Char, UTF8String
 
 
 @public
 @typechecked
-class LiteralUTF8String(Literal):
+class LiteralString(Literal):
+    """LiteralString data type class."""
+
+    value: str
+
+    def __init__(
+        self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralString."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = String()
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"LiteralString({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = f"LiteralString: {self.value}"
+        value = self.value
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class LiteralUTF8String(LiteralString):
     """Literal class for UTF-8 strings."""
 
     value: str
@@ -24,10 +51,8 @@ class LiteralUTF8String(Literal):
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value=value, loc=loc)
         self.type_ = UTF8String()
-        self.loc = loc
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
@@ -42,7 +67,7 @@ class LiteralUTF8String(Literal):
 
 @public
 @typechecked
-class LiteralUTF8Char(Literal):
+class LiteralUTF8Char(LiteralString):
     """Literal class for UTF-8 characters."""
 
     value: str
@@ -50,10 +75,8 @@ class LiteralUTF8Char(Literal):
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value=value, loc=loc)
         self.type_ = UTF8Char()
-        self.loc = loc
 
     def __str__(self) -> str:
         """Return a string representation of the object."""

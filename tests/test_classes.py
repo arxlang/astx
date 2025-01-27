@@ -3,8 +3,8 @@
 from astx.base import DataType
 from astx.blocks import Block
 from astx.callables import Arguments, Function, FunctionPrototype
-from astx.classes import ClassDeclStmt, ClassDefStmt
-from astx.literals import LiteralInt32
+from astx.classes import ClassDeclStmt, ClassDefStmt, EnumDeclStmt
+from astx.literals.numeric import LiteralInt32
 from astx.types.base import AnyType
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize
@@ -60,3 +60,36 @@ def test_class_def() -> None:
     assert class_def.get_struct()
     assert class_def.get_struct(simplified=True)
     visualize(class_def.get_struct())
+
+
+def test_enum_decl() -> None:
+    """Test `EnumDeclStmt` class."""
+    # Enum attributes
+    var_r = VariableDeclaration(
+        name="RED",
+        type_=DataType(),
+        value=LiteralInt32(1),
+    )
+
+    var_g = VariableDeclaration(
+        name="GREEN",
+        type_=DataType(),
+        value=LiteralInt32(2),
+    )
+
+    var_b = VariableDeclaration(
+        name="BLUE",
+        type_=DataType(),
+        value=LiteralInt32(3),
+    )
+
+    # Create an enum declaration
+    enum_decl = EnumDeclStmt(
+        name="Color",
+        attributes=[var_r, var_g, var_b],
+    )
+
+    assert str(enum_decl)
+    assert enum_decl.get_struct()
+    assert enum_decl.get_struct(simplified=True)
+    visualize(enum_decl.get_struct())

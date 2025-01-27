@@ -77,6 +77,12 @@ class ASTxPythonTranspiler:
         return f"class {node.name}{class_type}:" f"\n {self.visit(node.body)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.EnumDeclStmt) -> str:
+        """Handle EnumDeclStmt nodes."""
+        attr_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
+        return f"class {node.name}(Enum):\n    {attr_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeLoopExpr nodes."""
         return (
@@ -342,6 +348,12 @@ class ASTxPythonTranspiler:
         target = node.name
         value = self.visit(node.value)
         return f"{target} = {value}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.VariableDeclaration) -> str:
+        """Handle VariableDeclaration nodes."""
+        value = self.visit(node.value)
+        return f"{node.name}: {node.value.type_.__class__.__name__} = {value}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:

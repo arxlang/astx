@@ -25,6 +25,7 @@ from astx.literals.numeric import (
     LiteralUInt128,
 )
 from astx.literals.string import (
+    LiteralString,
     LiteralUTF8Char,
     LiteralUTF8String,
 )
@@ -59,5 +60,6 @@ __all__ = [
     "LiteralTime",
     "LiteralTimestamp",
     "LiteralUTF8Char",
+    "LiteralString",
     "LiteralUTF8String",
 ]
