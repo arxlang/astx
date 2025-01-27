@@ -284,7 +284,7 @@ class StructDeclStmt(StatementType):
     """AST class for struct declaration."""
 
     name: str
-    fields: Iterable[VariableDeclaration]
+    attributes: Iterable[VariableDeclaration]
     visibility: VisibilityKind
     decorators: ASTNodes
     methods: ASTNodes
@@ -292,7 +292,7 @@ class StructDeclStmt(StatementType):
     def __init__(
         self,
         name: str,
-        fields: Iterable[VariableDeclaration],
+        attributes: Iterable[VariableDeclaration],
         decorators: Iterable[Expr] | ASTNodes = [],
         methods: Iterable[Function] | ASTNodes = [],
         visibility: VisibilityKind = VisibilityKind.public,
@@ -302,7 +302,7 @@ class StructDeclStmt(StatementType):
         """Initialize StructDeclStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.name = name
-        self.fields = fields
+        self.attributes = attributes
 
         if isinstance(decorators, ASTNodes):
             self.decorators = decorators
@@ -329,8 +329,8 @@ class StructDeclStmt(StatementType):
             else ""
         )
         struct_header = f"{visibility_str} struct {self.name}".strip()
-        fields_str = "\n    ".join(str(field) for field in self.fields)
-        return f"{decorators_str}{struct_header} {{\n    {fields_str}\n}}"
+        attributes_str = "\n    ".join(str(attr) for attr in self.attributes)
+        return f"{decorators_str}{struct_header} {{\n    {attributes_str}\n}}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -344,7 +344,9 @@ class StructDeclStmt(StatementType):
             }
 
         value: DictDataTypesStruct = {
-            "fields": [field.get_struct(simplified) for field in self.fields],
+            "attributes": [
+                attr.get_struct(simplified) for attr in self.attributes
+            ],
             **cast(DictDataTypesStruct, decors_dict),
         }
         return self._prepare_struct(key, value, simplified)
@@ -358,7 +360,7 @@ class StructDefStmt(StructDeclStmt):
     def __init__(
         self,
         name: str,
-        fields: Iterable[VariableDeclaration],
+        attributes: Iterable[VariableDeclaration],
         decorators: Iterable[Expr] | ASTNodes = [],
         methods: Iterable[Function] | ASTNodes = [],
         visibility: VisibilityKind = VisibilityKind.public,
@@ -368,7 +370,7 @@ class StructDefStmt(StructDeclStmt):
         """Initialize StructDefStmt instance."""
         super().__init__(
             name=name,
-            fields=fields,
+            attributes=attributes,
             decorators=decorators,
             methods=methods,
             visibility=visibility,
@@ -388,8 +390,8 @@ class StructDefStmt(StructDeclStmt):
             else ""
         )
         struct_header = f"{visibility_str} struct {self.name}".strip()
-        fields_str = "\n    ".join(str(field) for field in self.fields)
-        return f"{decorators_str}{struct_header} {{\n    {fields_str}\n}}"
+        attributes_str = "\n    ".join(str(attr) for attr in self.attributes)
+        return f"{decorators_str}{struct_header} {{\n    {attributes_str}\n}}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -403,7 +405,9 @@ class StructDefStmt(StructDeclStmt):
             }
 
         value: DictDataTypesStruct = {
-            "fields": [field.get_struct(simplified) for field in self.fields],
+            "attributes": [
+                attr.get_struct(simplified) for attr in self.attributes
+            ],
             **cast(DictDataTypesStruct, decors_dict),
         }
         return self._prepare_struct(key, value, simplified)

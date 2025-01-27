@@ -106,9 +106,9 @@ def test_enum_decl() -> None:
 def test_struct_decl() -> None:
     """Test `StructDeclStmt` class."""
     # Define struct fields
-    field1 = VariableDeclaration(name="id", type_=DataType())
+    attr1 = VariableDeclaration(name="id", type_=DataType())
 
-    field2 = VariableDeclaration(name="value", type_=DataType())
+    attr2 = VariableDeclaration(name="value", type_=DataType())
 
     # create decorator
     decorator1 = Variable(name="decorator_one")
@@ -116,7 +116,7 @@ def test_struct_decl() -> None:
     # Create struct declaration
     struct_decl = StructDeclStmt(
         name="DataPoint",
-        fields=[field1, field2],
+        attributes=[attr1, attr2],
         decorators=[decorator1],
     )
 
@@ -129,9 +129,9 @@ def test_struct_decl() -> None:
 def test_struct_def() -> None:
     """Test `StructDefStmt` class."""
     # Define struct fields
-    field1 = VariableDeclaration(name="id", type_=DataType())
+    attr1 = VariableDeclaration(name="id", type_=DataType())
 
-    field2 = VariableDeclaration(name="value", type_=DataType())
+    attr2 = VariableDeclaration(name="value", type_=DataType())
 
     # create decorator
     decorator1 = Variable(name="decorator_one")
@@ -139,7 +139,7 @@ def test_struct_def() -> None:
     # Create struct declaration
     struct_def = StructDefStmt(
         name="DataPoint",
-        fields=[field1, field2],
+        attributes=[attr1, attr2],
         decorators=[decorator1],
     )
 
