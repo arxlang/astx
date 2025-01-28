@@ -1,5 +1,7 @@
 """ASTx Python transpiler."""
 
+from typing import Union
+
 from plum import dispatch
 
 import astx
@@ -285,6 +287,14 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.LiteralUTF8Char) -> str:
         """Handle LiteralUTF8Char nodes."""
         return repr(node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(
+        self, node: Union[astx.StructDeclStmt, astx.StructDefStmt]
+    ) -> str:
+        """Handle StructDeclStmt and StructDefStmt nodes."""
+        attrs_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
+        return f"@dataclass \nclass {node.name}:\n    {attrs_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:
