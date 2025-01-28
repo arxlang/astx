@@ -14,3 +14,9 @@ from astx.tools.typing import typechecked
 @typechecked
 class AnyType(DataType):
     """Generic data type expression."""
+
+
+@public
+@typechecked
+class NoneType(DataType):
+    """NoneType data type expression."""
