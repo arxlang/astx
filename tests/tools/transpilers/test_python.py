@@ -840,7 +840,7 @@ def test_transpiler_variabledeclaration() -> None:
 
 def test_transpiler_structdeclstmt() -> None:
     """Test astx.StructDeclStmt."""
-    # Define struct fields
+    # Define struct attributes
     attr1 = astx.VariableDeclaration(
         name="id",
         type_=astx.DataType(),
@@ -865,7 +865,44 @@ def test_transpiler_structdeclstmt() -> None:
     # Generate Python code
     generated_code = transpiler.visit(struct_decl)
     expected_code = (
-        "@dataclass \nDataPoint:\n    id: Int32 = 3\n    value: Int32 = 1"
+        "@dataclass \nclass DataPoint:\n    id: Int32 = 3\n    "
+        "value: Int32 = 1"
+    )
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_structdefstmt() -> None:
+    """Test astx.StructDefStmt."""
+    # Define struct attributes
+    attr1 = astx.VariableDeclaration(
+        name="id",
+        type_=astx.DataType(),
+        value=astx.LiteralInt32(3),
+    )
+
+    attr2 = astx.VariableDeclaration(
+        name="value",
+        type_=astx.DataType(),
+        value=astx.LiteralInt32(1),
+    )
+
+    decorator1 = astx.Variable(name="decorator_one")
+
+    # Create struct declaration
+    struct_def = astx.StructDefStmt(
+        name="DataPoint",
+        attributes=[attr1, attr2],
+        decorators=[decorator1],
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(struct_def)
+    expected_code = (
+        "@dataclass \nclass DataPoint:\n    id: Int32 = 3\n    "
+        "value: Int32 = 1"
     )
 
     assert (
