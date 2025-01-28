@@ -294,7 +294,7 @@ class ASTxPythonTranspiler:
     ) -> str:
         """Handle StructDeclStmt and StructDefStmt nodes."""
         attrs_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
-        return f"@dataclass \n{node.name}:\n    {attrs_str}"
+        return f"@dataclass \nclass {node.name}:\n    {attrs_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:
