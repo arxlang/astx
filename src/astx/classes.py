@@ -31,25 +31,25 @@ class ClassDeclStmt(StatementType):
     """AST class for class declaration."""
 
     name: str
-    bases: ASTNodes
-    decorators: ASTNodes
+    bases: ASTNodes[Expr]
+    decorators: ASTNodes[Expr]
     visibility: VisibilityKind
     is_abstract: bool
     metaclass: Optional[Expr]
-    attributes: ASTNodes
-    methods: ASTNodes
+    attributes: ASTNodes[VariableDeclaration]
+    methods: ASTNodes[Function]
 
     def __init__(
         self,
         name: str,
-        bases: Iterable[Expr] | ASTNodes = [],
-        decorators: Iterable[Expr] | ASTNodes = [],
+        bases: Iterable[Expr] | ASTNodes[Expr] = [],
+        decorators: Iterable[Expr] | ASTNodes[Expr] = [],
         visibility: VisibilityKind = VisibilityKind.public,
         is_abstract: bool = False,
         metaclass: Optional[Expr] = None,
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
-        methods: Iterable[Function] | ASTNodes = [],
+        methods: Iterable[Function] | ASTNodes[Function] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -67,17 +67,23 @@ class ClassDeclStmt(StatementType):
         if isinstance(decorators, ASTNodes):
             self.decorators = decorators
         else:
-            self.decorators = ASTNodes()
+            self.decorators = ASTNodes[Expr]()
             for decorator in decorators:
                 self.decorators.append(decorator)
 
-        self.attributes = ASTNodes()
-        for a in attributes:
-            self.attributes.append(a)
+        if isinstance(attributes, ASTNodes):
+            self.attributes = attributes
+        else:
+            self.attributes = ASTNodes[VariableDeclaration]()
+            for a in attributes:
+                self.attributes.append(a)
 
-        self.methods = ASTNodes()
-        for m in methods:
-            self.methods.append(m)
+        if isinstance(methods, ASTNodes):
+            self.methods = methods
+        else:
+            self.methods = ASTNodes[Function]()
+            for m in methods:
+                self.methods.append(m)
 
         self.visibility = visibility
         self.is_abstract = is_abstract
@@ -167,15 +173,15 @@ class ClassDefStmt(ClassDeclStmt):
     def __init__(
         self,
         name: str,
-        bases: Iterable[Expr] | ASTNodes = [],
-        decorators: Iterable[Expr] | ASTNodes = [],
+        bases: Iterable[Expr] | ASTNodes[Expr] = [],
+        decorators: Iterable[Expr] | ASTNodes[Expr] = [],
         body: Block = CLASS_BODY_DEFAULT,
         visibility: VisibilityKind = VisibilityKind.public,
         is_abstract: bool = False,
         metaclass: Optional[Expr] = None,
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
-        methods: Iterable[Function] | ASTNodes = [],
+        methods: Iterable[Function] | ASTNodes[Function] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -229,7 +235,7 @@ class EnumDeclStmt(StatementType):
     """AST class for enum declaration."""
 
     name: str
-    attributes: ASTNodes
+    attributes: ASTNodes[VariableDeclaration]
     visibility: VisibilityKind
 
     def __init__(
@@ -245,9 +251,12 @@ class EnumDeclStmt(StatementType):
         super().__init__(loc=loc, parent=parent)
         self.name = name
 
-        self.attributes = ASTNodes()
-        for a in attributes:
-            self.attributes.append(a)
+        if isinstance(attributes, ASTNodes):
+            self.attributes = attributes
+        else:
+            self.attributes = ASTNodes[VariableDeclaration]()
+            for a in attributes:
+                self.attributes.append(a)
 
         self.visibility = visibility
         self.kind = ASTKind.EnumDeclStmtKind
@@ -285,18 +294,18 @@ class StructDeclStmt(StatementType):
     """AST class for struct declaration."""
 
     name: str
-    attributes: ASTNodes
+    attributes: ASTNodes[VariableDeclaration]
     visibility: VisibilityKind
-    decorators: ASTNodes
-    methods: ASTNodes
+    decorators: ASTNodes[Expr]
+    methods: ASTNodes[Function]
 
     def __init__(
         self,
         name: str,
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
-        decorators: Iterable[Expr] | ASTNodes = [],
-        methods: Iterable[Function] | ASTNodes = [],
+        decorators: Iterable[Expr] | ASTNodes[Expr] = [],
+        methods: Iterable[Function] | ASTNodes[Function] = [],
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -305,20 +314,26 @@ class StructDeclStmt(StatementType):
         super().__init__(loc=loc, parent=parent)
         self.name = name
 
-        self.attributes = ASTNodes()
-        for a in attributes:
-            self.attributes.append(a)
+        if isinstance(attributes, ASTNodes):
+            self.attributes = attributes
+        else:
+            self.attributes = ASTNodes[VariableDeclaration]()
+            for a in attributes:
+                self.attributes.append(a)
 
         if isinstance(decorators, ASTNodes):
             self.decorators = decorators
         else:
-            self.decorators = ASTNodes()
+            self.decorators = ASTNodes[Expr]()
             for decorator in decorators:
                 self.decorators.append(decorator)
 
-        self.methods = ASTNodes()
-        for m in methods:
-            self.methods.append(m)
+        if isinstance(methods, ASTNodes):
+            self.methods = methods
+        else:
+            self.methods = ASTNodes[Function]()
+            for m in methods:
+                self.methods.append(m)
 
         self.visibility = visibility
         self.kind = ASTKind.StructDeclStmtKind
@@ -362,12 +377,6 @@ class StructDeclStmt(StatementType):
             **cast(DictDataTypesStruct, methods_dict),
         }
 
-        # value: DictDataTypesStruct = {
-        #     "attributes": [
-        #         attr.get_struct(simplified) for attr in self.attributes
-        #     ],
-        #     **cast(DictDataTypesStruct, decors_dict),
-        # }
         return self._prepare_struct(key, value, simplified)
 
 
@@ -381,8 +390,8 @@ class StructDefStmt(StructDeclStmt):
         name: str,
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
-        decorators: Iterable[Expr] | ASTNodes = [],
-        methods: Iterable[Function] | ASTNodes = [],
+        decorators: Iterable[Expr] | ASTNodes[Expr] = [],
+        methods: Iterable[Function] | ASTNodes[Function] = [],
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -438,10 +447,4 @@ class StructDefStmt(StructDeclStmt):
             **cast(DictDataTypesStruct, methods_dict),
         }
 
-        # value: DictDataTypesStruct = {
-        #     "attributes": [
-        #         attr.get_struct(simplified) for attr in self.attributes
-        #     ],
-        #     **cast(DictDataTypesStruct, decors_dict),
-        # }
         return self._prepare_struct(key, value, simplified)
