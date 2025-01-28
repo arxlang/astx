@@ -101,6 +101,7 @@ from astx.packages import (
     Program,
     Target,
 )
+from astx.subscript import SubscriptExpr
 from astx.types import (
     BinaryOp,
     Boolean,
@@ -142,7 +143,6 @@ from astx.variables import (
     VariableDeclaration,
 )
 
-from astx.subscript import SubscriptExpr
 
 def get_version() -> str:
     """Return the program version."""
