@@ -142,6 +142,7 @@ from astx.variables import (
     VariableDeclaration,
 )
 
+from astx.subscript import SubscriptExpr
 
 def get_version() -> str:
     """Return the program version."""
@@ -229,6 +230,7 @@ __all__ = [
     "SignedInteger",
     "SourceLocation",
     "StatementType",
+    "SubscriptExpr",
     "symbol_table",
     "Target",
     "TypeCastExpr",
