@@ -163,3 +163,26 @@ class BinaryOp(DataTypeOps):
 
         content: ReprStruct = {**lhs, **rhs}
         return self._prepare_struct(key, content, simplified)
+@public
+@typechecked
+class WalrusOp(BinaryOp):
+    """AST class for the Walrus operator."""
+    def __init__(
+        self,
+        lhs: str,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize the WalrusOp instance."""
+        super().__init__(op_code=":=", lhs=lhs, rhs=rhs, loc=loc)
+        self.kind = ASTKind.WalrusOpKind
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"WalrusOp[:=]({self.lhs},{self.rhs})"
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure that represents the object."""
+        key = "WALRUS[:=]"
+        lhs = {"lhs": self.lhs.get_struct(simplified)}
+        rhs = {"rhs": self.rhs.get_struct(simplified)}
+        content: ReprStruct = {**lhs, **rhs}
+        return self._prepare_struct(key, content, simplified)
