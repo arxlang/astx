@@ -1,5 +1,7 @@
 """ASTx Python transpiler."""
 
+from typing import Union
+
 from plum import dispatch
 
 import astx
@@ -75,6 +77,12 @@ class ASTxPythonTranspiler:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
         return f"class {node.name}{class_type}:" f"\n {self.visit(node.body)}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.EnumDeclStmt) -> str:
+        """Handle EnumDeclStmt nodes."""
+        attr_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
+        return f"class {node.name}(Enum):\n    {attr_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
@@ -281,6 +289,14 @@ class ASTxPythonTranspiler:
         return repr(node.value)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(
+        self, node: Union[astx.StructDeclStmt, astx.StructDefStmt]
+    ) -> str:
+        """Handle StructDeclStmt and StructDefStmt nodes."""
+        attrs_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
+        return f"@dataclass \nclass {node.name}:\n    {attrs_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:
         """Handle Complex32 nodes."""
         return "Complex"
@@ -342,6 +358,12 @@ class ASTxPythonTranspiler:
         target = node.name
         value = self.visit(node.value)
         return f"{target} = {value}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.VariableDeclaration) -> str:
+        """Handle VariableDeclaration nodes."""
+        value = self.visit(node.value)
+        return f"{node.name}: {node.value.type_.__class__.__name__} = {value}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:

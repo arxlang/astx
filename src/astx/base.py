@@ -158,6 +158,10 @@ class ASTKind(Enum):
     # classes
     ClassDefStmtKind = -900
     ClassDeclStmtKind = -901
+    EnumDeclStmtKind = -902
+
+    StructDeclStmtKind = -903
+    StructDefStmtKind = -904
 
 
 class ASTMeta(type):
