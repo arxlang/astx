@@ -908,3 +908,45 @@ def test_transpiler_structdefstmt() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_subscriptexpr_upper_lower() -> None:
+    """Test astx.SubscriptExpr."""
+    # Variable
+    a_var = astx.Variable(name="a")
+
+    # SubscriptExpr
+    subscr_expr = astx.SubscriptExpr(
+        value=a_var,
+        lower=astx.LiteralInt32(0),
+        upper=astx.LiteralInt32(10),
+        step=astx.LiteralInt32(2),
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(subscr_expr)
+    expected_code = "a[0:10:2]"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_subscriptexpr_index() -> None:
+    """Test astx.SubscriptExpr."""
+    # Variable
+    a_var = astx.Variable(name="a")
+
+    # SubscriptExpr
+    subscr_expr = astx.SubscriptExpr(
+        value=a_var,
+        index=astx.LiteralInt32(0),
+    )
+
+    # Generate Python code
+    generated_code = transpiler.visit(subscr_expr)
+    expected_code = "a[0]"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"

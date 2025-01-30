@@ -297,6 +297,16 @@ class ASTxPythonTranspiler:
         return f"@dataclass \nclass {node.name}:\n    {attrs_str}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.SubscriptExpr) -> str:
+        """Handle SubscriptExpr nodes."""
+        lower_str = (
+            str(node.lower.value) if node.lower else str(node.index.value)
+        )
+        upper_str = ":" + str(node.upper.value) if node.upper else ""
+        step_str = ":" + str(node.step.value) if node.step else ""
+        return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:
         """Handle Complex32 nodes."""
         return "Complex"
