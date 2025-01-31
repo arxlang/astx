@@ -13,6 +13,7 @@ from astx.base import (
     ReprStruct,
     SourceLocation,
 )
+from astx.literals import LiteralNone
 from astx.tools.typing import typechecked
 
 
@@ -22,10 +23,10 @@ class SubscriptExpr(Expr):
     """AST class for subscript expressions."""
 
     value: Expr
-    index: Optional[Expr]
-    lower: Optional[Expr]
-    upper: Optional[Expr]
-    step: Optional[Expr]
+    index: Expr
+    lower: Expr
+    upper: Expr
+    step: Expr
 
     def __init__(
         self,
@@ -53,17 +54,17 @@ class SubscriptExpr(Expr):
             The upper bound of the slice (exclusive).
         step (optional): Expr
             The step size for the slice.
-        loc:
+        loc: SourceLocation
             The source location of the expression.
         parent (optional): ASTNodes
             The parent AST node.
         """
         super().__init__(loc=loc, parent=parent)
-        self.value = value
-        self.index = index
-        self.lower = lower
-        self.upper = upper
-        self.step = step
+        self.value: Expr = value if value is not None else LiteralNone()
+        self.index: Expr = index if index is not None else LiteralNone()
+        self.lower: Expr = lower if lower is not None else LiteralNone()
+        self.upper: Expr = upper if upper is not None else LiteralNone()
+        self.step: Expr = step if step is not None else LiteralNone()
         self.kind = ASTKind.SubscriptExprKind
 
     def __str__(self) -> str:

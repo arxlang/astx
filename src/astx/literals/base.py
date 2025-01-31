@@ -44,14 +44,15 @@ class Literal(DataTypeOps):
 
 
 @public
+@typechecked
 class LiteralNone(Literal):
     """LiteralNone data type."""
 
-    type_: ExprType
-    
+    type_: NoneType
+    value = None
+
     def __init__(self, loc: SourceLocation = NO_SOURCE_LOCATION) -> None:
         """Initialize LiteralNone."""
         super().__init__(loc)
         self.value = None
-        self.type_ = NoneType
-        self.loc = loc
+        self.type_ = NoneType()
