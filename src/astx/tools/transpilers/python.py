@@ -300,10 +300,12 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.SubscriptExpr) -> str:
         """Handle SubscriptExpr nodes."""
         lower_str = (
-            str(node.lower.value) if node.lower else str(node.index.value)
+            str(node.lower.value)
+            if node.lower.value
+            else str(node.index.value)
         )
-        upper_str = ":" + str(node.upper.value) if node.upper else ""
-        step_str = ":" + str(node.step.value) if node.step else ""
+        upper_str = ":" + str(node.upper.value) if node.upper.value else ""
+        step_str = ":" + str(node.step.value) if node.step.value else ""
         return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
 
     @dispatch  # type: ignore[no-redef]
