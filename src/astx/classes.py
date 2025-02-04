@@ -288,7 +288,6 @@ class EnumDeclStmt(StatementType):
         return self._prepare_struct(key, value, simplified)
 
 
-
 @public
 @typechecked
 class StructDeclStmt(StatementType):
