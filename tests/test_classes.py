@@ -103,9 +103,8 @@ def test_enum_decl() -> None:
 
 def test_struct_decl() -> None:
     """Test `StructDeclStmt` class."""
-    # Define struct fields
+    # Define struct attributes
     attr1 = VariableDeclaration(name="id", type_=DataType())
-
     attr2 = VariableDeclaration(name="value", type_=DataType())
 
     # create decorator

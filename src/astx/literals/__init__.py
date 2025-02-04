@@ -2,6 +2,7 @@
 
 from astx.literals.base import (
     Literal,
+    LiteralNone,
 )
 from astx.literals.boolean import (
     LiteralBoolean,
@@ -50,6 +51,7 @@ __all__ = [
     "LiteralInt32",
     "LiteralInt64",
     "LiteralInt128",
+    "LiteralNone",
     "LiteralUInt8",
     "LiteralUInt16",
     "LiteralUInt32",

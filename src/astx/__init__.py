@@ -71,6 +71,7 @@ from astx.literals import (
     LiteralInt32,
     LiteralInt64,
     LiteralInt128,
+    LiteralNone,
     LiteralString,
     LiteralTime,
     LiteralTimestamp,
@@ -101,6 +102,7 @@ from astx.packages import (
     Program,
     Target,
 )
+from astx.subscript import SubscriptExpr
 from astx.types import (
     BinaryOp,
     Boolean,
@@ -205,6 +207,7 @@ __all__ = [
     "UInt128",
     "LambdaExpr",
     "Literal",
+    "LiteralNone",
     "LiteralBoolean",
     "LiteralInt8",
     "LiteralInt16",
@@ -229,6 +232,7 @@ __all__ = [
     "SignedInteger",
     "SourceLocation",
     "StatementType",
+    "SubscriptExpr",
     "symbol_table",
     "Target",
     "TypeCastExpr",

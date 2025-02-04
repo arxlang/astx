@@ -2,6 +2,7 @@
 
 from astx.types.base import (
     AnyType,
+    NoneType,
 )
 from astx.types.boolean import (
     Boolean,
@@ -67,6 +68,7 @@ __all__ = [
     "Int64",
     "Int8",
     "Integer",
+    "NoneType",
     "Number",
     "SignedInteger",
     "Time",
