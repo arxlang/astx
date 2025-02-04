@@ -301,11 +301,19 @@ class ASTxPythonTranspiler:
         """Handle SubscriptExpr nodes."""
         lower_str = (
             str(node.lower.value)
-            if node.lower.value
+            if not isinstance(node.lower, astx.LiteralNone)
             else str(node.index.value)
         )
-        upper_str = ":" + str(node.upper.value) if node.upper.value else ""
-        step_str = ":" + str(node.step.value) if node.step.value else ""
+        upper_str = (
+            ":" + str(node.upper.value)
+            if not isinstance(node.upper, astx.LiteralNone)
+            else ""
+        )
+        step_str = (
+            ":" + str(node.step.value)
+            if not isinstance(node.step, astx.LiteralNone)
+            else ""
+        )
         return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
 
     @dispatch  # type: ignore[no-redef]
