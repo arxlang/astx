@@ -2,7 +2,7 @@
 
 import pytest
 
-from astx.base import ASTKind
+from astx.base import ASTKind,Variable
 from astx.literals.numeric import LiteralInt32
 from astx.types.operators import BinaryOp, UnaryOp, WalrusOp
 
@@ -47,7 +47,7 @@ def test_unary_op() -> None:
 def test_walrus_op_init() -> None:
     """Test WalrusOp initialization and properties."""
     # Creating an test instance
-    lhs = "x"
+    lhs = Variable("x")
     rhs = lit_1  # Using existing LiteralInt32 instance
     walrus = WalrusOp(lhs=lhs, rhs=rhs)
     # Test basic properties
@@ -61,7 +61,7 @@ def test_walrus_op_init() -> None:
 
 def test_walrus_op_get_struct() -> None:
     """Test WalrusOp get_struct method."""
-    lhs = "x"
+    lhs = Variable("x")
     rhs = lit_1
     walrus = WalrusOp(lhs=lhs, rhs=rhs)
     # Test without simplification
