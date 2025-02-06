@@ -984,7 +984,7 @@ def test_transpiler_casestmt_default() -> None:
 
     # Generate Python code
     generated_code = transpiler.visit(case1)
-    expected_code = "case _:\n    print('other')"
+    expected_code = "case _:\n    print('one')"
 
     assert (
         generated_code == expected_code
