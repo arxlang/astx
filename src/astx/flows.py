@@ -442,7 +442,7 @@ class CaseStmt(StatementType):
         self.condition = condition
         self.body = body
         self.default = default
-        self.kind = ASTKind.SwitchBranchKind
+        self.kind = ASTKind.CaseStmtKind
 
         if self.default is False and self.condition is None:
             raise ValueError(

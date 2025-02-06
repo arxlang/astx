@@ -333,10 +333,10 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CaseStmt) -> str:
         """Handle CaseStmt nodes."""
-        return (
-            f"case {self.visit(node.condition)}:\n"
-            f"    print({self.visit(node.body)})"
+        cond_str = (
+            self.visit(node.condition) if node.condition is not None else "_"
         )
+        return f"case {cond_str}:\n" f"    print({self.visit(node.body)})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:

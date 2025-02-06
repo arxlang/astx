@@ -915,7 +915,7 @@ def test_transpiler_structdefstmt() -> None:
 
 
 def test_transpiler_subscriptexpr_upper_lower() -> None:
-    """Test astx.SubscriptExpr."""
+    """Test astx.SubscriptExpr (slice)."""
     # Variable
     a_var = astx.Variable(name="a")
 
@@ -937,7 +937,7 @@ def test_transpiler_subscriptexpr_upper_lower() -> None:
 
 
 def test_transpiler_subscriptexpr_index() -> None:
-    """Test astx.SubscriptExpr."""
+    """Test astx.SubscriptExpr (index)."""
     # Variable
     a_var = astx.Variable(name="a")
 
@@ -956,8 +956,43 @@ def test_transpiler_subscriptexpr_index() -> None:
     ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
-def test_transpiler_matchstmt() -> None:
-    """Test astx.MatchStmt."""
+def test_transpiler_casestmt() -> None:
+    """Test astx.CaseStmt."""
+    # Patterns and corresponding expressions
+    condition1 = astx.LiteralInt32(value=1)
+    body1 = astx.LiteralString(value="one")
+
+    # create branches
+    case1 = astx.CaseStmt(condition=condition1, body=body1)
+
+    # Generate Python code
+    generated_code = transpiler.visit(case1)
+    expected_code = "case 1:\n    print('one')"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_casestmt_default() -> None:
+    """Test astx.CaseStmt with default case (no condition)."""
+    # Patterns and corresponding expressions
+    body1 = astx.LiteralString(value="one")
+
+    # create branches
+    case1 = astx.CaseStmt(default=True, body=body1)
+
+    # Generate Python code
+    generated_code = transpiler.visit(case1)
+    expected_code = "case _:\n    print('other')"
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_switchstmt() -> None:
+    """Test astx.SwitchStmt (2 cases + default)."""
     # The expression to match
     value_expr = astx.Variable(name="x")
 

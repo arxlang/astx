@@ -12,6 +12,7 @@ from astx.flows import (
     ForRangeLoopStmt,
     IfExpr,
     IfStmt,
+    SwitchStmt,
     WhileExpr,
     WhileStmt,
 )
@@ -232,3 +233,34 @@ def test_case_stmt_error2() -> None:
     with pytest.raises(ValueError):
         body1 = LiteralString(value="one")
         case1 = CaseStmt(body=body1)  # noqa F841
+
+
+def test_switch_stmt() -> None:
+    """Test `SwitchStmt` class."""
+    # The expression to match
+    value_expr = Variable(name="x")
+
+    # Patterns and corresponding expressions
+    condition1 = LiteralInt32(value=1)
+    body1 = LiteralString(value="one")
+
+    condition2 = LiteralInt32(value=2)
+    body2 = LiteralString(value="two")
+
+    body_default = LiteralString(value="other")
+
+    # create branches
+    case1 = CaseStmt(condition=condition1, body=body1)
+    case2 = CaseStmt(condition=condition2, body=body2)
+    case_default = CaseStmt(default=True, body=body_default)
+
+    # Create the SwitchStmt
+    switch_stmt = SwitchStmt(
+        value=value_expr,
+        cases=[case1, case2, case_default],
+    )
+
+    assert str(switch_stmt)
+    assert switch_stmt.get_struct()
+    assert switch_stmt.get_struct(simplified=True)
+    visualize(switch_stmt.get_struct())
