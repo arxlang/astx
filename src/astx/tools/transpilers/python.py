@@ -288,6 +288,11 @@ class ASTxPythonTranspiler:
         return str(node.value)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralString) -> str:
+        """Handle LiteralUTF8String nodes."""
+        return repr(node.value)
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralUTF8String) -> str:
         """Handle LiteralUTF8String nodes."""
         return repr(node.value)
@@ -324,6 +329,51 @@ class ASTxPythonTranspiler:
             else ""
         )
         return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.CaseStmt) -> str:
+        """Handle CaseStmt nodes."""
+        return (
+            f"case {self.visit(node.condition)}:\n"
+            f"    print({self.visit(node.body)})"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.SwitchStmt) -> str:
+        """Handle SwitchStmt nodes."""
+        # having a hard time making the identation work this way:
+        # cases_str = "\n".join(self.visit(case) for case in node.cases)
+        # return f"match {self.visit(node.value)}:\n    {cases_str}"
+        # results in
+        # match x:
+        #     case 1:
+        # print('one')
+        # case
+        # 2:
+        # print('two')
+
+        cases_tuples = []
+        for case in node.cases:
+            cond = (
+                self.visit(case.condition)
+                if case.condition is not None
+                else "_"
+            )
+            cases_tuples.append((cond, self.visit(case.body)))
+
+        cases_str = "\n".join(
+            f"{self.indent_str}case {cond}:\n{self.indent_str*2}print({body})"
+            for cond, body in cases_tuples
+        )
+        return f"match {self.visit(node.value)}:\n{cases_str}"
+        # results in
+        # match x:
+        #     case 1:
+        #         print('one')
+        #     case 2:
+        #         print('two')
+        #     case _:
+        #         print('other')
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:

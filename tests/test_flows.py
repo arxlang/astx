@@ -1,8 +1,11 @@
 """Tests for control flow statements."""
 
+import pytest
+
 from astx.base import SourceLocation
 from astx.blocks import Block
 from astx.flows import (
+    CaseStmt,
     ForCountLoopExpr,
     ForCountLoopStmt,
     ForRangeLoopExpr,
@@ -12,6 +15,7 @@ from astx.flows import (
     WhileExpr,
     WhileStmt,
 )
+from astx.literals import LiteralInt32, LiteralString
 from astx.literals.numeric import LiteralInt32
 from astx.types.numeric import Int32
 from astx.types.operators import BinaryOp, UnaryOp
@@ -195,3 +199,36 @@ def test_while_stmt() -> None:
     assert while_stmt.get_struct()
     assert while_stmt.get_struct(simplified=True)
     visualize(while_stmt.get_struct())
+
+
+def test_case_stmt() -> None:
+    """Test `CaseStmt` class."""
+    condition1 = LiteralInt32(value=1)
+    body1 = LiteralString(value="one")
+    case1 = CaseStmt(condition=condition1, body=body1)
+
+    assert str(case1)
+    assert case1.get_struct()
+    assert case1.get_struct(simplified=True)
+    visualize(case1.get_struct())
+
+
+def test_case_stmt_error1() -> None:
+    """Test `CaseStmt` class for default/condition inconsistency (1)."""
+    # should raise error - mustn't have condition since default=True
+    with pytest.raises(ValueError):
+        condition1 = LiteralInt32(value=1)
+        body1 = LiteralString(value="one")
+        case1 = CaseStmt(  # noqa F841
+            default=True,
+            condition=condition1,
+            body=body1,
+        )
+
+
+def test_case_stmt_error2() -> None:
+    """Test `CaseStmt` class for default/condition inconsistency (2)."""
+    # should raise error - must have condition since deault=False
+    with pytest.raises(ValueError):
+        body1 = LiteralString(value="one")
+        case1 = CaseStmt(body=body1)  # noqa F841

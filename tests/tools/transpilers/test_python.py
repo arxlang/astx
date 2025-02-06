@@ -951,6 +951,44 @@ def test_transpiler_subscriptexpr_index() -> None:
     generated_code = translate(subscr_expr)
     expected_code = "a[0]"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_matchstmt() -> None:
+    """Test astx.MatchStmt."""
+    # The expression to match
+    value_expr = astx.Variable(name="x")
+
+    # Patterns and corresponding expressions
+    condition1 = astx.LiteralInt32(value=1)
+    body1 = astx.LiteralString(value="one")
+
+    condition2 = astx.LiteralInt32(value=2)
+    body2 = astx.LiteralString(value="two")
+
+    body_default = astx.LiteralString(value="other")
+
+    # create branches
+    case1 = astx.CaseStmt(condition=condition1, body=body1)
+    case2 = astx.CaseStmt(condition=condition2, body=body2)
+    case_default = astx.CaseStmt(default=True, body=body_default)
+
+    # Create the SwitchStmt
+    switch_stmt = astx.SwitchStmt(
+        value=value_expr,
+        cases=[case1, case2, case_default],
     )
+
+    # Generate Python code
+    generated_code = transpiler.visit(switch_stmt)
+    expected_code = (
+        "match x:\n    case 1:\n        print('one')\n"
+        "    case 2:\n        print('two')\n    case _:\n"
+        "        print('other')"
+    )
+
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"

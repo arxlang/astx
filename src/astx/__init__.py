@@ -46,12 +46,14 @@ from astx.classes import (
     StructDefStmt,
 )
 from astx.flows import (
+    CaseStmt,
     ForCountLoopExpr,
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
     IfExpr,
     IfStmt,
+    SwitchStmt,
     WhileExpr,
     WhileStmt,
 )
@@ -163,6 +165,7 @@ __all__ = [
     "BinaryOp",
     "Block",
     "Boolean",
+    "CaseStmt",
     "ClassDeclStmt",
     "ClassDefStmt",
     "Complex",
@@ -238,6 +241,7 @@ __all__ = [
     "SourceLocation",
     "StatementType",
     "String",
+    "SwitchStmt",
     "StructDeclStmt",
     "StructDefStmt",
     "SubscriptExpr",
