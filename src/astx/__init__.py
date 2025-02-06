@@ -2,6 +2,7 @@
 """ASTx."""
 
 from importlib import metadata as importlib_metadata
+from src.astx.types.operators import WalrusOp
 
 from astx import (
     base,
@@ -243,6 +244,7 @@ __all__ = [
     "Variable",
     "variables",
     "VisibilityKind",
+    "WalrusOp"
     "WhileStmt",
     "WhileExpr",
     "Complex",
