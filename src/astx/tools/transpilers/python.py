@@ -76,7 +76,7 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.ClassDefStmt) -> str:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
-        return f"class {node.name}{class_type}:" f"\n {self.visit(node.body)}"
+        return f"class {node.name}{class_type}:\n {self.visit(node.body)}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.EnumDeclStmt) -> str:
@@ -371,6 +371,11 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.Variable) -> str:
         """Handle Variable nodes."""
         return node.name
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.WalrusOp) -> str:
+        """Handle Walrus operator."""
+        return f"({node.lhs} := {self.visit(node.rhs)})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableAssignment) -> str:
