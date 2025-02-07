@@ -4,7 +4,8 @@ import pytest
 
 from astx.base import ASTKind
 from astx.literals.numeric import LiteralInt32
-from astx.types.operators import BinaryOp, UnaryOp, WalrusOp
+from astx.operators import WalrusOp
+from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
 
 lit_1 = LiteralInt32(1)
