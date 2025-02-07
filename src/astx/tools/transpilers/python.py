@@ -87,10 +87,15 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeLoopExpr nodes."""
+        if len(node.body) > 1:
+            raise ValueError(
+                "ForRangeLoopExpr in Python just accept 1 node in the body "
+                "attribute."
+            )
         return (
-            f"result = [{self.visit(node.body)} for "
-            f" {node.variable.name} in range "
-            f"({self.visit(node.start)},{self.visit(node.end)},"
+            f"result = [{self.visit(node.body).strip()} for "
+            f"{node.variable.name} in range"
+            f"({self.visit(node.start)}, {self.visit(node.end)}, "
             f"{self.visit(node.step)})]"
         )
 
@@ -116,30 +121,34 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> str:
         """Handle IfExpr nodes."""
-        if node.else_:
-            return (
-                f"{self.visit(node.then)} if "
-                f" {self.visit(node.condition)}"
-                f" else {self.visit(node.else_)}"
+        if node.else_ is not None and len(node.else_) > 1:
+            raise ValueError(
+                "IfExpr in Python just accept 1 node in the else attribute."
             )
-        return (
-            f"{self.visit(node.then)} if "
-            f" {self.visit(node.condition)} else None"
-        )
+
+        if len(node.then) > 1:
+            raise ValueError(
+                "IfExpr in Python just accept 1 node in the then attribute."
+            )
+
+        if_ = self.visit(node.condition)
+        else_ = self.visit(node.else_).strip() if node.else_ else "None"
+        then_ = self.visit(node.then).strip()
+        return f"{then_} if {if_} else {else_}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfStmt) -> str:
         """Handle IfStmt nodes."""
-        if node.else_:
-            return (
-                f"if {self.visit(node.condition)}:"
-                f"\n{self._generate_block(node.then)}"
-                f"\nelse:"
-                f"\n{self._generate_block(node.else_)}"
-            )
+        else_ = (
+            (f"\nelse:\n{self._generate_block(node.else_)}")
+            if node.else_ is not None
+            else ""
+        )
+
         return (
             f"if {self.visit(node.condition)}:"
             f"\n{self._generate_block(node.then)}"
+            f"{else_}"
         )
 
     @dispatch  # type: ignore[no-redef]
@@ -375,7 +384,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WalrusOp) -> str:
         """Handle Walrus operator."""
-        return f"({node.lhs} := {self.visit(node.rhs)})"
+        return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableAssignment) -> str:
@@ -393,8 +402,13 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:
         """Handle WhileExpr nodes."""
+        if len(node.body) > 1:
+            raise ValueError(
+                "WhileExpr in Python just accept 1 node in the body attribute."
+            )
+
         condition = self.visit(node.condition)
-        body = self.visit(node.body)
+        body = self.visit(node.body).strip()
         return f"[{body} for _ in iter(lambda: {condition}, False)]"
 
     @dispatch  # type: ignore[no-redef]
