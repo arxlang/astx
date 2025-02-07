@@ -1,10 +1,24 @@
 """Test Python Transpiler."""
 
+import ast
+
 import astx
 
 from astx.tools.transpilers import python as astx2py
 
-transpiler = astx2py.ASTxPythonTranspiler()
+
+def translate(node: astx.AST) -> str:
+    """Translate from ASTx to Python source."""
+    transpiler = astx2py.ASTxPythonTranspiler()
+    code = str(transpiler.visit(node))
+    # check if the code is a valid python code
+    ast.parse(code)
+    return code
+
+
+def check_transpilation(code: str) -> None:
+    """Check Transpilation with Python ast lib."""
+    ast.parse(code)
 
 
 def test_transpiler_multiple_imports_stmt() -> None:
@@ -16,7 +30,7 @@ def test_transpiler_multiple_imports_stmt() -> None:
     import_stmt = astx.ImportStmt(names=[alias1, alias2])
 
     # Generate Python code
-    generated_code = transpiler.visit(import_stmt)
+    generated_code = translate(import_stmt)
 
     expected_code = "import math, matplotlib as mtlb"
 
@@ -32,7 +46,7 @@ def test_transpiler_import_from_stmt() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(import_from_stmt)
+    generated_code = translate(import_from_stmt)
 
     expected_code = "from matplotlib import pyplot as plt"
 
@@ -46,7 +60,7 @@ def test_transpiler_wildcard_import_from_stmt() -> None:
     import_from_stmt = astx.ImportFromStmt(module="matplotlib", names=[alias])
 
     # Generate Python code
-    generated_code = transpiler.visit(import_from_stmt)
+    generated_code = translate(import_from_stmt)
 
     expected_code = "from matplotlib import *"
 
@@ -60,7 +74,7 @@ def test_transpiler_future_import_from_stmt() -> None:
     import_from_stmt = astx.ImportFromStmt(module="__future__", names=[alias])
 
     # Generate Python code
-    generated_code = transpiler.visit(import_from_stmt)
+    generated_code = translate(import_from_stmt)
 
     expected_code = "from __future__ import division"
 
@@ -75,7 +89,7 @@ def test_transpiler_multiple_imports_expr() -> None:
     import_expr = astx.ImportExpr([alias1, alias2])
 
     # Generate Python code
-    generated_code = transpiler.visit(import_expr)
+    generated_code = translate(import_expr)
 
     expected_code = (
         "module1, module2 = "
@@ -93,7 +107,7 @@ def test_transpiler_import_from_expr() -> None:
     import_from_expr = astx.ImportFromExpr(module="math", names=[alias1])
 
     # Generate Python code
-    generated_code = transpiler.visit(import_from_expr)
+    generated_code = translate(import_from_expr)
 
     expected_code = (
         "name = "
@@ -112,7 +126,7 @@ def test_transpiler_wildcard_import_from_expr() -> None:
     import_from_expr = astx.ImportFromExpr(module="math", names=[alias1])
 
     # Generate Python code
-    generated_code = transpiler.visit(import_from_expr)
+    generated_code = translate(import_from_expr)
 
     expected_code = "name = getattr(__import__('math', fromlist=['*']), '*')"
 
@@ -126,7 +140,7 @@ def test_transpiler_future_import_from_expr() -> None:
     import_from_expr = astx.ImportFromExpr(module="__future__", names=[alias1])
 
     # Generate Python code
-    generated_code = transpiler.visit(import_from_expr)
+    generated_code = translate(import_from_expr)
 
     expected_code = (
         "name = "
@@ -146,7 +160,7 @@ def test_transpiler_relative_import_from_expr() -> None:
     import_from_expr = astx.ImportFromExpr(names=[alias1, alias2], level=1)
 
     # Generate Python code
-    generated_code = transpiler.visit(import_from_expr)
+    generated_code = translate(import_from_expr)
 
     expected_code = (
         "name1, name2 = "
@@ -171,7 +185,7 @@ def test_transpiler_lambdaexpr() -> None:
     lambda_expr = astx.LambdaExpr(params=params, body=body)
 
     # Generate Python code
-    generated_code = transpiler.visit(lambda_expr)
+    generated_code = translate(lambda_expr)
 
     expected_code = "lambda x: (x + 1)"
 
@@ -185,7 +199,7 @@ def test_transpiler_lambdaexpr_noparams() -> None:
     lambda_expr = astx.LambdaExpr(body=body)
 
     # Generate Python code
-    generated_code = transpiler.visit(lambda_expr)
+    generated_code = translate(lambda_expr)
 
     expected_code = "lambda : 1"
 
@@ -233,7 +247,7 @@ def test_transpiler_function() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(add_function)
+    generated_code = translate(add_function)
     expected_code = "\n".join(
         [
             "def add(x: int, y: int) -> int:",
@@ -251,7 +265,7 @@ def test_literal_int32() -> None:
     literal_int32_node = astx.LiteralInt32(value=42)
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_int32_node)
+    generated_code = translate(literal_int32_node)
     expected_code = "42"
 
     assert generated_code == expected_code, "generated_code != expected_code"
@@ -263,7 +277,7 @@ def test_literal_float16() -> None:
     literal_float16_node = astx.LiteralFloat16(value=3.14)
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_float16_node)
+    generated_code = translate(literal_float16_node)
     expected_code = "3.14"
 
     assert generated_code == expected_code, "generated_code != expected_code"
@@ -275,7 +289,7 @@ def test_literal_float32() -> None:
     literal_float32_node = astx.LiteralFloat32(value=2.718)
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_float32_node)
+    generated_code = translate(literal_float32_node)
     expected_code = "2.718"
 
     assert generated_code == expected_code, "generated_code != expected_code"
@@ -287,7 +301,7 @@ def test_literal_float64() -> None:
     literal_float64_node = astx.LiteralFloat64(value=1.414)
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_float64_node)
+    generated_code = translate(literal_float64_node)
     expected_code = "1.414"
 
     assert generated_code == expected_code, "generated_code != expected_code"
@@ -299,7 +313,7 @@ def test_literal_complex32() -> None:
     literal_complex32_node = astx.LiteralComplex32(real=1, imag=2.8)
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_complex32_node)
+    generated_code = translate(literal_complex32_node)
     expected_code = "complex(1, 2.8)"
 
     assert generated_code == expected_code, (
@@ -313,7 +327,7 @@ def test_literal_complex64() -> None:
     literal_complex64_node = astx.LiteralComplex64(real=3.5, imag=4)
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_complex64_node)
+    generated_code = translate(literal_complex64_node)
     expected_code = "complex(3.5, 4)"
 
     assert generated_code == expected_code, (
@@ -330,7 +344,7 @@ def test_transpiler_typecastexpr() -> None:
     # Create the TypeCastExpr
     cast_expr = astx.TypeCastExpr(expr=expr, target_type=target_type)
 
-    generated_code = transpiler.visit(cast_expr)
+    generated_code = translate(cast_expr)
     expected_code = "cast(int, x)"
 
     assert generated_code == expected_code, (
@@ -344,7 +358,7 @@ def test_transpiler_utf8_char() -> None:
     utf8_char_node = astx.LiteralUTF8Char(value="c")
 
     # Generate Python code
-    generated_code = transpiler.visit(utf8_char_node)
+    generated_code = translate(utf8_char_node)
     expected_code = repr("c")
 
     assert generated_code == expected_code, (
@@ -358,7 +372,7 @@ def test_transpiler_utf8_string() -> None:
     utf8_string_node = astx.LiteralUTF8String(value="hello")
 
     # Generate Python code
-    generated_code = transpiler.visit(utf8_string_node)
+    generated_code = translate(utf8_string_node)
     expected_code = repr("hello")
 
     assert generated_code == expected_code, (
@@ -372,7 +386,7 @@ def test_transpiler_literal_utf8_char() -> None:
     literal_utf8_char_node = astx.LiteralUTF8Char(value="a")
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_utf8_char_node)
+    generated_code = translate(literal_utf8_char_node)
     expected_code = repr("a")
 
     assert generated_code == expected_code, (
@@ -386,7 +400,7 @@ def test_transpiler_literal_utf8_string() -> None:
     literal_utf8_string_node = astx.LiteralUTF8String(value="world")
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_utf8_string_node)
+    generated_code = translate(literal_utf8_string_node)
     expected_code = repr("world")
 
     assert generated_code == expected_code, (
@@ -408,7 +422,7 @@ def test_transpiler_for_range_loop_expr() -> None:
         variable=decl_a, start=start, end=end, step=step, body=body
     )
 
-    generated_code = transpiler.visit(for_expr)
+    generated_code = translate(for_expr)
     expected_code = "result = [    2 for  a in range (0,10,1)]"
 
     assert generated_code == expected_code, (
@@ -424,7 +438,7 @@ def test_transpiler_binary_op() -> None:
     binary_op = astx.BinaryOp(op_code="+", lhs=lhs, rhs=rhs)
 
     # Generate Python code
-    generated_code = transpiler.visit(binary_op)
+    generated_code = translate(binary_op)
 
     # Expected code for the binary operation
     expected_code = "(x + y)"
@@ -468,7 +482,7 @@ def test_transpiler_while_stmt() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(while_stmt)
+    generated_code = translate(while_stmt)
 
     # Expected code for the WhileStmt
     expected_code = "while (x < 5):\n    x = (x + 1)"
@@ -505,7 +519,7 @@ def test_transpiler_ifexpr_with_else() -> None:
     if_expr = astx.IfExpr(condition=cond, then=then_block, else_=else_block)
 
     # Generate Python code
-    generated_code = transpiler.visit(if_expr)
+    generated_code = translate(if_expr)
 
     # Expected code for the binary operation
     expected_code = "    (2 + 3) if  (1 > 2) else     (2 - 3)"
@@ -549,7 +563,7 @@ def test_transpiler_while_expr() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(while_stmt)
+    generated_code = translate(while_stmt)
 
     # Expected code for the WhileExpr
     expected_code = "[    x = (x + 1) for _ in iter(lambda: (x < 5), False)]"
@@ -583,7 +597,7 @@ def test_transpiler_ifexpr_without_else() -> None:
     if_expr = astx.IfExpr(condition=cond, then=then_block)
 
     # Generate Python code
-    generated_code = transpiler.visit(if_expr)
+    generated_code = translate(if_expr)
 
     # Expected code for the binary operation
     expected_code = "    (2 + 3) if  (1 > 2) else None"
@@ -620,7 +634,7 @@ def test_transpiler_ifstmt_with_else() -> None:
     if_stmt = astx.IfStmt(condition=cond, then=then_block, else_=else_block)
 
     # Generate Python code
-    generated_code = transpiler.visit(if_stmt)
+    generated_code = translate(if_stmt)
 
     # Expected code for the binary operation
     expected_code = "if (1 > 2):\n    (2 + 3)\nelse:\n    (2 - 3)"
@@ -654,7 +668,7 @@ def test_transpiler_ifstmt_without_else() -> None:
     if_stmt = astx.IfStmt(condition=cond, then=then_block)
 
     # Generate Python code
-    generated_code = transpiler.visit(if_stmt)
+    generated_code = translate(if_stmt)
 
     # Expected code for the binary operation
     expected_code = "if (1 > 2):\n    (2 + 3)"
@@ -667,7 +681,7 @@ def test_transpiler_ifstmt_without_else() -> None:
 def test_transpiler_date_type() -> None:
     """Test Type[astx.Date]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Date())
+    generated_code = translate(astx.Date())
     expected_code = "date"
 
     assert generated_code == expected_code, (
@@ -678,7 +692,7 @@ def test_transpiler_date_type() -> None:
 def test_transpiler_time_type() -> None:
     """Test Type[astx.Time]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Time())
+    generated_code = translate(astx.Time())
     expected_code = "time"
 
     assert generated_code == expected_code, (
@@ -689,7 +703,7 @@ def test_transpiler_time_type() -> None:
 def test_transpiler_timestamp_type() -> None:
     """Test Type[astx.Timestamp]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.Timestamp())
+    generated_code = translate(astx.Timestamp())
     expected_code = "timestamp"
 
     assert generated_code == expected_code, (
@@ -700,7 +714,7 @@ def test_transpiler_timestamp_type() -> None:
 def test_transpiler_datetime_type() -> None:
     """Test Type[astx.DateTime]."""
     # Generate Python code for the type
-    generated_code = transpiler.visit(astx.DateTime())
+    generated_code = translate(astx.DateTime())
     expected_code = "datetime"
 
     assert generated_code == expected_code, (
@@ -714,7 +728,7 @@ def test_transpiler_literal_date() -> None:
     literal_date_node = astx.LiteralDate(value="2024-11-24")
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_date_node)
+    generated_code = translate(literal_date_node)
     expected_code = "datetime.strptime('2024-11-24', '%Y-%m-%d').date()"
 
     assert generated_code == expected_code, (
@@ -728,7 +742,7 @@ def test_transpiler_literal_time() -> None:
     literal_time_node = astx.LiteralTime(value="14:30:00")
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_time_node)
+    generated_code = translate(literal_time_node)
     expected_code = "datetime.strptime('14:30:00', '%H:%M:%S').time()"
 
     assert generated_code == expected_code, (
@@ -742,7 +756,7 @@ def test_transpiler_literal_timestamp() -> None:
     literal_timestamp_node = astx.LiteralTimestamp(value="2024-11-24 14:30:00")
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_timestamp_node)
+    generated_code = translate(literal_timestamp_node)
     expected_code = (
         "datetime.strptime('2024-11-24 14:30:00', '%Y-%m-%d %H:%M:%S')"
     )
@@ -758,7 +772,7 @@ def test_transpiler_literal_datetime() -> None:
     literal_datetime_node = astx.LiteralDateTime(value="2024-11-24T14:30:00")
 
     # Generate Python code
-    generated_code = transpiler.visit(literal_datetime_node)
+    generated_code = translate(literal_datetime_node)
     expected_code = (
         "datetime.strptime('2024-11-24T14:30:00', '%Y-%m-%dT%H:%M:%S')"
     )
@@ -782,7 +796,7 @@ def test_transpiler_classdefstmt() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(class_def)
+    generated_code = translate(class_def)
     expected_code = "class MyClass:\n     var1"
 
     assert generated_code == expected_code, (
@@ -811,7 +825,7 @@ def test_transpiler_enumdeclstmt() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(enum_decl)
+    generated_code = translate(enum_decl)
     expected_code = (
         "class Color(Enum):\n    RED: Int32 = 1\n    GREEN: Int32 = 2"
     )
@@ -830,7 +844,7 @@ def test_transpiler_variabledeclaration() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(var_r)
+    generated_code = translate(var_r)
     expected_code = "RED: Int32 = 1"
 
     assert generated_code == expected_code, (
@@ -863,7 +877,7 @@ def test_transpiler_structdeclstmt() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(struct_decl)
+    generated_code = translate(struct_decl)
     expected_code = (
         "@dataclass \nclass DataPoint:\n    id: Int32 = 3\n    "
         "value: Int32 = 1"
@@ -899,7 +913,7 @@ def test_transpiler_structdefstmt() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(struct_def)
+    generated_code = translate(struct_def)
     expected_code = (
         "@dataclass \nclass DataPoint:\n    id: Int32 = 3\n    "
         "value: Int32 = 1"
@@ -924,7 +938,7 @@ def test_transpiler_subscriptexpr_upper_lower() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(subscr_expr)
+    generated_code = translate(subscr_expr)
     expected_code = "a[0:10:2]"
 
     assert generated_code == expected_code, (
@@ -944,7 +958,7 @@ def test_transpiler_subscriptexpr_index() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(subscr_expr)
+    generated_code = translate(subscr_expr)
     expected_code = "a[0]"
 
     assert generated_code == expected_code, (
