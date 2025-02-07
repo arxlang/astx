@@ -6,10 +6,11 @@ import astx
 
 from astx.tools.transpilers import python as astx2py
 
+transpiler = astx2py.ASTxPythonTranspiler()
+
 
 def translate(node: astx.AST) -> str:
     """Translate from ASTx to Python source."""
-    transpiler = astx2py.ASTxPythonTranspiler()
     code = str(transpiler.visit(node))
     # check if the code is a valid python code
     ast.parse(code)
@@ -499,30 +500,22 @@ def test_transpiler_ifexpr_with_else() -> None:
         op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
     )
 
-    # create then and else blocks
-    then_block = astx.Block()
-    else_block = astx.Block()
-
     # define literals
     lit_2 = astx.LiteralInt32(2)
     lit_3 = astx.LiteralInt32(3)
 
-    # define operations
-    op1 = lit_2 + lit_3
-    op2 = lit_2 - lit_3
-
     # Add statements to the then and else blocks
-    then_block.append(op1)
-    else_block.append(op2)
+    then_ = lit_2
+    else_ = lit_3
 
     # define if Expr
-    if_expr = astx.IfExpr(condition=cond, then=then_block, else_=else_block)
+    if_expr = astx.IfExpr(condition=cond, then=then_, else_=else_)
 
     # Generate Python code
     generated_code = translate(if_expr)
 
     # Expected code for the binary operation
-    expected_code = "    (2 + 3) if  (1 > 2) else     (2 - 3)"
+    expected_code = "2 if (1 > 2) else 3"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -541,9 +534,9 @@ def test_transpiler_while_expr() -> None:
     )
 
     # Define the loop body: x = x + 1
-    update_expr = astx.VariableAssignment(
-        name="x",
-        value=astx.BinaryOp(
+    update_expr = astx.WalrusOp(
+        lhs=x_var,
+        rhs=astx.BinaryOp(
             op_code="+",
             lhs=x_var,
             rhs=astx.LiteralInt32(1),
@@ -566,7 +559,9 @@ def test_transpiler_while_expr() -> None:
     generated_code = translate(while_stmt)
 
     # Expected code for the WhileExpr
-    expected_code = "[    x = (x + 1) for _ in iter(lambda: (x < 5), False)]"
+    expected_code = (
+        "[    (x := (x + 1)) for _ in iter(lambda: (x < 5), False)]"
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -580,27 +575,20 @@ def test_transpiler_ifexpr_without_else() -> None:
         op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
     )
 
-    # create then block
-    then_block = astx.Block()
-
     # define literals
     lit_2 = astx.LiteralInt32(2)
-    lit_3 = astx.LiteralInt32(3)
-
-    # define operation
-    op1 = lit_2 + lit_3
 
     # Add statement to the then block
-    then_block.append(op1)
+    then_ = lit_2
 
     # define if Expr
-    if_expr = astx.IfExpr(condition=cond, then=then_block)
+    if_expr = astx.IfExpr(condition=cond, then=then_)
 
     # Generate Python code
     generated_code = translate(if_expr)
 
     # Expected code for the binary operation
-    expected_code = "    (2 + 3) if  (1 > 2) else None"
+    expected_code = "2 if (1 > 2) else None"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"

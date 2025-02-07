@@ -47,7 +47,7 @@ def test_if_else_stmt() -> None:
 def test_if_expr() -> None:
     """Test `if` expression."""
     op = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
-    then_block = Block()
+    then_block = LiteralInt32(1)
     if_expr = IfExpr(condition=op, then=then_block)
 
     assert str(if_expr)
@@ -59,8 +59,8 @@ def test_if_expr() -> None:
 def test_if_else_expr() -> None:
     """Test `if`/`else` expression."""
     cond = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
-    then_block = Block()
-    else_block = Block()
+    then_block = LiteralInt32(1)
+    else_block = LiteralInt32(2)
     if_expr = IfExpr(condition=cond, then=then_block, else_=else_block)
 
     assert str(if_expr)

@@ -75,14 +75,14 @@ class IfExpr(Expr):
     """AST class for `if` expression."""
 
     condition: Expr
-    then: Block
-    else_: Optional[Block]
+    then: Expr
+    else_: Optional[Expr]
 
     def __init__(
         self,
         condition: Expr,
-        then: Block,
-        else_: Optional[Block] = None,
+        then: Expr,
+        else_: Optional[Expr] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:

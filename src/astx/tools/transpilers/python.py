@@ -116,16 +116,10 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> str:
         """Handle IfExpr nodes."""
-        if node.else_:
-            return (
-                f"{self.visit(node.then)} if "
-                f" {self.visit(node.condition)}"
-                f" else {self.visit(node.else_)}"
-            )
-        return (
-            f"{self.visit(node.then)} if "
-            f" {self.visit(node.condition)} else None"
-        )
+        if_ = self.visit(node.condition)
+        else_ = self.visit(node.else_) if node.else_ else "None"
+        then_ = self.visit(node.then)
+        return f"{then_} if {if_} else {else_}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfStmt) -> str:
@@ -375,7 +369,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WalrusOp) -> str:
         """Handle Walrus operator."""
-        return f"({node.lhs} := {self.visit(node.rhs)})"
+        return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableAssignment) -> str:
