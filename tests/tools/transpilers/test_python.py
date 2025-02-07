@@ -417,7 +417,9 @@ def test_transpiler_for_range_loop_expr() -> None:
     start = astx.LiteralInt32(0)
     end = astx.LiteralInt32(10)
     step = astx.LiteralInt32(1)
-    body = astx.LiteralInt32(2)
+    body = astx.Block()
+    body.append(astx.LiteralInt32(2))
+
     for_expr = astx.ForRangeLoopExpr(
         variable=decl_a, start=start, end=end, step=step, body=body
     )
@@ -504,8 +506,10 @@ def test_transpiler_ifexpr_with_else() -> None:
     lit_3 = astx.LiteralInt32(3)
 
     # Add statements to the then and else blocks
-    then_ = lit_2
-    else_ = lit_3
+    then_ = astx.Block()
+    else_ = astx.Block()
+    then_.append(lit_2)
+    else_.append(lit_3)
 
     # define if Expr
     if_expr = astx.IfExpr(condition=cond, then=then_, else_=else_)
@@ -545,7 +549,8 @@ def test_transpiler_while_expr() -> None:
     )
 
     # Create the body block
-    body_block = update_expr
+    body_block = astx.Block()
+    body_block.append(update_expr)
 
     while_stmt = astx.WhileExpr(
         condition=condition,
@@ -575,7 +580,8 @@ def test_transpiler_ifexpr_without_else() -> None:
     lit_2 = astx.LiteralInt32(2)
 
     # Add statement to the then block
-    then_ = lit_2
+    then_ = astx.Block()
+    then_.append(lit_2)
 
     # define if Expr
     if_expr = astx.IfExpr(condition=cond, then=then_)

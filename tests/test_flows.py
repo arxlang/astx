@@ -47,7 +47,7 @@ def test_if_else_stmt() -> None:
 def test_if_expr() -> None:
     """Test `if` expression."""
     op = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
-    then_block = LiteralInt32(1)
+    then_block = Block()
     if_expr = IfExpr(condition=op, then=then_block)
 
     assert str(if_expr)
@@ -59,8 +59,8 @@ def test_if_expr() -> None:
 def test_if_else_expr() -> None:
     """Test `if`/`else` expression."""
     cond = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
-    then_block = LiteralInt32(1)
-    else_block = LiteralInt32(2)
+    then_block = Block()
+    else_block = Block()
     if_expr = IfExpr(condition=cond, then=then_block, else_=else_block)
 
     assert str(if_expr)
@@ -77,7 +77,8 @@ def test_for_range_loop_expr() -> None:
     start = LiteralInt32(1)
     end = LiteralInt32(10)
     step = LiteralInt32(1)
-    body = LiteralInt32(2)
+    body = Block()
+    body.append(LiteralInt32(2))
     for_expr = ForRangeLoopExpr(
         variable=decl_a, start=start, end=end, step=step, body=body
     )
@@ -159,7 +160,7 @@ def test_while_expr() -> None:
         loc=SourceLocation(line=1, col=0),
     )
 
-    body_block = x_var
+    body_block = Block(name="while_body")
 
     # Create the WhileExpr
     while_expr = WhileExpr(

@@ -75,14 +75,14 @@ class IfExpr(Expr):
     """AST class for `if` expression."""
 
     condition: Expr
-    then: Expr
-    else_: Optional[Expr]
+    then: Block
+    else_: Optional[Block]
 
     def __init__(
         self,
         condition: Expr,
-        then: Expr,
-        else_: Optional[Expr] = None,
+        then: Block,
+        else_: Optional[Block] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -181,7 +181,7 @@ class ForRangeLoopExpr(Expr):
     start: Expr
     end: Expr
     step: Expr
-    body: Expr
+    body: Block
 
     def __init__(
         self,
@@ -189,7 +189,7 @@ class ForRangeLoopExpr(Expr):
         start: Expr,
         end: Expr,
         step: Expr,
-        body: Expr,
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -387,12 +387,12 @@ class WhileExpr(Expr):
     """AST class for `while` expression."""
 
     condition: Expr
-    body: Expr
+    body: Block
 
     def __init__(
         self,
         condition: Expr,
-        body: Expr,
+        body: Block,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
