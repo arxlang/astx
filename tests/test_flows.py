@@ -77,8 +77,7 @@ def test_for_range_loop_expr() -> None:
     start = LiteralInt32(1)
     end = LiteralInt32(10)
     step = LiteralInt32(1)
-    body = Block()
-    body.append(LiteralInt32(2))
+    body = LiteralInt32(2)
     for_expr = ForRangeLoopExpr(
         variable=decl_a, start=start, end=end, step=step, body=body
     )
@@ -160,7 +159,7 @@ def test_while_expr() -> None:
         loc=SourceLocation(line=1, col=0),
     )
 
-    body_block = Block(name="while_body")
+    body_block = x_var
 
     # Create the WhileExpr
     while_expr = WhileExpr(

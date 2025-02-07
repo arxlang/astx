@@ -89,8 +89,8 @@ class ASTxPythonTranspiler:
         """Handle ForRangeLoopExpr nodes."""
         return (
             f"result = [{self.visit(node.body)} for "
-            f" {node.variable.name} in range "
-            f"({self.visit(node.start)},{self.visit(node.end)},"
+            f"{node.variable.name} in range"
+            f"({self.visit(node.start)}, {self.visit(node.end)}, "
             f"{self.visit(node.step)})]"
         )
 

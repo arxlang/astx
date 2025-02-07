@@ -181,7 +181,7 @@ class ForRangeLoopExpr(Expr):
     start: Expr
     end: Expr
     step: Expr
-    body: Block
+    body: Expr
 
     def __init__(
         self,
@@ -189,7 +189,7 @@ class ForRangeLoopExpr(Expr):
         start: Expr,
         end: Expr,
         step: Expr,
-        body: Block,
+        body: Expr,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -387,12 +387,12 @@ class WhileExpr(Expr):
     """AST class for `while` expression."""
 
     condition: Expr
-    body: Block
+    body: Expr
 
     def __init__(
         self,
         condition: Expr,
-        body: Block,
+        body: Expr,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:

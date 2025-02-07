@@ -417,14 +417,13 @@ def test_transpiler_for_range_loop_expr() -> None:
     start = astx.LiteralInt32(0)
     end = astx.LiteralInt32(10)
     step = astx.LiteralInt32(1)
-    body = astx.Block()
-    body.append(astx.LiteralInt32(2))
+    body = astx.LiteralInt32(2)
     for_expr = astx.ForRangeLoopExpr(
         variable=decl_a, start=start, end=end, step=step, body=body
     )
 
     generated_code = translate(for_expr)
-    expected_code = "result = [    2 for  a in range (0,10,1)]"
+    expected_code = "result = [2 for a in range(0, 10, 1)]"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -546,8 +545,7 @@ def test_transpiler_while_expr() -> None:
     )
 
     # Create the body block
-    body_block = astx.Block(name="while_body")
-    body_block.append(update_expr)
+    body_block = update_expr
 
     while_stmt = astx.WhileExpr(
         condition=condition,
@@ -559,9 +557,7 @@ def test_transpiler_while_expr() -> None:
     generated_code = translate(while_stmt)
 
     # Expected code for the WhileExpr
-    expected_code = (
-        "[    (x := (x + 1)) for _ in iter(lambda: (x < 5), False)]"
-    )
+    expected_code = "[(x := (x + 1)) for _ in iter(lambda: (x < 5), False)]"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
