@@ -121,7 +121,7 @@ lines-between-types = 1
 quote-style = "double"
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 check_untyped_defs = true
 strict = true
 ignore_missing_imports = true
