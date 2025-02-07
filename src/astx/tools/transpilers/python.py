@@ -123,14 +123,12 @@ class ASTxPythonTranspiler:
         """Handle IfExpr nodes."""
         if node.else_ is not None and len(node.else_) > 1:
             raise ValueError(
-                "ForRangeLoopExpr in Python just accept 1 node in the else "
-                "attribute."
+                "IfExpr in Python just accept 1 node in the else attribute."
             )
 
         if len(node.then) > 1:
             raise ValueError(
-                "ForRangeLoopExpr in Python just accept 1 node in the body "
-                "attribute."
+                "IfExpr in Python just accept 1 node in the then attribute."
             )
 
         if_ = self.visit(node.condition)
@@ -141,16 +139,16 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfStmt) -> str:
         """Handle IfStmt nodes."""
-        if node.else_:
-            return (
-                f"if {self.visit(node.condition)}:"
-                f"\n{self._generate_block(node.then)}"
-                f"\nelse:"
-                f"\n{self._generate_block(node.else_)}"
-            )
+        else_ = (
+            (f"\nelse:\n{self._generate_block(node.else_)}")
+            if node.else_ is not None
+            else ""
+        )
+
         return (
             f"if {self.visit(node.condition)}:"
             f"\n{self._generate_block(node.then)}"
+            f"{else_}"
         )
 
     @dispatch  # type: ignore[no-redef]
