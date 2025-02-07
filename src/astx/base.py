@@ -40,10 +40,10 @@ ASTType = TypeVar("ASTType", bound="AST", default="AST")
 
 
 __all__ = [
-    "ExprType",
-    "PrimitivesStruct",
     "DataTypesStruct",
     "DictDataTypesStruct",
+    "ExprType",
+    "PrimitivesStruct",
     "ReprStruct",
 ]
 
@@ -99,6 +99,7 @@ class ASTKind(Enum):
     # operators
     UnaryOpKind = -300
     BinaryOpKind = -301
+    WalrusOpKind = -302
 
     # functions
     PrototypeKind = -400
