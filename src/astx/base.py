@@ -347,6 +347,7 @@ class Identifier(Expr):
     """AST class for identifiers."""
 
     value: str
+
     def __init__(
         self,
         value: str,
