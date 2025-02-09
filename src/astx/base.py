@@ -347,7 +347,6 @@ class Identifier(Expr):
     """AST class for identifiers."""
 
     value: str
-
     def __init__(
         self,
         value: str,
@@ -362,7 +361,7 @@ class Identifier(Expr):
         """Return a structure that represents the Identifier object."""
         key = f"IDENTIFIER[{self.value}]"
         return self._prepare_struct(key, self.value, simplified)
-    
+
 
 @public
 @typechecked
