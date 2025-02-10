@@ -357,7 +357,7 @@ class ASTxPythonTranspiler:
         )
         body_str = self.visit(fn_call)
 
-        return f"case {cond_str}:\n" f"    {body_str}"
+        return f"case {cond_str}:\n    {body_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
@@ -384,7 +384,7 @@ class ASTxPythonTranspiler:
 
         cases_str = "\n".join(
             f"{self.indent_str}case {cond}:"
-            f"\n{self.indent_str*2}print({body})"
+            f"\n{self.indent_str * 2}print({body})"
             for cond, body in cases_tuples
         )
         return f"match {self.visit(node.value)}:\n{cases_str}"
