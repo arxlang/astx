@@ -383,7 +383,8 @@ class ASTxPythonTranspiler:
             cases_tuples.append((cond, self.visit(case.body)))
 
         cases_str = "\n".join(
-            f"{self.indent_str}case {cond}:\n{self.indent_str*2}print({body})"
+            f"{self.indent_str}case {cond}:"
+            f"\n{self.indent_str*2}print({body})"
             for cond, body in cases_tuples
         )
         return f"match {self.visit(node.value)}:\n{cases_str}"
