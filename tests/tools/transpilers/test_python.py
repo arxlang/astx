@@ -317,9 +317,9 @@ def test_literal_complex32() -> None:
     generated_code = translate(literal_complex32_node)
     expected_code = "complex(1, 2.8)"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_literal_complex64() -> None:
@@ -331,9 +331,9 @@ def test_literal_complex64() -> None:
     generated_code = translate(literal_complex64_node)
     expected_code = "complex(3.5, 4)"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_typecastexpr() -> None:
@@ -348,9 +348,9 @@ def test_transpiler_typecastexpr() -> None:
     generated_code = translate(cast_expr)
     expected_code = "cast(int, x)"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_utf8_char() -> None:
@@ -362,9 +362,9 @@ def test_transpiler_utf8_char() -> None:
     generated_code = translate(utf8_char_node)
     expected_code = repr("c")
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_utf8_string() -> None:
@@ -376,9 +376,9 @@ def test_transpiler_utf8_string() -> None:
     generated_code = translate(utf8_string_node)
     expected_code = repr("hello")
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_utf8_char() -> None:
@@ -390,9 +390,9 @@ def test_transpiler_literal_utf8_char() -> None:
     generated_code = translate(literal_utf8_char_node)
     expected_code = repr("a")
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_utf8_string() -> None:
@@ -404,9 +404,9 @@ def test_transpiler_literal_utf8_string() -> None:
     generated_code = translate(literal_utf8_string_node)
     expected_code = repr("world")
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_for_range_loop_expr() -> None:
@@ -427,9 +427,9 @@ def test_transpiler_for_range_loop_expr() -> None:
     generated_code = translate(for_expr)
     expected_code = "result = [2 for a in range(0, 10, 1)]"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_binary_op() -> None:
@@ -445,9 +445,9 @@ def test_transpiler_binary_op() -> None:
     # Expected code for the binary operation
     expected_code = "(x + y)"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_while_stmt() -> None:
@@ -489,9 +489,9 @@ def test_transpiler_while_stmt() -> None:
     # Expected code for the WhileStmt
     expected_code = "while (x < 5):\n    x = (x + 1)"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_ifexpr_with_else() -> None:
@@ -520,9 +520,9 @@ def test_transpiler_ifexpr_with_else() -> None:
     # Expected code for the binary operation
     expected_code = "2 if (1 > 2) else 3"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_while_expr() -> None:
@@ -564,9 +564,9 @@ def test_transpiler_while_expr() -> None:
     # Expected code for the WhileExpr
     expected_code = "[(x := (x + 1)) for _ in iter(lambda: (x < 5), False)]"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_ifexpr_without_else() -> None:
@@ -592,9 +592,9 @@ def test_transpiler_ifexpr_without_else() -> None:
     # Expected code for the binary operation
     expected_code = "2 if (1 > 2) else None"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_ifstmt_with_else() -> None:
@@ -629,9 +629,9 @@ def test_transpiler_ifstmt_with_else() -> None:
     # Expected code for the binary operation
     expected_code = "if (1 > 2):\n    (2 + 3)\nelse:\n    (2 - 3)"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_ifstmt_without_else() -> None:
@@ -663,9 +663,9 @@ def test_transpiler_ifstmt_without_else() -> None:
     # Expected code for the binary operation
     expected_code = "if (1 > 2):\n    (2 + 3)"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_date_type() -> None:
@@ -674,9 +674,9 @@ def test_transpiler_date_type() -> None:
     generated_code = translate(astx.Date())
     expected_code = "date"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_time_type() -> None:
@@ -685,9 +685,9 @@ def test_transpiler_time_type() -> None:
     generated_code = translate(astx.Time())
     expected_code = "time"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_timestamp_type() -> None:
@@ -696,9 +696,9 @@ def test_transpiler_timestamp_type() -> None:
     generated_code = translate(astx.Timestamp())
     expected_code = "timestamp"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_datetime_type() -> None:
@@ -707,9 +707,9 @@ def test_transpiler_datetime_type() -> None:
     generated_code = translate(astx.DateTime())
     expected_code = "datetime"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_date() -> None:
@@ -721,9 +721,9 @@ def test_transpiler_literal_date() -> None:
     generated_code = translate(literal_date_node)
     expected_code = "datetime.strptime('2024-11-24', '%Y-%m-%d').date()"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_time() -> None:
@@ -735,9 +735,9 @@ def test_transpiler_literal_time() -> None:
     generated_code = translate(literal_time_node)
     expected_code = "datetime.strptime('14:30:00', '%H:%M:%S').time()"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_timestamp() -> None:
@@ -751,9 +751,9 @@ def test_transpiler_literal_timestamp() -> None:
         "datetime.strptime('2024-11-24 14:30:00', '%Y-%m-%d %H:%M:%S')"
     )
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_datetime() -> None:
@@ -767,9 +767,9 @@ def test_transpiler_literal_datetime() -> None:
         "datetime.strptime('2024-11-24T14:30:00', '%Y-%m-%dT%H:%M:%S')"
     )
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_classdefstmt() -> None:
@@ -789,9 +789,9 @@ def test_transpiler_classdefstmt() -> None:
     generated_code = translate(class_def)
     expected_code = "class MyClass:\n     var1"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_enumdeclstmt() -> None:
@@ -820,9 +820,9 @@ def test_transpiler_enumdeclstmt() -> None:
         "class Color(Enum):\n    RED: Int32 = 1\n    GREEN: Int32 = 2"
     )
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_variabledeclaration() -> None:
@@ -837,9 +837,9 @@ def test_transpiler_variabledeclaration() -> None:
     generated_code = translate(var_r)
     expected_code = "RED: Int32 = 1"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_structdeclstmt() -> None:
@@ -873,9 +873,9 @@ def test_transpiler_structdeclstmt() -> None:
         "value: Int32 = 1"
     )
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_structdefstmt() -> None:
@@ -909,9 +909,9 @@ def test_transpiler_structdefstmt() -> None:
         "value: Int32 = 1"
     )
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_subscriptexpr_upper_lower() -> None:
@@ -931,9 +931,9 @@ def test_transpiler_subscriptexpr_upper_lower() -> None:
     generated_code = translate(subscr_expr)
     expected_code = "a[0:10:2]"
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_subscriptexpr_index() -> None:
