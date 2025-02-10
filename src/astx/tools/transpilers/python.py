@@ -115,8 +115,8 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionCall) -> str:
         """Handle FunctionCall nodes."""
-        value = self.visit(node.value) if node.value else ""
-        return f"return {value}"
+        value = str(node.args[0].value) if node.args[0].value else ""
+        return f"{node.fn.name}('{value}')"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionReturn) -> str:
@@ -339,10 +339,25 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CaseStmt) -> str:
         """Handle CaseStmt nodes."""
+        # Create a FunctionCall to print the value of the case statement
+        proto = astx.FunctionPrototype(
+            name="print",
+            args=astx.Arguments(astx.Argument("_", type_=astx.String())),
+            return_type=astx.String(),
+        )
+        fn_block = astx.Block()
+        fn = astx.Function(prototype=proto, body=fn_block)
+
+        # add the body of the CaseStmt as argument to the FunctionCall
+        arg1 = astx.LiteralString(value=node.body.value)
+        fn_call = astx.FunctionCall(fn=fn, args=[arg1])
+
         cond_str = (
             self.visit(node.condition) if node.condition is not None else "_"
         )
-        return f"case {cond_str}:\n" f"    print({self.visit(node.body)})"
+        body_str = self.visit(fn_call)
+
+        return f"case {cond_str}:\n" f"    {body_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
