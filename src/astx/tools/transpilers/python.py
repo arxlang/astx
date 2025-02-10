@@ -113,6 +113,12 @@ class ASTxPythonTranspiler:
         return f"{header}\n{body}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FunctionCall) -> str:
+        """Handle FunctionCall nodes."""
+        value = self.visit(node.value) if node.value else ""
+        return f"return {value}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionReturn) -> str:
         """Handle FunctionReturn nodes."""
         value = self.visit(node.value) if node.value else ""

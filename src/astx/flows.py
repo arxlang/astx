@@ -456,13 +456,22 @@ class CaseStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"CaseStmt[{self.condition} => {self.body}]"
+        # return f"CaseStmt[{self.condition} => {self.body}]"
+        return (
+            f"CaseStmt[{self.condition}]"  # TEST
+            if self.condition
+            else "CaseStmt[default]"
+        )
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = "CASE-STMT"
+        key = f"CASE-STMT[{id(self)}]" if simplified else "CASE-STMT"
+        # key = "CASE-STMT"
+        # {"default": {"True":[]}} # TEST
+        # IDEALMENTE SEM CAIXINHA PARA CONDITION
+
         condition_dict = (
-            {"condition": {"default": []}}
+            {"default": {"True": []}}
             if self.condition is None
             else {"condition": self.condition.get_struct(simplified)}
         )
@@ -479,7 +488,10 @@ class SwitchStmt(StatementType):
     """AST class for switch/match expressions based on Rust's match syntax."""
 
     value: Expr
-    cases: list[CaseStmt] | ASTNodes[CaseStmt]
+    # cases: list[CaseStmt] | ASTNodes[CaseStmt]
+    cases: ASTNodes[
+        CaseStmt
+    ]  # does this stay different from the instance values?
 
     def __init__(
         self,
@@ -491,15 +503,24 @@ class SwitchStmt(StatementType):
         """Initialize the SwitchStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.value = value
-        self.cases = cases
+        # self.cases = cases
+
+        if isinstance(cases, ASTNodes):
+            self.cases = cases
+        else:
+            self.cases = ASTNodes[CaseStmt]()
+            for case in cases:
+                self.cases.append(case)
+
         self.kind = ASTKind.SwitchStmtKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        cases_str = ", ".join(
-            f"{case.condition} => {case.body}" for case in self.cases
-        )
-        return f"SwitchStmt({self.value}, [{cases_str}])"
+        # cases_str = ", ".join(
+        #     f"{case.condition} => {case.body}" for case in self.cases
+        # )
+        # return f"SwitchStmt({self.value}, [{cases_str}])"
+        return f"SwitchStmt[{len(self.cases)}])"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
