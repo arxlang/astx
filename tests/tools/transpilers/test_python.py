@@ -989,7 +989,7 @@ def get_print_fncall(
 #
 #
 #     # Generate Python code
-#     generated_code = transpiler.visit(case1)
+#     generated_code = translate(case1)
 #     expected_code = "case 1:\n    print('one')"
 #
 #     assert generated_code == expected_code, (
@@ -1006,7 +1006,7 @@ def test_transpiler_casestmt_default() -> None:
     case1 = astx.CaseStmt(default=True, body=body1)
 
     # Generate Python code
-    generated_code = transpiler.visit(case1)
+    generated_code = translate(case1)
     expected_code = "case _:\n    print('one')"
 
     assert generated_code == expected_code, (
@@ -1040,7 +1040,7 @@ def test_transpiler_switchstmt() -> None:
     )
 
     # Generate Python code
-    generated_code = transpiler.visit(switch_stmt)
+    generated_code = translate(switch_stmt)
     expected_code = (
         "match x:\n    case 1:\n        print('one')\n"
         "    case 2:\n        print('two')\n    case _:\n"
