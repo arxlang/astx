@@ -342,7 +342,9 @@ class ASTxPythonTranspiler:
         cond_str = (
             self.visit(node.condition) if node.condition is not None else "_"
         )
-        return f"case {cond_str}:\n    print('{node.body.value}')"
+        body_str = self.visit(node.body)
+        return f"case {cond_str}:\n{self.indent_str}{body_str}"
+        # return f"case {cond_str}:\n    print('{node.body.value}')"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
@@ -357,8 +359,8 @@ class ASTxPythonTranspiler:
             cases_tuples.append((cond, self.visit(case.body)))
 
         cases_str = "\n".join(
-            f"{self.indent_str}case {cond}:"
-            f"\n{self.indent_str * 2}print({body})"
+            f"{self.indent_str}case {cond}:\n{self.indent_str * 2}{body}"
+            # f"\n{self.indent_str * 2}print({body})"
             for cond, body in cases_tuples
         )
         return f"match {self.visit(node.value)}:\n{cases_str}"

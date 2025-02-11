@@ -507,7 +507,7 @@ class SwitchStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"SwitchStmt[{len(self.cases)}])"
+        return f"SwitchStmt[{len(self.cases)}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""

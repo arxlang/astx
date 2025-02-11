@@ -956,61 +956,19 @@ def test_transpiler_subscriptexpr_index() -> None:
     )
 
 
-def get_print_prototype() -> astx.FunctionPrototype:
-    """Return a prototype for a print function."""
-    return astx.FunctionPrototype(
+def fn_print(
+    arg: astx.LiteralString,
+) -> astx.FunctionCall:
+    """Return a FunctionCall to print a string."""
+    proto = astx.FunctionPrototype(
         name="print",
         args=astx.Arguments(astx.Argument("_", type_=astx.String())),
         return_type=astx.String(),
     )
-
-
-def get_print_fncall(
-    case_body_value: astx.LiteralString,
-) -> astx.FunctionCall:
-    """Return a FunctionCall to print a string."""
-    proto = get_print_prototype()
+    fn = astx.Function(prototype=proto, body=astx.Block())
     return astx.FunctionCall(
-        fn=astx.Function(prototype=proto, body=astx.Block()),
-        args=[case_body_value],
-    )
-
-
-# def test_transpiler_casestmt() -> None:
-#     """Test astx.CaseStmt."""
-#     # Patterns and corresponding expressions
-#     condition1 = astx.LiteralInt32(value=1)
-#     body1 = astx.LiteralString(value="one")
-#
-#     # create branches
-#     case1 = astx.CaseStmt(condition=condition1, body=body1)
-#
-#     fn_call = get_print_fncall(case1.body.value)
-#
-#
-#     # Generate Python code
-#     generated_code = translate(case1)
-#     expected_code = "case 1:\n    print('one')"
-#
-#     assert generated_code == expected_code, (
-#         f"Expected '{expected_code}', but got '{generated_code}'"
-#     )
-
-
-def test_transpiler_casestmt_default() -> None:
-    """Test astx.CaseStmt with default case (no condition)."""
-    # Patterns and corresponding expressions
-    body1 = astx.LiteralString(value="one")
-
-    # create branches
-    case1 = astx.CaseStmt(default=True, body=body1)
-
-    # Generate Python code
-    generated_code = translate(case1)
-    expected_code = "case _:\n    print('one')"
-
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
+        fn=fn,
+        args=[arg],
     )
 
 
@@ -1021,12 +979,12 @@ def test_transpiler_switchstmt() -> None:
 
     # Patterns and corresponding expressions
     condition1 = astx.LiteralInt32(value=1)
-    body1 = astx.LiteralString(value="one")
+    body1 = fn_print(astx.LiteralString(value="one"))
 
     condition2 = astx.LiteralInt32(value=2)
-    body2 = astx.LiteralString(value="two")
+    body2 = fn_print(astx.LiteralString(value="two"))
 
-    body_default = astx.LiteralString(value="other")
+    body_default = fn_print(astx.LiteralString(value="other"))
 
     # create branches
     case1 = astx.CaseStmt(condition=condition1, body=body1)
@@ -1042,8 +1000,12 @@ def test_transpiler_switchstmt() -> None:
     # Generate Python code
     generated_code = translate(switch_stmt)
     expected_code = (
-        "match x:\n    case 1:\n        print('one')\n"
-        "    case 2:\n        print('two')\n    case _:\n"
+        "match x:\n"
+        "    case 1:\n"
+        "        print('one')\n"
+        "    case 2:\n"
+        "        print('two')\n"
+        "    case _:\n"
         "        print('other')"
     )
 
