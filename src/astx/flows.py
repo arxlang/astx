@@ -423,7 +423,7 @@ class WhileExpr(Expr):
 @public
 @typechecked
 class CaseStmt(StatementType):
-    """AST class for a branch in a switch/match expression."""
+    """AST class for a case in a Switch statement."""
 
     condition: Optional[Expr] = None
     body: Expr
@@ -456,9 +456,8 @@ class CaseStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        # return f"CaseStmt[{self.condition} => {self.body}]"
         return (
-            f"CaseStmt[{self.condition}]"  # TEST
+            f"CaseStmt[{self.condition}]"
             if self.condition
             else "CaseStmt[default]"
         )
@@ -466,10 +465,6 @@ class CaseStmt(StatementType):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = f"CASE-STMT[{id(self)}]" if simplified else "CASE-STMT"
-        # key = "CASE-STMT"
-        # {"default": {"True":[]}} # TEST
-        # IDEALMENTE SEM CAIXINHA PARA CONDITION
-
         condition_dict = (
             {"default": {"True": []}}
             if self.condition is None
@@ -485,13 +480,10 @@ class CaseStmt(StatementType):
 @public
 @typechecked
 class SwitchStmt(StatementType):
-    """AST class for switch/match expressions based on Rust's match syntax."""
+    """AST class for Switch statements based on Rust's match syntax."""
 
     value: Expr
-    # cases: list[CaseStmt] | ASTNodes[CaseStmt]
-    cases: ASTNodes[
-        CaseStmt
-    ]  # does this stay different from the instance values?
+    cases: ASTNodes[CaseStmt]
 
     def __init__(
         self,
@@ -503,7 +495,6 @@ class SwitchStmt(StatementType):
         """Initialize the SwitchStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.value = value
-        # self.cases = cases
 
         if isinstance(cases, ASTNodes):
             self.cases = cases
@@ -516,16 +507,11 @@ class SwitchStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        # cases_str = ", ".join(
-        #     f"{case.condition} => {case.body}" for case in self.cases
-        # )
-        # return f"SwitchStmt({self.value}, [{cases_str}])"
         return f"SwitchStmt[{len(self.cases)}])"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "SWITCH-STMT"
-        # case_dict: ReprStruct = {}
         case_dict = {}
         for d in range(len(self.cases)):
             case_dict[f"case_{d}"] = self.cases[d].get_struct(simplified)
@@ -534,9 +520,4 @@ class SwitchStmt(StatementType):
             "value": self.value.get_struct(simplified),
             **cast(DictDataTypesStruct, {"cases": case_dict}),
         }
-
-        # value = {
-        #     "value": self.value.get_struct(simplified),
-        #     "cases": [case.get_struct(simplified) for case in self.cases],
-        # }
         return self._prepare_struct(key, value, simplified)
