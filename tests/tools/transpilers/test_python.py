@@ -1,8 +1,10 @@
 """Test Python Transpiler."""
 
 import ast
+import sys
 
 import astx
+import pytest
 
 from astx.tools.transpilers import python as astx2py
 
@@ -972,6 +974,7 @@ def fn_print(
     )
 
 
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="requires python>=3.10")
 def test_transpiler_switchstmt() -> None:
     """Test astx.SwitchStmt (2 cases + default)."""
     # The expression to match
