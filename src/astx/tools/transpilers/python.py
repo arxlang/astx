@@ -339,40 +339,14 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CaseStmt) -> str:
         """Handle CaseStmt nodes."""
-        # Create a FunctionCall to print the value of the case statement
-        proto = astx.FunctionPrototype(
-            name="print",
-            args=astx.Arguments(astx.Argument("_", type_=astx.String())),
-            return_type=astx.String(),
-        )
-        fn_block = astx.Block()
-        fn = astx.Function(prototype=proto, body=fn_block)
-
-        # add the body of the CaseStmt as argument to the FunctionCall
-        arg1 = astx.LiteralString(value=node.body.value)
-        fn_call = astx.FunctionCall(fn=fn, args=[arg1])
-
         cond_str = (
             self.visit(node.condition) if node.condition is not None else "_"
         )
-        body_str = self.visit(fn_call)
-
-        return f"case {cond_str}:\n    {body_str}"
+        return f"case {cond_str}:\n    print('{node.body.value}')"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
         """Handle SwitchStmt nodes."""
-        # having a hard time making the identation work this way:
-        # cases_str = "\n".join(self.visit(case) for case in node.cases)
-        # return f"match {self.visit(node.value)}:\n    {cases_str}"
-        # results in
-        # match x:
-        #     case 1:
-        # print('one')
-        # case
-        # 2:
-        # print('two')
-
         cases_tuples = []
         for case in node.cases:
             cond = (
@@ -388,14 +362,6 @@ class ASTxPythonTranspiler:
             for cond, body in cases_tuples
         )
         return f"match {self.visit(node.value)}:\n{cases_str}"
-        # results in
-        # match x:
-        #     case 1:
-        #         print('one')
-        #     case 2:
-        #         print('two')
-        #     case _:
-        #         print('other')
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:
