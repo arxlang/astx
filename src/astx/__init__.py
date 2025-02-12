@@ -18,6 +18,7 @@ from astx import (
 from astx.base import (
     AST,
     ASTKind,
+    ASTNodes,
     DataType,
     Expr,
     ExprType,
@@ -159,6 +160,7 @@ def get_version() -> str:
 __all__ = [
     "AST",
     "ASTKind",
+    "ASTNodes",
     "AliasExpr",
     "Argument",
     "Arguments",

@@ -1,5 +1,6 @@
 """Tests for control flow statements."""
 
+import astx
 import pytest
 
 from astx.base import SourceLocation
@@ -205,7 +206,8 @@ def test_while_stmt() -> None:
 def test_case_stmt() -> None:
     """Test `CaseStmt` class."""
     condition1 = LiteralInt32(value=1)
-    body1 = LiteralString(value="one")
+    body1 = astx.Block()
+    body1.append(LiteralString(value="one"))
     case1 = CaseStmt(condition=condition1, body=body1)
 
     assert str(case1)
@@ -219,7 +221,8 @@ def test_case_stmt_error1() -> None:
     # should raise error - mustn't have condition since default=True
     with pytest.raises(ValueError):
         condition1 = LiteralInt32(value=1)
-        body1 = LiteralString(value="one")
+        body1 = astx.Block()
+        body1.append(LiteralString(value="one"))
         case1 = CaseStmt(  # noqa F841
             default=True,
             condition=condition1,
@@ -231,7 +234,8 @@ def test_case_stmt_error2() -> None:
     """Test `CaseStmt` class for default/condition inconsistency (2)."""
     # should raise error - must have condition since deault=False
     with pytest.raises(ValueError):
-        body1 = LiteralString(value="one")
+        body1 = astx.Block()
+        body1.append(LiteralString(value="one"))
         case1 = CaseStmt(body=body1)  # noqa F841
 
 
@@ -242,12 +246,15 @@ def test_switch_stmt() -> None:
 
     # Patterns and corresponding expressions
     condition1 = LiteralInt32(value=1)
-    body1 = LiteralString(value="one")
+    body1 = astx.Block()
+    body1.append(LiteralString(value="one"))
 
     condition2 = LiteralInt32(value=2)
-    body2 = LiteralString(value="two")
+    body2 = astx.Block()
+    body2.append(LiteralString(value="two"))
 
-    body_default = LiteralString(value="other")
+    body_default = astx.Block()
+    body2.append(LiteralString(value="other"))
 
     # create branches
     case1 = CaseStmt(condition=condition1, body=body1)
