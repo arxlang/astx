@@ -61,6 +61,11 @@ class ASTxPythonTranspiler:
         return ", ".join([self.visit(arg) for arg in node.nodes])
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AssignmentExpr) -> str:
+        """Handle AssignmentExpr nodes."""
+        return f"({self.visit(node.target)}:= {self.visit(node.value)}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.BinaryOp) -> str:
         """Handle BinaryOp nodes."""
         lhs = self.visit(node.lhs)
