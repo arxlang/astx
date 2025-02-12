@@ -532,3 +532,32 @@ class SwitchStmt(StatementType):
             **cast(DictDataTypesStruct, {"cases": case_dict}),
         }
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class YieldExpr(Expr):
+    """AST class for YieldExpr."""
+
+    value: Optional[Expr]
+
+    def __init__(
+        self,
+        value: Optional[Expr],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Yield instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.YieldExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"YieldExpr[{self.value}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "YIELD-EXPR"
+        value = {} if self.value is None else self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
