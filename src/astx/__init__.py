@@ -57,6 +57,7 @@ from astx.flows import (
     SwitchStmt,
     WhileExpr,
     WhileStmt,
+    YieldExpr,
 )
 from astx.literals import (
     Literal,
@@ -268,6 +269,7 @@ __all__ = [
     "WalrusOp",
     "WhileExpr",
     "WhileStmt",
+    "YieldExpr",
     "base",
     "blocks",
     "callables",
