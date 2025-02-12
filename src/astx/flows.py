@@ -418,3 +418,117 @@ class WhileExpr(Expr):
         }
 
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class CaseStmt(StatementType):
+    """AST class for a case in a Switch statement."""
+
+    condition: Optional[Expr] = None
+    body: Block
+    default: bool = False
+
+    def __init__(
+        self,
+        body: Block,
+        condition: Optional[Expr] = None,
+        default: bool = False,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the CaseStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.condition = condition
+        self.body = body
+        self.default = default
+        self.kind = ASTKind.CaseStmtKind
+
+        if self.default is False and self.condition is None:
+            raise ValueError(
+                "Condition must be provided for non-default branches."
+            )
+
+        if self.default is True and self.condition is not None:
+            raise ValueError(
+                "Condition must NOT be provided for default branches."
+            )
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return (
+            f"CaseStmt[{self.condition}]"
+            if self.condition
+            else "CaseStmt[default]"
+        )
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        default_case = "default" if self.condition is None else ""
+        default_only = "[default]" if self.condition is None else ""
+        id_str = f"{id(self)}" if simplified else ""
+
+        key = (
+            f"CASE-STMT[{id_str}{default_case}]"
+            if simplified and self.condition is not None
+            else f"CASE-STMT[{id_str}, {default_case}]"
+            if simplified
+            else f"CASE-STMT{default_only}"
+        )
+
+        condition_dict = (
+            {}
+            if self.condition is None
+            else {"condition": self.condition.get_struct(simplified)}
+        )
+        value = {
+            **cast(DictDataTypesStruct, condition_dict),
+            "body": self.body.get_struct(simplified),
+        }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class SwitchStmt(StatementType):
+    """AST class for Switch statements based on Rust's match syntax."""
+
+    value: Expr
+    cases: ASTNodes[CaseStmt]
+
+    def __init__(
+        self,
+        value: Expr,
+        cases: list[CaseStmt] | ASTNodes[CaseStmt],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the SwitchStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+
+        if isinstance(cases, ASTNodes):
+            self.cases = cases
+        else:
+            self.cases = ASTNodes[CaseStmt]()
+            for case in cases:
+                self.cases.append(case)
+
+        self.kind = ASTKind.SwitchStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"SwitchStmt[{len(self.cases)}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "SWITCH-STMT"
+        case_dict = {}
+        for d in range(len(self.cases)):
+            case_dict[f"case_{d}"] = self.cases[d].get_struct(simplified)
+
+        value: DictDataTypesStruct = {
+            "value": self.value.get_struct(simplified),
+            **cast(DictDataTypesStruct, {"cases": case_dict}),
+        }
+        return self._prepare_struct(key, value, simplified)

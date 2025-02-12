@@ -1,8 +1,10 @@
 """Test Python Transpiler."""
 
 import ast
+import sys
 
 import astx
+import pytest
 
 from astx.tools.transpilers import python as astx2py
 
@@ -787,7 +789,7 @@ def test_transpiler_classdefstmt() -> None:
 
     # Generate Python code
     generated_code = translate(class_def)
-    expected_code = "class MyClass:\n     var1"
+    expected_code = "class MyClass:\n    var1"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -915,7 +917,7 @@ def test_transpiler_structdefstmt() -> None:
 
 
 def test_transpiler_subscriptexpr_upper_lower() -> None:
-    """Test astx.SubscriptExpr."""
+    """Test astx.SubscriptExpr (slice)."""
     # Variable
     a_var = astx.Variable(name="a")
 
@@ -937,7 +939,7 @@ def test_transpiler_subscriptexpr_upper_lower() -> None:
 
 
 def test_transpiler_subscriptexpr_index() -> None:
-    """Test astx.SubscriptExpr."""
+    """Test astx.SubscriptExpr (index)."""
     # Variable
     a_var = astx.Variable(name="a")
 
@@ -950,6 +952,68 @@ def test_transpiler_subscriptexpr_index() -> None:
     # Generate Python code
     generated_code = translate(subscr_expr)
     expected_code = "a[0]"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def fn_print(
+    arg: astx.LiteralString,
+) -> astx.FunctionCall:
+    """Return a FunctionCall to print a string."""
+    proto = astx.FunctionPrototype(
+        name="print",
+        args=astx.Arguments(astx.Argument("_", type_=astx.String())),
+        return_type=astx.String(),
+    )
+    fn = astx.Function(prototype=proto, body=astx.Block())
+    return astx.FunctionCall(
+        fn=fn,
+        args=[arg],
+    )
+
+
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="requires python>=3.10")
+def test_transpiler_switchstmt() -> None:
+    """Test astx.SwitchStmt (2 cases + default)."""
+    # The expression to match
+    value_expr = astx.Variable(name="x")
+
+    # Patterns and corresponding expressions
+    condition1 = astx.LiteralInt32(value=1)
+    body1 = astx.Block()
+    body1.append(fn_print(astx.LiteralString(value="one")))
+
+    condition2 = astx.LiteralInt32(value=2)
+    body2 = astx.Block()
+    body2.append(fn_print(astx.LiteralString(value="two")))
+
+    body_default = astx.Block()
+    body_default.append(fn_print(astx.LiteralString(value="other")))
+
+    # create branches
+    case1 = astx.CaseStmt(condition=condition1, body=body1)
+    case2 = astx.CaseStmt(condition=condition2, body=body2)
+    case_default = astx.CaseStmt(default=True, body=body_default)
+
+    # Create the SwitchStmt
+    switch_stmt = astx.SwitchStmt(
+        value=value_expr,
+        cases=[case1, case2, case_default],
+    )
+
+    # Generate Python code
+    generated_code = translate(switch_stmt)
+    expected_code = (
+        "match x:\n"
+        "    case 1:\n"
+        "        print('one')\n"
+        "    case 2:\n"
+        "        print('two')\n"
+        "    case _:\n"
+        "        print('other')"
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
