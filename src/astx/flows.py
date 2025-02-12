@@ -547,7 +547,7 @@ class YieldExpr(Expr):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the Yield instance."""
+        """Initialize the YieldExpr instance."""
         super().__init__(loc=loc, parent=parent)
         self.value = value
         self.kind = ASTKind.YieldExprKind
