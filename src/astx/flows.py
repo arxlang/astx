@@ -464,12 +464,35 @@ class CaseStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        default_case = ", default" if self.condition is None else ""
+        # MODIFIED
+        default_case = "default" if self.condition is None else ""
+        default_only = "[default]" if self.condition is None else ""
+        id_str = f"{id(self)}" if simplified else ""
+
+        # if simplified:
+        #     if self.condition is not None:
+        #         key = f"CASE-STMT[{id_str}{default_case}]"
+        #     else:
+        #         key = f"CASE-STMT[{id_str}, {default_case}]"
+        # else:
+        #     key = f"CASE-STMT{default_ipynb}"
+
         key = (
-            f"CASE-STMT[{id(self)}{default_case}]"
+            f"CASE-STMT[{id_str}{default_case}]"
+            if simplified and self.condition is not None
+            else f"CASE-STMT[{id_str}, {default_case}]"
             if simplified
-            else "CASE-STMT[{default_case}]"
+            else f"CASE-STMT{default_only}"
         )
+
+        # # ORIGINAL
+        # default_case = ", default" if self.condition is None else ""
+        # key = (
+        #     f"CASE-STMT[{id(self)}{default_case}]"
+        #     if simplified
+        #     else f"CASE-STMT[{default_case}]"
+        # )
+
         condition_dict = (
             {}
             if self.condition is None
