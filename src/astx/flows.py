@@ -559,6 +559,5 @@ class YieldExpr(Expr):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "YIELD-EXPR"
-        # value = self.value.get_struct(simplified)
         value = {} if self.value is None else self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
