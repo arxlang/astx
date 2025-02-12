@@ -426,12 +426,12 @@ class CaseStmt(StatementType):
     """AST class for a case in a Switch statement."""
 
     condition: Optional[Expr] = None
-    body: Expr
+    body: Block
     default: bool = False
 
     def __init__(
         self,
-        body: Expr,
+        body: Block,
         condition: Optional[Expr] = None,
         default: bool = False,
         loc: SourceLocation = NO_SOURCE_LOCATION,
@@ -464,9 +464,14 @@ class CaseStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = f"CASE-STMT[{id(self)}]" if simplified else "CASE-STMT"
+        default_case = ", default" if self.condition is None else ""
+        key = (
+            f"CASE-STMT[{id(self)}{default_case}]"
+            if simplified
+            else "CASE-STMT[{default_case}]"
+        )
         condition_dict = (
-            {"default": {"True": []}}
+            {}
             if self.condition is None
             else {"condition": self.condition.get_struct(simplified)}
         )

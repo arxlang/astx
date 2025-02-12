@@ -1,6 +1,6 @@
 """ASTx Python transpiler."""
 
-from typing import Union
+from typing import Union, cast
 
 from plum import dispatch
 
@@ -24,7 +24,7 @@ class ASTxPythonTranspiler:
         self.indent_level = 0
         self.indent_str = "    "  # 4 spaces
 
-    def _generate_block(self, block: astx.Block) -> str:
+    def _generate_block(self, block: astx.ASTNodes) -> str:
         """Generate code for a block of statements with proper indentation."""
         self.indent_level += 1
         indent = self.indent_str * self.indent_level
@@ -51,13 +51,13 @@ class ASTxPythonTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Argument) -> str:
-        """Handle UnaryOp nodes."""
+        """Handle Argument nodes."""
         type_ = self.visit(node.type_)
         return f"{node.name}: {type_}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Arguments) -> str:
-        """Handle UnaryOp nodes."""
+        """Handle Argumens nodes."""
         return ", ".join([self.visit(arg) for arg in node.nodes])
 
     @dispatch  # type: ignore[no-redef]
@@ -76,7 +76,7 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.ClassDefStmt) -> str:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
-        return f"class {node.name}{class_type}:\n {self.visit(node.body)}"
+        return f"class {node.name}{class_type}:\n{self.visit(node.body)}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.EnumDeclStmt) -> str:
@@ -115,8 +115,8 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionCall) -> str:
         """Handle FunctionCall nodes."""
-        value = str(node.args[0].value) if node.args[0].value else ""
-        return f"{node.fn.name}('{value}')"
+        args = ", ".join([self.visit(arg) for arg in node.args])
+        return f"{node.fn.name}({args})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionReturn) -> str:
@@ -343,27 +343,13 @@ class ASTxPythonTranspiler:
             self.visit(node.condition) if node.condition is not None else "_"
         )
         body_str = self.visit(node.body)
-        return f"case {cond_str}:\n{self.indent_str}{body_str}"
-        # return f"case {cond_str}:\n    print('{node.body.value}')"
+        return f"case {cond_str}:\n{body_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
         """Handle SwitchStmt nodes."""
-        cases_tuples = []
-        for case in node.cases:
-            cond = (
-                self.visit(case.condition)
-                if case.condition is not None
-                else "_"
-            )
-            cases_tuples.append((cond, self.visit(case.body)))
-
-        cases_str = "\n".join(
-            f"{self.indent_str}case {cond}:\n{self.indent_str * 2}{body}"
-            # f"\n{self.indent_str * 2}print({body})"
-            for cond, body in cases_tuples
-        )
-        return f"match {self.visit(node.value)}:\n{cases_str}"
+        cases_visited = self._generate_block(cast(astx.Block, node.cases))
+        return f"match {self.visit(node.value)}:\n{cases_visited}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:

@@ -789,7 +789,7 @@ def test_transpiler_classdefstmt() -> None:
 
     # Generate Python code
     generated_code = translate(class_def)
-    expected_code = "class MyClass:\n     var1"
+    expected_code = "class MyClass:\n    var1"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -982,12 +982,15 @@ def test_transpiler_switchstmt() -> None:
 
     # Patterns and corresponding expressions
     condition1 = astx.LiteralInt32(value=1)
-    body1 = fn_print(astx.LiteralString(value="one"))
+    body1 = astx.Block()
+    body1.append(fn_print(astx.LiteralString(value="one")))
 
     condition2 = astx.LiteralInt32(value=2)
-    body2 = fn_print(astx.LiteralString(value="two"))
+    body2 = astx.Block()
+    body2.append(fn_print(astx.LiteralString(value="two")))
 
-    body_default = fn_print(astx.LiteralString(value="other"))
+    body_default = astx.Block()
+    body_default.append(fn_print(astx.LiteralString(value="other")))
 
     # create branches
     case1 = astx.CaseStmt(condition=condition1, body=body1)
