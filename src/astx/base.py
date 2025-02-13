@@ -346,6 +346,29 @@ class Expr(AST):
 
 @public
 @typechecked
+class Identifier(Expr):
+    """AST class for identifiers."""
+
+    value: str
+
+    def __init__(
+        self,
+        value: str,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Identifier instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structure that represents the Identifier object."""
+        key = f"IDENTIFIER[{self.value}]"
+        return self._prepare_struct(key, self.value, simplified)
+
+
+@public
+@typechecked
 class ExprType(Expr):
     """ExprType expression class."""
 
