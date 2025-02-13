@@ -64,7 +64,7 @@ class VariableDeclaration(StatementType):
         return f"VariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
@@ -111,7 +111,7 @@ class InlineVariableDeclaration(Expr):
         return f"InlineVariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
@@ -144,7 +144,7 @@ class VariableAssignment(StatementType):
         return f"VariableAssignment[{self.name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
@@ -175,7 +175,7 @@ class Variable(DataTypeOps):
         return f"Variable[{self.name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = f"Variable[{self.name}]"
         value = self.name
         return self._prepare_struct(key, value, simplified)
