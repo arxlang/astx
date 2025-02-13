@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Optional
+from typing import Iterable, Optional, cast
 
 from public import public
 
@@ -11,6 +11,7 @@ from astx.base import (
     ASTKind,
     ASTNodes,
     DataType,
+    DictDataTypesStruct,
     Expr,
     ReprStruct,
     SourceLocation,
@@ -83,6 +84,13 @@ class AssignmentExpr(Expr):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = f"ASSIGNMENT-EXPR[{self.targets}]"
-        value = self.value.get_struct(simplified)
+        key = "ASSIGNMENT-EXPR"
+        targets_dict = {"targets": self.targets.get_struct(simplified)}
+        value_dict = {"value": self.value.get_struct(simplified)}
+
+        value = {
+            **cast(DictDataTypesStruct, targets_dict),
+            **cast(DictDataTypesStruct, value_dict),
+        }
+
         return self._prepare_struct(key, value, simplified)
