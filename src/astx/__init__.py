@@ -96,7 +96,7 @@ from astx.modifiers import (
     ScopeKind,
     VisibilityKind,
 )
-from astx.operators import WalrusOp
+from astx.operators import AssignmentExpr, WalrusOp
 from astx.packages import (
     AliasExpr,
     ImportExpr,
@@ -166,6 +166,7 @@ __all__ = [
     "AliasExpr",
     "Argument",
     "Arguments",
+    "AssignmentExpr",
     "BinaryOp",
     "Block",
     "Boolean",

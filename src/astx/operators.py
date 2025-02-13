@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+from typing import Iterable, Optional
+
 from public import public
 
 from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
+    ASTNodes,
     DataType,
+    Expr,
     ReprStruct,
     SourceLocation,
 )
@@ -44,3 +48,41 @@ class WalrusOp(DataType):
 
         content: ReprStruct = {**lhs, **rhs}
         return self._prepare_struct(key, content, simplified)
+
+
+@public
+@typechecked
+class AssignmentExpr(Expr):
+    """AST class for assignment expressions."""
+
+    targets: ASTNodes[Expr]
+    value: Expr
+
+    def __init__(
+        self,
+        targets: Iterable[Expr] | ASTNodes[Expr],
+        value: Expr,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+
+        if isinstance(targets, ASTNodes):
+            self.targets = targets
+        else:
+            self.targets = ASTNodes()
+            for target in targets:
+                self.targets.append(target)
+
+        self.value = value
+        self.kind = ASTKind.AssignmentExprKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"AssignmentExpr[{self.value}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = f"ASSIGNMENT-EXPR[{self.targets}]"
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)

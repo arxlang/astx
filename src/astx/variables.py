@@ -64,7 +64,7 @@ class VariableDeclaration(StatementType):
         return f"VariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
@@ -111,7 +111,7 @@ class InlineVariableDeclaration(Expr):
         return f"InlineVariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
@@ -144,7 +144,7 @@ class VariableAssignment(StatementType):
         return f"VariableAssignment[{self.name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
@@ -175,38 +175,7 @@ class Variable(DataTypeOps):
         return f"Variable[{self.name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """Return the AST structure of the object."""
         key = f"Variable[{self.name}]"
         value = self.name
-        return self._prepare_struct(key, value, simplified)
-
-
-@public
-@typechecked
-class AssignmentExpr(Expr):
-    """AST class for assignment expressions."""
-
-    target: Expr
-    value: Expr
-
-    def __init__(
-        self,
-        target: Expr,
-        value: Expr,
-        loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
-    ) -> None:
-        super().__init__(loc=loc, parent=parent)
-        self.target = target
-        self.value = value
-        self.kind = ASTKind.AssignmentExprKind
-
-    def __str__(self) -> str:
-        """Return a string that represents the object."""
-        return f"AssignmentExpr[{self.value}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
-        key = f"ASSIGNMENT-EXPR[{self.target}]"
-        value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
