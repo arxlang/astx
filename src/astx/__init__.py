@@ -18,6 +18,7 @@ from astx import (
 from astx.base import (
     AST,
     ASTKind,
+    ASTNodes,
     DataType,
     Expr,
     ExprType,
@@ -47,14 +48,17 @@ from astx.classes import (
     StructDefStmt,
 )
 from astx.flows import (
+    CaseStmt,
     ForCountLoopExpr,
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
     IfExpr,
     IfStmt,
+    SwitchStmt,
     WhileExpr,
     WhileStmt,
+    YieldExpr,
 )
 from astx.literals import (
     Literal,
@@ -158,12 +162,14 @@ def get_version() -> str:
 __all__ = [
     "AST",
     "ASTKind",
+    "ASTNodes",
     "AliasExpr",
     "Argument",
     "Arguments",
     "BinaryOp",
     "Block",
     "Boolean",
+    "CaseStmt",
     "ClassDeclStmt",
     "ClassDefStmt",
     "Complex",
@@ -243,6 +249,7 @@ __all__ = [
     "StructDeclStmt",
     "StructDefStmt",
     "SubscriptExpr",
+    "SwitchStmt",
     "Target",
     "Time",
     "Timestamp",
@@ -264,6 +271,7 @@ __all__ = [
     "WalrusOp",
     "WhileExpr",
     "WhileStmt",
+    "YieldExpr",
     "base",
     "blocks",
     "callables",

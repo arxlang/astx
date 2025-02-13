@@ -117,6 +117,9 @@ class ASTKind(Enum):
     ForCountLoopExprKind = -505
     WhileExprKind = -506
     IfExprKind = -507
+    CaseStmtKind = -508
+    SwitchStmtKind = -509
+    YieldExprKind = -510
 
     # data types
     NullDTKind = -600
