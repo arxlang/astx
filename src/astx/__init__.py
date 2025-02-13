@@ -96,7 +96,7 @@ from astx.modifiers import (
     ScopeKind,
     VisibilityKind,
 )
-from astx.operators import AssignmentExpr, WalrusOp
+from astx.operators import AssignmentExpr, VariableAssignment, WalrusOp
 from astx.packages import (
     AliasExpr,
     ImportExpr,
@@ -146,7 +146,6 @@ from astx.types import (
 from astx.variables import (
     InlineVariableDeclaration,
     Variable,
-    VariableAssignment,
     VariableDeclaration,
 )
 

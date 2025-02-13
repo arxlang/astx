@@ -15,6 +15,7 @@ from astx.base import (
     Expr,
     ReprStruct,
     SourceLocation,
+    StatementType,
 )
 from astx.tools.typing import typechecked
 from astx.variables import Variable
@@ -93,4 +94,37 @@ class AssignmentExpr(Expr):
             **cast(DictDataTypesStruct, value_dict),
         }
 
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class VariableAssignment(StatementType):
+    """AST class for variable declaration."""
+
+    name: str
+    value: Expr
+
+    def __init__(
+        self,
+        name: str,
+        value: Expr,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the VarExprAST instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.loc = loc
+        self.name = name
+        self.value = value
+        self.kind = ASTKind.VariableAssignmentKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"VariableAssignment[{self.name}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = str(self)
+        value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)

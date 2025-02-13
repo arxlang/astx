@@ -1,7 +1,7 @@
 """Tests for operators."""
 
 from astx.literals.numeric import LiteralInt32
-from astx.operators import AssignmentExpr
+from astx.operators import AssignmentExpr, VariableAssignment
 from astx.variables import Variable
 from astx.viz import visualize
 
@@ -17,3 +17,14 @@ def test_assignment_expr() -> None:
     assert assign_expr.get_struct()
     assert assign_expr.get_struct(simplified=True)
     visualize(assign_expr.get_struct())
+
+
+def test_variable_assign() -> None:
+    """Test function creation with modifiers."""
+    assign_a = VariableAssignment("a", value=LiteralInt32(1))
+
+    assert str(assign_a)
+    assert assign_a.get_struct()
+    assert assign_a.get_struct(simplified=True)
+
+    visualize(assign_a.get_struct())
