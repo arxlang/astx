@@ -61,6 +61,12 @@ class ASTxPythonTranspiler:
         return ", ".join([self.visit(arg) for arg in node.nodes])
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AssignmentExpr) -> str:
+        """Handle AssignmentExpr nodes."""
+        target_str = " = ".join(self.visit(target) for target in node.targets)
+        return f"{target_str} = {self.visit(node.value)}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.BinaryOp) -> str:
         """Handle BinaryOp nodes."""
         lhs = self.visit(node.lhs)
@@ -408,11 +414,6 @@ class ASTxPythonTranspiler:
         return node.name
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.WalrusOp) -> str:
-        """Handle Walrus operator."""
-        return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableAssignment) -> str:
         """Handle VariableAssignment nodes."""
         target = node.name
@@ -424,6 +425,11 @@ class ASTxPythonTranspiler:
         """Handle VariableDeclaration nodes."""
         value = self.visit(node.value)
         return f"{node.name}: {node.value.type_.__class__.__name__} = {value}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.WalrusOp) -> str:
+        """Handle Walrus operator."""
+        return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:

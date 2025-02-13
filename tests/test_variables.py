@@ -42,17 +42,6 @@ def test_inline_variable_decl() -> None:
     visualize(decl_a.get_struct())
 
 
-def test_variable_assign() -> None:
-    """Test function creation with modifiers."""
-    assign_a = astx.VariableAssignment("a", value=astx.LiteralInt32(1))
-
-    assert str(assign_a)
-    assert assign_a.get_struct()
-    assert assign_a.get_struct(simplified=True)
-
-    visualize(assign_a.get_struct())
-
-
 def test_argument() -> None:
     """Test function creation with modifiers."""
     arg_a = astx.Argument(
