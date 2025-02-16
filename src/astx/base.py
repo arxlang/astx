@@ -170,6 +170,9 @@ class ASTKind(Enum):
     # subscrpts
     SubscriptExprKind = -1000
 
+    # exceptions
+    ThrowStmtKind = -1100
+
 
 class ASTMeta(type):
     def __str__(cls) -> str:

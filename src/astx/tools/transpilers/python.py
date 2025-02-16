@@ -79,6 +79,15 @@ class ASTxPythonTranspiler:
         return self._generate_block(node)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.CaseStmt) -> str:
+        """Handle CaseStmt nodes."""
+        cond_str = (
+            self.visit(node.condition) if node.condition is not None else "_"
+        )
+        body_str = self.visit(node.body)
+        return f"case {cond_str}:\n{body_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> str:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
@@ -343,15 +352,6 @@ class ASTxPythonTranspiler:
         return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.CaseStmt) -> str:
-        """Handle CaseStmt nodes."""
-        cond_str = (
-            self.visit(node.condition) if node.condition is not None else "_"
-        )
-        body_str = self.visit(node.body)
-        return f"case {cond_str}:\n{body_str}"
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
         """Handle SwitchStmt nodes."""
         cases_visited = self._generate_block(cast(astx.Block, node.cases))
@@ -391,6 +391,12 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.TypeCastExpr) -> str:
         """Handle TypeCastExpr nodes."""
         return f"cast({self.visit(node.target_type)}, {node.expr.name})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ThrowStmt) -> str:
+        """Handle ThrowStmt nodes."""
+        message_str = self.visit(node.message) if node.message else ""
+        return f"raise {message_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> str:
