@@ -395,8 +395,8 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ThrowStmt) -> str:
         """Handle ThrowStmt nodes."""
-        message_str = self.visit(node.message) if node.message else ""
-        return f"raise {message_str}"
+        message_str = f" {self.visit(node.message)}" if node.message else ""
+        return f"raise{message_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> str:
