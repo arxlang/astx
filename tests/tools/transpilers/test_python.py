@@ -1064,3 +1064,17 @@ def test_transpiler_assignmentexpr() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_throwstmt() -> None:
+    """Test astx.ThrowStmt."""
+    # create throw statement
+    throw_stmt = astx.ThrowStmt()
+
+    # Generate Python code
+    generated_code = translate(throw_stmt)
+    expected_code = "raise"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
