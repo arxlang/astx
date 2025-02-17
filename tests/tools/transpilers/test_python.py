@@ -1045,3 +1045,22 @@ def test_transpiler_yieldexpr_whilestmt() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_assignmentexpr() -> None:
+    """Test astx.AssignmentExpr."""
+    var_a = astx.Variable(name="a")
+    var_b = astx.Variable(name="b")
+
+    # create assignment expression
+    assign_expr = astx.AssignmentExpr(
+        targets=[var_a, var_b], value=astx.LiteralInt32(1)
+    )
+
+    # Generate Python code
+    generated_code = translate(assign_expr)
+    expected_code = "a = b = 1"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
