@@ -140,6 +140,11 @@ class ASTxPythonTranspiler:
         return f"return {value}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Identifier) -> str:
+        """Handle Identifier nodes."""
+        return f"{node.value}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> str:
         """Handle IfExpr nodes."""
         if node.else_ is not None and len(node.else_) > 1:
@@ -395,8 +400,10 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ThrowStmt) -> str:
         """Handle ThrowStmt nodes."""
-        message_str = f" {self.visit(node.message)}" if node.message else ""
-        return f"raise{message_str}"
+        exception_str = (
+            f" {self.visit(node.exception)}" if node.exception else ""
+        )
+        return f"raise{exception_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> str:
