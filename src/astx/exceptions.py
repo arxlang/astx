@@ -36,11 +36,13 @@ class ThrowStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        throw_str = f"ThrowStmt[{self.exception.value}]" if self.exception else "ThrowStmt"
+        throw_str = (
+            f"ThrowStmt[{self.exception}]" if self.exception else "ThrowStmt"
+        )
         return throw_str
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = str(self)
+        key = "THROW-STMT"
         value = self.exception.get_struct(simplified) if self.exception else ""
         return self._prepare_struct(key, value, simplified)
