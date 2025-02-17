@@ -36,7 +36,7 @@ class ThrowStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"ThrowStmt[{self.exception}]"
+        return f"ThrowStmt[{self.exception.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
