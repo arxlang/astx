@@ -115,7 +115,7 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.ExceptionHandlerStmt) -> str:
         """Handle ExceptionHandlerStmt nodes."""
         body_str = "\n    ".join(self.visit(b) for b in node.body)
-        handlers_str = "".join(
+        handlers_str = "\n".join(
             self.visit(handler) for handler in node.handlers
         )
         return f"try:\n{self.indent_str}{body_str}\n{handlers_str}"

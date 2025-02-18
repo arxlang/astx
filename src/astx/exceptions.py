@@ -77,7 +77,7 @@ class CatchHandlerStmt(StatementType):
         else:
             self.body = ASTNodes[Expr]()
             for b in body:
-                self.doby.append(b)
+                self.body.append(b)
 
         self.name = name
 
