@@ -172,6 +172,8 @@ class ASTKind(Enum):
 
     # exceptions
     ThrowStmtKind = -1100
+    # CatchHandlerStmt = -1200
+    # ExceptionHandlerStmt = -1300
 
 
 class ASTMeta(type):

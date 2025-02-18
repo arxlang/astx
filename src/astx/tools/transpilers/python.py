@@ -88,6 +88,18 @@ class ASTxPythonTranspiler:
         return f"case {cond_str}:\n{body_str}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.CatchHandlerStmt) -> str:
+        """Handle CatchHandlerStmt nodes."""
+        types_str = (
+            f" ({' ,'.join(self.visit(t) for t in node.types)})"
+            if node.types
+            else ""
+        )
+        name_str = f" as {self.visit(node.name)}" if node.name else ""
+        body_str = "\n    ".join(self.visit(b) for b in node.body)
+        return f"except{types_str}{name_str}:\n{self.indent_str}{body_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> str:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
@@ -98,6 +110,15 @@ class ASTxPythonTranspiler:
         """Handle EnumDeclStmt nodes."""
         attr_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
         return f"class {node.name}(Enum):\n    {attr_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ExceptionHandlerStmt) -> str:
+        """Handle ExceptionHandlerStmt nodes."""
+        body_str = "\n    ".join(self.visit(b) for b in node.body)
+        handlers_str = "".join(
+            self.visit(handler) for handler in node.handlers
+        )
+        return f"try:\n{self.indent_str}{body_str}\n{handlers_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
