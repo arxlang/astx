@@ -118,7 +118,18 @@ class ASTxPythonTranspiler:
         handlers_str = "\n".join(
             self.visit(handler) for handler in node.handlers
         )
-        return f"try:\n{body_str}\n{handlers_str}"
+        finally_str = (
+            f"\n{self.visit(node.finally_handler)}"
+            if node.finally_handler
+            else ""
+        )
+        return f"try:\n{body_str}\n{handlers_str}{finally_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FinallyHandlerStmt) -> str:
+        """Handle FinallyHandlerStmt nodes."""
+        body_str = self._generate_block(node.body)
+        return f"finally:\n{body_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:

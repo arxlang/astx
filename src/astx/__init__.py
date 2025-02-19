@@ -47,7 +47,12 @@ from astx.classes import (
     StructDeclStmt,
     StructDefStmt,
 )
-from astx.exceptions import CatchHandlerStmt, ExceptionHandlerStmt, ThrowStmt
+from astx.exceptions import (
+    CatchHandlerStmt,
+    ExceptionHandlerStmt,
+    FinallyHandlerStmt,
+    ThrowStmt,
+)
 from astx.flows import (
     CaseStmt,
     ForCountLoopExpr,
@@ -185,6 +190,7 @@ __all__ = [
     "ExceptionHandlerStmt",
     "Expr",
     "ExprType",
+    "FinallyHandlerStmt",
     "Float16",
     "Float32",
     "Float64",

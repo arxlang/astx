@@ -9,7 +9,12 @@ from astx.callables import (
     FunctionCall,
     FunctionPrototype,
 )
-from astx.exceptions import CatchHandlerStmt, ExceptionHandlerStmt, ThrowStmt
+from astx.exceptions import (
+    CatchHandlerStmt,
+    ExceptionHandlerStmt,
+    FinallyHandlerStmt,
+    ThrowStmt,
+)
 from astx.literals import LiteralString
 from astx.types import String
 from astx.viz import visualize
@@ -164,6 +169,60 @@ def test_exceptionhandler_stmt_multiplehandlers() -> None:
 
     exc_handler = ExceptionHandlerStmt(
         body=try_body, handlers=[handler1, handler2]
+    )
+
+    assert str(exc_handler)
+    assert exc_handler.get_struct()
+    assert exc_handler.get_struct(simplified=True)
+    visualize(exc_handler.get_struct())
+
+
+def test_finallyhandler_stmt_() -> None:
+    """Test `FinallyHandlerStmt` class."""
+    # Create the "finally" block
+    finally_body = Block()
+    finally_body.append(fn_print(LiteralString(value="run complete")))
+
+    finally_handler = FinallyHandlerStmt(body=finally_body)
+
+    assert str(finally_handler)
+    assert finally_handler.get_struct()
+    assert finally_handler.get_struct(simplified=True)
+    visualize(finally_handler.get_struct())
+
+
+def test_exceptionhandler_stmt_multiplehandlers_finally() -> None:
+    """Test `ExceptionHandlerStmt` class with multiple handlers and finally."""
+    # Create the "except" block
+    exception1_types = [Identifier("A")]
+    except_body1 = Block()
+    except_body1.append(fn_print(LiteralString(value="failed_block1")))
+    handler1 = CatchHandlerStmt(
+        name=Identifier("e"), types=exception1_types, body=except_body1
+    )
+
+    # Create another "except" block
+    exception2_types = [Identifier("B")]
+
+    except_body2 = Block()
+    except_body2.append(fn_print(LiteralString(value="failed_block2")))
+
+    handler2 = CatchHandlerStmt(types=exception2_types, body=except_body2)
+
+    # Create the "finally" block
+    finally_body = Block()
+    finally_body.append(fn_print(LiteralString(value="run complete")))
+
+    finally_handler = FinallyHandlerStmt(body=finally_body)
+
+    # Create the "try" block
+    try_body = Block()
+    try_body.append(fn_print(LiteralString(value="passed")))
+
+    exc_handler = ExceptionHandlerStmt(
+        body=try_body,
+        handlers=[handler1, handler2],
+        finally_handler=finally_handler,
     )
 
     assert str(exc_handler)

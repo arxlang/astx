@@ -1108,3 +1108,47 @@ def test_transpiler_exception_handler_stmt() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_exception_handler_stmt_with_finally() -> None:
+    """Test astx.ExceptionHandlerStmt with FinallyHandler."""
+    # Create the "try" block
+    try_body = astx.Block()
+    try_body.append(fn_print(astx.LiteralString(value="passed")))
+
+    # Create the "except" block
+    exception_types = [astx.Identifier("A"), astx.Identifier("B")]
+    except_body = astx.Block()
+    except_body.append(fn_print(astx.LiteralString(value="failed")))
+
+    handler1 = astx.CatchHandlerStmt(
+        name=astx.Identifier("e"), types=exception_types, body=except_body
+    )
+
+    # Create the "finally" block
+    finally_body = astx.Block()
+    finally_body.append(fn_print(astx.LiteralString(value="run complete")))
+
+    finally_handler = astx.FinallyHandlerStmt(body=finally_body)
+
+    # Construct the full "try-except" statement
+    try_except_stmt = astx.ExceptionHandlerStmt(
+        body=try_body,
+        handlers=[handler1],
+        finally_handler=finally_handler,
+    )
+
+    # Generate Python code
+    generated_code = translate(try_except_stmt)
+    expected_code = (
+        "try:\n"
+        "    print('passed')\n"
+        "except (A ,B) as e:\n"
+        "    print('failed')\n"
+        "finally:\n"
+        "    print('run complete')"
+    )
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
