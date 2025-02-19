@@ -561,3 +561,32 @@ class YieldExpr(Expr):
         key = "YIELD-EXPR"
         value = {} if self.value is None else self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class GotoStmt(StatementType):
+    """AST class for function `Goto` statement."""
+
+    label: str
+
+    def __init__(
+        self,
+        label: str,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Return instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.label = label
+        self.kind = ASTKind.GotoStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"Goto[{self.label}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "GOTO-STMT"
+        value: DictDataTypesStruct = {self.label: self.label}
+        return self._prepare_struct(key, value, simplified)
