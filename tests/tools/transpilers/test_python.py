@@ -1078,3 +1078,33 @@ def test_transpiler_throwstmt() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_exception_handler_stmt() -> None:
+    """Test astx.ExceptionHandlerStmt."""
+    # Create the "try" block
+    try_body = astx.Block()
+    try_body.append(fn_print(astx.LiteralString(value="passed")))
+
+    # Create the "except" block
+    exception_types = [astx.Identifier("A")]
+    except_body1 = astx.Block()
+    except_body1.append(fn_print(astx.LiteralString(value="failed")))
+
+    handler1 = astx.CatchHandlerStmt(
+        name=astx.Identifier("e"), types=exception_types, body=except_body1
+    )
+
+    try_except_stmt = astx.ExceptionHandlerStmt(
+        body=try_body, handlers=[handler1]
+    )
+
+    # Generate Python code
+    generated_code = translate(try_except_stmt)
+    expected_code = (
+        "try:\n    print('passed')\nexcept (A) as e:\n    print('failed')"
+    )
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
