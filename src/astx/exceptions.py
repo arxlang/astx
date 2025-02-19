@@ -59,14 +59,12 @@ class ThrowStmt(StatementType):
 class CatchHandlerStmt(StatementType):
     """AST class for catch statements."""
 
-    # body: ASTNodes[AST]
     body: Block[AST]
     name: Optional[Identifier]
     types: Optional[ASTNodes[Identifier]]
 
     def __init__(
         self,
-        # body: Iterable[AST] | ASTNodes[AST],
         body: Block[AST],
         name: Optional[Identifier] = None,
         types: Optional[Iterable[Identifier] | ASTNodes[Identifier]] = None,
@@ -76,13 +74,6 @@ class CatchHandlerStmt(StatementType):
         """Initialize the instance."""
         super().__init__(loc=loc, parent=parent)
         self.body = body
-        # if isinstance(body, ASTNodes):
-        #     self.body = body
-        # else:
-        #     self.body = ASTNodes[AST]()
-        #     for b in body:
-        #         self.body.append(b)
-
         self.name = name
 
         if types:
@@ -125,13 +116,11 @@ class CatchHandlerStmt(StatementType):
 class ExceptionHandlerStmt(StatementType):
     """AST class for try statements."""
 
-    # body: ASTNodes[AST]
     body: Block[AST]
     handlers: ASTNodes[CatchHandlerStmt]
 
     def __init__(
         self,
-        # body: ASTNodes[AST],
         body: Block[AST],
         handlers: Iterable[CatchHandlerStmt] | ASTNodes[CatchHandlerStmt],
         parent: Optional[ASTNodes] = None,

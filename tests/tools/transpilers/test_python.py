@@ -1080,26 +1080,6 @@ def test_transpiler_throwstmt() -> None:
     )
 
 
-# def test_transpiler_catch_handler_stmt() -> None:
-#     """Test astx.CatchHandlerStmt."""
-#     # Create the "except" block
-#     exception_types = [astx.Identifier("ValueError")]
-#     except_body1 = astx.Block()
-#     except_body1.append(fn_print(astx.LiteralString(value="failed")))
-#
-#     handler1 = astx.CatchHandlerStmt(
-#         name=astx.Identifier("e"), types=exception_types, body=except_body1
-#     )
-#
-#     # Generate Python code
-#     generated_code = translate(handler1)
-#     expected_code = "except (A) as e:\n    print('failed')"
-#
-#     assert generated_code == expected_code, (
-#         f"Expected '{expected_code}', but got '{generated_code}'"
-#     )
-
-
 def test_transpiler_exception_handler_stmt() -> None:
     """Test astx.ExceptionHandlerStmt."""
     # Create the "try" block
