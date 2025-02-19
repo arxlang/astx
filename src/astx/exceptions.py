@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Iterable, Optional, cast
 
 from public import public
 
 from astx.base import (
+    AST,
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
@@ -57,15 +58,15 @@ class ThrowStmt(StatementType):
 class CatchHandlerStmt(StatementType):
     """AST class for catch statements."""
 
-    body: ASTNodes[Expr]
+    body: ASTNodes[AST]
     name: Optional[Identifier]
     types: Optional[ASTNodes[Identifier]]
 
     def __init__(
         self,
-        body: list[Expr] | ASTNodes[Expr],
+        body: Iterable[AST] | ASTNodes[AST],
         name: Optional[Identifier] = None,
-        types: Optional[list[Identifier] | ASTNodes[Identifier]] = None,
+        types: Optional[Iterable[Identifier] | ASTNodes[Identifier]] = None,
         parent: Optional[ASTNodes] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
@@ -75,7 +76,7 @@ class CatchHandlerStmt(StatementType):
         if isinstance(body, ASTNodes):
             self.body = body
         else:
-            self.body = ASTNodes[Expr]()
+            self.body = ASTNodes[AST]()
             for b in body:
                 self.body.append(b)
 
@@ -121,13 +122,13 @@ class CatchHandlerStmt(StatementType):
 class ExceptionHandlerStmt(StatementType):
     """AST class for try statements."""
 
-    body: ASTNodes[Expr]
+    body: ASTNodes[AST]
     handlers: ASTNodes[CatchHandlerStmt]
 
     def __init__(
         self,
-        body: ASTNodes[Expr],
-        handlers: list[CatchHandlerStmt] | ASTNodes[CatchHandlerStmt],
+        body: ASTNodes[AST],
+        handlers: Iterable[CatchHandlerStmt] | ASTNodes[CatchHandlerStmt],
         parent: Optional[ASTNodes] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
