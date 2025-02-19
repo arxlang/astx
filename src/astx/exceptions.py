@@ -141,7 +141,7 @@ class ExceptionHandlerStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return f"ExceptionHandlerStmt[{self.body}]"
+        return "ExceptionHandlerStmt"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
