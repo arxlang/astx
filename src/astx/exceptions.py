@@ -92,7 +92,7 @@ class CatchHandlerStmt(StatementType):
         else:
             self.types = None
 
-        self.kind = ASTKind.ThrowStmtKind
+        self.kind = ASTKind.CatchHandlerStmtKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
@@ -143,8 +143,7 @@ class ExceptionHandlerStmt(StatementType):
             for h in handlers:
                 self.handlers.append(h)
 
-        # self.final_body = final_body
-        self.kind = ASTKind.ThrowStmtKind
+        self.kind = ASTKind.ExceptionHandlerStmtKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
