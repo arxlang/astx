@@ -191,12 +191,7 @@ class FinallyHandlerStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        # id_str = f"{id(self)}" if simplified else ""
         key = "FINALLY-STMT"
-        # value = {f"body{id_str}": self.body.get_struct(simplified)}
         value: DictDataTypesStruct = {"body": self.body.get_struct(simplified)}
 
-        # value: DictDataTypesStruct = {
-        #     **cast(DictDataTypesStruct, body_dict),
-        # }
         return self._prepare_struct(key, value, simplified)
