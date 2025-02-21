@@ -6,6 +6,7 @@ from astx.base import (
     ASTKind,
     Expr,
     Identifier,
+    NO_SOURCE_LOCATION,
 )
 from astx.blocks import Block
 from astx.context_manager import WithItem, WithStmt
@@ -16,7 +17,7 @@ from astx.literals.base import Literal
 @pytest.fixture
 def context_expr() -> Expr:
     """Fixture providing a basic Expr instance."""
-    return Literal(42)
+    return Literal(value=42, loc=NO_SOURCE_LOCATION)
 
 
 @pytest.fixture
