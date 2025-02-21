@@ -121,7 +121,9 @@ class ASTKind(Enum):
     CaseStmtKind = -508
     SwitchStmtKind = -509
     YieldExprKind = -510
+    GotoStmtKind = -511
     WithStmtKind = -512
+
 
     # data types
     NullDTKind = -600

@@ -12,6 +12,7 @@ from astx.base import (
     ASTNodes,
     DictDataTypesStruct,
     Expr,
+    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
@@ -560,4 +561,33 @@ class YieldExpr(Expr):
         """Return the AST structure of the object."""
         key = "YIELD-EXPR"
         value = {} if self.value is None else self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class GotoStmt(StatementType):
+    """AST class for function `Goto` statement."""
+
+    label: Identifier
+
+    def __init__(
+        self,
+        label: Identifier,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Return instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.label = label
+        self.kind = ASTKind.GotoStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"Goto[{self.label.value}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = f"GOTO-STMT[{self.label.value}]"
+        value: DictDataTypesStruct = {}
         return self._prepare_struct(key, value, simplified)
