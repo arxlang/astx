@@ -281,3 +281,13 @@ def test_yield_expr() -> None:
     assert yield_expr.get_struct()
     assert yield_expr.get_struct(simplified=True)
     visualize(yield_expr.get_struct())
+
+
+def test_goto_stmt() -> None:
+    """Test `GotoStmt` class."""
+    goto_stmt = astx.GotoStmt(astx.Identifier("label1"))
+
+    assert str(goto_stmt)
+    assert goto_stmt.get_struct()
+    assert goto_stmt.get_struct(simplified=True)
+    visualize(goto_stmt.get_struct())
