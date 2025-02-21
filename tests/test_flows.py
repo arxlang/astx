@@ -285,7 +285,7 @@ def test_yield_expr() -> None:
 
 def test_goto_stmt() -> None:
     """Test `GotoStmt` class."""
-    goto_stmt = astx.GotoStmt(label="label")
+    goto_stmt = astx.GotoStmt(astx.Identifier("label1"))
 
     assert str(goto_stmt)
     assert goto_stmt.get_struct()
