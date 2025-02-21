@@ -47,6 +47,12 @@ from astx.classes import (
     StructDeclStmt,
     StructDefStmt,
 )
+from astx.exceptions import (
+    CatchHandlerStmt,
+    ExceptionHandlerStmt,
+    FinallyHandlerStmt,
+    ThrowStmt,
+)
 from astx.flows import (
     CaseStmt,
     ForCountLoopExpr,
@@ -170,6 +176,7 @@ __all__ = [
     "Block",
     "Boolean",
     "CaseStmt",
+    "CatchHandlerStmt",
     "ClassDeclStmt",
     "ClassDefStmt",
     "Complex",
@@ -180,8 +187,10 @@ __all__ = [
     "Date",
     "DateTime",
     "EnumDeclStmt",
+    "ExceptionHandlerStmt",
     "Expr",
     "ExprType",
+    "FinallyHandlerStmt",
     "Float16",
     "Float32",
     "Float64",
@@ -251,6 +260,7 @@ __all__ = [
     "SubscriptExpr",
     "SwitchStmt",
     "Target",
+    "ThrowStmt",
     "Time",
     "Timestamp",
     "TypeCastExpr",
