@@ -1,33 +1,37 @@
 """ASTx class for With Statement (Context Manager)."""
+
 from __future__ import annotations
-from typing import Optional, List ,Dict,Union,cast,Any
+
+from typing import Dict, List, Optional, cast
+
 from public import public
+
 from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
-    StatementType,
+    ASTNodes,
+    DataTypesStruct,
     Expr,
     Identifier,
-    ASTNodes,
     ReprStruct,
     SourceLocation,
-    DataTypesStruct,
-    DictDataTypesStruct,
-    Undefined,
-    PrimitivesStruct,
+    StatementType,
 )
 from astx.blocks import Block
+
 
 @public
 class WithItem:
     """AST class representing an item inside a `with` statement."""
 
-    def __init__(self, context_expr: Expr, instance_name: Optional[Identifier] = None) -> None:
+    def __init__(
+        self, context_expr: Expr, instance_name: Optional[Identifier] = None
+    ) -> None:
         """Initialize a WithItem instance.
-        
+
         Args:
-            context_expr: The expression representing the context manager
-            instance_name: Optional variable name to bind the context manager to
+            context_expr: The expression representing the context manager.
+            instance_name: Optional variable name to bind the context manager.
         """
         self.context_expr = context_expr
         self.instance_name = instance_name
@@ -38,8 +42,18 @@ class WithItem:
             return f"{self.context_expr} as {self.instance_name}"
         return str(self.context_expr)
 
-    def get_struct(self) -> dict[str, Any]: 
-        return {f"CONTEXT[{self.context_expr}]": f"AS {self.instance_name}"}
+    def get_struct(self) -> Dict[str, DataTypesStruct]:
+        """Get structural representation of the WithItem.
+
+        Returns
+        -------
+            Dictionary containing context expression and instance binding.
+        """
+        return cast(
+            Dict[str, DataTypesStruct],
+            {f"CONTEXT[{self.context_expr}]": f"AS {self.instance_name}"},
+        )
+
 
 class WithStmt(StatementType):
     """AST class for the `with` statement (context manager)."""
@@ -52,7 +66,7 @@ class WithStmt(StatementType):
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize WithStmt instance.
-        
+
         Args:
             items: List of WithItems representing the context managers
             body: Block of code to execute within the context
@@ -70,10 +84,25 @@ class WithStmt(StatementType):
         return f"WithStmt[{items_str}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        return {
-            "WITH-STMT": {
-                "items": [item.get_struct() for item in self.items],
-                "body": self.body.get_struct(),
-            }
-        }
+        """Get structural representation of the WithStmt.
 
+        Args:
+            simplified: Whether to return simplified structure.
+
+        Returns
+        -------
+            Dictionary containing with statement structure.
+        """
+        items_structs: List[Dict[str, DataTypesStruct]] = [
+            item.get_struct() for item in self.items
+        ]
+
+        return cast(
+            ReprStruct,
+            {
+                "WITH-STMT": {
+                    "items": items_structs,
+                    "body": self.body.get_struct(),
+                }
+            },
+        )
