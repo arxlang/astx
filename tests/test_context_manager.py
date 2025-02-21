@@ -16,7 +16,7 @@ from astx.literals.base import Literal
 @pytest.fixture
 def context_expr() -> Expr:
     """Fixture providing a basic Expr instance."""
-    return Literal(value=42)
+    return Literal(42)
 
 
 @pytest.fixture
