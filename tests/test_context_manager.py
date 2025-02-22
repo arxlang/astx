@@ -9,11 +9,10 @@ from astx.base import (
     Identifier,
     ReprStruct,
 )
+from astx.blocks import Block
 from astx.context_manager import WithItem, WithStmt
-from astx.keys import Block  # Assuming this is the correct import
 
 
-# Mock class for Expr
 class MockExpr(Expr):
     """A mock expression class for testing."""
 
