@@ -209,8 +209,8 @@ def test_transpiler_lambdaexpr_noparams() -> None:
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
-def test_transpiler_function() -> None:
-    """Test astx.Function."""
+def test_transpiler_functiondef() -> None:
+    """Test astx.FunctionDef."""
     # Function parameters
     args = astx.Arguments(
         astx.Argument(name="x", type_=astx.Int32()),
@@ -239,7 +239,7 @@ def test_transpiler_function() -> None:
     )
 
     # Function definition
-    add_function = astx.Function(
+    add_function = astx.FunctionDef(
         prototype=astx.FunctionPrototype(
             name="add",
             args=args,
@@ -967,7 +967,7 @@ def fn_print(
         args=astx.Arguments(astx.Argument("_", type_=astx.String())),
         return_type=astx.String(),
     )
-    fn = astx.Function(prototype=proto, body=astx.Block())
+    fn = astx.FunctionDef(prototype=proto, body=astx.Block())
     return astx.FunctionCall(
         fn=fn,
         args=[arg],

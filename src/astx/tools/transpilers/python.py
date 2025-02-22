@@ -67,6 +67,12 @@ class ASTxPythonTranspiler:
         return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AwaitExpr) -> str:
+        """Handle AwaitExpr nodes."""
+        value = self.visit(node.value) if node.value else ""
+        return f"await {value}".strip()
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.BinaryOp) -> str:
         """Handle BinaryOp nodes."""
         lhs = self.visit(node.lhs)
@@ -147,8 +153,21 @@ class ASTxPythonTranspiler:
         )
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Function) -> str:
-        """Handle Function nodes."""
+    def visit(self, node: astx.FunctionAsyncDef) -> str:
+        """Handle FunctionAsyncDef nodes."""
+        args = self.visit(node.prototype.args)
+        returns = (
+            f" -> {self.visit(node.prototype.return_type)}"
+            if node.prototype.return_type
+            else ""
+        )
+        header = f"async def {node.name}({args}){returns}:"
+        body = self.visit(node.body)
+        return f"{header}\n{body}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FunctionDef) -> str:
+        """Handle FunctionDef nodes."""
         args = self.visit(node.prototype.args)
         returns = (
             f" -> {self.visit(node.prototype.return_type)}"

@@ -2,7 +2,7 @@
 
 from astx.base import DataType
 from astx.blocks import Block
-from astx.callables import Arguments, Function, FunctionPrototype
+from astx.callables import Arguments, FunctionDef, FunctionPrototype
 from astx.classes import (
     ClassDeclStmt,
     ClassDefStmt,
@@ -50,7 +50,7 @@ def test_class_def() -> None:
         return_type=AnyType(),
     )
 
-    method = Function(
+    method = FunctionDef(
         prototype=prototype,
         body=Block(),
     )

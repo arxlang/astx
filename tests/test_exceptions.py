@@ -5,8 +5,8 @@ from astx.blocks import Block
 from astx.callables import (
     Argument,
     Arguments,
-    Function,
     FunctionCall,
+    FunctionDef,
     FunctionPrototype,
 )
 from astx.exceptions import (
@@ -43,7 +43,7 @@ def fn_print(
         args=Arguments(Argument("_", type_=String())),
         return_type=String(),
     )
-    fn = Function(prototype=proto, body=Block())
+    fn = FunctionDef(prototype=proto, body=Block())
     return FunctionCall(
         fn=fn,
         args=[arg],

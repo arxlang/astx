@@ -19,7 +19,7 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
-from astx.callables import Function
+from astx.callables import FunctionDef
 from astx.modifiers import VisibilityKind
 from astx.tools.typing import typechecked
 from astx.variables import VariableDeclaration
@@ -37,7 +37,7 @@ class ClassDeclStmt(StatementType):
     is_abstract: bool
     metaclass: Optional[Expr]
     attributes: ASTNodes[VariableDeclaration]
-    methods: ASTNodes[Function]
+    methods: ASTNodes[FunctionDef]
 
     def __init__(
         self,
@@ -49,7 +49,7 @@ class ClassDeclStmt(StatementType):
         metaclass: Optional[Expr] = None,
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
-        methods: Iterable[Function] | ASTNodes[Function] = [],
+        methods: Iterable[FunctionDef] | ASTNodes[FunctionDef] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -81,7 +81,7 @@ class ClassDeclStmt(StatementType):
         if isinstance(methods, ASTNodes):
             self.methods = methods
         else:
-            self.methods = ASTNodes[Function]()
+            self.methods = ASTNodes[FunctionDef]()
             for m in methods:
                 self.methods.append(m)
 
@@ -181,7 +181,7 @@ class ClassDefStmt(ClassDeclStmt):
         metaclass: Optional[Expr] = None,
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
-        methods: Iterable[Function] | ASTNodes[Function] = [],
+        methods: Iterable[FunctionDef] | ASTNodes[FunctionDef] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -297,7 +297,7 @@ class StructDeclStmt(StatementType):
     attributes: ASTNodes[VariableDeclaration]
     visibility: VisibilityKind
     decorators: ASTNodes[Expr]
-    methods: ASTNodes[Function]
+    methods: ASTNodes[FunctionDef]
 
     def __init__(
         self,
@@ -305,7 +305,7 @@ class StructDeclStmt(StatementType):
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
         decorators: Iterable[Expr] | ASTNodes[Expr] = [],
-        methods: Iterable[Function] | ASTNodes[Function] = [],
+        methods: Iterable[FunctionDef] | ASTNodes[FunctionDef] = [],
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -331,7 +331,7 @@ class StructDeclStmt(StatementType):
         if isinstance(methods, ASTNodes):
             self.methods = methods
         else:
-            self.methods = ASTNodes[Function]()
+            self.methods = ASTNodes[FunctionDef]()
             for m in methods:
                 self.methods.append(m)
 
@@ -391,7 +391,7 @@ class StructDefStmt(StructDeclStmt):
         attributes: Iterable[VariableDeclaration]
         | ASTNodes[VariableDeclaration] = [],
         decorators: Iterable[Expr] | ASTNodes[Expr] = [],
-        methods: Iterable[Function] | ASTNodes[Function] = [],
+        methods: Iterable[FunctionDef] | ASTNodes[FunctionDef] = [],
         visibility: VisibilityKind = VisibilityKind.public,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
