@@ -124,7 +124,6 @@ class ASTKind(Enum):
     GotoStmtKind = -511
     WithStmtKind = -512
 
-
     # data types
     NullDTKind = -600
     BooleanDTKind = -601

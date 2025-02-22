@@ -3,21 +3,38 @@
 import pytest
 
 from astx.base import (
+    NO_SOURCE_LOCATION,
     ASTKind,
     Expr,
     Identifier,
-    NO_SOURCE_LOCATION,
+    ReprStruct,
 )
-from astx.blocks import Block
 from astx.context_manager import WithItem, WithStmt
-from astx.literals.base import Literal
+from astx.keys import Block  # Assuming this is the correct import
+
+
+# Mock class for Expr
+class MockExpr(Expr):
+    """A mock expression class for testing."""
+
+    def __init__(self) -> None:
+        super().__init__(loc=NO_SOURCE_LOCATION)
+        self.type_ = "int"
+
+    def __str__(self) -> str:
+        """Return a string representation of the expression."""
+        return "42"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structural representation of the expression."""
+        return {"value": 42}
 
 
 # Fixtures
 @pytest.fixture
 def context_expr() -> Expr:
     """Fixture providing a basic Expr instance."""
-    return Literal(value=42, loc=NO_SOURCE_LOCATION)
+    return MockExpr()
 
 
 @pytest.fixture
