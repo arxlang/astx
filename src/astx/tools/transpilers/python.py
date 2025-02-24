@@ -1,5 +1,7 @@
 """ASTx Python transpiler."""
 
+from typing import Union, cast
+
 from plum import dispatch
 
 import astx
@@ -22,7 +24,7 @@ class ASTxPythonTranspiler:
         self.indent_level = 0
         self.indent_str = "    "  # 4 spaces
 
-    def _generate_block(self, block: astx.Block) -> str:
+    def _generate_block(self, block: astx.ASTNodes) -> str:
         """Generate code for a block of statements with proper indentation."""
         self.indent_level += 1
         indent = self.indent_str * self.indent_level
@@ -49,14 +51,20 @@ class ASTxPythonTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Argument) -> str:
-        """Handle UnaryOp nodes."""
+        """Handle Argument nodes."""
         type_ = self.visit(node.type_)
         return f"{node.name}: {type_}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Arguments) -> str:
-        """Handle UnaryOp nodes."""
+        """Handle Argumens nodes."""
         return ", ".join([self.visit(arg) for arg in node.nodes])
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AssignmentExpr) -> str:
+        """Handle AssignmentExpr nodes."""
+        target_str = " = ".join(self.visit(target) for target in node.targets)
+        return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.BinaryOp) -> str:
@@ -71,18 +79,70 @@ class ASTxPythonTranspiler:
         return self._generate_block(node)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.CaseStmt) -> str:
+        """Handle CaseStmt nodes."""
+        cond_str = (
+            self.visit(node.condition) if node.condition is not None else "_"
+        )
+        body_str = self.visit(node.body)
+        return f"case {cond_str}:\n{body_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.CatchHandlerStmt) -> str:
+        """Handle CatchHandlerStmt nodes."""
+        types_str = (
+            f" ({' ,'.join(self.visit(t) for t in node.types)})"
+            if node.types
+            else ""
+        )
+        name_str = f" as {self.visit(node.name)}" if node.name else ""
+        body_str = self._generate_block(node.body)
+        return f"except{types_str}{name_str}:\n{body_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> str:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
-        return f"class {node.name}{class_type}:" f"\n {self.visit(node.body)}"
+        return f"class {node.name}{class_type}:\n{self.visit(node.body)}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.EnumDeclStmt) -> str:
+        """Handle EnumDeclStmt nodes."""
+        attr_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
+        return f"class {node.name}(Enum):\n    {attr_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ExceptionHandlerStmt) -> str:
+        """Handle ExceptionHandlerStmt nodes."""
+        body_str = self._generate_block(node.body)
+        handlers_str = "\n".join(
+            self.visit(handler) for handler in node.handlers
+        )
+        finally_str = (
+            f"\n{self.visit(node.finally_handler)}"
+            if node.finally_handler
+            else ""
+        )
+        return f"try:\n{body_str}\n{handlers_str}{finally_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FinallyHandlerStmt) -> str:
+        """Handle FinallyHandlerStmt nodes."""
+        body_str = self._generate_block(node.body)
+        return f"finally:\n{body_str}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeLoopExpr nodes."""
+        if len(node.body) > 1:
+            raise ValueError(
+                "ForRangeLoopExpr in Python just accept 1 node in the body "
+                "attribute."
+            )
         return (
-            f"result = [{self.visit(node.body)} for "
-            f" {node.variable.name} in range "
-            f"({self.visit(node.start)},{self.visit(node.end)},"
+            f"result = [{self.visit(node.body).strip()} for "
+            f"{node.variable.name} in range"
+            f"({self.visit(node.start)}, {self.visit(node.end)}, "
             f"{self.visit(node.step)})]"
         )
 
@@ -100,38 +160,53 @@ class ASTxPythonTranspiler:
         return f"{header}\n{body}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FunctionCall) -> str:
+        """Handle FunctionCall nodes."""
+        args = ", ".join([self.visit(arg) for arg in node.args])
+        return f"{node.fn.name}({args})"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionReturn) -> str:
         """Handle FunctionReturn nodes."""
         value = self.visit(node.value) if node.value else ""
         return f"return {value}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Identifier) -> str:
+        """Handle Identifier nodes."""
+        return f"{node.value}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> str:
         """Handle IfExpr nodes."""
-        if node.else_:
-            return (
-                f"{self.visit(node.then)} if "
-                f" {self.visit(node.condition)}"
-                f" else {self.visit(node.else_)}"
+        if node.else_ is not None and len(node.else_) > 1:
+            raise ValueError(
+                "IfExpr in Python just accept 1 node in the else attribute."
             )
-        return (
-            f"{self.visit(node.then)} if "
-            f" {self.visit(node.condition)} else None"
-        )
+
+        if len(node.then) > 1:
+            raise ValueError(
+                "IfExpr in Python just accept 1 node in the then attribute."
+            )
+
+        if_ = self.visit(node.condition)
+        else_ = self.visit(node.else_).strip() if node.else_ else "None"
+        then_ = self.visit(node.then).strip()
+        return f"{then_} if {if_} else {else_}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfStmt) -> str:
         """Handle IfStmt nodes."""
-        if node.else_:
-            return (
-                f"if {self.visit(node.condition)}:"
-                f"\n{self._generate_block(node.then)}"
-                f"\nelse:"
-                f"\n{self._generate_block(node.else_)}"
-            )
+        else_ = (
+            (f"\nelse:\n{self._generate_block(node.else_)}")
+            if node.else_ is not None
+            else ""
+        )
+
         return (
             f"if {self.visit(node.condition)}:"
             f"\n{self._generate_block(node.then)}"
+            f"{else_}"
         )
 
     @dispatch  # type: ignore[no-redef]
@@ -271,6 +346,11 @@ class ASTxPythonTranspiler:
         return str(node.value)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralString) -> str:
+        """Handle LiteralUTF8String nodes."""
+        return repr(node.value)
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralUTF8String) -> str:
         """Handle LiteralUTF8String nodes."""
         return repr(node.value)
@@ -279,6 +359,40 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.LiteralUTF8Char) -> str:
         """Handle LiteralUTF8Char nodes."""
         return repr(node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(
+        self, node: Union[astx.StructDeclStmt, astx.StructDefStmt]
+    ) -> str:
+        """Handle StructDeclStmt and StructDefStmt nodes."""
+        attrs_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
+        return f"@dataclass \nclass {node.name}:\n    {attrs_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.SubscriptExpr) -> str:
+        """Handle SubscriptExpr nodes."""
+        lower_str = (
+            str(node.lower.value)
+            if not isinstance(node.lower, astx.LiteralNone)
+            else str(node.index.value)
+        )
+        upper_str = (
+            ":" + str(node.upper.value)
+            if not isinstance(node.upper, astx.LiteralNone)
+            else ""
+        )
+        step_str = (
+            ":" + str(node.step.value)
+            if not isinstance(node.step, astx.LiteralNone)
+            else ""
+        )
+        return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.SwitchStmt) -> str:
+        """Handle SwitchStmt nodes."""
+        cases_visited = self._generate_block(cast(astx.Block, node.cases))
+        return f"match {self.visit(node.value)}:\n{cases_visited}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:
@@ -316,6 +430,14 @@ class ASTxPythonTranspiler:
         return f"cast({self.visit(node.target_type)}, {node.expr.name})"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ThrowStmt) -> str:
+        """Handle ThrowStmt nodes."""
+        exception_str = (
+            f" {self.visit(node.exception)}" if node.exception else ""
+        )
+        return f"raise{exception_str}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> str:
         """Handle UnaryOp nodes."""
         operand = self.visit(node.operand)
@@ -344,10 +466,26 @@ class ASTxPythonTranspiler:
         return f"{target} = {value}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.VariableDeclaration) -> str:
+        """Handle VariableDeclaration nodes."""
+        value = self.visit(node.value)
+        return f"{node.name}: {node.value.type_.__class__.__name__} = {value}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.WalrusOp) -> str:
+        """Handle Walrus operator."""
+        return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:
         """Handle WhileExpr nodes."""
+        if len(node.body) > 1:
+            raise ValueError(
+                "WhileExpr in Python just accept 1 node in the body attribute."
+            )
+
         condition = self.visit(node.condition)
-        body = self.visit(node.body)
+        body = self.visit(node.body).strip()
         return f"[{body} for _ in iter(lambda: {condition}, False)]"
 
     @dispatch  # type: ignore[no-redef]
@@ -356,6 +494,12 @@ class ASTxPythonTranspiler:
         condition = self.visit(node.condition)
         body = self._generate_block(node.body)
         return f"while {condition}:\n{body}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.YieldExpr) -> str:
+        """Handle YieldExpr nodes."""
+        value = self.visit(node.value) if node.value else ""
+        return f"yield {value}".strip()
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Date) -> str:

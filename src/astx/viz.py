@@ -67,7 +67,7 @@ def traverse_ast_ascii(
                 node_name = f"{hash(key)}"
             else:
                 if parent.find("_"):
-                    node_name = f"{parent[parent.find('_')+1:]}_{hash(key)}"
+                    node_name = f"{parent[parent.find('_') + 1 :]}_{hash(key)}"
                 else:
                     node_name = f"{parent}_{hash(key)}"
                 graph.edge(parent, node_name)

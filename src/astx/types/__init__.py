@@ -2,6 +2,7 @@
 
 from astx.types.base import (
     AnyType,
+    NoneType,
 )
 from astx.types.boolean import (
     Boolean,
@@ -38,6 +39,7 @@ from astx.types.operators import (
     UnaryOp,
 )
 from astx.types.string import (
+    String,
     UTF8Char,
     UTF8String,
 )
@@ -62,23 +64,26 @@ __all__ = [
     "Float32",
     "Float64",
     "Floating",
+    "Int8",
     "Int16",
     "Int32",
     "Int64",
-    "Int8",
     "Integer",
+    "NoneType",
     "Number",
     "SignedInteger",
+    "String",
     "Time",
     "Timestamp",
-    "UInt128",
+    "TypeCastExpr",
+    "UInt8",
     "UInt16",
     "UInt32",
     "UInt64",
-    "UInt8",
-    "UnaryOp",
+    "UInt128",
     "UTF8Char",
     "UTF8String",
+    "UnaryOp",
     "UnsignedInteger",
     "TypeCastExpr",
     "ListType",

@@ -1,17 +1,23 @@
 """Tests for control flow statements."""
 
+import astx
+import pytest
+
 from astx.base import SourceLocation
 from astx.blocks import Block
 from astx.flows import (
+    CaseStmt,
     ForCountLoopExpr,
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
     IfExpr,
     IfStmt,
+    SwitchStmt,
     WhileExpr,
     WhileStmt,
 )
+from astx.literals import LiteralInt32, LiteralString
 from astx.literals.numeric import LiteralInt32
 from astx.types.numeric import Int32
 from astx.types.operators import BinaryOp, UnaryOp
@@ -195,3 +201,93 @@ def test_while_stmt() -> None:
     assert while_stmt.get_struct()
     assert while_stmt.get_struct(simplified=True)
     visualize(while_stmt.get_struct())
+
+
+def test_case_stmt() -> None:
+    """Test `CaseStmt` class."""
+    condition1 = LiteralInt32(value=1)
+    body1 = astx.Block()
+    body1.append(LiteralString(value="one"))
+    case1 = CaseStmt(condition=condition1, body=body1)
+
+    assert str(case1)
+    assert case1.get_struct()
+    assert case1.get_struct(simplified=True)
+    visualize(case1.get_struct())
+
+
+def test_case_stmt_error1() -> None:
+    """Test `CaseStmt` class for default/condition inconsistency (1)."""
+    # should raise error - mustn't have condition since default=True
+    with pytest.raises(ValueError):
+        condition1 = LiteralInt32(value=1)
+        body1 = astx.Block()
+        body1.append(LiteralString(value="one"))
+        case1 = CaseStmt(  # noqa F841
+            default=True,
+            condition=condition1,
+            body=body1,
+        )
+
+
+def test_case_stmt_error2() -> None:
+    """Test `CaseStmt` class for default/condition inconsistency (2)."""
+    # should raise error - must have condition since deault=False
+    with pytest.raises(ValueError):
+        body1 = astx.Block()
+        body1.append(LiteralString(value="one"))
+        case1 = CaseStmt(body=body1)  # noqa F841
+
+
+def test_switch_stmt() -> None:
+    """Test `SwitchStmt` class."""
+    # The expression to match
+    value_expr = Variable(name="x")
+
+    # Patterns and corresponding expressions
+    condition1 = LiteralInt32(value=1)
+    body1 = astx.Block()
+    body1.append(LiteralString(value="one"))
+
+    condition2 = LiteralInt32(value=2)
+    body2 = astx.Block()
+    body2.append(LiteralString(value="two"))
+
+    body_default = astx.Block()
+    body2.append(LiteralString(value="other"))
+
+    # create branches
+    case1 = CaseStmt(condition=condition1, body=body1)
+    case2 = CaseStmt(condition=condition2, body=body2)
+    case_default = CaseStmt(default=True, body=body_default)
+
+    # Create the SwitchStmt
+    switch_stmt = SwitchStmt(
+        value=value_expr,
+        cases=[case1, case2, case_default],
+    )
+
+    assert str(switch_stmt)
+    assert switch_stmt.get_struct()
+    assert switch_stmt.get_struct(simplified=True)
+    visualize(switch_stmt.get_struct())
+
+
+def test_yield_expr() -> None:
+    """Test `YieldExpr` class."""
+    yield_expr = astx.YieldExpr(value=LiteralInt32(1))
+
+    assert str(yield_expr)
+    assert yield_expr.get_struct()
+    assert yield_expr.get_struct(simplified=True)
+    visualize(yield_expr.get_struct())
+
+
+def test_goto_stmt() -> None:
+    """Test `GotoStmt` class."""
+    goto_stmt = astx.GotoStmt(astx.Identifier("label1"))
+
+    assert str(goto_stmt)
+    assert goto_stmt.get_struct()
+    assert goto_stmt.get_struct(simplified=True)
+    visualize(goto_stmt.get_struct())

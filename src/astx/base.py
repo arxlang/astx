@@ -40,10 +40,10 @@ ASTType = TypeVar("ASTType", bound="AST", default="AST")
 
 
 __all__ = [
-    "ExprType",
-    "PrimitivesStruct",
     "DataTypesStruct",
     "DictDataTypesStruct",
+    "ExprType",
+    "PrimitivesStruct",
     "ReprStruct",
 ]
 
@@ -99,6 +99,8 @@ class ASTKind(Enum):
     # operators
     UnaryOpKind = -300
     BinaryOpKind = -301
+    WalrusOpKind = -302
+    AssignmentExprKind = -303
 
     # functions
     PrototypeKind = -400
@@ -116,6 +118,10 @@ class ASTKind(Enum):
     ForCountLoopExprKind = -505
     WhileExprKind = -506
     IfExprKind = -507
+    CaseStmtKind = -508
+    SwitchStmtKind = -509
+    YieldExprKind = -510
+    GotoStmtKind = -511
 
     # data types
     NullDTKind = -600
@@ -158,6 +164,18 @@ class ASTKind(Enum):
     # classes
     ClassDefStmtKind = -900
     ClassDeclStmtKind = -901
+    EnumDeclStmtKind = -902
+    StructDeclStmtKind = -903
+    StructDefStmtKind = -904
+
+    # subscrpts
+    SubscriptExprKind = -1000
+
+    # exceptions
+    ThrowStmtKind = -1100
+    CatchHandlerStmtKind = -1200
+    ExceptionHandlerStmtKind = -1300
+    FinallyHandlerStmtKind = -1301
 
 
 class ASTMeta(type):
@@ -332,6 +350,29 @@ class Expr(AST):
     """AST main expression class."""
 
     nbytes: int = 0
+
+
+@public
+@typechecked
+class Identifier(Expr):
+    """AST class for identifiers."""
+
+    value: str
+
+    def __init__(
+        self,
+        value: str,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Identifier instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structure that represents the Identifier object."""
+        key = f"IDENTIFIER[{self.value}]"
+        return self._prepare_struct(key, self.value, simplified)
 
 
 @public
