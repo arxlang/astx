@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
-from typing import List, Type
+from typing import List
+
 from public import public
+
+from astx.base import ExprType
 from astx.tools.typing import typechecked
 from astx.types.base import AnyType
-from astx.base import ExprType
 
 
 @public
@@ -25,6 +27,7 @@ class ListType(CollectionType):
         self.element_types = element_types
 
     def __str__(self) -> str:
+        """Return string representation of ListType."""
         types_str = ", ".join(str(t) for t in self.element_types)
         return f"ListType[{types_str}]"
 
@@ -39,6 +42,7 @@ class SetType(CollectionType):
         self.element_type = element_type
 
     def __str__(self) -> str:
+        """Return string representation of SetType."""
         return f"SetType[{self.element_type}]"
 
 
@@ -53,6 +57,7 @@ class DictType(CollectionType):
         self.value_type = value_type
 
     def __str__(self) -> str:
+        """Return string representation of DictType."""
         return f"DictType[{self.key_type}, {self.value_type}]"
 
 
@@ -66,5 +71,6 @@ class TupleType(CollectionType):
         self.element_types = element_types
 
     def __str__(self) -> str:
+        """Return string representation of TupleType."""
         types_str = ", ".join(str(t) for t in self.element_types)
         return f"TupleType[{types_str}]"
