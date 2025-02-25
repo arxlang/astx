@@ -1,5 +1,7 @@
 """Tests for operators."""
 
+import astx
+
 from astx.literals.numeric import LiteralInt32
 from astx.operators import AssignmentExpr, VariableAssignment
 from astx.variables import Variable
@@ -28,3 +30,75 @@ def test_variable_assign() -> None:
     assert assign_a.get_struct(simplified=True)
 
     visualize(assign_a.get_struct())
+
+
+def test_and_op() -> None:
+    """Test AndOp."""
+    lhs = astx.LiteralBoolean(True)
+    rhs = astx.LiteralBoolean(False)
+    op = astx.AndOp(lhs=lhs, rhs=rhs)
+
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
+
+
+def test_or_op() -> None:
+    """Test OrOp."""
+    lhs = astx.LiteralBoolean(True)
+    rhs = astx.LiteralBoolean(False)
+    op = astx.OrOp(lhs=lhs, rhs=rhs)
+
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
+
+
+def test_xor_op() -> None:
+    """Test XorOp."""
+    lhs = astx.LiteralBoolean(True)
+    rhs = astx.LiteralBoolean(False)
+    op = astx.XorOp(lhs=lhs, rhs=rhs)
+
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
+
+
+def test_nand_op() -> None:
+    """Test NandOp."""
+    lhs = astx.LiteralBoolean(True)
+    rhs = astx.LiteralBoolean(False)
+    op = astx.NandOp(lhs=lhs, rhs=rhs)
+
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
+
+
+def test_nor_op() -> None:
+    """Test NorOp."""
+    lhs = astx.LiteralBoolean(True)
+    rhs = astx.LiteralBoolean(False)
+    op = astx.NorOp(lhs=lhs, rhs=rhs)
+
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
+
+
+def test_xnor_op() -> None:
+    """Test XnorOp."""
+    lhs = astx.LiteralBoolean(True)
+    rhs = astx.LiteralBoolean(False)
+    op = astx.XnorOp(lhs=lhs, rhs=rhs)
+
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())

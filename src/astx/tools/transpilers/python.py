@@ -540,3 +540,50 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.LiteralDateTime) -> str:
         """Handle LiteralDateTime nodes."""
         return f"datetime.strptime({node.value!r}, '%Y-%m-%dT%H:%M:%S')"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ParenthesizedExpr) -> str:
+        """Handle ParenthesizedExpr nodes."""
+        return f"({self.visit(node.value)})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AndOp) -> str:
+        """Handle AndOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"{lhs} and {rhs}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.OrOp) -> str:
+        """Handle OrOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"{lhs} or {rhs}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.XorOp) -> str:
+        """Handle XorOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"{lhs} ^ {rhs}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.NandOp) -> str:
+        """Handle NandOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"not ({lhs} and {rhs})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.NorOp) -> str:
+        """Handle NorOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"not ({lhs} or {rhs})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.XnorOp) -> str:
+        """Handle XnorOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"not ({lhs} ^ {rhs})"
