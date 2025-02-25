@@ -81,11 +81,13 @@ NO_SOURCE_LOCATION = SourceLocation(-1, -1)
 
 
 @public
+@typechecked
 class ASTKind(Enum):
     """The expression kind class used for downcasting."""
 
     GenericKind = -100
     ModuleKind = -101
+    GroupExprKind = -102
 
     # variables
     ArgumentKind = -200
@@ -285,6 +287,7 @@ class AST(metaclass=ASTMeta):
         return json.dumps(self.get_struct(simplified=simplified), indent=2)
 
 
+@public
 @typechecked
 class ASTNodes(Generic[ASTType], AST):
     """AST with a list of nodes, supporting type-specific elements."""
@@ -350,6 +353,35 @@ class Expr(AST):
     """AST main expression class."""
 
     nbytes: int = 0
+
+
+@public
+@typechecked
+class GroupExpr(Expr):
+    """AST class for explicitly grouped expressions (parentheses retained)."""
+
+    expr: Expr
+
+    def __init__(
+        self,
+        expr: Expr,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the GroupExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.expr = expr
+        self.kind = ASTKind.GroupExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object with parentheses."""
+        return f"({self.expr})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "GROUP"
+        value = self.expr.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
