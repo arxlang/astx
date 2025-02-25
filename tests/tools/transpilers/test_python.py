@@ -1162,7 +1162,7 @@ def test_transpiler_and_op() -> None:
 
     generated_code = translate(op)
 
-    expected_code = "(x and y)"
+    expected_code = "x and y"
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
@@ -1176,7 +1176,7 @@ def test_transpiler_or_op() -> None:
 
     generated_code = translate(op)
 
-    expected_code = "(x or y)"
+    expected_code = "x or y"
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
@@ -1190,7 +1190,7 @@ def test_transpiler_xor_op() -> None:
 
     generated_code = translate(op)
 
-    expected_code = "(x ^ y)"
+    expected_code = "x ^ y"
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )

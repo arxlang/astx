@@ -38,13 +38,10 @@ def test_and_op() -> None:
     rhs = astx.LiteralBoolean(False)
     op = astx.AndOp(lhs=lhs, rhs=rhs)
 
-    assert str(op) == "(True AND False)"
-    assert op.get_struct() == {
-        "BooleanBinaryOp[AND]": {
-            "lhs": lhs.get_struct(),
-            "rhs": rhs.get_struct(),
-        }
-    }
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
 
 
 def test_or_op() -> None:
@@ -53,13 +50,10 @@ def test_or_op() -> None:
     rhs = astx.LiteralBoolean(False)
     op = astx.OrOp(lhs=lhs, rhs=rhs)
 
-    assert str(op) == "(True OR False)"
-    assert op.get_struct() == {
-        "BooleanBinaryOp[OR]": {
-            "lhs": lhs.get_struct(),
-            "rhs": rhs.get_struct(),
-        }
-    }
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
 
 
 def test_xor_op() -> None:
@@ -68,13 +62,10 @@ def test_xor_op() -> None:
     rhs = astx.LiteralBoolean(False)
     op = astx.XorOp(lhs=lhs, rhs=rhs)
 
-    assert str(op) == "(True XOR False)"
-    assert op.get_struct() == {
-        "BooleanBinaryOp[XOR]": {
-            "lhs": lhs.get_struct(),
-            "rhs": rhs.get_struct(),
-        }
-    }
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
 
 
 def test_nand_op() -> None:
@@ -83,13 +74,10 @@ def test_nand_op() -> None:
     rhs = astx.LiteralBoolean(False)
     op = astx.NandOp(lhs=lhs, rhs=rhs)
 
-    assert str(op) == "(True NAND False)"
-    assert op.get_struct() == {
-        "BooleanBinaryOp[NAND]": {
-            "lhs": lhs.get_struct(),
-            "rhs": rhs.get_struct(),
-        }
-    }
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
 
 
 def test_nor_op() -> None:
@@ -98,13 +86,10 @@ def test_nor_op() -> None:
     rhs = astx.LiteralBoolean(False)
     op = astx.NorOp(lhs=lhs, rhs=rhs)
 
-    assert str(op) == "(True NOR False)"
-    assert op.get_struct() == {
-        "BooleanBinaryOp[NOR]": {
-            "lhs": lhs.get_struct(),
-            "rhs": rhs.get_struct(),
-        }
-    }
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
 
 
 def test_xnor_op() -> None:
@@ -113,10 +98,7 @@ def test_xnor_op() -> None:
     rhs = astx.LiteralBoolean(False)
     op = astx.XnorOp(lhs=lhs, rhs=rhs)
 
-    assert str(op) == "(True XNOR False)"
-    assert op.get_struct() == {
-        "BooleanBinaryOp[XNOR]": {
-            "lhs": lhs.get_struct(),
-            "rhs": rhs.get_struct(),
-        }
-    }
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())

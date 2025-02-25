@@ -551,21 +551,21 @@ class ASTxPythonTranspiler:
         """Handle AndOp nodes."""
         lhs = self.visit(node.lhs)
         rhs = self.visit(node.rhs)
-        return f"({lhs} and {rhs})"
+        return f"{lhs} and {rhs}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.OrOp) -> str:
         """Handle OrOp nodes."""
         lhs = self.visit(node.lhs)
         rhs = self.visit(node.rhs)
-        return f"({lhs} or {rhs})"
+        return f"{lhs} or {rhs}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.XorOp) -> str:
         """Handle XorOp nodes."""
         lhs = self.visit(node.lhs)
         rhs = self.visit(node.rhs)
-        return f"({lhs} ^ {rhs})"
+        return f"{lhs} ^ {rhs}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.NandOp) -> str:
