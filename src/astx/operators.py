@@ -128,3 +128,92 @@ class VariableAssignment(StatementType):
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class BoolOp(Expr):
+    """Base AST class for boolean operations."""
+
+    lhs: Expr
+    rhs: Expr
+    operator_symbol: str = "boolop"  # generic
+
+    def __init__(
+        self,
+        lhs: Expr,
+        rhs: Expr,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the BoolOp instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def __str__(self) -> str:
+        """Return a string representation of the boolean operation."""
+        return f"({self.lhs} {self.operator_symbol} {self.rhs})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the boolean operation."""
+        key = f"BOOL_OP[{self.__class__.__name__}]"
+        value: ReprStruct = {
+            "lhs": self.lhs.get_struct(simplified),
+            "rhs": self.rhs.get_struct(simplified),
+        }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class AndOp(BoolOp):
+    """AST class for logical AND operation."""
+
+    kind = ASTKind.AndOpKind
+    operator_symbol = "and"
+
+
+@public
+@typechecked
+class OrOp(BoolOp):
+    """AST class for logical OR operation."""
+
+    kind = ASTKind.OrOpKind
+    operator_symbol = "or"
+
+
+@public
+@typechecked
+class XorOp(BoolOp):
+    """AST class for logical XOR operation."""
+
+    kind = ASTKind.XorOpKind
+    operator_symbol = "xor"
+
+
+@public
+@typechecked
+class NandOp(BoolOp):
+    """AST class for logical NAND operation (NOT AND)."""
+
+    kind = ASTKind.NandOpKind
+    operator_symbol = "nand"
+
+
+@public
+@typechecked
+class NorOp(BoolOp):
+    """AST class for logical NOR operation (NOT OR)."""
+
+    kind = ASTKind.NorOpKind
+    operator_symbol = "nor"
+
+
+@public
+@typechecked
+class XnorOp(BoolOp):
+    """AST class for logical XNOR operation (NOT XOR)."""
+
+    kind = ASTKind.XnorOpKind
+    operator_symbol = "xnor"

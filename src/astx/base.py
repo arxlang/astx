@@ -87,7 +87,7 @@ class ASTKind(Enum):
 
     GenericKind = -100
     ModuleKind = -101
-    GroupExprKind = -102
+    ParenthesizedExprKind = -102
 
     # variables
     ArgumentKind = -200
@@ -175,9 +175,17 @@ class ASTKind(Enum):
 
     # exceptions
     ThrowStmtKind = -1100
-    CatchHandlerStmtKind = -1200
-    ExceptionHandlerStmtKind = -1300
-    FinallyHandlerStmtKind = -1301
+    CatchHandlerStmtKind = -1101
+    ExceptionHandlerStmtKind = -1102
+    FinallyHandlerStmtKind = -1103
+
+    # boolops
+    AndOpKind = -1200
+    OrOpKind = -1201
+    XorOpKind = -1202
+    NandOpKind = -1203
+    NorOpKind = -1204
+    XnorOpKind = -1205
 
 
 class ASTMeta(type):
@@ -357,30 +365,30 @@ class Expr(AST):
 
 @public
 @typechecked
-class GroupExpr(Expr):
+class ParenthesizedExpr(Expr):
     """AST class for explicitly grouped expressions (parentheses retained)."""
 
-    expr: Expr
+    value: Expr
 
     def __init__(
         self,
-        expr: Expr,
+        value: Expr,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the GroupExpr instance."""
+        """Initialize the ParenthesizedExpr instance."""
         super().__init__(loc=loc, parent=parent)
-        self.expr = expr
-        self.kind = ASTKind.GroupExprKind
+        self.value = value
+        self.kind = ASTKind.ParenthesizedExprKind
 
     def __str__(self) -> str:
         """Return a string representation of the object with parentheses."""
-        return f"({self.expr})"
+        return f"({self.value})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "GROUP"
-        value = self.expr.get_struct(simplified)
+        value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
 
 

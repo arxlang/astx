@@ -1152,3 +1152,99 @@ def test_transpiler_exception_handler_stmt_with_finally() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_and_op() -> None:
+    """Test transpiler for AndOp."""
+    lhs = astx.Variable(name="x")
+    rhs = astx.Variable(name="y")
+    op = astx.AndOp(lhs=lhs, rhs=rhs)
+
+    generated_code = translate(op)
+
+    expected_code = "(x and y)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_or_op() -> None:
+    """Test transpiler for OrOp."""
+    lhs = astx.Variable(name="x")
+    rhs = astx.Variable(name="y")
+    op = astx.OrOp(lhs=lhs, rhs=rhs)
+
+    generated_code = translate(op)
+
+    expected_code = "(x or y)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_xor_op() -> None:
+    """Test transpiler for XorOp."""
+    lhs = astx.Variable(name="x")
+    rhs = astx.Variable(name="y")
+    op = astx.XorOp(lhs=lhs, rhs=rhs)
+
+    generated_code = translate(op)
+
+    expected_code = "(x ^ y)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_nand_op() -> None:
+    """Test transpiler for NandOp."""
+    lhs = astx.Variable(name="x")
+    rhs = astx.Variable(name="y")
+    op = astx.NandOp(lhs=lhs, rhs=rhs)
+
+    generated_code = translate(op)
+
+    expected_code = "not (x and y)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_nor_op() -> None:
+    """Test transpiler for NorOp."""
+    lhs = astx.Variable(name="x")
+    rhs = astx.Variable(name="y")
+    op = astx.NorOp(lhs=lhs, rhs=rhs)
+
+    generated_code = translate(op)
+
+    expected_code = "not (x or y)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_xnor_op() -> None:
+    """Test transpiler for XnorOp."""
+    lhs = astx.Variable(name="x")
+    rhs = astx.Variable(name="y")
+    op = astx.XnorOp(lhs=lhs, rhs=rhs)
+
+    generated_code = translate(op)
+
+    expected_code = "not (x ^ y)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_group_expr() -> None:
+    """Test struct representation."""
+    grp = astx.ParenthesizedExpr(
+        astx.AndOp(astx.LiteralBoolean(True), astx.LiteralBoolean(False))
+    )
+    generated_code = translate(grp)
+    expected_code = "(True and False)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
