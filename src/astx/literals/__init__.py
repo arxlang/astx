@@ -7,6 +7,12 @@ from astx.literals.base import (
 from astx.literals.boolean import (
     LiteralBoolean,
 )
+from astx.literals.collections import (
+    LiteralDict,
+    LiteralList,
+    LiteralSet,
+    LiteralTuple,
+)
 from astx.literals.numeric import (
     LiteralComplex,
     LiteralComplex32,
@@ -64,4 +70,8 @@ __all__ = [
     "LiteralUInt128",
     "LiteralUTF8Char",
     "LiteralUTF8String",
+    "LiteralList",
+    "LiteralSet",
+    "LiteralTuple",
+    "LiteralDict",
 ]

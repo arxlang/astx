@@ -10,6 +10,13 @@ from astx.types.boolean import (
 from astx.types.casting import (
     TypeCastExpr,
 )
+from astx.types.collections import (
+    CollectionType,
+    DictType,
+    ListType,
+    SetType,
+    TupleType,
+)
 from astx.types.numeric import (
     Complex,
     Complex32,
@@ -102,4 +109,9 @@ __all__ = [
     "UnsignedInteger",
     "XnorOp",
     "XorOp",
+    "CollectionType",
+    "ListType",
+    "DictType",
+    "SetType",
+    "TupleType",
 ]
