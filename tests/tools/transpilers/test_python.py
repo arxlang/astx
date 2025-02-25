@@ -788,3 +788,59 @@ def test_transpiler_classdefstmt() -> None:
     assert (
         generated_code == expected_code
     ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_list() -> None:
+    """Test astx.LiteralList."""
+    lit_list = astx.LiteralList(
+        [astx.LiteralInt32(1), astx.LiteralInt32(2), astx.LiteralInt32(3)]
+    )
+
+    generated_code = transpiler.visit(lit_list)
+    expected_code = "[1, 2, 3]"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_tuple() -> None:
+    """Test astx.LiteralTuple."""
+    lit_tuple = astx.LiteralTuple((astx.LiteralInt32(1), astx.LiteralInt32(2)))
+
+    generated_code = transpiler.visit(lit_tuple)
+    expected_code = "(1, 2)"
+    assert (
+        generated_code == expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_set() -> None:
+    """Test astx.LiteralSet."""
+    lit_set = astx.LiteralSet(
+        {astx.LiteralInt32(1), astx.LiteralInt32(2), astx.LiteralInt32(3)}
+    )
+
+    generated_code = transpiler.visit(lit_set)
+    expected_code = "{1, 2, 3}"
+    assert eval(generated_code) == {
+        1,
+        2,
+        3,
+    }, f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_dict() -> None:
+    """Test astx.LiteralDict."""
+    lit_dict = astx.LiteralDict(
+        {
+            astx.LiteralInt32(1): astx.LiteralInt32(10),
+            astx.LiteralInt32(2): astx.LiteralInt32(20),
+        }
+    )
+
+    generated_code = transpiler.visit(lit_dict)
+    expected_code = "{1: 10, 2: 20}"
+    assert eval(generated_code) == {
+        1: 10,
+        2: 20,
+    }, f"Expected '{expected_code}', but got '{generated_code}'"

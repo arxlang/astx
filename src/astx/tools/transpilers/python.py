@@ -396,3 +396,40 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.LiteralDateTime) -> str:
         """Handle LiteralDateTime nodes."""
         return f"datetime.strptime({node.value!r}, '%Y-%m-%dT%H:%M:%S')"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralList) -> str:
+        """Handle LiteralList nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"[{elements_code}]"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralTuple) -> str:
+        """Handle LiteralTuple nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return (
+            f"({elements_code},)"
+            if len(node.elements) == 1
+            else f"({elements_code})"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralSet) -> str:
+        """Handle LiteralSet nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"{{{elements_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralDict) -> str:
+        """Handle LiteralDict nodes."""
+        items_code = ", ".join(
+            f"{self.visit(key)}: {self.visit(value)}"
+            for key, value in node.elements.items()
+        )
+        return f"{{{items_code}}}"
