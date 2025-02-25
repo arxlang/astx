@@ -69,3 +69,35 @@ def test_data_type() -> None:
     assert repr(dt) != ""
     assert dt.get_struct() != {}
     assert dt.get_struct(simplified=True) != {}
+
+
+COLUMN_NUMBER = 10
+
+
+def test_identifier_creation() -> None:
+    """Test basic identifier creation."""
+    ident = astx.Identifier("test_var")
+    assert ident.value == "test_var"
+
+
+def test_identifier_with_location() -> None:
+    """Test identifier with location."""
+    loc = astx.SourceLocation(1, COLUMN_NUMBER)
+    ident_with_loc = astx.Identifier("var2", loc=loc)
+    assert ident_with_loc.value == "var2"
+    assert ident_with_loc.loc.line == 1
+    assert ident_with_loc.loc.col == COLUMN_NUMBER
+
+
+def test_identifier_as_part_of_block() -> None:
+    """Test identifier as part of a block."""
+    block = astx.Block()
+    ident_with_parent = astx.Identifier("var3", parent=block)
+    assert block.nodes[0] == ident_with_parent
+
+
+def test_struct_representation() -> None:
+    """Test struct representation."""
+    ident = astx.Identifier("test_var")
+    struct = ident.get_struct(simplified=True)
+    assert struct == {"IDENTIFIER[test_var]": "test_var"}

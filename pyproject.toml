@@ -40,7 +40,7 @@ pytest = ">=7.3.2"
 pytest-cov = ">=4.1.0"
 coverage = ">=7.2.7"
 pre-commit = ">=3.3.2"
-ruff = ">=0.1.5"
+ruff = ">=0.9.5"
 mypy = ">=1.6.0"
 bandit = ">=1.7.5"
 vulture = ">=2.9.1"
@@ -121,7 +121,7 @@ lines-between-types = 1
 quote-style = "double"
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 check_untyped_defs = true
 strict = true
 ignore_missing_imports = true
