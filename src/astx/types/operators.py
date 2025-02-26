@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+from typing import Optional
+
 from public import public
 
 from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
+    ASTNodes,
     DataType,
     ExprType,
     ReprStruct,
@@ -84,21 +87,39 @@ class DataTypeOps(DataType):
         """Overload the magic `truediv` method."""
         return BinaryOp("/", self, other)
 
+    def __and__(self, other: DataType) -> AndOp:
+        """Overload the magic 'and' method."""
+        return AndOp(self, other)
+
+    def __or__(self, other: DataType) -> OrOp:
+        """Overload the magic 'or' method."""
+        return OrOp(self, other)
+
+    def __xor__(self, other: DataType) -> XorOp:
+        """Overload the magic 'xor' method."""
+        return XorOp(self, other)
+
+    def __invert__(self) -> NotOp:
+        """Overload the magic 'not' method."""
+        return NotOp(self)
+
 
 @public
 @typechecked
 class UnaryOp(DataTypeOps):
     """AST class for the unary operator."""
 
+    op_code: str
+
     def __init__(
         self,
         op_code: str,
         operand: DataType,
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the UnaryOp instance."""
-        super().__init__()
-        self.loc = loc
+        super().__init__(loc=loc, parent=parent)
         self.op_code = op_code
         self.operand = operand
         self.kind = ASTKind.UnaryOpKind
@@ -120,6 +141,7 @@ class BinaryOp(DataTypeOps):
     """AST class for the binary operator."""
 
     type_: ExprType
+    op_code: str
 
     def __init__(
         self,
@@ -127,11 +149,11 @@ class BinaryOp(DataTypeOps):
         lhs: DataType,
         rhs: DataType,
         loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the BinaryOp instance."""
-        super().__init__()
+        super().__init__(loc=loc, parent=parent)
 
-        self.loc = loc
         self.op_code = op_code
         self.lhs = lhs
         self.rhs = rhs
@@ -163,3 +185,245 @@ class BinaryOp(DataTypeOps):
 
         content: ReprStruct = {**lhs, **rhs}
         return self._prepare_struct(key, content, simplified)
+
+
+@public
+@typechecked
+class BoolBinaryOp(BinaryOp):
+    """Base AST class for boolean binary operations."""
+
+    lhs: DataType
+    rhs: DataType
+    op_code: str
+
+    def __init__(
+        self,
+        op_code: str,
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(
+            op_code=op_code,
+            lhs=lhs,
+            rhs=rhs,
+            loc=loc,
+            parent=parent,
+        )
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"({self.lhs} {self.op_code} {self.rhs})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure that represents the object."""
+        key = f"BOOL_BINARY_OP[{self.__class__.__name__}]"
+        value: ReprStruct = {
+            "lhs": self.lhs.get_struct(simplified),
+            "rhs": self.rhs.get_struct(simplified),
+        }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class BoolUnaryOp(UnaryOp):
+    """Base AST class for boolean unary operations."""
+
+    def __init__(
+        self,
+        op_code: str,
+        operand: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(
+            op_code=op_code,
+            operand=operand,
+            loc=loc,
+            parent=parent,
+        )
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"({self.op_code} {self.operand})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure that represents the object."""
+        key = f"BOOL_UNARY_OP[{self.__class__.__name__}]"
+        value: ReprStruct = {"operand": self.operand.get_struct(simplified)}
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class AndOp(BoolBinaryOp):
+    """AST class for logical AND operation."""
+
+    kind = ASTKind.AndOpKind
+    op_code = "and"
+
+    def __init__(
+        self,
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Instantiate AST class for logical AND operation."""
+        super().__init__(
+            op_code=self.op_code,
+            lhs=lhs,
+            rhs=rhs,
+            loc=loc,
+            parent=parent,
+        )
+
+
+@public
+@typechecked
+class OrOp(BoolBinaryOp):
+    """AST class for logical OR operation."""
+
+    kind = ASTKind.OrOpKind
+    op_code = "or"
+
+    def __init__(
+        self,
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Instantiate AST class for logical OR operation."""
+        super().__init__(
+            op_code=self.op_code,
+            lhs=lhs,
+            rhs=rhs,
+            loc=loc,
+            parent=parent,
+        )
+
+
+@public
+@typechecked
+class XorOp(BoolBinaryOp):
+    """AST class for logical XOR operation."""
+
+    kind = ASTKind.XorOpKind
+    op_code = "xor"
+
+    def __init__(
+        self,
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Instantiate AST class for logical XOR operation."""
+        super().__init__(
+            op_code=self.op_code,
+            lhs=lhs,
+            rhs=rhs,
+            loc=loc,
+            parent=parent,
+        )
+
+
+@public
+@typechecked
+class NandOp(BoolBinaryOp):
+    """AST class for logical NAND operation."""
+
+    kind = ASTKind.NandOpKind
+    op_code = "nand"
+
+    def __init__(
+        self,
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Instantiate AST class for logical NAND operation."""
+        super().__init__(
+            op_code=self.op_code,
+            lhs=lhs,
+            rhs=rhs,
+            loc=loc,
+            parent=parent,
+        )
+
+
+@public
+@typechecked
+class NorOp(BoolBinaryOp):
+    """AST class for logical NOR operation."""
+
+    kind = ASTKind.NorOpKind
+    op_code = "nor"
+
+    def __init__(
+        self,
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Instantiate AST class for logical NOR operation."""
+        super().__init__(
+            op_code=self.op_code,
+            lhs=lhs,
+            rhs=rhs,
+            loc=loc,
+            parent=parent,
+        )
+
+
+@public
+@typechecked
+class XnorOp(BoolBinaryOp):
+    """AST class for logical XNOR operation."""
+
+    kind = ASTKind.XnorOpKind
+    op_code = "xnor"
+
+    def __init__(
+        self,
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Instantiate AST class for logical XNOR operation."""
+        super().__init__(
+            op_code=self.op_code,
+            lhs=lhs,
+            rhs=rhs,
+            loc=loc,
+            parent=parent,
+        )
+
+
+@public
+@typechecked
+class NotOp(BoolUnaryOp):
+    """AST class for logical NOT operation."""
+
+    kind = ASTKind.NotOpKind
+    op_code = "not"
+
+    def __init__(
+        self,
+        operand: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Instantiate AST class for logical NOT operation."""
+        super().__init__(
+            op_code=self.op_code,
+            operand=operand,
+            loc=loc,
+            parent=parent,
+        )

@@ -186,6 +186,7 @@ class ASTKind(Enum):
     NandOpKind = -1203
     NorOpKind = -1204
     XnorOpKind = -1205
+    NotOpKind = -1206
 
 
 class ASTMeta(type):
