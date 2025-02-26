@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.18.2](https://github.com/arxlang/astx/compare/0.18.1...0.18.2) (2025-02-26)
+
+
+### Bug Fixes
+
+* Include missing operator NotOp ([#190](https://github.com/arxlang/astx/issues/190)) ([4d5e612](https://github.com/arxlang/astx/commit/4d5e6125f3dd732d6a70663d4cfe203b4baaa201))
+
 ## [0.18.1](https://github.com/arxlang/astx/compare/0.18.0...0.18.1) (2025-02-26)
 
 
