@@ -105,3 +105,14 @@ def test_xnor_op() -> None:
     assert op.get_struct()
     assert op.get_struct(simplified=True)
     visualize(op.get_struct())
+
+
+def test_not_op() -> None:
+    """Test NotOp."""
+    operand = astx.LiteralBoolean(True)
+    op = astx.NotOp(operand=operand)
+
+    assert str(op)
+    assert op.get_struct()
+    assert op.get_struct(simplified=True)
+    visualize(op.get_struct())
