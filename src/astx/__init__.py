@@ -105,17 +105,9 @@ from astx.modifiers import (
     VisibilityKind,
 )
 from astx.operators import (
-    AndOp,
     AssignmentExpr,
-    BoolBinaryOp,
-    BoolUnaryOp,
-    NandOp,
-    NorOp,
-    OrOp,
     VariableAssignment,
     WalrusOp,
-    XnorOp,
-    XorOp,
 )
 from astx.packages import (
     AliasExpr,
@@ -130,8 +122,11 @@ from astx.packages import (
 )
 from astx.subscript import SubscriptExpr
 from astx.types import (
+    AndOp,
     BinaryOp,
+    BoolBinaryOp,
     Boolean,
+    BoolUnaryOp,
     Complex,
     Complex32,
     Complex64,
@@ -147,7 +142,10 @@ from astx.types import (
     Int32,
     Int64,
     Integer,
+    NandOp,
+    NorOp,
     Number,
+    OrOp,
     SignedInteger,
     String,
     Time,
@@ -162,6 +160,8 @@ from astx.types import (
     UnsignedInteger,
     UTF8Char,
     UTF8String,
+    XnorOp,
+    XorOp,
 )
 from astx.variables import (
     InlineVariableDeclaration,

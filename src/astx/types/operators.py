@@ -387,7 +387,7 @@ class XnorOp(BoolBinaryOp):
     """AST class for logical XNOR operation."""
 
     kind = ASTKind.XnorOpKind
-    operator_symbolop_code = "xnor"
+    op_code = "xnor"
 
     def __init__(
         self,

@@ -33,11 +33,17 @@ from astx.types.numeric import (
     UnsignedInteger,
 )
 from astx.types.operators import (
+    AndOp,
     BinaryOp,
     BoolBinaryOp,
     BoolUnaryOp,
     DataTypeOps,
+    NandOp,
+    NorOp,
+    OrOp,
     UnaryOp,
+    XnorOp,
+    XorOp,
 )
 from astx.types.string import (
     String,
@@ -52,6 +58,7 @@ from astx.types.temporal import (
 )
 
 __all__ = [
+    "AndOp",
     "AnyType",
     "BinaryOp",
     "BoolBinaryOp",
@@ -72,8 +79,11 @@ __all__ = [
     "Int32",
     "Int64",
     "Integer",
+    "NandOp",
     "NoneType",
+    "NorOp",
     "Number",
+    "OrOp",
     "SignedInteger",
     "String",
     "Time",
@@ -88,4 +98,6 @@ __all__ = [
     "UTF8String",
     "UnaryOp",
     "UnsignedInteger",
+    "XnorOp",
+    "XorOp",
 ]

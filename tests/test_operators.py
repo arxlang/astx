@@ -41,6 +41,7 @@ def test_and_op() -> None:
     assert str(op)
     assert op.get_struct()
     assert op.get_struct(simplified=True)
+    assert op.get_struct() == (lhs & rhs).get_struct()
     visualize(op.get_struct())
 
 
@@ -53,6 +54,7 @@ def test_or_op() -> None:
     assert str(op)
     assert op.get_struct()
     assert op.get_struct(simplified=True)
+    assert op.get_struct() == (lhs | rhs).get_struct()
     visualize(op.get_struct())
 
 
@@ -65,6 +67,7 @@ def test_xor_op() -> None:
     assert str(op)
     assert op.get_struct()
     assert op.get_struct(simplified=True)
+    assert op.get_struct() == (lhs ^ rhs).get_struct()
     visualize(op.get_struct())
 
 
