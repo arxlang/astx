@@ -34,6 +34,8 @@ from astx.types.numeric import (
 )
 from astx.types.operators import (
     BinaryOp,
+    BoolBinaryOp,
+    BoolUnaryOp,
     DataTypeOps,
     UnaryOp,
 )
@@ -52,6 +54,8 @@ from astx.types.temporal import (
 __all__ = [
     "AnyType",
     "BinaryOp",
+    "BoolBinaryOp",
+    "BoolUnaryOp",
     "Boolean",
     "Complex",
     "Complex32",
