@@ -110,6 +110,7 @@ class UnaryOp(DataTypeOps):
     """AST class for the unary operator."""
 
     op_code: str
+    operand: DataType
 
     def __init__(
         self,
@@ -141,6 +142,8 @@ class BinaryOp(DataTypeOps):
     """AST class for the binary operator."""
 
     type_: ExprType
+    lhs: DataType
+    rhs: DataType
     op_code: str
 
     def __init__(
@@ -191,10 +194,6 @@ class BinaryOp(DataTypeOps):
 @typechecked
 class BoolBinaryOp(BinaryOp):
     """Base AST class for boolean binary operations."""
-
-    lhs: DataType
-    rhs: DataType
-    op_code: str
 
     def __init__(
         self,
