@@ -5185,6 +5185,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#astx.NotOp" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;NotOp
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" NotOp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astx.NotOp.get_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.NotOp.to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.NotOp.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#astx.Number" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Number
@@ -7547,6 +7589,13 @@
           –
           <div class="doc-md-description">
             <p>AST class for logical NOR operation.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="astx.NotOp" href="#astx.NotOp">NotOp</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>AST class for logical NOT operation.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -24954,6 +25003,202 @@
 
 
 
+<h2 id="astx.NotOp" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">NotOp</span>
+
+
+<a href="#astx.NotOp" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">NotOp</span><span class="p">(</span><span class="n">operand</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="astx.base.DataType" href="base/#astx.base.DataType">DataType</a></span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n"><span title="astx.base.SourceLocation">SourceLocation</span></span> <span class="o">=</span> <span class="n"><span title="astx.base.NO_SOURCE_LOCATION">NO_SOURCE_LOCATION</span></span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="astx.base.ASTNodes" href="base/#astx.base.ASTNodes">ASTNodes</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="astx.types.operators.BoolUnaryOp" href="types/operators/#astx.types.operators.BoolUnaryOp">BoolUnaryOp</a></code></p>
+
+
+        <p>AST class for logical NOT operation.</p>
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.NotOp.get_struct" href="#astx.NotOp.get_struct">get_struct</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return the AST structure that represents the object.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.NotOp.to_json" href="#astx.NotOp.to_json">to_json</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return an json string that represents the object.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.NotOp.to_yaml" href="#astx.NotOp.to_yaml">to_yaml</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return an yaml string that represents the object.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/astx/types/operators.py</code></summary>
+                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">operand</span><span class="p">:</span> <span class="n">DataType</span><span class="p">,</span>
+    <span class="n">loc</span><span class="p">:</span> <span class="n">SourceLocation</span> <span class="o">=</span> <span class="n">NO_SOURCE_LOCATION</span><span class="p">,</span>
+    <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ASTNodes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiate AST class for logical NOT operation.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="n">op_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">op_code</span><span class="p">,</span>
+        <span class="n">operand</span><span class="o">=</span><span class="n">operand</span><span class="p">,</span>
+        <span class="n">loc</span><span class="o">=</span><span class="n">loc</span><span class="p">,</span>
+        <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.NotOp.get_struct" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_struct</span>
+
+
+<a href="#astx.NotOp.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="astx.base.ReprStruct">ReprStruct</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return the AST structure that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/types/operators.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReprStruct</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the AST structure that represents the object.&quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;BOOL_UNARY_OP[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">]&quot;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">ReprStruct</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;operand&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">operand</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">)}</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_struct</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">simplified</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.NotOp.to_json" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_json</span>
+
+
+<a href="#astx.NotOp.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_json</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return an json string that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/base.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an json string that represents the object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="o">=</span><span class="n">simplified</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.NotOp.to_yaml" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_yaml</span>
+
+
+<a href="#astx.NotOp.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_yaml</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return an yaml string that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/base.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an yaml string that represents the object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="o">=</span><span class="n">simplified</span><span class="p">),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
 <h2 id="astx.Number" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">Number</span>
 
@@ -32735,17 +32980,17 @@
 
             <details class="quote">
               <summary>Source code in <code>src/astx/__init__.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
-<span class="normal">174</span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">174</span>
 <span class="normal">175</span>
 <span class="normal">176</span>
 <span class="normal">177</span>
-<span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">178</span>
+<span class="normal">179</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the program version.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">importlib_metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">importlib_metadata</span><span class="o">.</span><span class="n">PackageNotFoundError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="k">return</span> <span class="s2">&quot;0.18.1&quot;</span>  <span class="c1"># semantic-release</span>
+        <span class="k">return</span> <span class="s2">&quot;0.18.2&quot;</span>  <span class="c1"># semantic-release</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
