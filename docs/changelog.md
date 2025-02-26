@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.18.1](https://github.com/arxlang/astx/compare/0.18.0...0.18.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* Fix ParenthesizedExpr value type ([#189](https://github.com/arxlang/astx/issues/189)) ([7ea9187](https://github.com/arxlang/astx/commit/7ea9187109750d6c2db41d0f6910096665ccff34))
+
 # [0.18.0](https://github.com/arxlang/astx/compare/0.17.0...0.18.0) (2025-02-26)
 
 
