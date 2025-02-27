@@ -24,6 +24,7 @@ from astx.base import (
     ExprType,
     Identifier,
     OperatorType,
+    ParenthesizedExpr,
     SourceLocation,
     StatementType,
     Undefined,
@@ -103,7 +104,11 @@ from astx.modifiers import (
     ScopeKind,
     VisibilityKind,
 )
-from astx.operators import AssignmentExpr, VariableAssignment, WalrusOp
+from astx.operators import (
+    AssignmentExpr,
+    VariableAssignment,
+    WalrusOp,
+)
 from astx.packages import (
     AliasExpr,
     ImportExpr,
@@ -117,8 +122,11 @@ from astx.packages import (
 )
 from astx.subscript import SubscriptExpr
 from astx.types import (
+    AndOp,
     BinaryOp,
+    BoolBinaryOp,
     Boolean,
+    BoolUnaryOp,
     Complex,
     Complex32,
     Complex64,
@@ -134,7 +142,11 @@ from astx.types import (
     Int32,
     Int64,
     Integer,
+    NandOp,
+    NorOp,
+    NotOp,
     Number,
+    OrOp,
     SignedInteger,
     String,
     Time,
@@ -149,6 +161,8 @@ from astx.types import (
     UnsignedInteger,
     UTF8Char,
     UTF8String,
+    XnorOp,
+    XorOp,
 )
 from astx.variables import (
     InlineVariableDeclaration,
@@ -162,7 +176,7 @@ def get_version() -> str:
     try:
         return importlib_metadata.version(__name__)
     except importlib_metadata.PackageNotFoundError:  # pragma: no cover
-        return "0.17.0"  # semantic-release
+        return "0.18.2"  # semantic-release
 
 
 __all__ = [
@@ -170,11 +184,14 @@ __all__ = [
     "ASTKind",
     "ASTNodes",
     "AliasExpr",
+    "AndOp",
     "Argument",
     "Arguments",
     "AssignmentExpr",
     "BinaryOp",
     "Block",
+    "BoolBinaryOp",
+    "BoolUnaryOp",
     "Boolean",
     "CaseStmt",
     "CatchHandlerStmt",
@@ -248,9 +265,14 @@ __all__ = [
     "Module",
     "MutabilityKind",
     "NamedExpr",
+    "NandOp",
+    "NorOp",
+    "NotOp",
     "Number",
     "OperatorType",
+    "OrOp",
     "Package",
+    "ParenthesizedExpr",
     "Program",
     "ScopeKind",
     "SignedInteger",
@@ -283,6 +305,8 @@ __all__ = [
     "WalrusOp",
     "WhileExpr",
     "WhileStmt",
+    "XnorOp",
+    "XorOp",
     "YieldExpr",
     "base",
     "blocks",

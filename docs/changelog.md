@@ -1,6 +1,46 @@
 # Release Notes
 ---
 
+## [0.18.2](https://github.com/arxlang/astx/compare/0.18.1...0.18.2) (2025-02-26)
+
+
+### Bug Fixes
+
+* Include missing operator NotOp ([#190](https://github.com/arxlang/astx/issues/190)) ([4d5e612](https://github.com/arxlang/astx/commit/4d5e6125f3dd732d6a70663d4cfe203b4baaa201))
+
+## [0.18.1](https://github.com/arxlang/astx/compare/0.18.0...0.18.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* Fix ParenthesizedExpr value type ([#189](https://github.com/arxlang/astx/issues/189)) ([7ea9187](https://github.com/arxlang/astx/commit/7ea9187109750d6c2db41d0f6910096665ccff34))
+
+# [0.18.0](https://github.com/arxlang/astx/compare/0.17.0...0.18.0) (2025-02-26)
+
+
+### Bug Fixes
+
+* Fix the Python transpiler and check python transpiler results with builtin ast in the tests ([#171](https://github.com/arxlang/astx/issues/171)) ([d75c4e8](https://github.com/arxlang/astx/commit/d75c4e85f3e0e855642def3cccf7db5c5d29b909))
+
+
+### Features
+
+* add `EnumDeclStmt` class ([#161](https://github.com/arxlang/astx/issues/161)) ([64fe0af](https://github.com/arxlang/astx/commit/64fe0afe1b2c5b864f5323e62f43c1e962e2ce95))
+* add `StructDeclStmt` and `StructDefStmt` classes ([#162](https://github.com/arxlang/astx/issues/162)) ([e696faa](https://github.com/arxlang/astx/commit/e696faae3463ae1985b1a4e65749817d77e48532))
+* Add shortcut for type instances ([#170](https://github.com/arxlang/astx/issues/170)) ([9d39a82](https://github.com/arxlang/astx/commit/9d39a82b9a4c0cdc56990b07ff9dc7c9cf03f3a8))
+* add support for goto statement via `GotoStmt` class ([#182](https://github.com/arxlang/astx/issues/182)) ([5930018](https://github.com/arxlang/astx/commit/593001825ac5422ebeab7008bf7989417b1b0d46))
+* Add support for ParenthesizedExpr and Boolean Operators ([#187](https://github.com/arxlang/astx/issues/187)) ([165004a](https://github.com/arxlang/astx/commit/165004a91bb8ecbc5a458791f8c90104ff613ba4))
+* **base:** add support for Identifier class ([#174](https://github.com/arxlang/astx/issues/174)) ([8b8e6d0](https://github.com/arxlang/astx/commit/8b8e6d0b12d802d1aa9062bc4b98e3dffae8114e))
+* create `AssignmentExpr` class ([#178](https://github.com/arxlang/astx/issues/178)) ([5cfee00](https://github.com/arxlang/astx/commit/5cfee000e8ce2acbe94f54e8ff5b9e1e816bb496))
+* create `CatchHandlerStmt` and `ExceptionHandlerStmt` ([#180](https://github.com/arxlang/astx/issues/180)) ([964088c](https://github.com/arxlang/astx/commit/964088c232eb276b9440f7834f08d346cef5fac4))
+* Create `FinallyHandlerStmt` class ([#181](https://github.com/arxlang/astx/issues/181)) ([a6a206d](https://github.com/arxlang/astx/commit/a6a206d2781d011644e1b0883057b61d1c4554a5))
+* create `SubscriptExpr` class ([#165](https://github.com/arxlang/astx/issues/165)) ([35deeb0](https://github.com/arxlang/astx/commit/35deeb082aa24c7b9a247e9edd08ec58139d3092))
+* create `SwitchStmt` and `CaseStmt` classes ([#167](https://github.com/arxlang/astx/issues/167)) ([7733e53](https://github.com/arxlang/astx/commit/7733e53a7dcbfd39318024d5adee121b7fb7b475))
+* create `ThrowStmt` class ([#179](https://github.com/arxlang/astx/issues/179)) ([092de0e](https://github.com/arxlang/astx/commit/092de0e79517b9b517bc56a4350a713ca571aa09))
+* create `YieldExpr` class ([#176](https://github.com/arxlang/astx/issues/176)) ([280ea46](https://github.com/arxlang/astx/commit/280ea4678b4f4c22962479e4d3f3148e0e7b575c))
+* Improve the experience with boolean operators ([#188](https://github.com/arxlang/astx/issues/188)) ([bbfc4ea](https://github.com/arxlang/astx/commit/bbfc4eadd51bf97eb171a5ac2a4088e5c85414fa))
+* **walrus:** Add support for Walrus operator; fix issues in operators, test_operators, init, and python files  ([#166](https://github.com/arxlang/astx/issues/166)) ([77a7c6f](https://github.com/arxlang/astx/commit/77a7c6f684ba55a85b965bb9ae186c39993594b8))
+
 # [0.17.0](https://github.com/arxlang/astx/compare/0.16.1...0.17.0) (2024-12-24)
 
 

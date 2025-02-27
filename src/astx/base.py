@@ -81,11 +81,13 @@ NO_SOURCE_LOCATION = SourceLocation(-1, -1)
 
 
 @public
+@typechecked
 class ASTKind(Enum):
     """The expression kind class used for downcasting."""
 
     GenericKind = -100
     ModuleKind = -101
+    ParenthesizedExprKind = -102
 
     # variables
     ArgumentKind = -200
@@ -174,9 +176,18 @@ class ASTKind(Enum):
 
     # exceptions
     ThrowStmtKind = -1100
-    CatchHandlerStmtKind = -1200
-    ExceptionHandlerStmtKind = -1300
-    FinallyHandlerStmtKind = -1301
+    CatchHandlerStmtKind = -1101
+    ExceptionHandlerStmtKind = -1102
+    FinallyHandlerStmtKind = -1103
+
+    # boolops
+    AndOpKind = -1200
+    OrOpKind = -1201
+    XorOpKind = -1202
+    NandOpKind = -1203
+    NorOpKind = -1204
+    XnorOpKind = -1205
+    NotOpKind = -1206
 
 
 class ASTMeta(type):
@@ -286,6 +297,7 @@ class AST(metaclass=ASTMeta):
         return json.dumps(self.get_struct(simplified=simplified), indent=2)
 
 
+@public
 @typechecked
 class ASTNodes(Generic[ASTType], AST):
     """AST with a list of nodes, supporting type-specific elements."""
@@ -460,3 +472,33 @@ class OperatorType(DataType):
 @typechecked
 class StatementType(AST):
     """AST main expression class."""
+
+
+@public
+@typechecked
+class ParenthesizedExpr(DataType):
+    """AST class for explicitly grouped expressions (parentheses retained)."""
+
+    value: Expr
+
+    def __init__(
+        self,
+        value: Expr,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the ParenthesizedExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.type_ = getattr(value, "type_", DataType())
+        self.value = value
+        self.kind = ASTKind.ParenthesizedExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object with parentheses."""
+        return f"ParenthesizedExpr({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "PARENTHESIZED-EXPR"
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
