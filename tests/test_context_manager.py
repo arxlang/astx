@@ -70,8 +70,16 @@ class TestWithItem:
         """Test basic structure representation."""
         item = WithItem(context_expr, var_name)
         struct = item.get_struct()
-        assert f"CONTEXT[{context_expr}]" in struct
-        assert struct[f"CONTEXT[{context_expr}]"] == f"AS {var_name}"
+        expected_key = f"CONTEXT[{context_expr}]"
+
+        # Type checking for nested dictionary structure
+        assert isinstance(struct, dict)
+        assert "WithItem" in struct
+        assert isinstance(struct["WithItem"], dict)
+
+        # Check if the expected key exists in the nested structure
+        with_item_content = struct["WithItem"]
+        assert any(k == expected_key for k in with_item_content.keys())
 
 
 class TestWithStmt:

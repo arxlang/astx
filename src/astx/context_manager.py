@@ -42,17 +42,33 @@ class WithItem:
             return f"{self.context_expr} as {self.instance_name}"
         return str(self.context_expr)
 
-    def get_struct(self) -> Dict[str, DataTypesStruct]:
+    def _prepare_struct(
+        self, key: str, value: DataTypesStruct, simplified: bool = False
+    ) -> Dict[str, DataTypesStruct]:
+        """Prepare structural representation.
+
+        Returns
+        -------
+        Dictionary containing prepared structure.
+        """
+        return {key: value} if simplified else {"WithItem": {key: value}}
+
+    def get_struct(
+        self, simplified: bool = False
+    ) -> Dict[str, DataTypesStruct]:
         """Get structural representation of the WithItem.
 
         Returns
         -------
-            Dictionary containing context expression and instance binding.
+        Dictionary containing context expression and instance binding.
         """
-        return cast(
-            Dict[str, DataTypesStruct],
-            {f"CONTEXT[{self.context_expr}]": f"AS {self.instance_name}"},
+        key = (
+            "CONTEXT"
+            if not self.instance_name
+            else f"CONTEXT[{self.context_expr!s}]"
         )
+        value = cast(DataTypesStruct, self.context_expr.get_struct(simplified))
+        return self._prepare_struct(key, value, simplified)
 
 
 class WithStmt(StatementType):
@@ -65,14 +81,7 @@ class WithStmt(StatementType):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize WithStmt instance.
-
-        Args:
-            items: List of WithItems representing the context managers
-            body: Block of code to execute within the context
-            loc: Source location information
-            parent: Parent node in AST
-        """
+        """Initialize WithStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.items = items
         self.body = body
