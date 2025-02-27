@@ -311,28 +311,11 @@ class FunctionAsyncDef(FunctionDef):
         super().__init__(
             loc=loc, parent=parent, body=body, prototype=prototype
         )
-        # super().__init__(loc=loc, parent=parent)
-        # self.prototype = prototype
-        # self.body = body
         self.kind = ASTKind.FunctionAsyncDefKind
-
-    # @property # I think this is fine inherited from FunctionDef
-    # def name(self) -> str:
-    #     """Return the function prototype name."""
-    #     return self.prototype.name
 
     def __str__(self) -> str:
         """Return a string that represent the object."""
         return f"FunctionAsyncDef[{self.name}]"
-
-    # def __call__( # I think this is fine inherited from FunctionDef
-    #     self,
-    #     args: tuple[DataType, ...],
-    #     loc: SourceLocation = NO_SOURCE_LOCATION,
-    #     parent: Optional[ASTNodes] = None,
-    # ) -> FunctionCall:
-    #     """Initialize the Call instance."""
-    #     return FunctionCall(fn=self, args=args, loc=loc, parent=parent)
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Get the AST structure that represent the object."""
