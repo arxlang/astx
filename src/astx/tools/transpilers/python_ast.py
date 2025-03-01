@@ -1,5 +1,3 @@
-"""ASTx to Python AST transpiler."""
-
 import ast
 from typing import Any, Dict, List, Optional, Tuple, Union, cast
 
@@ -845,18 +843,3 @@ class ASTxPythonASTTranspiler:
     def visit(self, node: astx.ContinueStmt) -> ast.Continue:
         """Handle ContinueStmt nodes."""
         return ast.Continue()
-    
-# if __name__ == "__main__":
-#     import astx
-
-#     transpiler = ASTxPythonASTTranspiler()
-#     test_nodes = [
-#         astx.NandOp(lhs=astx.Identifier(value='a'), rhs=astx.Identifier(value='b')),
-#         astx.MatchStmt(value=astx.Identifier(value='x'), cases=astx.Block(nodes=[])),
-#         astx.BreakStmt(),
-#         astx.ContinueStmt()
-#     ]
-
-#     for node in test_nodes:
-#         py_ast = transpiler.visit(node)
-#         print(ast.dump(py_ast, indent=4))
