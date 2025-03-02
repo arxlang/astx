@@ -1254,14 +1254,15 @@ def test_group_expr() -> None:
 
 def test_transpiler_functionasyncdef() -> None:
     """Test astx.FunctionAsyncDef."""
-    var_a = astx.Argument(
+    arg_a = astx.Argument(
         "a", type_=astx.Int32(), default=astx.LiteralInt32(1)
     )
     proto = astx.FunctionPrototype(
         name="aget",
-        args=astx.Arguments(var_a),
+        args=astx.Arguments(arg_a),
         return_type=astx.Int32(),
     )
+    var_a = astx.Variable("a")
 
     return_stmt = astx.FunctionReturn(value=var_a)
 
@@ -1272,7 +1273,7 @@ def test_transpiler_functionasyncdef() -> None:
 
     # Generate Python code
     generated_code = translate(fn_a)
-    expected_code = "async def aget(a: int) -> int:\n    return a: int"
+    expected_code = "async def aget(a: int) -> int:\n    return a"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1281,14 +1282,12 @@ def test_transpiler_functionasyncdef() -> None:
 
 def test_transpiler_await_expr_() -> None:
     """Test astx.AwaitExpr."""
-    var_a = astx.Argument(
-        "a", type_=astx.Int32(), default=astx.LiteralInt32(1)
-    )
+    var_a = astx.Variable("a")
     await_expr = astx.AwaitExpr(value=var_a)
 
     # Generate Python code
     generated_code = translate(await_expr)
-    expected_code = "await a: int"
+    expected_code = "await a"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
