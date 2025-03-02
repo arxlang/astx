@@ -6,11 +6,14 @@ from astx.blocks import Block
 from astx.callables import (
     Argument,
     Arguments,
-    Function,
+    AwaitExpr,
+    FunctionAsyncDef,
     FunctionCall,
+    FunctionDef,
     FunctionPrototype,
     FunctionReturn,
     LambdaExpr,
+    YieldExpr,
 )
 from astx.literals.numeric import LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
@@ -20,7 +23,7 @@ from astx.variables import Variable
 from astx.viz import visualize
 
 
-def test_function_creation_with_no_modifiers() -> None:
+def test_functiondef_creation_with_no_modifiers() -> None:
     """Test function creation with no modifiers."""
     var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
     var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
@@ -35,7 +38,7 @@ def test_function_creation_with_no_modifiers() -> None:
         proto.get_struct()
 
     fn_block = Block()
-    fn = Function(prototype=proto, body=fn_block)
+    fn = FunctionDef(prototype=proto, body=fn_block)
 
     assert str(fn)
     assert fn.get_struct()
@@ -44,7 +47,7 @@ def test_function_creation_with_no_modifiers() -> None:
     visualize(fn.get_struct())
 
 
-def test_function_creation_with_modifiers() -> None:
+def test_functiondef_creation_with_modifiers() -> None:
     """Test function creation with modifiers."""
     var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
     var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
@@ -56,7 +59,7 @@ def test_function_creation_with_modifiers() -> None:
         scope=ScopeKind.global_,
     )
     fn_block = Block()
-    fn = Function(prototype=proto, body=fn_block)
+    fn = FunctionDef(prototype=proto, body=fn_block)
 
     assert str(fn)
     assert fn.get_struct()
@@ -77,7 +80,7 @@ def test_function_call() -> None:
         scope=ScopeKind.global_,
     )
     fn_block = Block()
-    fn = Function(prototype=proto, body=fn_block)
+    fn = FunctionDef(prototype=proto, body=fn_block)
 
     lit_int32_1 = LiteralInt32(1)
 
@@ -116,3 +119,47 @@ def test_lambdaexpr_noparams() -> None:
     assert str(lambda_expr)
     assert lambda_expr.get_struct()
     assert lambda_expr.get_struct(simplified=True)
+
+
+def test_functionasync_creation_with_no_modifiers() -> None:
+    """Test async function creation with no modifiers."""
+    var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
+    var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
+
+    proto = FunctionPrototype(
+        name="add",
+        args=Arguments(var_a, var_b),
+        return_type=Int32(),
+    )
+
+    with pytest.raises(Exception):
+        proto.get_struct()
+
+    fn_block = Block()
+    fn = FunctionAsyncDef(prototype=proto, body=fn_block)
+
+    assert str(fn)
+    assert fn.get_struct()
+    assert fn.get_struct(simplified=True)
+
+    visualize(fn.get_struct())
+
+
+def test_await_expr() -> None:
+    """Test `AwaitExpr` class."""
+    await_expr = AwaitExpr(value=LiteralInt32(1))
+
+    assert str(await_expr)
+    assert await_expr.get_struct()
+    assert await_expr.get_struct(simplified=True)
+    visualize(await_expr.get_struct())
+
+
+def test_yield_expr() -> None:
+    """Test `YieldExpr` class."""
+    yield_expr = YieldExpr(value=LiteralInt32(1))
+
+    assert str(yield_expr)
+    assert yield_expr.get_struct()
+    assert yield_expr.get_struct(simplified=True)
+    visualize(yield_expr.get_struct())

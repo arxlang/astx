@@ -77,7 +77,7 @@ def test_function_call_fibonacci() -> None:
     fib_block.append(return_stmt)
 
     # Define the function with its body
-    fib_fn = astx.Function(prototype=fib_proto, body=fib_block)
+    fib_fn = astx.FunctionDef(prototype=fib_proto, body=fib_block)
 
     # Append the Fibonacci function to the module block
     module.block.append(fib_fn)

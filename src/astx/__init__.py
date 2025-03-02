@@ -35,11 +35,14 @@ from astx.blocks import (
 from astx.callables import (
     Argument,
     Arguments,
-    Function,
+    AwaitExpr,
+    FunctionAsyncDef,
     FunctionCall,
+    FunctionDef,
     FunctionPrototype,
     FunctionReturn,
     LambdaExpr,
+    YieldExpr,
 )
 from astx.classes import (
     ClassDeclStmt,
@@ -66,7 +69,6 @@ from astx.flows import (
     SwitchStmt,
     WhileExpr,
     WhileStmt,
-    YieldExpr,
 )
 from astx.literals import (
     Literal,
@@ -188,6 +190,7 @@ __all__ = [
     "Argument",
     "Arguments",
     "AssignmentExpr",
+    "AwaitExpr",
     "BinaryOp",
     "Block",
     "BoolBinaryOp",
@@ -217,8 +220,9 @@ __all__ = [
     "ForCountLoopStmt",
     "ForRangeLoopExpr",
     "ForRangeLoopStmt",
-    "Function",
+    "FunctionAsyncDef",
     "FunctionCall",
+    "FunctionDef",
     "FunctionPrototype",
     "FunctionReturn",
     "GotoStmt",

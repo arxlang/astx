@@ -273,16 +273,6 @@ def test_switch_stmt() -> None:
     visualize(switch_stmt.get_struct())
 
 
-def test_yield_expr() -> None:
-    """Test `YieldExpr` class."""
-    yield_expr = astx.YieldExpr(value=LiteralInt32(1))
-
-    assert str(yield_expr)
-    assert yield_expr.get_struct()
-    assert yield_expr.get_struct(simplified=True)
-    visualize(yield_expr.get_struct())
-
-
 def test_goto_stmt() -> None:
     """Test `GotoStmt` class."""
     goto_stmt = astx.GotoStmt(astx.Identifier("label1"))
