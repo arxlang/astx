@@ -67,6 +67,12 @@ class ASTxPythonTranspiler:
         return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AwaitExpr) -> str:
+        """Handle AwaitExpr nodes."""
+        value = self.visit(node.value) if node.value else ""
+        return f"await {value}".strip()
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.BinaryOp) -> str:
         """Handle BinaryOp nodes."""
         lhs = self.visit(node.lhs)
@@ -147,8 +153,21 @@ class ASTxPythonTranspiler:
         )
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Function) -> str:
-        """Handle Function nodes."""
+    def visit(self, node: astx.FunctionAsyncDef) -> str:
+        """Handle FunctionAsyncDef nodes."""
+        args = self.visit(node.prototype.args)
+        returns = (
+            f" -> {self.visit(node.prototype.return_type)}"
+            if node.prototype.return_type
+            else ""
+        )
+        header = f"async def {node.name}({args}){returns}:"
+        body = self.visit(node.body)
+        return f"{header}\n{body}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FunctionDef) -> str:
+        """Handle FunctionDef nodes."""
         args = self.visit(node.prototype.args)
         returns = (
             f" -> {self.visit(node.prototype.return_type)}"
@@ -540,3 +559,87 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.LiteralDateTime) -> str:
         """Handle LiteralDateTime nodes."""
         return f"datetime.strptime({node.value!r}, '%Y-%m-%dT%H:%M:%S')"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ParenthesizedExpr) -> str:
+        """Handle ParenthesizedExpr nodes."""
+        return f"({self.visit(node.value)})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AndOp) -> str:
+        """Handle AndOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"{lhs} and {rhs}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.OrOp) -> str:
+        """Handle OrOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"{lhs} or {rhs}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.XorOp) -> str:
+        """Handle XorOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"{lhs} ^ {rhs}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.NandOp) -> str:
+        """Handle NandOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"not ({lhs} and {rhs})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.NorOp) -> str:
+        """Handle NorOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"not ({lhs} or {rhs})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.XnorOp) -> str:
+        """Handle XnorOp nodes."""
+        lhs = self.visit(node.lhs)
+        rhs = self.visit(node.rhs)
+        return f"not ({lhs} ^ {rhs})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralList) -> str:
+        """Handle LiteralList nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"[{elements_code}]"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralTuple) -> str:
+        """Handle LiteralTuple nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return (
+            f"({elements_code},)"
+            if len(node.elements) == 1
+            else f"({elements_code})"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralSet) -> str:
+        """Handle LiteralSet nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"{{{elements_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralDict) -> str:
+        """Handle LiteralDict nodes."""
+        items_code = ", ".join(
+            f"{self.visit(key)}: {self.visit(value)}"
+            for key, value in node.elements.items()
+        )
+        return f"{{{items_code}}}"

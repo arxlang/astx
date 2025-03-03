@@ -7,6 +7,12 @@ from astx.literals.base import (
 from astx.literals.boolean import (
     LiteralBoolean,
 )
+from astx.literals.collections import (
+    LiteralDict,
+    LiteralList,
+    LiteralSet,
+    LiteralTuple,
+)
 from astx.literals.numeric import (
     LiteralComplex,
     LiteralComplex32,
@@ -45,6 +51,7 @@ __all__ = [
     "LiteralComplex64",
     "LiteralDate",
     "LiteralDateTime",
+    "LiteralDict",
     "LiteralFloat16",
     "LiteralFloat32",
     "LiteralFloat64",
@@ -53,10 +60,13 @@ __all__ = [
     "LiteralInt32",
     "LiteralInt64",
     "LiteralInt128",
+    "LiteralList",
     "LiteralNone",
+    "LiteralSet",
     "LiteralString",
     "LiteralTime",
     "LiteralTimestamp",
+    "LiteralTuple",
     "LiteralUInt8",
     "LiteralUInt16",
     "LiteralUInt32",

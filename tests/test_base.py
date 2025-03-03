@@ -101,3 +101,26 @@ def test_struct_representation() -> None:
     ident = astx.Identifier("test_var")
     struct = ident.get_struct(simplified=True)
     assert struct == {"IDENTIFIER[test_var]": "test_var"}
+
+
+def test_parenthesized_expr_1() -> None:
+    """Test ParenthesizedExpr 1."""
+    node = astx.ParenthesizedExpr(
+        astx.AndOp(astx.LiteralBoolean(True), astx.LiteralBoolean(False))
+    )
+    assert node.get_struct(simplified=True)
+    assert node.get_struct(simplified=False)
+
+
+def test_parenthesized_expr_2() -> None:
+    """Test ParenthesizedExpr 2."""
+    node_1 = astx.ParenthesizedExpr(
+        astx.AndOp(
+            astx.LiteralBoolean(True),
+            astx.LiteralBoolean(False),
+        )
+    )
+
+    node_2 = astx.OrOp(node_1, node_1)
+    assert node_2.get_struct(simplified=True)
+    assert node_2.get_struct(simplified=False)
