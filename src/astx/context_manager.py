@@ -27,12 +27,7 @@ class WithItem:
     def __init__(
         self, context_expr: Expr, instance_name: Optional[Identifier] = None
     ) -> None:
-        """Initialize a WithItem instance.
-
-        Args:
-            context_expr: The expression representing the context manager.
-            instance_name: Optional variable name to bind the context manager.
-        """
+        """Initialize a WithItem instance."""
         self.context_expr = context_expr
         self.instance_name = instance_name
 
@@ -45,23 +40,13 @@ class WithItem:
     def _prepare_struct(
         self, key: str, value: DataTypesStruct, simplified: bool = False
     ) -> Dict[str, DataTypesStruct]:
-        """Prepare structural representation.
-
-        Returns
-        -------
-        Dictionary containing prepared structure.
-        """
+        """Prepare structural representation."""
         return {key: value} if simplified else {"WithItem": {key: value}}
 
     def get_struct(
         self, simplified: bool = False
     ) -> Dict[str, DataTypesStruct]:
-        """Get structural representation of the WithItem.
-
-        Returns
-        -------
-        Dictionary containing context expression and instance binding.
-        """
+        """Get structural representation of the WithItem."""
         key = (
             "CONTEXT"
             if not self.instance_name
@@ -93,17 +78,9 @@ class WithStmt(StatementType):
         return f"WithStmt[{items_str}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Get structural representation of the WithStmt.
-
-        Args:
-            simplified: Whether to return simplified structure.
-
-        Returns
-        -------
-            Dictionary containing with statement structure.
-        """
+        """Get structural representation of the WithStmt."""
         items_structs: List[Dict[str, DataTypesStruct]] = [
-            item.get_struct() for item in self.items
+            item.get_struct(simplified) for item in self.items
         ]
 
         return cast(
@@ -111,7 +88,7 @@ class WithStmt(StatementType):
             {
                 "WITH-STMT": {
                     "items": items_structs,
-                    "body": self.body.get_struct(),
+                    "body": self.body.get_struct(simplified),
                 }
             },
         )
