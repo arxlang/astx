@@ -67,6 +67,12 @@ class ASTxPythonTranspiler:
         return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AwaitExpr) -> str:
+        """Handle AwaitExpr nodes."""
+        value = self.visit(node.value) if node.value else ""
+        return f"await {value}".strip()
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.BinaryOp) -> str:
         """Handle BinaryOp nodes."""
         lhs = self.visit(node.lhs)
@@ -147,8 +153,21 @@ class ASTxPythonTranspiler:
         )
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Function) -> str:
-        """Handle Function nodes."""
+    def visit(self, node: astx.FunctionAsyncDef) -> str:
+        """Handle FunctionAsyncDef nodes."""
+        args = self.visit(node.prototype.args)
+        returns = (
+            f" -> {self.visit(node.prototype.return_type)}"
+            if node.prototype.return_type
+            else ""
+        )
+        header = f"async def {node.name}({args}){returns}:"
+        body = self.visit(node.body)
+        return f"{header}\n{body}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FunctionDef) -> str:
+        """Handle FunctionDef nodes."""
         args = self.visit(node.prototype.args)
         returns = (
             f" -> {self.visit(node.prototype.return_type)}"
@@ -587,3 +606,40 @@ class ASTxPythonTranspiler:
         lhs = self.visit(node.lhs)
         rhs = self.visit(node.rhs)
         return f"not ({lhs} ^ {rhs})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralList) -> str:
+        """Handle LiteralList nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"[{elements_code}]"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralTuple) -> str:
+        """Handle LiteralTuple nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return (
+            f"({elements_code},)"
+            if len(node.elements) == 1
+            else f"({elements_code})"
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralSet) -> str:
+        """Handle LiteralSet nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"{{{elements_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralDict) -> str:
+        """Handle LiteralDict nodes."""
+        items_code = ", ".join(
+            f"{self.visit(key)}: {self.visit(value)}"
+            for key, value in node.elements.items()
+        )
+        return f"{{{items_code}}}"

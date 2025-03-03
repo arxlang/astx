@@ -95,13 +95,13 @@ class Arguments(ASTNodes[Argument]):
 class FunctionCall(DataType):
     """AST class for function call."""
 
-    fn: Function
+    fn: FunctionDef
     args: Iterable[DataType]
     type_: DataType = AnyType()
 
     def __init__(
         self,
-        fn: Function,
+        fn: FunctionDef,
         args: Iterable[DataType],
         type_: DataType = AnyType(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
@@ -207,7 +207,7 @@ class FunctionReturn(StatementType):
 
 @public
 @typechecked
-class Function(StatementType):
+class FunctionDef(StatementType):
     """AST class for function definition."""
 
     prototype: FunctionPrototype
@@ -224,7 +224,7 @@ class Function(StatementType):
         super().__init__(loc=loc, parent=parent)
         self.prototype = prototype
         self.body = body
-        self.kind = ASTKind.FunctionKind
+        self.kind = ASTKind.FunctionDefKind
 
     @property
     def name(self) -> str:
@@ -233,7 +233,7 @@ class Function(StatementType):
 
     def __str__(self) -> str:
         """Return a string that represent the object."""
-        return f"Function[{self.name}]"
+        return f"FunctionDef[{self.name}]"
 
     def __call__(
         self,
@@ -249,7 +249,7 @@ class Function(StatementType):
         fn_args = self.prototype.args.get_struct(simplified)
         fn_body = self.body.get_struct(simplified)
 
-        key = f"FUNCTION[{self.prototype.name}]"
+        key = f"FUNCTION-DEF[{self.prototype.name}]"
         args_struct = {"args": fn_args}
         body_struct = {"body": fn_body}
 
@@ -289,4 +289,100 @@ class LambdaExpr(Expr):
             "params": self.params.get_struct(simplified),
             "body": self.body.get_struct(simplified),
         }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class FunctionAsyncDef(FunctionDef):
+    """AST class for async function definition."""
+
+    prototype: FunctionPrototype
+    body: Block
+
+    def __init__(
+        self,
+        prototype: FunctionPrototype,
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the FunctionAsync instance."""
+        super().__init__(
+            loc=loc, parent=parent, body=body, prototype=prototype
+        )
+        self.kind = ASTKind.FunctionAsyncDefKind
+
+    def __str__(self) -> str:
+        """Return a string that represent the object."""
+        return f"FunctionAsyncDef[{self.name}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Get the AST structure that represent the object."""
+        fn_args = self.prototype.args.get_struct(simplified)
+        fn_body = self.body.get_struct(simplified)
+
+        key = f"FUNCTIONASYNC-DEF[{self.prototype.name}]"
+        args_struct = {"args": fn_args}
+        body_struct = {"body": fn_body}
+
+        value: ReprStruct = {**args_struct, **body_struct}
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class AwaitExpr(Expr):
+    """AST class for AwaitExpr."""
+
+    value: Optional[Expr]
+
+    def __init__(
+        self,
+        value: Optional[Expr],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the AwaitExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.AwaitExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"AwaitExpr[{self.value}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "AWAIT-EXPR"
+        value = {} if self.value is None else self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class YieldExpr(Expr):
+    """AST class for YieldExpr."""
+
+    value: Optional[Expr]
+
+    def __init__(
+        self,
+        value: Optional[Expr],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the YieldExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.YieldExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"YieldExpr[{self.value}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "YIELD-EXPR"
+        value = {} if self.value is None else self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)

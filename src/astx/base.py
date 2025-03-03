@@ -106,10 +106,13 @@ class ASTKind(Enum):
 
     # functions
     PrototypeKind = -400
-    FunctionKind = -401
+    FunctionDefKind = -401
     CallKind = -402
     ReturnKind = -403
     LambdaExprKind = -404
+    FunctionAsyncDefKind = -405
+    AwaitExprKind = -406
+    YieldExprKind = -510
 
     # control flow
     IfStmtKind = -500
@@ -122,7 +125,6 @@ class ASTKind(Enum):
     IfExprKind = -507
     CaseStmtKind = -508
     SwitchStmtKind = -509
-    YieldExprKind = -510
     GotoStmtKind = -511
     WithStmtKind = -512
 

@@ -209,8 +209,8 @@ def test_transpiler_lambdaexpr_noparams() -> None:
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
-def test_transpiler_function() -> None:
-    """Test astx.Function."""
+def test_transpiler_functiondef() -> None:
+    """Test astx.FunctionDef."""
     # Function parameters
     args = astx.Arguments(
         astx.Argument(name="x", type_=astx.Int32()),
@@ -239,7 +239,7 @@ def test_transpiler_function() -> None:
     )
 
     # Function definition
-    add_function = astx.Function(
+    add_function = astx.FunctionDef(
         prototype=astx.FunctionPrototype(
             name="add",
             args=args,
@@ -967,7 +967,7 @@ def fn_print(
         args=astx.Arguments(astx.Argument("_", type_=astx.String())),
         return_type=astx.String(),
     )
-    fn = astx.Function(prototype=proto, body=astx.Block())
+    fn = astx.FunctionDef(prototype=proto, body=astx.Block())
     return astx.FunctionCall(
         fn=fn,
         args=[arg],
@@ -1163,6 +1163,7 @@ def test_transpiler_and_op() -> None:
     generated_code = translate(op)
 
     expected_code = "x and y"
+
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
@@ -1245,6 +1246,104 @@ def test_group_expr() -> None:
     )
     generated_code = translate(grp)
     expected_code = "(True and False)"
+
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_functionasyncdef() -> None:
+    """Test astx.FunctionAsyncDef."""
+    arg_a = astx.Argument(
+        "a", type_=astx.Int32(), default=astx.LiteralInt32(1)
+    )
+    proto = astx.FunctionPrototype(
+        name="aget",
+        args=astx.Arguments(arg_a),
+        return_type=astx.Int32(),
+    )
+    var_a = astx.Variable("a")
+
+    return_stmt = astx.FunctionReturn(value=var_a)
+
+    fn_block = astx.Block()
+    fn_block.append(return_stmt)
+
+    fn_a = astx.FunctionAsyncDef(prototype=proto, body=fn_block)
+
+    # Generate Python code
+    generated_code = translate(fn_a)
+    expected_code = "async def aget(a: int) -> int:\n    return a"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_await_expr_() -> None:
+    """Test astx.AwaitExpr."""
+    var_a = astx.Variable("a")
+    await_expr = astx.AwaitExpr(value=var_a)
+
+    # Generate Python code
+    generated_code = translate(await_expr)
+    expected_code = "await a"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_literal_list() -> None:
+    """Test astx.LiteralList."""
+    lit_list = astx.LiteralList(
+        [astx.LiteralInt32(1), astx.LiteralInt32(2), astx.LiteralInt32(3)]
+    )
+    generated_code = transpiler.visit(lit_list)
+    expected_code = "[1, 2, 3]"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_literal_tuple() -> None:
+    """Test astx.LiteralTuple."""
+    lit_tuple = astx.LiteralTuple((astx.LiteralInt32(1), astx.LiteralInt32(2)))
+
+    generated_code = transpiler.visit(lit_tuple)
+    expected_code = "(1, 2)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_literal_set() -> None:
+    """Test astx.LiteralSet."""
+    lit_set = astx.LiteralSet(
+        {astx.LiteralInt32(1), astx.LiteralInt32(2), astx.LiteralInt32(3)}
+    )
+
+    generated_code = transpiler.visit(lit_set)
+    expected_code = "{1, 2, 3}"
+    assert eval(generated_code) == {
+        1,
+        2,
+        3,
+    }, f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_literal_dict() -> None:
+    """Test astx.LiteralDict."""
+    lit_dict = astx.LiteralDict(
+        {
+            astx.LiteralInt32(1): astx.LiteralInt32(10),
+            astx.LiteralInt32(2): astx.LiteralInt32(20),
+        }
+    )
+
+    generated_code = transpiler.visit(lit_dict)
+    expected_code = "{1: 10, 2: 20}"
+    assert eval(generated_code) == {
+        1: 10,
+        2: 20,
+    }, f"Expected '{expected_code}', but got '{generated_code}'"
