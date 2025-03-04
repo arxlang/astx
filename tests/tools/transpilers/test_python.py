@@ -1053,10 +1053,12 @@ def test_transpiler_yieldfromexpr_whilestmt() -> None:
     while_cond = astx.LiteralBoolean(True)
     while_body = astx.Block()
 
-    # Create the `yield` expression
-    yieldfrom_expr = astx.YieldFromExpr(value=astx.LiteralList([astx.LiteralInt32(1), astx.LiteralInt32(2)]))
+    # Create the `yieldfrom` expression
+    yieldfrom_expr = astx.YieldFromExpr(
+        value=astx.LiteralList([astx.LiteralInt32(1), astx.LiteralInt32(2)])
+    )
 
-    # Assign the result of `yield` back to `value`
+    # Assign the result of `yieldfrom` back to `value`
     assign_value = astx.VariableAssignment(name="value", value=yieldfrom_expr)
 
     # Add the assignment to the loop body
