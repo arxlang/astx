@@ -165,6 +165,7 @@ def test_yield_expr() -> None:
     assert yield_expr.get_struct(simplified=True)
     visualize(yield_expr.get_struct())
 
+
 def test_yieldfrom_expr() -> None:
     """Test `YieldFromExpr` class."""
     yieldfrom_expr = YieldFromExpr(value=LiteralInt32(1))
