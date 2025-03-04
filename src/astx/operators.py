@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Optional, cast
+from typing import Iterable, Literal, Optional, cast
 
 from public import public
 
@@ -128,3 +128,40 @@ class VariableAssignment(StatementType):
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class CompareOp(DataType):
+    """AST class for comparison operators (==, !=, <, >, <=, >=)."""
+
+    def __init__(
+        self,
+        op_code: Literal["==", "!=", "<", ">", "<=", ">="],
+        lhs: DataType,
+        rhs: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize the CompareOp instance."""
+        super().__init__(loc=loc)
+        if op_code not in ["==", "!=", "<", ">", "<=", ">="]:
+            raise ValueError(f"Invalid comparison operator: {op_code}")
+        self.op_code = op_code
+        self.lhs = lhs
+        self.rhs = rhs
+        self.kind = ASTKind.CompareOpKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return (
+            f"CompareOp[{self.op_code}]({self.lhs} {self.op_code} {self.rhs})"
+        )
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure that represents the object."""
+        key = f"COMPARE[{self.op_code}]"
+        lhs = {"lhs": self.lhs.get_struct(simplified)}
+        rhs = {"rhs": self.rhs.get_struct(simplified)}
+
+        content: ReprStruct = {**lhs, **rhs}
+        return self._prepare_struct(key, content, simplified)
