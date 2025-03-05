@@ -156,7 +156,7 @@ class AugAssign(DataType):
     def __init__(
         self,
         target: str,
-        aug_op: Literal[
+        op_code: Literal[
             "+=",
             "-=",
             "*=",
