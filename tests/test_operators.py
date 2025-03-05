@@ -1,11 +1,15 @@
 """Tests for operators."""
 
+from typing import get_args
+
 import astx
+import pytest
 
 from astx.literals.numeric import LiteralInt32
-from astx.operators import AssignmentExpr, VariableAssignment
+from astx.operators import AssignmentExpr, AugAssign, VariableAssignment
 from astx.variables import Variable
 from astx.viz import visualize
+from astx import Identifier
 
 
 def test_assignment_expr() -> None:
@@ -116,3 +120,36 @@ def test_not_op() -> None:
     assert op.get_struct()
     assert op.get_struct(simplified=True)
     visualize(op.get_struct())
+
+
+@pytest.mark.parametrize("operator, value", [
+    ("+=", 10),
+    ("-=", 5),
+    ("*=", 3),
+    ("/=", 2),
+    ("//=", 2),
+    ("%=", 4),
+    ("**=", 2),
+    ("&=", 6),
+    ("|=", 3),
+    ("^=", 1),
+    ("<<=", 1),
+    (">>=", 2),
+])
+def test_aug_assign_operations(operator, value):
+    """Test all augmented assignment operators using parametrize."""
+    var_x = astx.Identifier(value="x")
+    literal_value = LiteralInt32(value)
+    aug_assign = AugAssign(var_x, operator, literal_value)
+
+    assert str(aug_assign) == f"AugAssign[{operator}]"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+@pytest.mark.xfail(reason="Testing invalid augmented assignment")
+def test_invalid_aug_assign() -> None:
+    """Test invalid augmented assignment operator."""
+    with pytest.raises(ValueError, match="Unsupported operator: <<<"):
+        var_x = Identifier(name="x")
+        AugAssign(var_x, "<<<", LiteralInt32(5))
+
