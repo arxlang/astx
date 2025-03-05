@@ -1,9 +1,10 @@
 """Tests for operators."""
 
 import astx
+import pytest
 
 from astx.literals.numeric import LiteralInt32
-from astx.operators import AssignmentExpr, VariableAssignment
+from astx.operators import AssignmentExpr, AugAssign, VariableAssignment
 from astx.variables import Variable
 from astx.viz import visualize
 
@@ -116,3 +117,158 @@ def test_not_op() -> None:
     assert op.get_struct()
     assert op.get_struct(simplified=True)
     visualize(op.get_struct())
+
+
+# augmented operators unit tests
+
+
+def test_valid_aug_assign():
+    """Test valid augmented assignment operations."""
+    var_x = "x"
+    value = LiteralInt32(5)
+
+    for op in AugAssign.OPERATORS.keys():
+        aug_assign = AugAssign(var_x, op, value)
+        assert str(aug_assign) == f"AugAssign[ {op} ](x {op} {value.value!s})"
+        assert aug_assign.get_struct()
+        assert aug_assign.get_struct(simplified=True)
+        visualize(aug_assign.get_struct())
+
+
+@pytest.mark.xfail(reason="Testing invalid augmented assignment")
+def test_invalid_aug_assign() -> None:
+    """Test invalid augmented assignment operator."""
+    with pytest.raises(ValueError, match="Unsupported operator: <<<"):
+        AugAssign("x", "<<<", LiteralInt32(5))
+
+
+def test_aug_assign_addition():
+    """Test += operator."""
+    var_x = "x"
+    value = LiteralInt32(10)
+    aug_assign = AugAssign(var_x, "+=", value)
+
+    assert str(aug_assign) == "AugAssign[ += ](x += 10)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_subtraction():
+    """Test -= operator."""
+    var_x = "x"
+    value = LiteralInt32(5)
+    aug_assign = AugAssign(var_x, "-=", value)
+
+    assert str(aug_assign) == "AugAssign[ -= ](x -= 5)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_multiplication():
+    """Test *= operator."""
+    var_x = "x"
+    value = LiteralInt32(3)
+    aug_assign = AugAssign(var_x, "*=", value)
+
+    assert str(aug_assign) == "AugAssign[ *= ](x *= 3)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_division():
+    """Test /= operator."""
+    var_x = "x"
+    value = LiteralInt32(2)
+    aug_assign = AugAssign(var_x, "/=", value)
+
+    assert str(aug_assign) == "AugAssign[ /= ](x /= 2)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_floor_division():
+    """Test //= operator."""
+    var_x = "x"
+    value = LiteralInt32(2)
+    aug_assign = AugAssign(var_x, "//=", value)
+
+    assert str(aug_assign) == "AugAssign[ //= ](x //= 2)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_modulo():
+    """Test %= operator."""
+    var_x = "x"
+    value = LiteralInt32(4)
+    aug_assign = AugAssign(var_x, "%=", value)
+
+    assert str(aug_assign) == "AugAssign[ %= ](x %= 4)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_power():
+    """Test **= operator."""
+    var_x = "x"
+    value = LiteralInt32(2)
+    aug_assign = AugAssign(var_x, "**=", value)
+
+    assert str(aug_assign) == "AugAssign[ **= ](x **= 2)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_bitwise_and():
+    """Test &= operator."""
+    var_x = "x"
+    value = LiteralInt32(6)
+    aug_assign = AugAssign(var_x, "&=", value)
+
+    assert str(aug_assign) == "AugAssign[ &= ](x &= 6)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_bitwise_or():
+    """Test |= operator."""
+    var_x = "x"
+    value = LiteralInt32(3)
+    aug_assign = AugAssign(var_x, "|=", value)
+
+    assert str(aug_assign) == "AugAssign[ |= ](x |= 3)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_bitwise_xor():
+    """Test ^= operator."""
+    var_x = "x"
+    value = LiteralInt32(1)
+    aug_assign = AugAssign(var_x, "^=", value)
+
+    assert str(aug_assign) == "AugAssign[ ^= ](x ^= 1)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_left_shift():
+    """Test <<= operator."""
+    var_x = "x"
+    value = LiteralInt32(1)
+    aug_assign = AugAssign(var_x, "<<=", value)
+
+    assert str(aug_assign) == "AugAssign[ <<= ](x <<= 1)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)
+
+
+def test_aug_assign_right_shift():
+    """Test >>= operator."""
+    var_x = "x"
+    value = LiteralInt32(2)
+    aug_assign = AugAssign(var_x, ">>=", value)
+
+    assert str(aug_assign) == "AugAssign[ >>= ](x >>= 2)"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)

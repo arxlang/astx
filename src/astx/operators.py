@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Optional, cast
+import operator
+
+from typing import Iterable, Literal, Optional, cast
 
 from public import public
 
@@ -17,6 +19,7 @@ from astx.base import (
     SourceLocation,
     StatementType,
 )
+from astx.literals.numeric import LiteralInt32
 from astx.tools.typing import typechecked
 from astx.variables import Variable
 
@@ -122,6 +125,70 @@ class VariableAssignment(StatementType):
     def __str__(self) -> str:
         """Return a string that represents the object."""
         return f"VariableAssignment[{self.name}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = str(self)
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class AugAssign(DataType):
+    """AST class for augmented assignment (+= , -= , |=, *= , /= , //= , eg)."""
+
+    OPERATORS = {
+        "+=": operator.iadd,
+        "-=": operator.isub,
+        "*=": operator.imul,
+        "/=": operator.itruediv,
+        "//=": operator.ifloordiv,
+        "%=": operator.imod,
+        "**=": operator.ipow,
+        "&=": operator.iand,
+        "|=": operator.ior,
+        "^=": operator.ixor,
+        "<<=": operator.ilshift,
+        ">>=": operator.irshift,
+    }
+
+    def __init__(
+        self,
+        target: str,
+        aug_op: Literal[
+            "+=",
+            "-=",
+            "*=",
+            "/=",
+            "//=",
+            "%=",
+            "**=",
+            "&=",
+            "|=",
+            "^=",
+            "<<=",
+            ">>=",
+        ],
+        value: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        if aug_op not in self.OPERATORS:
+            raise ValueError(f"Unsupported operator: {aug_op}")
+        super().__init__(loc=loc)
+        self.target = target
+        self.aug_op = aug_op
+        self.value = value
+        self.kind = ASTKind.AugmentedAssignKind
+
+    def __str__(self):
+        """Return a string that represents the augmented assignment object."""
+        value_str = (
+            str(self.value)
+            if not isinstance(self.value, LiteralInt32)
+            else str(self.value.value)
+        )
+        return f"AugAssign[ {self.aug_op} ]({self.target} {self.aug_op} {value_str})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
