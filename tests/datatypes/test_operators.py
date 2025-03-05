@@ -68,17 +68,17 @@ def test_walrus_op_get_struct() -> None:
 
 def test_compare_op_init() -> None:
     """Test CompareOp initialization and properties."""
-    compare = CompareOp(op_code="==", lhs=lit_1, rhs=lit_2)
+    compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
     assert compare.kind == ASTKind.CompareOpKind
-    assert compare.op_code == "=="
-    assert compare.lhs == lit_1
-    assert compare.rhs == lit_2
-    assert str(compare) == f"CompareOp[==]({lit_1} == {lit_2})"
+    assert compare.ops == ["=="]  # Check the list of operators
+    assert compare.left == lit_1  # Check the left operand
+    assert compare.comparators == [lit_2]  # Check the list of comparators
+    assert str(compare) == f"CompareOp({lit_1} == {lit_2})"
 
 
 def test_compare_op_get_struct() -> None:
     """Test CompareOp get_struct method."""
-    compare = CompareOp(op_code="==", lhs=lit_1, rhs=lit_2)
+    compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
     assert compare.get_struct(simplified=False)
     assert compare.get_struct(simplified=True)
 
@@ -86,7 +86,21 @@ def test_compare_op_get_struct() -> None:
 def test_compare_op_with_variables() -> None:
     """Test CompareOp with variables."""
     var = Variable("x")
-    compare = CompareOp(op_code=">", lhs=var, rhs=lit_1)
-    assert str(compare) == f"CompareOp[>]({var} > {lit_1})"
-    assert compare.lhs == var
-    assert compare.rhs == lit_1
+    compare = CompareOp(left=var, ops=[">"], comparators=[lit_1])
+    assert str(compare) == f"CompareOp(x > {lit_1})"
+    assert compare.left == var
+    assert compare.comparators[0] == lit_1
+
+
+def test_chained_compare_op() -> None:
+    """Test CompareOp with chained comparisons."""
+    compare = CompareOp(
+        left=Variable("a"),
+        ops=["<", "<"],
+        comparators=[Variable("b"), Variable("c")],
+    )
+    assert compare.kind == ASTKind.CompareOpKind
+    assert compare.left == Variable("a")
+    assert compare.ops == ["<", "<"]
+    assert compare.comparators == [Variable("b"), Variable("c")]
+    assert str(compare) == "CompareOp(a < b < c)"

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Literal, Optional, cast
+from typing import Iterable, List, Literal, Optional, cast
 
 from public import public
 
@@ -133,35 +133,46 @@ class VariableAssignment(StatementType):
 @public
 @typechecked
 class CompareOp(DataType):
-    """AST class for comparison operators (==, !=, <, >, <=, >=)."""
+    """AST class for comparison operators (==, !=, <, >, <=, >=), matching Python's ast Compare"""
 
     def __init__(
         self,
-        op_code: Literal["==", "!=", "<", ">", "<=", ">="],
-        lhs: DataType,
-        rhs: DataType,
+        left: DataType,
+        ops: List[Literal["==", "!=", "<", ">", "<=", ">="]],
+        comparators: List[DataType],
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the CompareOp instance."""
         super().__init__(loc=loc)
-        if op_code not in ["==", "!=", "<", ">", "<=", ">="]:
-            raise ValueError(f"Invalid comparison operator: {op_code}")
-        self.op_code = op_code
-        self.lhs = lhs
-        self.rhs = rhs
+        if len(ops) != len(comparators):
+            raise ValueError(
+                "Number of operators must equal number of comparators."
+            )
+        for op in ops:
+            if op not in ["==", "!=", "<", ">", "<=", ">="]:
+                raise ValueError(f"Invalid comparison operator: {op}")
+        self.left = left
+        self.ops = ops
+        self.comparators = comparators
         self.kind = ASTKind.CompareOpKind
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        return (
-            f"CompareOp[{self.op_code}]({self.lhs} {self.op_code} {self.rhs})"
+        chain = " ".join(
+            f"{op} {comp.name if isinstance(comp, Variable) else str(comp)}"
+            for op, comp in zip(self.ops, self.comparators)
         )
+        left_str = self.left.name if isinstance(self.left, Variable) else str(self.left)
+        return f"CompareOp({left_str} {chain})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure that represents the object."""
-        key = f"COMPARE[{self.op_code}]"
-        lhs = {"lhs": self.lhs.get_struct(simplified)}
-        rhs = {"rhs": self.rhs.get_struct(simplified)}
-
-        content: ReprStruct = {**lhs, **rhs}
+        key = "COMPARE"
+        content: ReprStruct = {
+            "left": self.left.get_struct(simplified),
+            "ops": [{"op": op} for op in self.ops],
+            "comparators": [
+                comp.get_struct(simplified) for comp in self.comparators
+            ],
+        }
         return self._prepare_struct(key, content, simplified)
