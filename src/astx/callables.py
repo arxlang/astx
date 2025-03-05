@@ -393,11 +393,11 @@ class YieldExpr(Expr):
 class YieldFromExpr(Expr):
     """AST class for YieldFromExpr."""
 
-    value: Optional[Expr]
+    value: Expr
 
     def __init__(
         self,
-        value: Optional[Expr],
+        value: Expr,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -413,5 +413,5 @@ class YieldFromExpr(Expr):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "YIELDFROM-EXPR"
-        value = {} if self.value is None else self.value.get_struct(simplified)
+        value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
