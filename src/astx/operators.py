@@ -188,7 +188,7 @@ class AugAssign(DataType):
             if not isinstance(self.value, LiteralInt32)
             else str(self.value.value)
         )
-        return f"AugAssign[ {self.aug_op} ]({self.target} {self.aug_op} {value_str})"
+        return f"AugAssign[{self.op_code}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
