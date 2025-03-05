@@ -133,7 +133,7 @@ class VariableAssignment(StatementType):
 @public
 @typechecked
 class CompareOp(DataType):
-    """AST class for comparison operators (==, !=, <, >, <=, >=), matching Python's ast Compare"""
+    """AST class for comparison operators matching Python's ast Compare"""
 
     def __init__(
         self,
