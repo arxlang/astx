@@ -119,8 +119,6 @@ def test_not_op() -> None:
     visualize(op.get_struct())
 
 
-# augmented operators unit tests
-
 
 def test_valid_aug_assign():
     """Test valid augmented assignment operations."""
@@ -129,7 +127,7 @@ def test_valid_aug_assign():
 
     for op in AugAssign.OPERATORS.keys():
         aug_assign = AugAssign(var_x, op, value)
-        assert str(aug_assign) == f"AugAssign[ {op} ](x {op} {value.value!s})"
+        assert str(aug_assign) == f"AugAssign[{op}]"
         assert aug_assign.get_struct()
         assert aug_assign.get_struct(simplified=True)
         visualize(aug_assign.get_struct())
@@ -148,7 +146,7 @@ def test_aug_assign_addition():
     value = LiteralInt32(10)
     aug_assign = AugAssign(var_x, "+=", value)
 
-    assert str(aug_assign) == "AugAssign[ += ](x += 10)"
+    assert str(aug_assign) == "AugAssign[+=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -159,7 +157,7 @@ def test_aug_assign_subtraction():
     value = LiteralInt32(5)
     aug_assign = AugAssign(var_x, "-=", value)
 
-    assert str(aug_assign) == "AugAssign[ -= ](x -= 5)"
+    assert str(aug_assign) == "AugAssign[-=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -170,7 +168,7 @@ def test_aug_assign_multiplication():
     value = LiteralInt32(3)
     aug_assign = AugAssign(var_x, "*=", value)
 
-    assert str(aug_assign) == "AugAssign[ *= ](x *= 3)"
+    assert str(aug_assign) == "AugAssign[*=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -181,7 +179,7 @@ def test_aug_assign_division():
     value = LiteralInt32(2)
     aug_assign = AugAssign(var_x, "/=", value)
 
-    assert str(aug_assign) == "AugAssign[ /= ](x /= 2)"
+    assert str(aug_assign) == "AugAssign[/=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -192,7 +190,7 @@ def test_aug_assign_floor_division():
     value = LiteralInt32(2)
     aug_assign = AugAssign(var_x, "//=", value)
 
-    assert str(aug_assign) == "AugAssign[ //= ](x //= 2)"
+    assert str(aug_assign) == "AugAssign[//=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -203,7 +201,7 @@ def test_aug_assign_modulo():
     value = LiteralInt32(4)
     aug_assign = AugAssign(var_x, "%=", value)
 
-    assert str(aug_assign) == "AugAssign[ %= ](x %= 4)"
+    assert str(aug_assign) == "AugAssign[%=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -214,7 +212,7 @@ def test_aug_assign_power():
     value = LiteralInt32(2)
     aug_assign = AugAssign(var_x, "**=", value)
 
-    assert str(aug_assign) == "AugAssign[ **= ](x **= 2)"
+    assert str(aug_assign) == "AugAssign[**=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -225,7 +223,7 @@ def test_aug_assign_bitwise_and():
     value = LiteralInt32(6)
     aug_assign = AugAssign(var_x, "&=", value)
 
-    assert str(aug_assign) == "AugAssign[ &= ](x &= 6)"
+    assert str(aug_assign) == "AugAssign[&=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -236,7 +234,7 @@ def test_aug_assign_bitwise_or():
     value = LiteralInt32(3)
     aug_assign = AugAssign(var_x, "|=", value)
 
-    assert str(aug_assign) == "AugAssign[ |= ](x |= 3)"
+    assert str(aug_assign) == "AugAssign[|=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -247,7 +245,7 @@ def test_aug_assign_bitwise_xor():
     value = LiteralInt32(1)
     aug_assign = AugAssign(var_x, "^=", value)
 
-    assert str(aug_assign) == "AugAssign[ ^= ](x ^= 1)"
+    assert str(aug_assign) == "AugAssign[^=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -258,7 +256,7 @@ def test_aug_assign_left_shift():
     value = LiteralInt32(1)
     aug_assign = AugAssign(var_x, "<<=", value)
 
-    assert str(aug_assign) == "AugAssign[ <<= ](x <<= 1)"
+    assert str(aug_assign) == "AugAssign[<<=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
 
@@ -269,6 +267,6 @@ def test_aug_assign_right_shift():
     value = LiteralInt32(2)
     aug_assign = AugAssign(var_x, ">>=", value)
 
-    assert str(aug_assign) == "AugAssign[ >>= ](x >>= 2)"
+    assert str(aug_assign) == "AugAssign[>>=]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
