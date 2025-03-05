@@ -133,7 +133,7 @@ class VariableAssignment(StatementType):
 @public
 @typechecked
 class CompareOp(DataType):
-    """AST class for comparison operators matching Python's ast Compare"""
+    """AST class for comparison operators matching Python's ast Compare."""
 
     def __init__(
         self,
@@ -162,7 +162,11 @@ class CompareOp(DataType):
             f"{op} {comp.name if isinstance(comp, Variable) else str(comp)}"
             for op, comp in zip(self.ops, self.comparators)
         )
-        left_str = self.left.name if isinstance(self.left, Variable) else str(self.left)
+        left_str = (
+            self.left.name
+            if isinstance(self.left, Variable)
+            else str(self.left)
+        )
         return f"CompareOp({left_str} {chain})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
