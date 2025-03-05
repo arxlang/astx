@@ -136,7 +136,7 @@ class VariableAssignment(StatementType):
 @public
 @typechecked
 class AugAssign(DataType):
-    """AST class for augmented assignment (+= , -= , |=, *= , /= , //= , eg)."""
+    """AST class for augmented assignment."""
 
     OPERATORS = {
         "+=": operator.iadd,
@@ -173,11 +173,11 @@ class AugAssign(DataType):
         value: DataType,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        if aug_op not in self.OPERATORS:
-            raise ValueError(f"Unsupported operator: {aug_op}")
+        if op_code not in self.OPERATORS:
+            raise ValueError(f"Unsupported operator: {op_code}")
         super().__init__(loc=loc)
         self.target = target
-        self.aug_op = aug_op
+        self.op_code = op_code
         self.value = value
         self.kind = ASTKind.AugmentedAssignKind
 
@@ -189,6 +189,7 @@ class AugAssign(DataType):
             else str(self.value.value)
         )
         return f"AugAssign[{self.op_code}]"
+
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""

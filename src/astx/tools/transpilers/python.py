@@ -498,7 +498,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AugAssign) -> str:
         """Handle Augmented assign operator."""
-        return f"({self.visit(node.target)} {node.aug_op} {self.visit(node.value)})"
+        return f"{self.visit(node.target)} {node.op_code} {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:
