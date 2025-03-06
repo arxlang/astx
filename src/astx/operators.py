@@ -152,7 +152,22 @@ class AugAssign(DataType):
         "<<=": operator.ilshift,
         ">>=": operator.irshift,
     }
-
+    target: str
+    op_code: Literal[
+        "+=",
+        "-=",
+        "*=",
+        "/=",
+        "//=",
+        "%=",
+        "**=",
+        "&=",
+        "|=",
+        "^=",
+        "<<=",
+        ">>=",
+    ]
+    value: DataType
     def __init__(
         self,
         target: str,
