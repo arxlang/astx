@@ -138,8 +138,8 @@ class CompareOp(DataType):
     def __init__(
         self,
         left: DataType,
-        ops: List[Literal["==", "!=", "<", ">", "<=", ">="]],
-        comparators: List[DataType],
+        ops: Iterable[Literal["==", "!=", "<", ">", "<=", ">="]],
+        comparators: Iterable[DataType],
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the CompareOp instance."""
