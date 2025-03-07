@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import operator
-
 from typing import Iterable, Literal, Optional, cast
 
 from public import public
@@ -18,8 +16,8 @@ from astx.base import (
     ReprStruct,
     SourceLocation,
     StatementType,
+    Identifier
 )
-from astx.literals.numeric import LiteralInt32
 from astx.tools.typing import typechecked
 from astx.variables import Variable
 
@@ -138,21 +136,7 @@ class VariableAssignment(StatementType):
 class AugAssign(DataType):
     """AST class for augmented assignment."""
 
-    OPERATORS = {
-        "+=": operator.iadd,
-        "-=": operator.isub,
-        "*=": operator.imul,
-        "/=": operator.itruediv,
-        "//=": operator.ifloordiv,
-        "%=": operator.imod,
-        "**=": operator.ipow,
-        "&=": operator.iand,
-        "|=": operator.ior,
-        "^=": operator.ixor,
-        "<<=": operator.ilshift,
-        ">>=": operator.irshift,
-    }
-    target: str
+    target: Identifier
     op_code: Literal[
         "+=",
         "-=",
@@ -168,28 +152,14 @@ class AugAssign(DataType):
         ">>=",
     ]
     value: DataType
+
     def __init__(
         self,
-        target: str,
-        op_code: Literal[
-            "+=",
-            "-=",
-            "*=",
-            "/=",
-            "//=",
-            "%=",
-            "**=",
-            "&=",
-            "|=",
-            "^=",
-            "<<=",
-            ">>=",
-        ],
+        target: Identifier,
+        op_code: str,
         value: DataType,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        if op_code not in self.OPERATORS:
-            raise ValueError(f"Unsupported operator: {op_code}")
         super().__init__(loc=loc)
         self.target = target
         self.op_code = op_code
@@ -198,13 +168,7 @@ class AugAssign(DataType):
 
     def __str__(self):
         """Return a string that represents the augmented assignment object."""
-        value_str = (
-            str(self.value)
-            if not isinstance(self.value, LiteralInt32)
-            else str(self.value.value)
-        )
         return f"AugAssign[{self.op_code}]"
-
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""

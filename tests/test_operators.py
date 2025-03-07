@@ -1,5 +1,7 @@
 """Tests for operators."""
 
+from typing import get_args
+
 import astx
 import pytest
 
@@ -7,6 +9,7 @@ from astx.literals.numeric import LiteralInt32
 from astx.operators import AssignmentExpr, AugAssign, VariableAssignment
 from astx.variables import Variable
 from astx.viz import visualize
+from astx import Identifier
 
 
 def test_assignment_expr() -> None:
@@ -119,13 +122,14 @@ def test_not_op() -> None:
     visualize(op.get_struct())
 
 
-
 def test_valid_aug_assign():
     """Test valid augmented assignment operations."""
-    var_x = "x"
+    # var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(5)
-
-    for op in AugAssign.OPERATORS.keys():
+    op_code_type = AugAssign.__annotations__["op_code"]
+    operators = get_args(op_code_type)
+    for op in operators:
         aug_assign = AugAssign(var_x, op, value)
         assert str(aug_assign) == f"AugAssign[{op}]"
         assert aug_assign.get_struct()
@@ -137,12 +141,13 @@ def test_valid_aug_assign():
 def test_invalid_aug_assign() -> None:
     """Test invalid augmented assignment operator."""
     with pytest.raises(ValueError, match="Unsupported operator: <<<"):
-        AugAssign("x", "<<<", LiteralInt32(5))
+        var_x = Identifier(name="x")
+        AugAssign(var_x, "<<<", LiteralInt32(5))
 
 
 def test_aug_assign_addition():
     """Test += operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(10)
     aug_assign = AugAssign(var_x, "+=", value)
 
@@ -153,7 +158,7 @@ def test_aug_assign_addition():
 
 def test_aug_assign_subtraction():
     """Test -= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(5)
     aug_assign = AugAssign(var_x, "-=", value)
 
@@ -164,7 +169,7 @@ def test_aug_assign_subtraction():
 
 def test_aug_assign_multiplication():
     """Test *= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(3)
     aug_assign = AugAssign(var_x, "*=", value)
 
@@ -175,7 +180,7 @@ def test_aug_assign_multiplication():
 
 def test_aug_assign_division():
     """Test /= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(2)
     aug_assign = AugAssign(var_x, "/=", value)
 
@@ -186,7 +191,7 @@ def test_aug_assign_division():
 
 def test_aug_assign_floor_division():
     """Test //= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(2)
     aug_assign = AugAssign(var_x, "//=", value)
 
@@ -197,7 +202,7 @@ def test_aug_assign_floor_division():
 
 def test_aug_assign_modulo():
     """Test %= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(4)
     aug_assign = AugAssign(var_x, "%=", value)
 
@@ -208,7 +213,7 @@ def test_aug_assign_modulo():
 
 def test_aug_assign_power():
     """Test **= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(2)
     aug_assign = AugAssign(var_x, "**=", value)
 
@@ -219,7 +224,7 @@ def test_aug_assign_power():
 
 def test_aug_assign_bitwise_and():
     """Test &= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(6)
     aug_assign = AugAssign(var_x, "&=", value)
 
@@ -230,7 +235,7 @@ def test_aug_assign_bitwise_and():
 
 def test_aug_assign_bitwise_or():
     """Test |= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(3)
     aug_assign = AugAssign(var_x, "|=", value)
 
@@ -241,7 +246,7 @@ def test_aug_assign_bitwise_or():
 
 def test_aug_assign_bitwise_xor():
     """Test ^= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(1)
     aug_assign = AugAssign(var_x, "^=", value)
 
@@ -252,7 +257,7 @@ def test_aug_assign_bitwise_xor():
 
 def test_aug_assign_left_shift():
     """Test <<= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(1)
     aug_assign = AugAssign(var_x, "<<=", value)
 
@@ -263,7 +268,7 @@ def test_aug_assign_left_shift():
 
 def test_aug_assign_right_shift():
     """Test >>= operator."""
-    var_x = "x"
+    var_x = astx.Identifier(value="x")
     value = LiteralInt32(2)
     aug_assign = AugAssign(var_x, ">>=", value)
 
