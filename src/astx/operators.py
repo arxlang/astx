@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, List, Literal, Optional, cast
+from typing import Iterable, Literal, Optional, cast
 
 from public import public
 
@@ -144,16 +144,16 @@ class CompareOp(DataType):
     ) -> None:
         """Initialize the CompareOp instance."""
         super().__init__(loc=loc)
-        if len(ops) != len(comparators):
+        self.ops = list(ops)
+        self.comparators = list(comparators)
+        if len(self.ops) != len(self.comparators):
             raise ValueError(
                 "Number of operators must equal number of comparators."
             )
-        for op in ops:
+        for op in self.ops:
             if op not in ["==", "!=", "<", ">", "<=", ">="]:
                 raise ValueError(f"Invalid comparison operator: {op}")
         self.left = left
-        self.ops = ops
-        self.comparators = comparators
         self.kind = ASTKind.CompareOpKind
 
     def __str__(self) -> str:
