@@ -14,6 +14,7 @@ from astx.callables import (
     FunctionReturn,
     LambdaExpr,
     YieldExpr,
+    YieldFromExpr,
 )
 from astx.literals.numeric import LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
@@ -163,3 +164,13 @@ def test_yield_expr() -> None:
     assert yield_expr.get_struct()
     assert yield_expr.get_struct(simplified=True)
     visualize(yield_expr.get_struct())
+
+
+def test_yieldfrom_expr() -> None:
+    """Test `YieldFromExpr` class."""
+    yieldfrom_expr = YieldFromExpr(value=LiteralInt32(1))
+
+    assert str(yieldfrom_expr)
+    assert yieldfrom_expr.get_struct()
+    assert yieldfrom_expr.get_struct(simplified=True)
+    visualize(yieldfrom_expr.get_struct())
