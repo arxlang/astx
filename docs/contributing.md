@@ -4,7 +4,7 @@ In order to be able to contribute, it is important that you understand the
 project layout. This project uses the _src layout_, which means that the package
 code is located at `./src/astx`.
 
-For my information, check the official documentation:
+For more information, check the official documentation:
 https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/
 
 In addition, you should know that to build our package we use

@@ -112,6 +112,7 @@ from astx.modifiers import (
 )
 from astx.operators import (
     AssignmentExpr,
+    AugAssign,
     VariableAssignment,
     WalrusOp,
 )
@@ -199,6 +200,7 @@ __all__ = [
     "Argument",
     "Arguments",
     "AssignmentExpr",
+    "AugAssign",
     "AwaitExpr",
     "BinaryOp",
     "Block",
