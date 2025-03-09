@@ -74,3 +74,18 @@ class TupleType(CollectionType):
         """Return string representation of TupleType."""
         types_str = ", ".join(str(t) for t in self.element_types)
         return f"TupleType[{types_str}]"
+
+
+@public
+@typechecked
+class SetCompType(CollectionType):
+    """Type representation for Set Comprehensions."""
+
+    def __init__(self, element_type: ExprType) -> None:
+        """Initialize SetCompType with an element type."""
+        super().__init__()
+        self.element_type = element_type
+
+    def __str__(self) -> str:
+        """Return string representation of SetCompType."""
+        return f"SetCompType[{self.element_type}]"

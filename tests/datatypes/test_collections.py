@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Sequence, Set, Tuple
 
 from astx.literals.base import Literal
 from astx.literals.collections import (
@@ -10,10 +10,14 @@ from astx.literals.collections import (
     LiteralList,
     LiteralSet,
     LiteralTuple,
+    SetComp,
 )
 from astx.literals.numeric import LiteralInt32
 from astx.types.collections import DictType, ListType, SetType, TupleType
 from astx.types.operators import BinaryOp, UnaryOp
+
+# Test constants
+GENERATOR_COUNT = 3  # Number of generators in set comprehension
 
 
 def test_literal_list_creation() -> None:
@@ -118,3 +122,37 @@ def test_literal_dict_binary_merge() -> None:
     assert merged_dict.op_code == "**"
     assert merged_dict.lhs == lit_dict1
     assert merged_dict.rhs == lit_dict2
+
+
+def test_set_comp_creation() -> None:
+    """Test creation of set comprehension."""
+    elt = LiteralInt32(5)
+    generators: Sequence[Literal] = [LiteralInt32(1)]
+    set_comp = SetComp(elt, generators)
+
+    assert isinstance(set_comp, SetComp)
+    assert isinstance(set_comp.type_, SetType)
+    assert set_comp.elt == elt
+    assert set_comp.generators == generators
+
+
+def test_set_comp_with_complex_generators() -> None:
+    """Test set comprehension with multiple generators."""
+    elt = LiteralInt32(5)
+    generators: Sequence[Literal] = [
+        LiteralInt32(1),
+        LiteralInt32(2),
+        LiteralInt32(3),
+    ]
+    set_comp = SetComp(elt, generators)
+    assert len(set_comp.generators) == GENERATOR_COUNT
+    assert all(isinstance(gen, LiteralInt32) for gen in set_comp.generators)
+
+
+def test_set_comp_type_inference() -> None:
+    """Test type inference in set comprehension."""
+    elt = LiteralInt32(5)
+    generators: Sequence[Literal] = [LiteralInt32(1)]
+    set_comp = SetComp(elt, generators)
+    assert isinstance(set_comp.type_, SetType)
+    assert set_comp.type_.element_type == elt.type_
