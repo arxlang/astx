@@ -112,6 +112,7 @@ from astx.modifiers import (
 )
 from astx.operators import (
     AssignmentExpr,
+    CompareOp,
     VariableAssignment,
     WalrusOp,
 )
@@ -210,6 +211,7 @@ __all__ = [
     "ClassDeclStmt",
     "ClassDefStmt",
     "CollectionType",
+    "CompareOp",
     "Complex",
     "Complex32",
     "Complex64",

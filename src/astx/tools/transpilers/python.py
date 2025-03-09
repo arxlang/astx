@@ -106,6 +106,13 @@ class ASTxPythonTranspiler:
         return f"except{types_str}{name_str}:\n{body_str}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.CompareOp) -> str:
+        """Handle Compare operator."""
+        return (
+            f"({self.visit(node.lhs)} {node.op_code} {self.visit(node.rhs)})"
+        )
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> str:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
