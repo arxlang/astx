@@ -21,6 +21,13 @@ Solve #4
 
 ## Pull Request checklists
 
+Note:
+
+- [ ] Share updated images of the graph representation of the new ASTx node
+      proposed in this PR, in both image and ASCII formats. For more
+      information, check this Google Colab notebook:
+      https://colab.research.google.com/drive/1xXwHmOMkJKFSmhRvn4WYfSAsdDzMnawf?usp=sharing
+
 This PR is a:
 
 - [ ] bug-fix
