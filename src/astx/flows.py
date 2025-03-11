@@ -562,3 +562,46 @@ class GotoStmt(StatementType):
         key = f"GOTO-STMT[{self.label.value}]"
         value: DictDataTypesStruct = {}
         return self._prepare_struct(key, value, simplified)
+    
+@public
+@typechecked
+class GeneratorExpr(Expr):
+    """AST class for generator expressions."""
+
+    element: Expr
+    iterable: Expr
+    condition: Optional[Expr]
+
+    def __init__(
+        self,
+        element: Expr,
+        iterable: Expr,
+        condition: Optional[Expr] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the GeneratorExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.element = element
+        self.iterable = iterable
+        self.condition = condition
+        self.kind = ASTKind.GeneratorExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        if self.condition:
+            return f"GeneratorExpr[{self.element} for {self.iterable} if {self.condition}]"
+        else:
+            return f"GeneratorExpr[{self.element} for {self.iterable}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "GENERATOR-EXPR"
+        value: ReprStruct = {
+            "element": self.element.get_struct(simplified),
+            "iterable": self.iterable.get_struct(simplified),
+        }
+        if self.condition:
+            value["condition"] = self.condition.get_struct(simplified)
+
+        return self._prepare_struct(key, value, simplified)
