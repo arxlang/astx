@@ -58,6 +58,8 @@ from astx.exceptions import (
     ThrowStmt,
 )
 from astx.flows import (
+    AsyncForRangeLoopExpr,
+    AsyncForRangeLoopStmt,
     CaseStmt,
     ForCountLoopExpr,
     ForCountLoopStmt,
@@ -199,6 +201,8 @@ __all__ = [
     "Argument",
     "Arguments",
     "AssignmentExpr",
+    "AsyncForRangeLoopExpr",
+    "AsyncForRangeLoopStmt",
     "AwaitExpr",
     "BinaryOp",
     "Block",

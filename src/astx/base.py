@@ -127,6 +127,8 @@ class ASTKind(Enum):
     SwitchStmtKind = -509
     GotoStmtKind = -511
     WithStmtKind = -512
+    AsyncRangeLoopStmtKind = -513
+    AsyncRangeLoopExprKind = -514
 
     # data types
     NullDTKind = -600

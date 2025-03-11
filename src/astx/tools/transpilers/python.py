@@ -67,6 +67,21 @@ class ASTxPythonTranspiler:
         return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AsyncForRangeLoopExpr) -> str:
+        """Handle AsyncForRangeLoopExpr nodes."""
+        if len(node.body) > 1:
+            raise ValueError(
+                "AsyncForRangeLoopExpr in Python just accept 1 node in the "
+                "body attribute."
+            )
+        return (
+            f"result = [{self.visit(node.body).strip()} async for "
+            f"{node.variable.name} in range"
+            f"({self.visit(node.start)}, {self.visit(node.end)}, "
+            f"{self.visit(node.step)})]"
+        )
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AwaitExpr) -> str:
         """Handle AwaitExpr nodes."""
         value = self.visit(node.value) if node.value else ""
