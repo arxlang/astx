@@ -74,11 +74,21 @@ class ASTxPythonTranspiler:
                 "AsyncForRangeLoopExpr in Python just accept 1 node in the "
                 "body attribute."
             )
+        start = (
+            self.visit(node.start)
+            if getattr(node, "start", None) is not None
+            else "0"
+        )
+        end = self.visit(node.end)
+        step = (
+            self.visit(node.step)
+            if getattr(node, "step", None) is not None
+            else "1"
+        )
+
         return (
             f"result = [{self.visit(node.body).strip()} async for "
-            f"{node.variable.name} in range"
-            f"({self.visit(node.start)}, {self.visit(node.end)}, "
-            f"{self.visit(node.step)})]"
+            f"{node.variable.name} in range({start}, {end}, {step})]"
         )
 
     @dispatch  # type: ignore[no-redef]
