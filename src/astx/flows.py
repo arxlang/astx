@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Optional, cast, Union
+
 
 from public import public
 
@@ -20,7 +21,7 @@ from astx.base import (
 from astx.blocks import Block
 from astx.tools.typing import typechecked
 from astx.variables import InlineVariableDeclaration
-
+from astx.literals import LiteralString, LiteralList, LiteralTuple, LiteralSet
 
 @public
 @typechecked
@@ -562,46 +563,56 @@ class GotoStmt(StatementType):
         key = f"GOTO-STMT[{self.label.value}]"
         value: DictDataTypesStruct = {}
         return self._prepare_struct(key, value, simplified)
-    
 @public
 @typechecked
 class GeneratorExpr(Expr):
     """AST class for generator expressions."""
 
-    element: Expr
-    iterable: Expr
-    condition: Optional[Expr]
-
+    element: Identifier
+    target: Identifier
+    iterator:  Union[LiteralList, LiteralTuple, LiteralSet, LiteralString, Identifier]
     def __init__(
         self,
-        element: Expr,
-        iterable: Expr,
-        condition: Optional[Expr] = None,
+        element: Identifier,
+        target: Identifier,
+        iterator:  Union[LiteralList, LiteralTuple, LiteralSet, LiteralString, Identifier],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the GeneratorExpr instance."""
         super().__init__(loc=loc, parent=parent)
         self.element = element
-        self.iterable = iterable
-        self.condition = condition
+        self.target = target
+        self.iterator = iterator
         self.kind = ASTKind.GeneratorExprKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        if self.condition:
-            return f"GeneratorExpr[{self.element} for {self.iterable} if {self.condition}]"
+        if isinstance(self.iterator, LiteralList):
+            return f"({self.element.value} for {self.target.value} in [{", ".join(str(e.value) for e in self.iterator.elements)}])"
+        elif isinstance(self.iterator, LiteralTuple):
+            return f"({self.element.value} for {self.target.value} in ({", ".join(str(e.value) for e in self.iterator.elements)}))"
+        elif isinstance(self.iterator, LiteralSet):
+            return f"({self.element.value} for {self.target.value} in  {{{", ".join(str(e.value) for e in self.iterator.elements)}}})"
+        elif isinstance(self.iterator, Identifier):
+            return f"({self.element.value} for {self.target.value} in {self.iterator.value})"
         else:
-            return f"GeneratorExpr[{self.element} for {self.iterable}]"
-
+            return f"({self.element.value} for {self.target.value} in {self.iterator})"
+        
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "GENERATOR-EXPR"
         value: ReprStruct = {
             "element": self.element.get_struct(simplified),
-            "iterable": self.iterable.get_struct(simplified),
+            "target": self.target.get_struct(simplified),
+            # "iterator": self.iterator.get_struct(simplified)
         }
-        if self.condition:
-            value["condition"] = self.condition.get_struct(simplified)
+        if isinstance(self.iterator, (LiteralList, LiteralTuple, LiteralSet)):
+            value["iterator"] = {
+                "type": self.iterator.__class__.__name__,
+                "elements": [e.get_struct(simplified) for e in self.iterator.elements]
+            }
+        else:
+            value["iterator"] = self.iterator.get_struct(simplified)
 
         return self._prepare_struct(key, value, simplified)
