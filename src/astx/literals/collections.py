@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Sequence, Set, Tuple  # Add Sequence import
+from typing import Dict, List, Sequence, Set, Tuple
 
 from public import public
 

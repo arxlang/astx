@@ -16,8 +16,8 @@ from astx.literals.numeric import LiteralInt32
 from astx.types.collections import DictType, ListType, SetType, TupleType
 from astx.types.operators import BinaryOp, UnaryOp
 
-# Test constants
-GENERATOR_COUNT = 3  # Number of generators in set comprehension
+# Test constants-used cause liternalint is not working
+GENERATOR_COUNT = 3
 
 
 def test_literal_list_creation() -> None:
