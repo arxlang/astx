@@ -4,7 +4,7 @@ import pytest
 
 from astx.base import ASTKind
 from astx.literals.numeric import LiteralInt32
-from astx.operators import WalrusOp
+from astx.operators import CompareOp, WalrusOp
 from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
 
@@ -48,15 +48,12 @@ def test_unary_op() -> None:
 
 def test_walrus_op_init() -> None:
     """Test WalrusOp initialization and properties."""
-    # Creating an test instance
     lhs = Variable("x")
-    rhs = lit_1  # Using existing LiteralInt32 instance
+    rhs = lit_1
     walrus = WalrusOp(lhs=lhs, rhs=rhs)
-    # Test basic properties
     assert walrus.kind == ASTKind.WalrusOpKind
     assert walrus.lhs == lhs
     assert walrus.rhs == rhs
-    # Test string representation
     assert str(walrus) == f"WalrusOp[:=]({lhs} := {rhs})"
 
 
@@ -65,7 +62,45 @@ def test_walrus_op_get_struct() -> None:
     lhs = Variable("x")
     rhs = lit_1
     walrus = WalrusOp(lhs=lhs, rhs=rhs)
-    # Test without simplification
     assert walrus.get_struct(simplified=False)
-    # Test with simplification
     assert walrus.get_struct(simplified=True)
+
+
+def test_compare_op_init() -> None:
+    """Test CompareOp initialization and properties."""
+    compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
+    assert compare.kind == ASTKind.CompareOpKind
+    assert compare.ops == ["=="]  # Check the list of operators
+    assert compare.left == lit_1  # Check the left operand
+    assert compare.comparators == [lit_2]  # Check the list of comparators
+    assert str(compare) == f"CompareOp({lit_1} == {lit_2})"
+
+
+def test_compare_op_get_struct() -> None:
+    """Test CompareOp get_struct method."""
+    compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
+    assert compare.get_struct(simplified=False)
+    assert compare.get_struct(simplified=True)
+
+
+def test_compare_op_with_variables() -> None:
+    """Test CompareOp with variables."""
+    var = Variable("x")
+    compare = CompareOp(left=var, ops=[">"], comparators=[lit_1])
+    assert str(compare) == f"CompareOp(x > {lit_1})"
+    assert compare.left == var
+    assert compare.comparators[0] == lit_1
+
+
+def test_chained_compare_op() -> None:
+    """Test CompareOp with chained comparisons."""
+    compare = CompareOp(
+        left=Variable("a"),
+        ops=["<", "<"],
+        comparators=[Variable("b"), Variable("c")],
+    )
+    assert compare.kind == ASTKind.CompareOpKind
+    assert compare.left == Variable("a")
+    assert compare.ops == ["<", "<"]
+    assert compare.comparators == [Variable("b"), Variable("c")]
+    assert str(compare) == "CompareOp(a < b < c)"
