@@ -113,6 +113,7 @@ class ASTKind(Enum):
     FunctionAsyncDefKind = -405
     AwaitExprKind = -406
     YieldExprKind = -510
+    YieldFromExprKind = -407
 
     # control flow
     IfStmtKind = -500
@@ -127,7 +128,9 @@ class ASTKind(Enum):
     SwitchStmtKind = -509
     GotoStmtKind = -511
     WithStmtKind = -512
-    GeneratorExprKind = -513
+    GeneratorExprKind = -516
+    AsyncRangeLoopStmtKind = -513
+    AsyncRangeLoopExprKind = -514
 
     # data types
     NullDTKind = -600
