@@ -1,15 +1,19 @@
 """Tests for operators."""
 
-from typing import get_args
+from typing import cast
 
 import astx
 import pytest
 
 from astx.literals.numeric import LiteralInt32
-from astx.operators import AssignmentExpr, AugAssign, VariableAssignment
+from astx.operators import (
+    AssignmentExpr,
+    AugAssign,
+    OpCodeAugAssign,
+    VariableAssignment,
+)
 from astx.variables import Variable
 from astx.viz import visualize
-from astx import Identifier
 
 
 def test_assignment_expr() -> None:
@@ -122,21 +126,24 @@ def test_not_op() -> None:
     visualize(op.get_struct())
 
 
-@pytest.mark.parametrize("operator, value", [
-    ("+=", 10),
-    ("-=", 5),
-    ("*=", 3),
-    ("/=", 2),
-    ("//=", 2),
-    ("%=", 4),
-    ("**=", 2),
-    ("&=", 6),
-    ("|=", 3),
-    ("^=", 1),
-    ("<<=", 1),
-    (">>=", 2),
-])
-def test_aug_assign_operations(operator, value):
+@pytest.mark.parametrize(
+    "operator, value",
+    [
+        (cast(OpCodeAugAssign, "+="), 10),
+        (cast(OpCodeAugAssign, "-="), 5),
+        (cast(OpCodeAugAssign, "*="), 3),
+        (cast(OpCodeAugAssign, "/="), 2),
+        (cast(OpCodeAugAssign, "//="), 2),
+        (cast(OpCodeAugAssign, "%="), 4),
+        (cast(OpCodeAugAssign, "**="), 2),
+        (cast(OpCodeAugAssign, "&="), 6),
+        (cast(OpCodeAugAssign, "|="), 3),
+        (cast(OpCodeAugAssign, "^="), 1),
+        (cast(OpCodeAugAssign, "<<="), 1),
+        (cast(OpCodeAugAssign, ">>="), 2),
+    ],
+)
+def test_aug_assign_operations(operator: OpCodeAugAssign, value: int) -> None:
     """Test all augmented assignment operators using parametrize."""
     var_x = astx.Identifier(value="x")
     literal_value = LiteralInt32(value)
@@ -145,11 +152,3 @@ def test_aug_assign_operations(operator, value):
     assert str(aug_assign) == f"AugAssign[{operator}]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
-
-@pytest.mark.xfail(reason="Testing invalid augmented assignment")
-def test_invalid_aug_assign() -> None:
-    """Test invalid augmented assignment operator."""
-    with pytest.raises(ValueError, match="Unsupported operator: <<<"):
-        var_x = Identifier(name="x")
-        AugAssign(var_x, "<<<", LiteralInt32(5))
-
