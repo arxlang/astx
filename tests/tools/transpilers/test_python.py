@@ -434,6 +434,29 @@ def test_transpiler_for_range_loop_expr() -> None:
     )
 
 
+def test_transpiler_async_for_range_loop_expr() -> None:
+    """Test `Async For Range Loop` expression`."""
+    decl_a = astx.InlineVariableDeclaration(
+        "a", type_=astx.Int32(), value=astx.LiteralInt32(-1)
+    )
+    start = astx.LiteralInt32(0)
+    end = astx.LiteralInt32(10)
+    step = astx.LiteralInt32(1)
+    body = astx.Block()
+    body.append(astx.LiteralInt32(2))
+
+    for_expr = astx.AsyncForRangeLoopExpr(
+        variable=decl_a, start=start, end=end, step=step, body=body
+    )
+
+    generated_code = translate(for_expr)
+    expected_code = "result = [2 async for a in range(0, 10, 1)]"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
 def test_transpiler_binary_op() -> None:
     """Test astx.BinaryOp for addition operation."""
     # Create a BinaryOp node for the expression "x + y"
@@ -1041,6 +1064,33 @@ def test_transpiler_yieldexpr_whilestmt() -> None:
     # Generate Python code
     generated_code = translate(while_stmt)
     expected_code = "while True:\n    value = yield 1"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_yieldfromexpr_whilestmt() -> None:
+    """Test astx.YieldFromExpr (using WhileStmt)."""
+    # Create the `while True` loop
+    while_cond = astx.LiteralBoolean(True)
+    while_body = astx.Block()
+
+    # Create the `yieldfrom` expression
+    yieldfrom_expr = astx.YieldFromExpr(value=astx.Variable("x"))
+
+    # Assign the result of `yieldfrom` back to `value`
+    assign_value = astx.VariableAssignment(name="value", value=yieldfrom_expr)
+
+    # Add the assignment to the loop body
+    while_body.append(assign_value)
+
+    # Define the `while` loop and add it to the function body
+    while_stmt = astx.WhileStmt(condition=while_cond, body=while_body)
+
+    # Generate Python code
+    generated_code = translate(while_stmt)
+    expected_code = "while True:\n    value = yield from x"
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
