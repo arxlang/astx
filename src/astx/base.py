@@ -127,7 +127,7 @@ class ASTKind(Enum):
     SwitchStmtKind = -509
     GotoStmtKind = -511
     WithStmtKind = -512
-    GeneratorExprKind = -513
+    GeneratorExprKind = -516
 
     # data types
     NullDTKind = -600
