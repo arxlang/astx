@@ -69,7 +69,6 @@ class LiteralSet(Literal):
         )
         self.loc = loc
 
-
 @public
 @typechecked
 class LiteralDict(Literal):
