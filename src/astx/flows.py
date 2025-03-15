@@ -346,6 +346,131 @@ class ForCountLoopExpr(Expr):
 
 @public
 @typechecked
+class AsyncForRangeLoopStmt(StatementType):
+    """AST class for asynchronous `For` Range Statement."""
+
+    variable: InlineVariableDeclaration
+    start: Optional[Expr]
+    end: Expr
+    step: Optional[Expr]
+    body: Block
+
+    def __init__(
+        self,
+        variable: InlineVariableDeclaration,
+        start: Optional[Expr],
+        end: Expr,
+        step: Optional[Expr],
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the AsyncForRangeLoopStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.variable = variable
+        self.start = start
+        self.end = end
+        self.step = step
+        self.body = body
+        self.kind = ASTKind.AsyncRangeLoopStmtKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        start = self.start
+        end = self.end
+        step = self.step
+        var_name = self.variable.name
+        return f"AsyncForRangeLoopStmt({var_name}=[{start}:{end}:{step}])"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        for_start = {
+            "start": {}
+            if self.start is None
+            else self.start.get_struct(simplified)
+        }
+        for_end = {"end": self.end.get_struct(simplified)}
+        for_step = {
+            "step": {}
+            if self.step is None
+            else self.step.get_struct(simplified)
+        }
+        for_body = self.body.get_struct(simplified)
+
+        key = "ASYNC-FOR-RANGE-LOOP-STMT"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, for_start),
+            **cast(DictDataTypesStruct, for_end),
+            **cast(DictDataTypesStruct, for_step),
+            **cast(DictDataTypesStruct, for_body),
+        }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class AsyncForRangeLoopExpr(Expr):
+    """AST class for asynchronous `For` Range Expression."""
+
+    variable: InlineVariableDeclaration
+    start: Optional[Expr]
+    end: Expr
+    step: Optional[Expr]
+    body: Block
+
+    def __init__(
+        self,
+        variable: InlineVariableDeclaration,
+        start: Optional[Expr],
+        end: Expr,
+        step: Optional[Expr],
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the AsyncForRangeLoopExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.variable = variable
+        self.start = start
+        self.end = end
+        self.step = step
+        self.body = body
+        self.kind = ASTKind.AsyncRangeLoopExprKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        var_name = self.variable.name
+        return f"AsyncForRangeLoopExpr[{var_name}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        for_var = {"var": self.variable.get_struct(simplified)}
+        for_start = {
+            "start": {}
+            if self.start is None
+            else self.start.get_struct(simplified)
+        }
+        for_end = {"end": self.end.get_struct(simplified)}
+        for_step = {
+            "step": {}
+            if self.step is None
+            else self.step.get_struct(simplified)
+        }
+        for_body = self.body.get_struct(simplified)
+
+        key = "ASYNC-FOR-RANGE-LOOP-EXPR"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, for_var),
+            **cast(DictDataTypesStruct, for_start),
+            **cast(DictDataTypesStruct, for_end),
+            **cast(DictDataTypesStruct, for_step),
+            **cast(DictDataTypesStruct, for_body),
+        }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
 class WhileStmt(StatementType):
     """AST class for `while` statement."""
 
