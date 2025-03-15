@@ -566,7 +566,10 @@ class SetComprehension(Expr):
         super().__init__(loc=loc, parent=parent)
         self.elt = elt
         self.generators = generators
-        self.type_ = SetType(self.elt.type_)
+        element_type = getattr(self.elt, "type_", None)
+        self.type_ = (
+            SetType(element_type) if element_type is not None else None
+        )
         self.kind = ASTKind.SetComprehensionKind
         self.loc = loc
 
