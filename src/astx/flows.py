@@ -718,7 +718,7 @@ class GeneratorExpr(Expr):
         elif isinstance(self.iterator, LiteralTuple):
             return f"({self.element.value} for {self.target.value} in ({", ".join(str(e.value) for e in self.iterator.elements)}))"
         elif isinstance(self.iterator, LiteralSet):
-            return f"({self.element.value} for {self.target.value} in  {{{", ".join(str(e.value) for e in self.iterator.elements)}}})"
+            return f"({self.element.value} for {self.target.value} in {{{", ".join(str(e.value) for e in self.iterator.elements)}}})"
         elif isinstance(self.iterator, Identifier):
             return f"({self.element.value} for {self.target.value} in {self.iterator.value})"
         else:

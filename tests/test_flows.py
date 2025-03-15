@@ -1,7 +1,13 @@
 """Tests for control flow statements."""
 
+import os,sys
+# print(os.path.abspath(os.path.join(os.getcwd(),".", "src")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), ".", "src")))
+
 import astx
 import pytest
+
+
 
 from astx.base import SourceLocation
 from astx.blocks import Block
@@ -18,6 +24,7 @@ from astx.flows import (
     SwitchStmt,
     WhileExpr,
     WhileStmt,
+    GeneratorExpr,
 )
 from astx.literals import LiteralInt32, LiteralString
 from astx.literals.numeric import LiteralInt32
@@ -323,3 +330,17 @@ def test_goto_stmt() -> None:
     assert goto_stmt.get_struct()
     assert goto_stmt.get_struct(simplified=True)
     visualize(goto_stmt.get_struct())
+
+def test_generator_exp() -> None:
+    """Test `GeneratorEx` class."""
+    gen1 = GeneratorExpr(
+        astx.Identifier('x*x'),
+        astx.Identifier('x'),
+        astx.Identifier("list")
+
+    )
+
+    assert str(gen1) == '(x*x for x in list)'
+    assert gen1.get_struct()
+    assert gen1.get_struct(simplified=True)
+    visualize(gen1.get_struct())
