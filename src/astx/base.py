@@ -127,6 +127,7 @@ class ASTKind(Enum):
     SwitchStmtKind = -509
     GotoStmtKind = -511
     WithStmtKind = -512
+    SetComprehensionKind = -510
 
     # data types
     NullDTKind = -600

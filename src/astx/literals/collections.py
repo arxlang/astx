@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Sequence, Set, Tuple
+from typing import Dict, List, Set, Tuple
 
 from public import public
 
@@ -96,26 +96,4 @@ class LiteralDict(Literal):
             key_types.pop()() if len(key_types) == 1 else Int32(),
             value_types.pop()() if len(value_types) == 1 else Int32(),
         )
-        self.loc = loc
-
-
-@public
-@typechecked
-class SetComp(Literal):
-    """Literal representation of a Set Comprehension."""
-
-    elt: Literal
-    generators: Sequence[Literal]
-
-    def __init__(
-        self,
-        elt: Literal,
-        generators: Sequence[Literal],
-        loc: SourceLocation = NO_SOURCE_LOCATION,
-    ) -> None:
-        """Initialize SetComp."""
-        super().__init__(loc)
-        self.elt = elt
-        self.generators = generators
-        self.type_ = SetType(elt.type_)
         self.loc = loc

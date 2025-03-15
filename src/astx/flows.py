@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Optional, Sequence, cast
 
 from public import public
 
@@ -19,6 +19,7 @@ from astx.base import (
 )
 from astx.blocks import Block
 from astx.tools.typing import typechecked
+from astx.types.collections import SetType
 from astx.variables import InlineVariableDeclaration
 
 
@@ -418,6 +419,48 @@ class WhileExpr(Expr):
             **cast(DictDataTypesStruct, while_body),
         }
 
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class SetComprehension(Expr):
+    """AST class for a set comprehension expression."""
+
+    elt: Expr
+    generators: Sequence[Expr]
+
+    def __init__(
+        self,
+        elt: Expr,
+        generators: Sequence[Expr],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the SetComprehension instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.elt = elt
+        self.generators = generators
+        self.type_ = SetType(self.elt.type_)
+        self.kind = ASTKind.SetComprehensionKind
+        self.loc = loc
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"SetComprehension[{self.elt}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        elt_struct = {"element": self.elt.get_struct(simplified)}
+        generators_struct = {
+            f"generator_{i}": gen.get_struct(simplified)
+            for i, gen in enumerate(self.generators)
+        }
+        key = "SET-COMPREHENSION"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, elt_struct),
+            **cast(DictDataTypesStruct, {"generators": generators_struct}),
+        }
         return self._prepare_struct(key, value, simplified)
 
 
