@@ -49,7 +49,7 @@ class ThrowStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = "THROW-STMT"
+        key = f"THROW-STMT[{id(self)}]" if simplified else "THROW-STMT"
         value = self.exception.get_struct(simplified) if self.exception else ""
         return self._prepare_struct(key, value, simplified)
 
@@ -94,7 +94,11 @@ class CatchHandlerStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = "CATCH-HANDLER-STMT"
+        key = (
+            f"CATCH-HANDLER-STMT[{id(self)}]"
+            if simplified
+            else "CATCH-HANDLER-STMT"
+        )
         body_dict = {"body": self.body.get_struct(simplified)}
         name_dict = (
             {"name": self.name.get_struct(simplified)} if self.name else {}
@@ -149,7 +153,11 @@ class ExceptionHandlerStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = "EXCEPTION-HANDLER-STMT"
+        key = (
+            f"EXCEPTION-HANDLER-STMT[{id(self)}]"
+            if simplified
+            else "EXCEPTION-HANDLER-STMT"
+        )
 
         body_dict = {"body": self.body.get_struct(simplified)}
         handlers_dict = {"handlers": self.handlers.get_struct(simplified)}
@@ -191,7 +199,7 @@ class FinallyHandlerStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = "FINALLY-STMT"
+        key = f"FINALLY-STMT[{id(self)}]" if simplified else "FINALLY-STMT"
         value: DictDataTypesStruct = {"body": self.body.get_struct(simplified)}
 
         return self._prepare_struct(key, value, simplified)

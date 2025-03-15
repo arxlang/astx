@@ -60,7 +60,7 @@ class IfStmt(StatementType):
         if self.else_ is not None:
             if_else = {"else-block": self.else_.get_struct(simplified)}
 
-        key = "IF-STMT"
+        key = f"IF-STMT[{id(self)}]" if simplified else "IF-STMT"
         value: ReprStruct = {
             **cast(DictDataTypesStruct, if_condition),
             **cast(DictDataTypesStruct, if_then),
@@ -163,7 +163,11 @@ class ForRangeLoopStmt(StatementType):
         for_step = {"step": self.step.get_struct(simplified)}
         for_body = self.body.get_struct(simplified)
 
-        key = "FOR-RANGE-LOOP-STMT"
+        key = (
+            f"FOR-RANGE-LOOP-STMT[{id(self)}]"
+            if simplified
+            else "FOR-RANGE-LOOP-STMT"
+        )
         value: ReprStruct = {
             **cast(DictDataTypesStruct, for_start),
             **cast(DictDataTypesStruct, for_end),
@@ -277,7 +281,7 @@ class ForCountLoopStmt(StatementType):
         for_update = {"update": self.update.get_struct(simplified)}
         for_body = self.body.get_struct(simplified)
 
-        key = "FOR-COUNT-STMT"
+        key = f"FOR-COUNT-STMT[{id(self)}]" if simplified else "FOR-COUNT-STMT"
         value: ReprStruct = {
             **cast(DictDataTypesStruct, for_init),
             **cast(DictDataTypesStruct, for_cond),
@@ -373,7 +377,7 @@ class WhileStmt(StatementType):
         while_condition = self.condition.get_struct(simplified)
         while_body = self.body.get_struct(simplified)
 
-        key = "WHILE-STMT"
+        key = f"WHILE-STMT[{id(self)}]" if simplified else "WHILE-STMT"
         value: ReprStruct = {
             **cast(DictDataTypesStruct, while_condition),
             **cast(DictDataTypesStruct, while_body),
@@ -523,7 +527,7 @@ class SwitchStmt(StatementType):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = "SWITCH-STMT"
+        key = f"SWITCH-STMT[{id(self)}]" if simplified else "SWITCH-STMT"
         case_dict = {}
         for d in range(len(self.cases)):
             case_dict[f"case_{d}"] = self.cases[d].get_struct(simplified)
