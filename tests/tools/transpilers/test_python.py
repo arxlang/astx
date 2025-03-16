@@ -1397,3 +1397,18 @@ def test_transpiler_literal_dict() -> None:
         1: 10,
         2: 20,
     }, f"Expected '{expected_code}', but got '{generated_code}'"
+
+def test_dict_comprehension() -> None:
+    """Test astx.DictComprehension"""
+
+    dict_comp = astx.DictComprehension(
+        key = astx.Identifier('x'),
+        value = astx.Identifier('x*x'),
+        iterable = astx.Identifier('x'),
+        iterator = astx.Identifier('my_list')
+    )
+
+    generated_code = transpiler.visit(dict_comp)
+    expected_code = '{x: x*x for x in my_list}'
+
+    assert generated_code == expected_code, f"Expected code: {expected_code} ; Generated code: {generated_code}"
