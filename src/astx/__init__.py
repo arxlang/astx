@@ -72,6 +72,7 @@ from astx.flows import (
     SwitchStmt,
     WhileExpr,
     WhileStmt,
+    DictComprehension,
 )
 from astx.literals import (
     Literal,
@@ -224,6 +225,7 @@ __all__ = [
     "DataTypeOps",
     "Date",
     "DateTime",
+    "DictComprehension",
     "DictType",
     "EnumDeclStmt",
     "ExceptionHandlerStmt",
