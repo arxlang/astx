@@ -674,3 +674,8 @@ class ASTxPythonTranspiler:
             for key, value in node.elements.items()
         )
         return f"{{{items_code}}}"
+
+    @dispatch # type: ignore[no-redef]
+    def visit(self, node: astx.GeneratorExpr) -> str:
+        """Handle GeneratorExr nodes."""
+        return f"({self.visit(node.element)} for {self.visit(node.target)} in {self.visit(node.iterator)})".strip()

@@ -1,9 +1,5 @@
 """Tests for control flow statements."""
 
-import os,sys
-# print(os.path.abspath(os.path.join(os.getcwd(),".", "src")))
-sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), ".", "src")))
-
 import astx
 import pytest
 

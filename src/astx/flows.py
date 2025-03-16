@@ -730,7 +730,6 @@ class GeneratorExpr(Expr):
         value: ReprStruct = {
             "element": self.element.get_struct(simplified),
             "target": self.target.get_struct(simplified),
-            # "iterator": self.iterator.get_struct(simplified)
         }
         if isinstance(self.iterator, (LiteralList, LiteralTuple, LiteralSet)):
             value["iterator"] = {

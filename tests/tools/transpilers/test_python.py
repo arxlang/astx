@@ -1397,3 +1397,19 @@ def test_transpiler_literal_dict() -> None:
         1: 10,
         2: 20,
     }, f"Expected '{expected_code}', but got '{generated_code}'"
+
+    def test_generator_expression() -> None:
+        gen = astx.GeneratorExpr(
+            astx.Identifier('x*x'),
+            astx.Identifier('x'),
+            astx.LiteralList(
+                list = [
+                    astx.LiteralInt32(4),
+                    astx.LiteralInt32(1),
+                    astx.LiteralInt32(5)
+                ]
+            )
+        )
+        generated_code = transpiler.visit(gen)
+        expected_code = "(x*x for x in [4, 1, 5])"
+        assert generated_code == expected_code , f"expected: {expected_code} ; generated: {generated_code}"
