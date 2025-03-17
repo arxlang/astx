@@ -674,3 +674,10 @@ class ASTxPythonTranspiler:
             for key, value in node.elements.items()
         )
         return f"{{{items_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.FormattedValue) -> str:
+        """Handle FormattedValue nodes for f-string formatting."""
+        value = self.visit(node.value)
+        format_spec = f":{node.format_spec}" if node.format_spec else ""
+        return f"{{{value}{format_spec}}}"
