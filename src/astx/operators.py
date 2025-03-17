@@ -179,6 +179,6 @@ class AugAssign(DataType):
         key = str(self)
         value: ReprStruct = {
             "target": self.target.get_struct(simplified),
-            "Value": self.value.get_struct(simplified),
+            "value": self.value.get_struct(simplified),
         }
         return self._prepare_struct(key, value, simplified)
