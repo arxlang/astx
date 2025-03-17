@@ -1,5 +1,10 @@
 """Test Python Transpiler."""
 
+# for running tests from local astx module
+# import os,sys
+# # print(os.path.abspath(os.path.join(os.getcwd(), ".", "src")))
+# sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), ".", "src")))
+
 import ast
 import sys
 
@@ -1398,17 +1403,39 @@ def test_transpiler_literal_dict() -> None:
         2: 20,
     }, f"Expected '{expected_code}', but got '{generated_code}'"
 
-def test_dict_comprehension() -> None:
-    """Test astx.DictComprehension"""
 
-    dict_comp = astx.DictComprehension(
-        key = astx.Identifier('x'),
-        value = astx.Identifier('x*x'),
-        iterable = astx.Identifier('x'),
-        iterator = astx.Identifier('my_list')
+def test_dict_comprehension() -> None:
+    """Test astx.DictComprehension."""
+    dict_comp_1 = astx.DictComprehension(
+        key=astx.Identifier("x"),
+        value=astx.Identifier("x*x"),
+        iterable=astx.Identifier("x"),
+        iterator=astx.Identifier("my_list"),
     )
 
-    generated_code = transpiler.visit(dict_comp)
-    expected_code = '{x: x*x for x in my_list}'
+    generated_code_1 = transpiler.visit(dict_comp_1)
+    expected_code_1 = "{x: x*x for x in my_list}"
 
-    assert generated_code == expected_code, f"Expected code: {expected_code} ; Generated code: {generated_code}"
+    dict_comp_2 = astx.DictComprehension(
+        key=astx.Identifier("x"),
+        value=astx.Identifier("x*x"),
+        iterable=astx.Identifier("x"),
+        iterator=astx.LiteralList(
+            elements=[
+                astx.LiteralInt32(10),
+                astx.LiteralInt32(20),
+                astx.LiteralInt32(30),
+            ]
+        ),
+    )
+
+    generated_code_2 = transpiler.visit(dict_comp_2)
+    expected_code_2 = "{x: x*x for x in [10, 20, 30]}"
+
+    assert generated_code_1 == expected_code_1, (
+        f"Expected code: {expected_code_1} ;"
+        f" Generated code: {generated_code_1}"
+    )
+    assert generated_code_2 == expected_code_2, (
+        f"Expected code: {expected_code_2} ;Generated code: {generated_code_2}"
+    )

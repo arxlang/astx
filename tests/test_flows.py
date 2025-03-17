@@ -1,5 +1,10 @@
 """Tests for control flow statements."""
 
+# for running tests from local astx module
+# import os,sys
+# # print(os.path.abspath(os.path.join(os.getcwd(), ".", "src")))
+# sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), ".", "src")))
+
 import astx
 import pytest
 
@@ -324,16 +329,16 @@ def test_goto_stmt() -> None:
     assert goto_stmt.get_struct(simplified=True)
     visualize(goto_stmt.get_struct())
 
+
 def test_dict_comprehension() -> None:
     """Test `DictComprehension` class."""
-
     dict_comp = astx.DictComprehension(
-        key = astx.Identifier('x'),
-        value = astx.Identifier('x*x'),
-        iterable = astx.Identifier('x'),
-        iterator = astx.Identifier('my_list')
+        key=astx.Identifier("x"),
+        value=astx.Identifier("x*x"),
+        iterable=astx.Identifier("x"),
+        iterator=astx.Identifier("my_list"),
     )
-    assert str(dict_comp) == '{x: x*x for x in my_list}'
+    assert str(dict_comp) == "{x: x*x for x in my_list}"
     assert dict_comp.get_struct()
     assert dict_comp.get_struct(simplified=True)
     visualize(dict_comp.get_struct())

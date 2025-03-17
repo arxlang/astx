@@ -62,6 +62,7 @@ from astx.flows import (
     AsyncForRangeLoopExpr,
     AsyncForRangeLoopStmt,
     CaseStmt,
+    DictComprehension,
     ForCountLoopExpr,
     ForCountLoopStmt,
     ForRangeLoopExpr,
@@ -72,7 +73,6 @@ from astx.flows import (
     SwitchStmt,
     WhileExpr,
     WhileStmt,
-    DictComprehension,
 )
 from astx.literals import (
     Literal,
