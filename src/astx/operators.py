@@ -178,7 +178,7 @@ class AugAssign(DataType):
         """Return the AST structure of the object."""
         key = str(self)
         value: ReprStruct = {
-            "Target": self.target.get_struct(simplified),
+            "target": self.target.get_struct(simplified),
             "Value": self.value.get_struct(simplified),
         }
         return self._prepare_struct(key, value, simplified)
