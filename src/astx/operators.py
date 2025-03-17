@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Optional, cast
+from typing import Iterable, Literal, Optional, cast
 
 from public import public
+from typing_extensions import TypeAlias
 
 from astx.base import (
     NO_SOURCE_LOCATION,
@@ -13,6 +14,7 @@ from astx.base import (
     DataType,
     DictDataTypesStruct,
     Expr,
+    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
@@ -127,4 +129,56 @@ class VariableAssignment(StatementType):
         """Return the AST structure of the object."""
         key = str(self)
         value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
+
+
+OpCodeAugAssign: TypeAlias = Literal[
+    "+=",
+    "-=",
+    "*=",
+    "/=",
+    "//=",
+    "%=",
+    "**=",
+    "&=",
+    "|=",
+    "^=",
+    "<<=",
+    ">>=",
+]
+
+
+@public
+@typechecked
+class AugAssign(DataType):
+    """AST class for augmented assignment."""
+
+    target: Identifier
+    op_code: OpCodeAugAssign
+    value: DataType
+
+    def __init__(
+        self,
+        target: Identifier,
+        op_code: OpCodeAugAssign,
+        value: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        super().__init__(loc=loc)
+        self.target = target
+        self.op_code = op_code
+        self.value = value
+        self.kind = ASTKind.AugmentedAssignKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the augmented assignment object."""
+        return f"AugAssign[{self.op_code}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = str(self)
+        value: ReprStruct = {
+            "target": self.target.get_struct(simplified),
+            "value": self.value.get_struct(simplified),
+        }
         return self._prepare_struct(key, value, simplified)

@@ -115,6 +115,7 @@ from astx.modifiers import (
 )
 from astx.operators import (
     AssignmentExpr,
+    AugAssign,
     VariableAssignment,
     WalrusOp,
 )
@@ -204,6 +205,7 @@ __all__ = [
     "AssignmentExpr",
     "AsyncForRangeLoopExpr",
     "AsyncForRangeLoopStmt",
+    "AugAssign",
     "AwaitExpr",
     "BinaryOp",
     "Block",
