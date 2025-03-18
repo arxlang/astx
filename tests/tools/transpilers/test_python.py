@@ -298,6 +298,26 @@ def test_literal_float32() -> None:
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
+def test_formatted_value() -> None:
+    """Test astx.FormattedValue for f-string formatting."""
+    # Create a FormattedValue node with a float value and format spec
+    value = astx.LiteralFloat32(value=3.14159)
+    formatted_value = astx.FormattedValue(value=value, format_spec=".2f")
+
+    # Generate Python code
+    generated_code = translate(formatted_value)
+    expected_code = "{3.14159:.2f}"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+    # Test without format spec
+    formatted_value_no_spec = astx.FormattedValue(value=value)
+    generated_code = translate(formatted_value_no_spec)
+    expected_code = "{3.14159}"
+
+    assert generated_code == expected_code, "generated_code != expected_code"
+
+
 def test_literal_float64() -> None:
     """Test astx.LiteralFloat64."""
     # Create a LiteralFloat64 node
