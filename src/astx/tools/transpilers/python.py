@@ -682,3 +682,19 @@ class ASTxPythonTranspiler:
             for key, value in node.elements.items()
         )
         return f"{{{items_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.DoWhileExpr) -> str:
+        """Handle DoWhileExpr nodes."""
+        condition = self.visit(node.condition)
+        body = self.visit(node.body)
+        return next(
+            iter(lambda: body if condition else StopIteration, None), None
+        )
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.DoWhileStmt) -> str:
+        """Handle DoWhileStmt nodes."""
+        condition = self.visit(node.condition)
+        body = self._generate_block(node.body)
+        return f"while True:\n{body}\n    if not ({condition}):\n        break"
