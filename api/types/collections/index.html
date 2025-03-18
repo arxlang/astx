@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://astx.arxlang.org/api/types/string/">
+        <link rel="canonical" href="https://astx.arxlang.org/api/types/collections/">
       
       
-        <link rel="prev" href="../operators/">
+        <link rel="prev" href="../casting/">
       
       
-        <link rel="next" href="../temporal/">
+        <link rel="next" href="../numeric/">
       
       
       <link rel="icon" href="../../../images/favicon.ico">
@@ -22,7 +22,7 @@
     
     
       
-        <title>string - ASTx</title>
+        <title>collections - ASTx</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#astx.types.string" class="md-skip">
+        <a href="#astx.types.collections" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> string
+              <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> collections
             
           </span>
         </div>
@@ -1257,10 +1257,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../collections/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> collections
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1269,6 +1289,236 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#astx.types.collections.CollectionType" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;CollectionType
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" CollectionType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.CollectionType.get_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.CollectionType.to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.CollectionType.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#astx.types.collections.DictType" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;DictType
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" DictType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.DictType.get_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.DictType.to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.DictType.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#astx.types.collections.ListType" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ListType
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" ListType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.ListType.get_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.ListType.to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.ListType.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#astx.types.collections.SetType" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SetType
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" SetType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.SetType.get_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.SetType.to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.SetType.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#astx.types.collections.TupleType" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;TupleType
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" TupleType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.TupleType.get_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.TupleType.to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.TupleType.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1320,30 +1570,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> string
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../string/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1352,152 +1582,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#astx.types.string.String" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;String
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label=" String">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.String.get_struct" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.String.to_json" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.String.to_yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8Char" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;UTF8Char
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label=" UTF8Char">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8Char.get_struct" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8Char.to_json" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8Char.to_yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8String" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;UTF8String
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label=" UTF8String">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8String.get_struct" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8String.to_json" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8String.to_yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1842,17 +1926,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#astx.types.string.String" class="md-nav__link">
+  <a href="#astx.types.collections.CollectionType" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;String
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;CollectionType
     </span>
   </a>
   
-    <nav class="md-nav" aria-label=" String">
+    <nav class="md-nav" aria-label=" CollectionType">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.String.get_struct" class="md-nav__link">
+  <a href="#astx.types.collections.CollectionType.get_struct" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
     </span>
@@ -1861,7 +1945,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.String.to_json" class="md-nav__link">
+  <a href="#astx.types.collections.CollectionType.to_json" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
     </span>
@@ -1870,7 +1954,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.String.to_yaml" class="md-nav__link">
+  <a href="#astx.types.collections.CollectionType.to_yaml" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
     </span>
@@ -1884,17 +1968,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8Char" class="md-nav__link">
+  <a href="#astx.types.collections.DictType" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;UTF8Char
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;DictType
     </span>
   </a>
   
-    <nav class="md-nav" aria-label=" UTF8Char">
+    <nav class="md-nav" aria-label=" DictType">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8Char.get_struct" class="md-nav__link">
+  <a href="#astx.types.collections.DictType.get_struct" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
     </span>
@@ -1903,7 +1987,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8Char.to_json" class="md-nav__link">
+  <a href="#astx.types.collections.DictType.to_json" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
     </span>
@@ -1912,7 +1996,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8Char.to_yaml" class="md-nav__link">
+  <a href="#astx.types.collections.DictType.to_yaml" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
     </span>
@@ -1926,17 +2010,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8String" class="md-nav__link">
+  <a href="#astx.types.collections.ListType" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;UTF8String
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ListType
     </span>
   </a>
   
-    <nav class="md-nav" aria-label=" UTF8String">
+    <nav class="md-nav" aria-label=" ListType">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8String.get_struct" class="md-nav__link">
+  <a href="#astx.types.collections.ListType.get_struct" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
     </span>
@@ -1945,7 +2029,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8String.to_json" class="md-nav__link">
+  <a href="#astx.types.collections.ListType.to_json" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
     </span>
@@ -1954,7 +2038,91 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#astx.types.string.UTF8String.to_yaml" class="md-nav__link">
+  <a href="#astx.types.collections.ListType.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#astx.types.collections.SetType" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SetType
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" SetType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.SetType.get_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.SetType.to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.SetType.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#astx.types.collections.TupleType" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;TupleType
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" TupleType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.TupleType.get_struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_struct
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.TupleType.to_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_json
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astx.types.collections.TupleType.to_yaml" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_yaml
     </span>
@@ -1989,15 +2157,15 @@
 
 
 
-<h1 id="astx.types.string" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">string</span>
+<h1 id="astx.types.collections" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">collections</span>
 
 
-<a href="#astx.types.string" class="headerlink" title="Permanent link">&para;</a></h1>
+<a href="#astx.types.collections" class="headerlink" title="Permanent link">&para;</a></h1>
 
     <div class="doc doc-contents first">
 
-        <p>ASTx Data Types module.</p>
+        <p>ASTx Collection Data Types.</p>
 
 
 
@@ -2008,24 +2176,38 @@
 <p><span class="doc-section-title">Classes:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-          <b><code><a class="autorefs autorefs-internal" title="astx.types.string.String" href="#astx.types.string.String">String</a></code></b>
+          <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.CollectionType" href="#astx.types.collections.CollectionType">CollectionType</a></code></b>
           –
           <div class="doc-md-description">
-            <p>Base class for strings.</p>
+            <p>Base class for collection data types.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
-          <b><code><a class="autorefs autorefs-internal" title="astx.types.string.UTF8Char" href="#astx.types.string.UTF8Char">UTF8Char</a></code></b>
+          <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.DictType" href="#astx.types.collections.DictType">DictType</a></code></b>
           –
           <div class="doc-md-description">
-            <p>Class for UTF-8 encoded characters.</p>
+            <p>Dictionary data type expression.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
-          <b><code><a class="autorefs autorefs-internal" title="astx.types.string.UTF8String" href="#astx.types.string.UTF8String">UTF8String</a></code></b>
+          <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.ListType" href="#astx.types.collections.ListType">ListType</a></code></b>
           –
           <div class="doc-md-description">
-            <p>Class for UTF-8 encoded strings.</p>
+            <p>List data type expression.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.SetType" href="#astx.types.collections.SetType">SetType</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Set data type expression.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.TupleType" href="#astx.types.collections.TupleType">TupleType</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Tuple data type expression.</p>
           </div>
         </li>
     </ul>
@@ -2049,12 +2231,12 @@
 
 
 
-<h2 id="astx.types.string.String" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">String</span>
+<h2 id="astx.types.collections.CollectionType" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">CollectionType</span>
 
 
-<a href="#astx.types.string.String" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">String</span><span class="p">(</span><span class="n">loc</span><span class="p">:</span> <span class="n"><span title="astx.base.SourceLocation">SourceLocation</span></span> <span class="o">=</span> <span class="n"><span title="astx.base.NO_SOURCE_LOCATION">NO_SOURCE_LOCATION</span></span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="astx.base.ASTNodes" href="../../base/#astx.base.ASTNodes">ASTNodes</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<a href="#astx.types.collections.CollectionType" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">CollectionType</span><span class="p">(</span><span class="n">loc</span><span class="p">:</span> <span class="n"><span title="astx.base.SourceLocation">SourceLocation</span></span> <span class="o">=</span> <span class="n"><span title="astx.base.NO_SOURCE_LOCATION">NO_SOURCE_LOCATION</span></span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="astx.base.ASTNodes" href="../../base/#astx.base.ASTNodes">ASTNodes</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2062,7 +2244,7 @@
               Bases: <code><a class="autorefs autorefs-internal" title="astx.types.base.AnyType" href="../base/#astx.types.base.AnyType">AnyType</a></code></p>
 
 
-        <p>Base class for strings.</p>
+        <p>Base class for collection data types.</p>
 
 
 
@@ -2075,21 +2257,21 @@
 <p><span class="doc-section-title">Methods:</span></p>
     <ul>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.String.get_struct" href="#astx.types.string.String.get_struct">get_struct</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.CollectionType.get_struct" href="#astx.types.collections.CollectionType.get_struct">get_struct</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return a simple structure that represents the object.</p>
             </div>
           </li>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.String.to_json" href="#astx.types.string.String.to_json">to_json</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.CollectionType.to_json" href="#astx.types.collections.CollectionType.to_json">to_json</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return an json string that represents the object.</p>
             </div>
           </li>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.String.to_yaml" href="#astx.types.string.String.to_yaml">to_yaml</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.CollectionType.to_yaml" href="#astx.types.collections.CollectionType.to_yaml">to_yaml</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return an yaml string that represents the object.</p>
@@ -2140,11 +2322,11 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.String.get_struct" class="doc doc-heading">
+<h3 id="astx.types.collections.CollectionType.get_struct" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_struct</span>
 
 
-<a href="#astx.types.string.String.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.CollectionType.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="astx.base.ReprStruct">ReprStruct</span></span>
 </code></pre></div>
 
@@ -2172,11 +2354,11 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.String.to_json" class="doc doc-heading">
+<h3 id="astx.types.collections.CollectionType.to_json" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_json</span>
 
 
-<a href="#astx.types.string.String.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.CollectionType.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_json</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
 </code></pre></div>
 
@@ -2200,11 +2382,11 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.String.to_yaml" class="doc doc-heading">
+<h3 id="astx.types.collections.CollectionType.to_yaml" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_yaml</span>
 
 
-<a href="#astx.types.string.String.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.CollectionType.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_yaml</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
 </code></pre></div>
 
@@ -2241,20 +2423,20 @@
 
 
 
-<h2 id="astx.types.string.UTF8Char" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">UTF8Char</span>
+<h2 id="astx.types.collections.DictType" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">DictType</span>
 
 
-<a href="#astx.types.string.UTF8Char" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">UTF8Char</span><span class="p">(</span><span class="n">loc</span><span class="p">:</span> <span class="n"><span title="astx.base.SourceLocation">SourceLocation</span></span> <span class="o">=</span> <span class="n"><span title="astx.base.NO_SOURCE_LOCATION">NO_SOURCE_LOCATION</span></span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="astx.base.ASTNodes" href="../../base/#astx.base.ASTNodes">ASTNodes</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<a href="#astx.types.collections.DictType" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">DictType</span><span class="p">(</span><span class="n">key_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="astx.base.ExprType" href="../../base/#astx.base.ExprType">ExprType</a></span><span class="p">,</span> <span class="n">value_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="astx.base.ExprType" href="../../base/#astx.base.ExprType">ExprType</a></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="astx.types.base.AnyType" href="../base/#astx.types.base.AnyType">AnyType</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="astx.types.collections.CollectionType" href="#astx.types.collections.CollectionType">CollectionType</a></code></p>
 
 
-        <p>Class for UTF-8 encoded characters.</p>
+        <p>Dictionary data type expression.</p>
 
 
 
@@ -2267,21 +2449,21 @@
 <p><span class="doc-section-title">Methods:</span></p>
     <ul>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.UTF8Char.get_struct" href="#astx.types.string.UTF8Char.get_struct">get_struct</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.DictType.get_struct" href="#astx.types.collections.DictType.get_struct">get_struct</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return a simple structure that represents the object.</p>
             </div>
           </li>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.UTF8Char.to_json" href="#astx.types.string.UTF8Char.to_json">to_json</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.DictType.to_json" href="#astx.types.collections.DictType.to_json">to_json</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return an json string that represents the object.</p>
             </div>
           </li>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.UTF8Char.to_yaml" href="#astx.types.string.UTF8Char.to_yaml">to_yaml</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.DictType.to_yaml" href="#astx.types.collections.DictType.to_yaml">to_yaml</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return an yaml string that represents the object.</p>
@@ -2292,28 +2474,14 @@
 
 
                   <details class="quote">
-                    <summary>Source code in <code>src/astx/base.py</code></summary>
-                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span>
-<span class="normal">451</span>
-<span class="normal">452</span>
-<span class="normal">453</span>
-<span class="normal">454</span>
-<span class="normal">455</span>
-<span class="normal">456</span>
-<span class="normal">457</span>
-<span class="normal">458</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">loc</span><span class="p">:</span> <span class="n">SourceLocation</span> <span class="o">=</span> <span class="n">NO_SOURCE_LOCATION</span><span class="p">,</span>
-    <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ASTNodes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;temp_</span><span class="si">{</span><span class="n">DataType</span><span class="o">.</span><span class="n">_tmp_id</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">DataType</span><span class="o">.</span><span class="n">_tmp_id</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="c1"># set it as a generic data type</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="p">:</span> <span class="n">ExprType</span> <span class="o">=</span> <span class="n">ExprType</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+                    <summary>Source code in <code>src/astx/types/collections.py</code></summary>
+                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_type</span><span class="p">:</span> <span class="n">ExprType</span><span class="p">,</span> <span class="n">value_type</span><span class="p">:</span> <span class="n">ExprType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize DictType with key-value types.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">key_type</span> <span class="o">=</span> <span class="n">key_type</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">value_type</span> <span class="o">=</span> <span class="n">value_type</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -2332,11 +2500,11 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.UTF8Char.get_struct" class="doc doc-heading">
+<h3 id="astx.types.collections.DictType.get_struct" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_struct</span>
 
 
-<a href="#astx.types.string.UTF8Char.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.DictType.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="astx.base.ReprStruct">ReprStruct</span></span>
 </code></pre></div>
 
@@ -2364,11 +2532,11 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.UTF8Char.to_json" class="doc doc-heading">
+<h3 id="astx.types.collections.DictType.to_json" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_json</span>
 
 
-<a href="#astx.types.string.UTF8Char.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.DictType.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_json</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
 </code></pre></div>
 
@@ -2392,11 +2560,11 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.UTF8Char.to_yaml" class="doc doc-heading">
+<h3 id="astx.types.collections.DictType.to_yaml" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_yaml</span>
 
 
-<a href="#astx.types.string.UTF8Char.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.DictType.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_yaml</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
 </code></pre></div>
 
@@ -2433,20 +2601,20 @@
 
 
 
-<h2 id="astx.types.string.UTF8String" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">UTF8String</span>
+<h2 id="astx.types.collections.ListType" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ListType</span>
 
 
-<a href="#astx.types.string.UTF8String" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">UTF8String</span><span class="p">(</span><span class="n">loc</span><span class="p">:</span> <span class="n"><span title="astx.base.SourceLocation">SourceLocation</span></span> <span class="o">=</span> <span class="n"><span title="astx.base.NO_SOURCE_LOCATION">NO_SOURCE_LOCATION</span></span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Optional" href="https://docs.python.org/3/library/typing.html#typing.Optional">Optional</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="astx.base.ASTNodes" href="../../base/#astx.base.ASTNodes">ASTNodes</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<a href="#astx.types.collections.ListType" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">ListType</span><span class="p">(</span><span class="n">element_types</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="astx.base.ExprType" href="../../base/#astx.base.ExprType">ExprType</a></span><span class="p">])</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="astx.types.base.AnyType" href="../base/#astx.types.base.AnyType">AnyType</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="astx.types.collections.CollectionType" href="#astx.types.collections.CollectionType">CollectionType</a></code></p>
 
 
-        <p>Class for UTF-8 encoded strings.</p>
+        <p>List data type expression.</p>
 
 
 
@@ -2459,21 +2627,21 @@
 <p><span class="doc-section-title">Methods:</span></p>
     <ul>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.UTF8String.get_struct" href="#astx.types.string.UTF8String.get_struct">get_struct</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.ListType.get_struct" href="#astx.types.collections.ListType.get_struct">get_struct</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return a simple structure that represents the object.</p>
             </div>
           </li>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.UTF8String.to_json" href="#astx.types.string.UTF8String.to_json">to_json</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.ListType.to_json" href="#astx.types.collections.ListType.to_json">to_json</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return an json string that represents the object.</p>
             </div>
           </li>
           <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="astx.types.string.UTF8String.to_yaml" href="#astx.types.string.UTF8String.to_yaml">to_yaml</a></code></b>
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.ListType.to_yaml" href="#astx.types.collections.ListType.to_yaml">to_yaml</a></code></b>
             –
             <div class="doc-md-description">
               <p>Return an yaml string that represents the object.</p>
@@ -2484,28 +2652,12 @@
 
 
                   <details class="quote">
-                    <summary>Source code in <code>src/astx/base.py</code></summary>
-                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span>
-<span class="normal">451</span>
-<span class="normal">452</span>
-<span class="normal">453</span>
-<span class="normal">454</span>
-<span class="normal">455</span>
-<span class="normal">456</span>
-<span class="normal">457</span>
-<span class="normal">458</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">loc</span><span class="p">:</span> <span class="n">SourceLocation</span> <span class="o">=</span> <span class="n">NO_SOURCE_LOCATION</span><span class="p">,</span>
-    <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ASTNodes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;temp_</span><span class="si">{</span><span class="n">DataType</span><span class="o">.</span><span class="n">_tmp_id</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">DataType</span><span class="o">.</span><span class="n">_tmp_id</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="c1"># set it as a generic data type</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="p">:</span> <span class="n">ExprType</span> <span class="o">=</span> <span class="n">ExprType</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+                    <summary>Source code in <code>src/astx/types/collections.py</code></summary>
+                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ExprType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize ListType with an element type.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">element_types</span> <span class="o">=</span> <span class="n">element_types</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -2524,11 +2676,11 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.UTF8String.get_struct" class="doc doc-heading">
+<h3 id="astx.types.collections.ListType.get_struct" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_struct</span>
 
 
-<a href="#astx.types.string.UTF8String.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.ListType.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="astx.base.ReprStruct">ReprStruct</span></span>
 </code></pre></div>
 
@@ -2556,11 +2708,11 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.UTF8String.to_json" class="doc doc-heading">
+<h3 id="astx.types.collections.ListType.to_json" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_json</span>
 
 
-<a href="#astx.types.string.UTF8String.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.ListType.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_json</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
 </code></pre></div>
 
@@ -2584,11 +2736,363 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="astx.types.string.UTF8String.to_yaml" class="doc doc-heading">
+<h3 id="astx.types.collections.ListType.to_yaml" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_yaml</span>
 
 
-<a href="#astx.types.string.UTF8String.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astx.types.collections.ListType.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_yaml</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return an yaml string that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/base.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an yaml string that represents the object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="o">=</span><span class="n">simplified</span><span class="p">),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="astx.types.collections.SetType" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">SetType</span>
+
+
+<a href="#astx.types.collections.SetType" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">SetType</span><span class="p">(</span><span class="n">element_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="astx.base.ExprType" href="../../base/#astx.base.ExprType">ExprType</a></span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="astx.types.collections.CollectionType" href="#astx.types.collections.CollectionType">CollectionType</a></code></p>
+
+
+        <p>Set data type expression.</p>
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.SetType.get_struct" href="#astx.types.collections.SetType.get_struct">get_struct</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return a simple structure that represents the object.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.SetType.to_json" href="#astx.types.collections.SetType.to_json">to_json</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return an json string that represents the object.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.SetType.to_yaml" href="#astx.types.collections.SetType.to_yaml">to_yaml</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return an yaml string that represents the object.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/astx/types/collections.py</code></summary>
+                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="n">ExprType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize SetType with an element type.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="o">=</span> <span class="n">element_type</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.types.collections.SetType.get_struct" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_struct</span>
+
+
+<a href="#astx.types.collections.SetType.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="astx.base.ReprStruct">ReprStruct</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return a simple structure that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/base.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReprStruct</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a simple structure that represents the object.&quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DATA-TYPE[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">]&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_struct</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">simplified</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.types.collections.SetType.to_json" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_json</span>
+
+
+<a href="#astx.types.collections.SetType.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_json</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return an json string that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/base.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an json string that represents the object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="o">=</span><span class="n">simplified</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.types.collections.SetType.to_yaml" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_yaml</span>
+
+
+<a href="#astx.types.collections.SetType.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_yaml</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return an yaml string that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/base.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an yaml string that represents the object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="o">=</span><span class="n">simplified</span><span class="p">),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="astx.types.collections.TupleType" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">TupleType</span>
+
+
+<a href="#astx.types.collections.TupleType" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">TupleType</span><span class="p">(</span><span class="n">element_types</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="astx.base.ExprType" href="../../base/#astx.base.ExprType">ExprType</a></span><span class="p">])</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="astx.types.collections.CollectionType" href="#astx.types.collections.CollectionType">CollectionType</a></code></p>
+
+
+        <p>Tuple data type expression.</p>
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.TupleType.get_struct" href="#astx.types.collections.TupleType.get_struct">get_struct</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return a simple structure that represents the object.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.TupleType.to_json" href="#astx.types.collections.TupleType.to_json">to_json</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return an json string that represents the object.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astx.types.collections.TupleType.to_yaml" href="#astx.types.collections.TupleType.to_yaml">to_yaml</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return an yaml string that represents the object.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/astx/types/collections.py</code></summary>
+                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ExprType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize TupleType with multiple element types.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">element_types</span> <span class="o">=</span> <span class="n">element_types</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.types.collections.TupleType.get_struct" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_struct</span>
+
+
+<a href="#astx.types.collections.TupleType.get_struct" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="astx.base.ReprStruct">ReprStruct</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return a simple structure that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/base.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReprStruct</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a simple structure that represents the object.&quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DATA-TYPE[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">]&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_struct</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">simplified</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.types.collections.TupleType.to_json" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_json</span>
+
+
+<a href="#astx.types.collections.TupleType.to_json" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_json</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return an json string that represents the object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/astx/base.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an json string that represents the object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_struct</span><span class="p">(</span><span class="n">simplified</span><span class="o">=</span><span class="n">simplified</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="astx.types.collections.TupleType.to_yaml" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_yaml</span>
+
+
+<a href="#astx.types.collections.TupleType.to_yaml" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">to_yaml</span><span class="p">(</span><span class="n">simplified</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
 </code></pre></div>
 
