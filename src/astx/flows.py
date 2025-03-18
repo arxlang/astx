@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Optional, Union, cast
 
 from public import public
 
@@ -18,6 +18,7 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
+from astx.literals import LiteralList, LiteralSet, LiteralString, LiteralTuple
 from astx.tools.typing import typechecked
 from astx.variables import InlineVariableDeclaration
 
@@ -686,4 +687,86 @@ class GotoStmt(StatementType):
         """Return the AST structure of the object."""
         key = f"GOTO-STMT[{self.label.value}]"
         value: DictDataTypesStruct = {}
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class DictComprehension(Expr):
+    """AST class for function `DictComprehension` statement."""
+
+    def __init__(
+        self,
+        key: Identifier,
+        value: Identifier,
+        iterable: Identifier,
+        iterator: Union[
+            LiteralList, LiteralTuple, LiteralSet, LiteralString, Identifier
+        ],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Return instance."""
+        super().__init__(loc, parent)
+        self.key = key
+        self.value = value
+        self.iterable = iterable
+        self.iterator = iterator
+        self.kind = ASTKind.DictComprehensionKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        if isinstance(self.iterator, LiteralList):
+            elements = ", ".join(str(e.value) for e in self.iterator.elements)
+            return (
+                f"{{{self.key.value}: {self.value.value} for "
+                f"{self.iterable.value} in [{elements}]}}"
+            )
+        elif isinstance(self.iterator, LiteralTuple):
+            elements = ", ".join(str(e.value) for e in self.iterator.elements)
+            return (
+                f"{{{self.key.value}: {self.value.value} for "
+                f"{self.iterable.value} in ({elements})}}"
+            )
+        elif isinstance(self.iterator, LiteralSet):
+            elements = ", ".join(str(e.value) for e in self.iterator.elements)
+            return (
+                f"{{{self.key.value}: {self.value.value} for "
+                f"{self.iterable.value} in {{{elements}}}}}"
+            )
+        elif isinstance(self.iterator, Identifier):
+            return (
+                f"{{{self.key.value}: {self.value.value} for "
+                f"{self.iterable.value} in {self.iterator.value}}}"
+            )
+        else:
+            return (
+                f"{{{self.key.value}: {self.value.value} for "
+                f"{self.iterable.value} in {self.iterator}}}"
+            )
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "DICT-COMPREHENSION"
+        value: DictDataTypesStruct = {
+            "key": self.key.get_struct(simplified),
+            "value": self.value.get_struct(simplified),
+            "iterable": self.iterable.get_struct(simplified),
+        }
+
+        if isinstance(self.iterator, (LiteralList, LiteralSet, LiteralTuple)):
+            elements_struct = [
+                element.get_struct(simplified)
+                for element in self.iterator.elements
+            ]
+            iterator_struct = {
+                f"{self.iterator.__class__.__name__}": {
+                    f"ELEMENT[{i}]": element
+                    for i, element in enumerate(elements_struct)
+                }
+            }
+            value["iterator"] = cast(DictDataTypesStruct, iterator_struct)
+        else:
+            value["iterator"] = self.iterator.get_struct(simplified)
+
         return self._prepare_struct(key, value, simplified)
