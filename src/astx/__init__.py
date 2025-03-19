@@ -227,6 +227,7 @@ __all__ = [
     "Date",
     "DateTime",
     "DictType",
+    "DoWhileLoopExpr",
     "DoWhileLoopStmt",
     "EnumDeclStmt",
     "ExceptionHandlerStmt",

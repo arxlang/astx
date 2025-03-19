@@ -335,15 +335,12 @@ def test_do_while_expr() -> None:
         op_code="<",
         lhs=x_var,
         rhs=LiteralInt32(5),
-        loc=SourceLocation(line=1, col=0),
     )
 
     body_block = Block(name="do_while_body")
 
     # Create the DoWhileLoopExpr
-    do_while_expr = DoWhileLoopExpr(
-        condition=condition, body=body_block, loc=SourceLocation(line=1, col=0)
-    )
+    do_while_expr = DoWhileLoopExpr(condition=condition, body=body_block)
 
     assert str(do_while_expr)
     assert do_while_expr.get_struct()
@@ -359,15 +356,12 @@ def test_do_while_stmt() -> None:
         op_code="<",
         lhs=x_var,
         rhs=LiteralInt32(5),
-        loc=SourceLocation(line=1, col=0),
     )
 
     body_block = Block(name="do_while_body")
 
     # Create the DoWhileLoopStmt
-    do_while_stmt = DoWhileLoopStmt(
-        condition=condition, body=body_block, loc=SourceLocation(line=1, col=0)
-    )
+    do_while_stmt = DoWhileLoopStmt(condition=condition, body=body_block)
 
     assert str(do_while_stmt)
     assert do_while_stmt.get_struct()

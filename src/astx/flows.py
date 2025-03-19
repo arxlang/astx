@@ -712,17 +712,15 @@ class DoWhileLoopStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"DoWhileLoopStmt[{self.condition}]"
+        return f"DoWhileLoopStmt[condition = {self.condition}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        do_while_body = self.body.get_struct(simplified)
-        do_while_condition = self.condition.get_struct(simplified)
-
         key = f"DO-WHILE-STMT[{id(self)}]" if simplified else "DO-WHILE-STMT"
-        value: ReprStruct = {
-            **cast(DictDataTypesStruct, do_while_body),
-            **cast(DictDataTypesStruct, do_while_condition),
+        value: DictDataTypesStruct = {
+            "body": self.body.get_struct(simplified),
+            "condition": self.condition.get_struct(simplified),
+            "exec_order": "check-after-body",
         }
 
         return self._prepare_struct(key, value, simplified)
@@ -743,25 +741,23 @@ class DoWhileLoopExpr(Expr):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the DoWhileLoopExpr instance."""
+        """Initialize the DoWhileLoopStmt instance."""
         super().__init__(loc=loc, parent=parent)
         self.body = body
         self.condition = condition
-        self.kind = ASTKind.DoWhileLoopExprKind
+        self.kind = ASTKind.DoWhileLoopStmtKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"DoWhileLoopExpr[{self.condition}]"
+        return f"DoWhileLoopStmt[condition = {self.condition}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        do_while_body = self.body.get_struct(simplified)
-        do_while_condition = self.condition.get_struct(simplified)
-
-        key = "DO-WHILE-EXPR"
-        value: ReprStruct = {
-            **cast(DictDataTypesStruct, do_while_body),
-            **cast(DictDataTypesStruct, do_while_condition),
+        key = f"DO-WHILE-STMT[{id(self)}]" if simplified else "DO-WHILE-STMT"
+        value: DictDataTypesStruct = {
+            "body": self.body.get_struct(simplified),
+            "condition": self.condition.get_struct(simplified),
+            "exec_order": "check-after-body",
         }
 
         return self._prepare_struct(key, value, simplified)
