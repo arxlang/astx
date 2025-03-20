@@ -103,6 +103,7 @@ class ASTKind(Enum):
     BinaryOpKind = -301
     WalrusOpKind = -302
     AssignmentExprKind = -303
+    AugmentedAssignKind = -304
 
     # functions
     PrototypeKind = -400

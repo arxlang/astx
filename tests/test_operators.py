@@ -1,9 +1,17 @@
 """Tests for operators."""
 
+from typing import cast
+
 import astx
+import pytest
 
 from astx.literals.numeric import LiteralInt32
-from astx.operators import AssignmentExpr, VariableAssignment
+from astx.operators import (
+    AssignmentExpr,
+    AugAssign,
+    OpCodeAugAssign,
+    VariableAssignment,
+)
 from astx.variables import Variable
 from astx.viz import visualize
 
@@ -116,3 +124,31 @@ def test_not_op() -> None:
     assert op.get_struct()
     assert op.get_struct(simplified=True)
     visualize(op.get_struct())
+
+
+@pytest.mark.parametrize(
+    "operator, value",
+    [
+        (cast(OpCodeAugAssign, "+="), 10),
+        (cast(OpCodeAugAssign, "-="), 5),
+        (cast(OpCodeAugAssign, "*="), 3),
+        (cast(OpCodeAugAssign, "/="), 2),
+        (cast(OpCodeAugAssign, "//="), 2),
+        (cast(OpCodeAugAssign, "%="), 4),
+        (cast(OpCodeAugAssign, "**="), 2),
+        (cast(OpCodeAugAssign, "&="), 6),
+        (cast(OpCodeAugAssign, "|="), 3),
+        (cast(OpCodeAugAssign, "^="), 1),
+        (cast(OpCodeAugAssign, "<<="), 1),
+        (cast(OpCodeAugAssign, ">>="), 2),
+    ],
+)
+def test_aug_assign_operations(operator: OpCodeAugAssign, value: int) -> None:
+    """Test all augmented assignment operators using parametrize."""
+    var_x = astx.Identifier(value="x")
+    literal_value = LiteralInt32(value)
+    aug_assign = AugAssign(var_x, operator, literal_value)
+
+    assert str(aug_assign) == f"AugAssign[{operator}]"
+    assert aug_assign.get_struct()
+    assert aug_assign.get_struct(simplified=True)

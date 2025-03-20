@@ -115,6 +115,7 @@ from astx.modifiers import (
 )
 from astx.operators import (
     AssignmentExpr,
+    AugAssign,
     VariableAssignment,
     WalrusOp,
 )
@@ -190,7 +191,7 @@ def get_version() -> str:
     try:
         return importlib_metadata.version(__name__)
     except importlib_metadata.PackageNotFoundError:  # pragma: no cover
-        return "0.18.2"  # semantic-release
+        return "0.19.0"  # semantic-release
 
 
 __all__ = [
@@ -204,6 +205,7 @@ __all__ = [
     "AssignmentExpr",
     "AsyncForRangeLoopExpr",
     "AsyncForRangeLoopStmt",
+    "AugAssign",
     "AwaitExpr",
     "BinaryOp",
     "Block",

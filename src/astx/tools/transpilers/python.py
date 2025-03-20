@@ -5,6 +5,7 @@ from typing import Union, cast
 from plum import dispatch
 
 import astx
+import astx.operators
 
 from astx.tools.typing import typechecked
 
@@ -519,6 +520,13 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.WalrusOp) -> str:
         """Handle Walrus operator."""
         return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AugAssign) -> str:
+        """Handle Augmented assign operator."""
+        target = self.visit(node.target)
+        value = self.visit(node.value)
+        return f"{target} {node.op_code} {value}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:
