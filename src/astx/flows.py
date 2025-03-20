@@ -712,7 +712,7 @@ class DoWhileLoopStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"DoWhileLoopStmt[condition = {self.condition}]"
+        return f"DoWhileLoopStmt[condition={self.condition}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -741,19 +741,19 @@ class DoWhileLoopExpr(Expr):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the DoWhileLoopStmt instance."""
+        """Initialize the DoWhileLoopExpr instance."""
         super().__init__(loc=loc, parent=parent)
         self.body = body
         self.condition = condition
-        self.kind = ASTKind.DoWhileLoopStmtKind
+        self.kind = ASTKind.DoWhileLoopExprKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"DoWhileLoopStmt[condition = {self.condition}]"
+        return f"DoWhileLoopExpr[condition={self.condition}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = f"DO-WHILE-STMT[{id(self)}]" if simplified else "DO-WHILE-STMT"
+        key = "DO-WHILE-EXPR"
         value: DictDataTypesStruct = {
             "body": self.body.get_struct(simplified),
             "condition": self.condition.get_struct(simplified),
