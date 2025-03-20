@@ -7,6 +7,7 @@ from plum import dispatch
 import astx
 import astx.operators
 
+from astx.flows import SetComprehension
 from astx.tools.typing import typechecked
 
 
@@ -682,3 +683,23 @@ class ASTxPythonTranspiler:
             for key, value in node.elements.items()
         )
         return f"{{{items_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: SetComprehension) -> str:
+        """Handle SetComprehension nodes."""
+        elt = self.visit(node.elt)
+        generators_parts = []
+        var_name = elt if isinstance(node.elt, astx.Variable) else "x"
+        for gen in node.generators:
+            gen_str = self.visit(gen)
+            if isinstance(gen, astx.Variable):
+                generators_parts.append(f"for {var_name} in {gen.name}")
+            elif isinstance(gen, astx.LiteralInt32):
+                generators_parts.append(
+                    f"for {var_name} in range({gen.value})"
+                )
+            else:
+                generators_parts.append(f"for {var_name} in {gen_str}")
+
+        generators_str = " ".join(generators_parts)
+        return f"{{{elt} {generators_str}}}"
