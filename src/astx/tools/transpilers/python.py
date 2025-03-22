@@ -8,6 +8,7 @@ import astx
 import astx.operators
 
 from astx.tools.typing import typechecked
+from astx.tools.transpilers.python_ast import ASTxPythonASTTranspiler
 
 
 @typechecked
@@ -24,6 +25,7 @@ class ASTxPythonTranspiler:
     def __init__(self) -> None:
         self.indent_level = 0
         self.indent_str = "    "  # 4 spaces
+        self.ast_transpiler = ASTxPythonASTTranspiler()
 
     def _generate_block(self, block: astx.ASTNodes) -> str:
         """Generate code for a block of statements with proper indentation."""
@@ -64,8 +66,8 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AssignmentExpr) -> str:
         """Handle AssignmentExpr nodes."""
-        target_str = " = ".join(self.visit(target) for target in node.targets)
-        return f"{target_str} = {self.visit(node.value)}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AsyncForRangeLoopExpr) -> str:
@@ -95,15 +97,14 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AwaitExpr) -> str:
         """Handle AwaitExpr nodes."""
-        value = self.visit(node.value) if node.value else ""
-        return f"await {value}".strip()
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.BinaryOp) -> str:
         """Handle BinaryOp nodes."""
-        lhs = self.visit(node.lhs)
-        rhs = self.visit(node.rhs)
-        return f"({lhs} {node.op_code} {rhs})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Block) -> str:
@@ -134,8 +135,8 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> str:
         """Handle ClassDefStmt nodes."""
-        class_type = "(ABC)" if node.is_abstract else ""
-        return f"class {node.name}{class_type}:\n{self.visit(node.body)}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.EnumDeclStmt) -> str:
@@ -166,17 +167,8 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeLoopExpr nodes."""
-        if len(node.body) > 1:
-            raise ValueError(
-                "ForRangeLoopExpr in Python just accept 1 node in the body "
-                "attribute."
-            )
-        return (
-            f"result = [{self.visit(node.body).strip()} for "
-            f"{node.variable.name} in range"
-            f"({self.visit(node.start)}, {self.visit(node.end)}, "
-            f"{self.visit(node.step)})]"
-        )
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionAsyncDef) -> str:
@@ -194,27 +186,20 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionDef) -> str:
         """Handle FunctionDef nodes."""
-        args = self.visit(node.prototype.args)
-        returns = (
-            f" -> {self.visit(node.prototype.return_type)}"
-            if node.prototype.return_type
-            else ""
-        )
-        header = f"def {node.name}({args}){returns}:"
-        body = self.visit(node.body)
-        return f"{header}\n{body}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
-    @dispatch  # type: ignore[no-redef]
+        @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionCall) -> str:
         """Handle FunctionCall nodes."""
-        args = ", ".join([self.visit(arg) for arg in node.args])
-        return f"{node.fn.name}({args})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionReturn) -> str:
         """Handle FunctionReturn nodes."""
-        value = self.visit(node.value) if node.value else ""
-        return f"return {value}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Identifier) -> str:
@@ -224,125 +209,51 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> str:
         """Handle IfExpr nodes."""
-        if node.else_ is not None and len(node.else_) > 1:
-            raise ValueError(
-                "IfExpr in Python just accept 1 node in the else attribute."
-            )
-
-        if len(node.then) > 1:
-            raise ValueError(
-                "IfExpr in Python just accept 1 node in the then attribute."
-            )
-
-        if_ = self.visit(node.condition)
-        else_ = self.visit(node.else_).strip() if node.else_ else "None"
-        then_ = self.visit(node.then).strip()
-        return f"{then_} if {if_} else {else_}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfStmt) -> str:
         """Handle IfStmt nodes."""
-        else_ = (
-            (f"\nelse:\n{self._generate_block(node.else_)}")
-            if node.else_ is not None
-            else ""
-        )
-
-        return (
-            f"if {self.visit(node.condition)}:"
-            f"\n{self._generate_block(node.then)}"
-            f"{else_}"
-        )
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromStmt) -> str:
         """Handle ImportFromStmt nodes."""
-        names = [self.visit(name) for name in node.names]
-        level_dots = "." * node.level
-        module_str = (
-            f"{level_dots}{node.module}" if node.module else level_dots
-        )
-        names_str = ", ".join(str(name) for name in names)
-        return f"from {module_str} import {names_str}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportExpr) -> str:
         """Handle ImportExpr nodes."""
-        names = [self.visit(name) for name in node.names]
-        names_list = []
-        for name in names:
-            str_ = f"__import__('{name}') "
-            names_list.append(str_)
-        names_str = ", ".join(x for x in names_list)
-
-        # name if one import or name1, name2, etc if multiple imports
-        num = [
-            "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
-        ]
-        call = ["module" + str(n) for n in num]
-        call_str = ", ".join(x for x in call)
-
-        # assign tuple if multiple imports
-        names_str = (
-            names_str if len(names_list) == 1 else "(" + names_str + ")"
-        )
-
-        return f"{call_str} = {names_str}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromExpr) -> str:
         """Handle ImportFromExpr nodes."""
-        names = [self.visit(name) for name in node.names]
-        level_dots = "." * node.level
-        module_str = (
-            f"{level_dots}{node.module}" if node.module else level_dots
-        )
-        names_list = []
-        for name in names:
-            str_ = (
-                f"getattr(__import__('{module_str}', "
-                f"fromlist=['{name}']), '{name}')"
-            )
-            names_list.append(str_)
-        names_str = ", ".join(x for x in names_list)
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
-        # name if one import or name1, name2, etc if multiple imports
-        num = [
-            "" if len(names) == 1 else str(n) for n in range(1, len(names) + 1)
-        ]
-        call = ["name" + str(n) for n in num]
-        call_str = ", ".join(x for x in call)
 
-        # assign tuple if multiple imports
-        names_str = (
-            names_str if len(names_list) == 1 else "(" + names_str + ")"
-        )
-
-        return f"{call_str} = {names_str}"
-
-    @dispatch  # type: ignore[no-redef]
+        @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportStmt) -> str:
         """Handle ImportStmt nodes."""
-        names = [self.visit(name) for name in node.names]
-        names_str = ", ".join(x for x in names)
-        return f"import {names_str}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromStmt) -> str:
         """Handle ImportFromStmt nodes."""
-        names = [self.visit(name) for name in node.names]
-        level_dots = "." * node.level
-        module_str = (
-            f"{level_dots}{node.module}" if node.module else level_dots
-        )
-        names_str = ", ".join(str(name) for name in names)
-        return f"from {module_str} import {names_str}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LambdaExpr) -> str:
         """Handle LambdaExpr nodes."""
-        params_str = ", ".join(param.name for param in node.params)
-        return f"lambda {params_str}: {self.visit(node.body)}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralBoolean) -> str:
@@ -352,43 +263,45 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex32) -> str:
         """Handle LiteralComplex32 nodes."""
-        real = node.value[0]
-        imag = node.value[1]
-        return f"complex({real}, {imag})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex) -> str:
         """Handle LiteralComplex nodes."""
-        real = node.value[0]
-        imag = node.value[1]
-        return f"complex({real}, {imag})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
-    @dispatch  # type: ignore[no-redef]
+
+        @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex64) -> str:
         """Handle LiteralComplex64 nodes."""
-        real = node.value[0]
-        imag = node.value[1]
-        return f"complex({real}, {imag})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralFloat16) -> str:
         """Handle LiteralFloat nodes."""
-        return str(node.value)
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralFloat32) -> str:
         """Handle LiteralFloat nodes."""
-        return str(node.value)
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralFloat64) -> str:
         """Handle LiteralFloat nodes."""
-        return str(node.value)
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralInt32) -> str:
         """Handle LiteralInt32 nodes."""
-        return str(node.value)
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralString) -> str:
@@ -400,44 +313,29 @@ class ASTxPythonTranspiler:
         """Handle LiteralUTF8String nodes."""
         return repr(node.value)
 
-    @dispatch  # type: ignore[no-redef]
+
+        @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralUTF8Char) -> str:
         """Handle LiteralUTF8Char nodes."""
         return repr(node.value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(
-        self, node: Union[astx.StructDeclStmt, astx.StructDefStmt]
-    ) -> str:
+    def visit(self, node: Union[astx.StructDeclStmt, astx.StructDefStmt]) -> str:
         """Handle StructDeclStmt and StructDefStmt nodes."""
-        attrs_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
-        return f"@dataclass \nclass {node.name}:\n    {attrs_str}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SubscriptExpr) -> str:
         """Handle SubscriptExpr nodes."""
-        lower_str = (
-            str(node.lower.value)
-            if not isinstance(node.lower, astx.LiteralNone)
-            else str(node.index.value)
-        )
-        upper_str = (
-            ":" + str(node.upper.value)
-            if not isinstance(node.upper, astx.LiteralNone)
-            else ""
-        )
-        step_str = (
-            ":" + str(node.step.value)
-            if not isinstance(node.step, astx.LiteralNone)
-            else ""
-        )
-        return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
         """Handle SwitchStmt nodes."""
-        cases_visited = self._generate_block(cast(astx.Block, node.cases))
-        return f"match {self.visit(node.value)}:\n{cases_visited}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Complex32) -> str:
@@ -459,7 +357,8 @@ class ASTxPythonTranspiler:
         """Handle Float nodes."""
         return "float"
 
-    @dispatch  # type: ignore[no-redef]
+
+        @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Float64) -> str:
         """Handle Float nodes."""
         return "float"
@@ -472,21 +371,20 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.TypeCastExpr) -> str:
         """Handle TypeCastExpr nodes."""
-        return f"cast({self.visit(node.target_type)}, {node.expr.name})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ThrowStmt) -> str:
         """Handle ThrowStmt nodes."""
-        exception_str = (
-            f" {self.visit(node.exception)}" if node.exception else ""
-        )
-        return f"raise{exception_str}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> str:
         """Handle UnaryOp nodes."""
-        operand = self.visit(node.operand)
-        return f"({node.op_code}{operand})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UTF8Char) -> str:
@@ -506,58 +404,51 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableAssignment) -> str:
         """Handle VariableAssignment nodes."""
-        target = node.name
-        value = self.visit(node.value)
-        return f"{target} = {value}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableDeclaration) -> str:
         """Handle VariableDeclaration nodes."""
-        value = self.visit(node.value)
-        return f"{node.name}: {node.value.type_.__class__.__name__} = {value}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WalrusOp) -> str:
         """Handle Walrus operator."""
-        return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
-    @dispatch  # type: ignore[no-redef]
+
+        @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AugAssign) -> str:
         """Handle Augmented assign operator."""
-        target = self.visit(node.target)
-        value = self.visit(node.value)
-        return f"{target} {node.op_code} {value}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:
         """Handle WhileExpr nodes."""
-        if len(node.body) > 1:
-            raise ValueError(
-                "WhileExpr in Python just accept 1 node in the body attribute."
-            )
-
-        condition = self.visit(node.condition)
-        body = self.visit(node.body).strip()
-        return f"[{body} for _ in iter(lambda: {condition}, False)]"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileStmt) -> str:
         """Handle WhileStmt nodes."""
-        condition = self.visit(node.condition)
-        body = self._generate_block(node.body)
-        return f"while {condition}:\n{body}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.YieldExpr) -> str:
         """Handle YieldExpr nodes."""
-        value = self.visit(node.value) if node.value else ""
-        return f"yield {value}".strip()
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.YieldFromExpr) -> str:
         """Handle YieldFromExpr nodes."""
-        value = self.visit(node.value)
-        return f"yield from {value}".strip()
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Date) -> str:
@@ -569,7 +460,7 @@ class ASTxPythonTranspiler:
         """Handle Time nodes."""
         return "time"
 
-    @dispatch  # type: ignore[no-redef]
+        @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Timestamp) -> str:
         """Handle Timestamp nodes."""
         return "timestamp"
@@ -582,103 +473,90 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDate) -> str:
         """Handle LiteralDate nodes."""
-        return f"datetime.strptime({node.value!r}, '%Y-%m-%d').date()"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTime) -> str:
         """Handle LiteralTime nodes."""
-        return f"datetime.strptime({node.value!r}, '%H:%M:%S').time()"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTimestamp) -> str:
         """Handle LiteralTimestamp nodes."""
-        return f"datetime.strptime({node.value!r}, '%Y-%m-%d %H:%M:%S')"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDateTime) -> str:
         """Handle LiteralDateTime nodes."""
-        return f"datetime.strptime({node.value!r}, '%Y-%m-%dT%H:%M:%S')"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ParenthesizedExpr) -> str:
         """Handle ParenthesizedExpr nodes."""
-        return f"({self.visit(node.value)})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AndOp) -> str:
         """Handle AndOp nodes."""
-        lhs = self.visit(node.lhs)
-        rhs = self.visit(node.rhs)
-        return f"{lhs} and {rhs}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
-    @dispatch  # type: ignore[no-redef]
+
+        @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.OrOp) -> str:
         """Handle OrOp nodes."""
-        lhs = self.visit(node.lhs)
-        rhs = self.visit(node.rhs)
-        return f"{lhs} or {rhs}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.XorOp) -> str:
         """Handle XorOp nodes."""
-        lhs = self.visit(node.lhs)
-        rhs = self.visit(node.rhs)
-        return f"{lhs} ^ {rhs}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.NandOp) -> str:
         """Handle NandOp nodes."""
-        lhs = self.visit(node.lhs)
-        rhs = self.visit(node.rhs)
-        return f"not ({lhs} and {rhs})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.NorOp) -> str:
         """Handle NorOp nodes."""
-        lhs = self.visit(node.lhs)
-        rhs = self.visit(node.rhs)
-        return f"not ({lhs} or {rhs})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.XnorOp) -> str:
         """Handle XnorOp nodes."""
-        lhs = self.visit(node.lhs)
-        rhs = self.visit(node.rhs)
-        return f"not ({lhs} ^ {rhs})"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralList) -> str:
         """Handle LiteralList nodes."""
-        elements_code = ", ".join(
-            self.visit(element) for element in node.elements
-        )
-        return f"[{elements_code}]"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTuple) -> str:
         """Handle LiteralTuple nodes."""
-        elements_code = ", ".join(
-            self.visit(element) for element in node.elements
-        )
-        return (
-            f"({elements_code},)"
-            if len(node.elements) == 1
-            else f"({elements_code})"
-        )
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralSet) -> str:
         """Handle LiteralSet nodes."""
-        elements_code = ", ".join(
-            self.visit(element) for element in node.elements
-        )
-        return f"{{{elements_code}}}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDict) -> str:
         """Handle LiteralDict nodes."""
-        items_code = ", ".join(
-            f"{self.visit(key)}: {self.visit(value)}"
-            for key, value in node.elements.items()
-        )
-        return f"{{{items_code}}}"
+        python_ast = self.ast_transpiler.visit(node)
+        return ast.unparse(python_ast)
