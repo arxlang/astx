@@ -26,8 +26,7 @@ class Block(ASTNodes[ASTType]):
         for node in self.nodes:
             block_nodes.append(node.get_struct(simplified))
 
-        # key = f"BLOCK[{self.name}]"
-        key = f"BLOCK[{self.name}-{id(self)}]"  # Use object's memory address
+        key = f"BLOCK[{self.name}-{id(self)}]"
         value = cast(ReprStruct, block_nodes)
 
         return self._prepare_struct(key, value, simplified)
