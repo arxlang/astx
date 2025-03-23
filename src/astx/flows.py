@@ -245,6 +245,7 @@ class ForCountLoopStmt(StatementType):
     condition: Expr
     update: Expr
     body: Block
+    step: Optional[Expr]  # step attribute
 
     def __init__(
         self,
@@ -252,6 +253,7 @@ class ForCountLoopStmt(StatementType):
         condition: Expr,
         update: Expr,
         body: Block,
+        step: Optional[Expr] = None,  # step value
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -261,6 +263,7 @@ class ForCountLoopStmt(StatementType):
         self.condition = condition
         self.update = update
         self.body = body
+        self.step = step  # Store the step attribute
         self.kind = ASTKind.ForCountLoopStmtKind
 
     def __str__(self) -> str:
@@ -276,6 +279,9 @@ class ForCountLoopStmt(StatementType):
         for_cond = {"condition": self.condition.get_struct(simplified)}
         for_update = {"update": self.update.get_struct(simplified)}
         for_body = self.body.get_struct(simplified)
+        for_step = (
+            {"step": self.step.get_struct(simplified)} if self.step else {}
+        )  # step attribute
 
         key = "FOR-COUNT-STMT"
         value: ReprStruct = {
@@ -283,6 +289,9 @@ class ForCountLoopStmt(StatementType):
             **cast(DictDataTypesStruct, for_cond),
             **cast(DictDataTypesStruct, for_update),
             **cast(DictDataTypesStruct, for_body),
+            **cast(
+                DictDataTypesStruct, for_step
+            ),  # Include the step attribute
         }
 
         return self._prepare_struct(key, value, simplified)
