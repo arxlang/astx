@@ -253,7 +253,7 @@ class ForCountLoopStmt(StatementType):
         condition: Expr,
         update: Expr,
         body: Block,
-        step: Optional[Expr] = None,  # step value
+        step: Optional[Expr] = None,  # step value 
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
