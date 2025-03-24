@@ -6,8 +6,9 @@ import sys
 import astx
 import pytest
 
-from astx.tools.transpilers import python as astx2py
 from astx.flows import SetComprehension
+from astx.tools.transpilers import python as astx2py
+
 transpiler = astx2py.ASTxPythonTranspiler()
 
 
