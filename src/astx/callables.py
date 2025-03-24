@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Iterable, Optional, cast
+from typing import Any, Iterable, List, Optional, cast
 
 from public import public
 
@@ -12,6 +12,7 @@ from astx.base import (
     ASTNodes,
     DataType,
     Expr,
+    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
@@ -414,6 +415,33 @@ class YieldFromExpr(Expr):
         """Return the AST structure of the object."""
         key = "YIELDFROM-EXPR"
         value = self.value.get_struct(simplified)
+
+
+class DeleteStmt(StatementType):
+    """AST class for 'del' statements."""
+
+    value: List[Identifier]
+
+    def __init__(
+        self,
+        value: List[Identifier],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the DeleteStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.DeleteStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        value_str = ", ".join(str(value) for value in self.value)
+        return f"DeleteStmt[{value_str}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "DELETE"
+        value = [value.get_struct(simplified) for value in self.value]
         return self._prepare_struct(key, value, simplified)
 
 

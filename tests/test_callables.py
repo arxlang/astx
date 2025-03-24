@@ -2,11 +2,13 @@
 
 import pytest
 
+from astx.base import Identifier
 from astx.blocks import Block
 from astx.callables import (
     Argument,
     Arguments,
     AwaitExpr,
+    DeleteStmt,
     FunctionAsyncDef,
     FunctionCall,
     FunctionDef,
@@ -174,3 +176,25 @@ def test_yieldfrom_expr() -> None:
     assert yieldfrom_expr.get_struct()
     assert yieldfrom_expr.get_struct(simplified=True)
     visualize(yieldfrom_expr.get_struct())
+
+
+def test_delete_stmt() -> None:
+    """Test `DeleteStmt` class."""
+    var1 = Identifier(value="x")
+    var2 = Identifier(value="y")
+
+    # Create a DeleteStmt with multiple values
+    delete_stmt = DeleteStmt(value=[var1, var2])
+
+    # Test basic properties
+    assert str(delete_stmt)
+    assert delete_stmt.get_struct()
+    assert delete_stmt.get_struct(simplified=True)
+
+    # Optional: Visualize for documentation
+    visualize(delete_stmt.get_struct())
+
+    # Test with a single value
+    single_delete = DeleteStmt(value=[var1])
+    assert str(single_delete)
+    assert single_delete.get_struct()
