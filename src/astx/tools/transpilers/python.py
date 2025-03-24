@@ -133,10 +133,15 @@ class ASTxPythonTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CompareOp) -> str:
-        """Handle Compare operator."""
-        return (
-            f"({self.visit(node.lhs)} {node.op_code} {self.visit(node.rhs)})"
-        )
+        """Handle CompareOp nodes."""
+        comparisons = []
+        left = self.visit(node.left)
+        
+        for op, comparator in zip(node.ops, node.comparators):
+            comparisons.append(f"{op} {self.visit(comparator)}")
+        
+        chain = " ".join(comparisons)
+        return f"({left} {chain})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> str:

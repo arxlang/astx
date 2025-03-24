@@ -185,7 +185,7 @@ class AugAssign(DataType):
 @public
 @typechecked
 class CompareOp(DataType):
-    """AST class for comparison operators matching Python's ast Compare."""
+    """AST class for comparison operators acting as properties."""
 
     def __init__(
         self,
@@ -199,9 +199,7 @@ class CompareOp(DataType):
         self.ops = list(ops)
         self.comparators = list(comparators)
         if len(self.ops) != len(self.comparators):
-            raise ValueError(
-                "Number of operators must equal number of comparators."
-            )
+            raise ValueError("Number of operators must equal number of comparators.")
         for op in self.ops:
             if op not in ["==", "!=", "<", ">", "<=", ">="]:
                 raise ValueError(f"Invalid comparison operator: {op}")
@@ -210,25 +208,15 @@ class CompareOp(DataType):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        chain = " ".join(
-            f"{op} {comp.name if isinstance(comp, Variable) else str(comp)}"
-            for op, comp in zip(self.ops, self.comparators)
-        )
-        left_str = (
-            self.left.name
-            if isinstance(self.left, Variable)
-            else str(self.left)
-        )
-        return f"CompareOp({left_str} {chain})"
+        ops_str = ", ".join(self.ops)
+        return f"Compare[{ops_str}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure that represents the object."""
-        key = "COMPARE"
+        ops_str = ", ".join(self.ops)
+        key = f"COMPARE[{ops_str}]"
         content: ReprStruct = {
             "left": self.left.get_struct(simplified),
-            "ops": [{"op": op} for op in self.ops],
-            "comparators": [
-                comp.get_struct(simplified) for comp in self.comparators
-            ],
+            "comparators": [comp.get_struct(simplified) for comp in self.comparators],
         }
         return self._prepare_struct(key, content, simplified)

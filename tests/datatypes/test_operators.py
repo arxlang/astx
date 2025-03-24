@@ -67,20 +67,23 @@ def test_walrus_op_get_struct() -> None:
 
 
 def test_compare_op_init() -> None:
-    """Test CompareOp initialization and properties."""
+    """Test CompareOp initialization with single operator."""
     compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
     assert compare.kind == ASTKind.CompareOpKind
-    assert compare.ops == ["=="]  # Check the list of operators
-    assert compare.left == lit_1  # Check the left operand
-    assert compare.comparators == [lit_2]  # Check the list of comparators
-    assert str(compare) == f"CompareOp({lit_1} == {lit_2})"
+    assert compare.ops == ["=="]
+    assert compare.left == lit_1
+    assert compare.comparators == [lit_2]
+    assert str(compare) == "Compare[==]"
 
 
 def test_compare_op_get_struct() -> None:
-    """Test CompareOp get_struct method."""
+    """Test CompareOp get_struct returns correct structure."""
     compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
-    assert compare.get_struct(simplified=False)
-    assert compare.get_struct(simplified=True)
+    struct = compare.get_struct(simplified=False)
+    assert struct["type"] == "COMPARE[==]"
+    assert "left" in struct["content"]
+    assert "comparators" in struct["content"]
+    assert "ops" not in struct["content"]
 
 
 def test_compare_op_with_variables() -> None:
@@ -93,14 +96,26 @@ def test_compare_op_with_variables() -> None:
 
 
 def test_chained_compare_op() -> None:
-    """Test CompareOp with chained comparisons."""
+    """Test CompareOp with multiple chained comparisons."""
+    var_a = Variable("a")
+    var_b = Variable("b") 
+    var_c = Variable("c")
+    
     compare = CompareOp(
-        left=Variable("a"),
+        left=var_a,
         ops=["<", "<"],
-        comparators=[Variable("b"), Variable("c")],
+        comparators=[var_b, var_c]
     )
+    
     assert compare.kind == ASTKind.CompareOpKind
-    assert compare.left == Variable("a")
+    assert compare.left == var_a
     assert compare.ops == ["<", "<"]
-    assert compare.comparators == [Variable("b"), Variable("c")]
-    assert str(compare) == "CompareOp(a < b < c)"
+    assert compare.comparators == [var_b, var_c]
+    assert str(compare) == "Compare[<, <]"
+    
+    struct = compare.get_struct(simplified=False)
+    assert struct["type"] == "COMPARE[<, <]"
+    assert "left" in struct["content"]
+    assert "comparators" in struct["content"]
+    assert len(struct["content"]["comparators"]) == 2
+
