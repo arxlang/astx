@@ -682,3 +682,13 @@ class ASTxPythonTranspiler:
             for key, value in node.elements.items()
         )
         return f"{{{items_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.DictComprehension) -> str:
+        """Handle DictComprehension nodes."""
+        key = self.visit(node.key)
+        value = self.visit(node.value)
+        iterable = self.visit(node.iterable)
+        iterator = self.visit(node.iterator)
+
+        return f"{{{key}: {value} for {iterable} in {iterator}}}"
