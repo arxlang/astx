@@ -1,6 +1,18 @@
 # Release Notes
 ---
 
+# [0.19.0](https://github.com/arxlang/astx/compare/0.18.2...0.19.0) (2025-03-18)
+
+
+### Features
+
+* Add augmented assignment feature ([#208](https://github.com/arxlang/astx/issues/208)) ([4b5158e](https://github.com/arxlang/astx/commit/4b5158e3bd76d36cd5f94d5d9fabe1773e319994))
+* Add support for `AsyncFor` ([#211](https://github.com/arxlang/astx/issues/211)) ([e384edc](https://github.com/arxlang/astx/commit/e384edc6a03f8d9cd067888da132d515cc481fff))
+* Add support for `YieldFromExpr` ([#206](https://github.com/arxlang/astx/issues/206)) ([1a37027](https://github.com/arxlang/astx/commit/1a37027cea635867b53426a552e1b94e296f46b4))
+* Add Support for collection datatypes ([#186](https://github.com/arxlang/astx/issues/186)) ([dce0e1f](https://github.com/arxlang/astx/commit/dce0e1f4b6a2f7effb835c196195b8cfbc7a7f22))
+* **context-manager:** add context manager module, tests, and update base.py   ([#183](https://github.com/arxlang/astx/issues/183)) ([2cd4a91](https://github.com/arxlang/astx/commit/2cd4a91f6ce4685145c17fd436a147c5af252c43))
+* create `AwaitExpr` and `FunctionAsyncDef` ([#184](https://github.com/arxlang/astx/issues/184)) ([51739ae](https://github.com/arxlang/astx/commit/51739ae023eaae5443024c7b49065486b1eeb2e4))
+
 ## [0.18.2](https://github.com/arxlang/astx/compare/0.18.1...0.18.2) (2025-02-26)
 
 

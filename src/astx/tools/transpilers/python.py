@@ -5,6 +5,7 @@ from typing import Union, cast
 from plum import dispatch
 
 import astx
+import astx.operators
 
 from astx.tools.typing import typechecked
 
@@ -67,6 +68,31 @@ class ASTxPythonTranspiler:
         return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AsyncForRangeLoopExpr) -> str:
+        """Handle AsyncForRangeLoopExpr nodes."""
+        if len(node.body) > 1:
+            raise ValueError(
+                "AsyncForRangeLoopExpr in Python just accept 1 node in the "
+                "body attribute."
+            )
+        start = (
+            self.visit(node.start)
+            if getattr(node, "start", None) is not None
+            else "0"
+        )
+        end = self.visit(node.end)
+        step = (
+            self.visit(node.step)
+            if getattr(node, "step", None) is not None
+            else "1"
+        )
+
+        return (
+            f"result = [{self.visit(node.body).strip()} async for "
+            f"{node.variable.name} in range({start}, {end}, {step})]"
+        )
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AwaitExpr) -> str:
         """Handle AwaitExpr nodes."""
         value = self.visit(node.value) if node.value else ""
@@ -104,6 +130,13 @@ class ASTxPythonTranspiler:
         name_str = f" as {self.visit(node.name)}" if node.name else ""
         body_str = self._generate_block(node.body)
         return f"except{types_str}{name_str}:\n{body_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.CompareOp) -> str:
+        """Handle Compare operator."""
+        return (
+            f"({self.visit(node.lhs)} {node.op_code} {self.visit(node.rhs)})"
+        )
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> str:
@@ -496,6 +529,13 @@ class ASTxPythonTranspiler:
         return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AugAssign) -> str:
+        """Handle Augmented assign operator."""
+        target = self.visit(node.target)
+        value = self.visit(node.value)
+        return f"{target} {node.op_code} {value}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:
         """Handle WhileExpr nodes."""
         if len(node.body) > 1:
@@ -519,6 +559,12 @@ class ASTxPythonTranspiler:
         """Handle YieldExpr nodes."""
         value = self.visit(node.value) if node.value else ""
         return f"yield {value}".strip()
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.YieldFromExpr) -> str:
+        """Handle YieldFromExpr nodes."""
+        value = self.visit(node.value)
+        return f"yield from {value}".strip()
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Date) -> str:
