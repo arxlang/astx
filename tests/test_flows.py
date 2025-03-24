@@ -6,6 +6,8 @@ import pytest
 from astx.base import SourceLocation
 from astx.blocks import Block
 from astx.flows import (
+    AsyncForRangeLoopExpr,
+    AsyncForRangeLoopStmt,
     CaseStmt,
     ForCountLoopExpr,
     ForCountLoopStmt,
@@ -153,6 +155,46 @@ def test_for_count_loop_expr() -> None:
     assert for_expr.get_struct()
     assert for_expr.get_struct(simplified=True)
     visualize(for_expr.get_struct())
+
+
+def test_async_for_range_loop_expr() -> None:
+    """Test `Async For Range Loop` expression`."""
+    decl_a = InlineVariableDeclaration(
+        "a", type_=Int32(), value=LiteralInt32(-1)
+    )
+    start = LiteralInt32(1)
+    end = LiteralInt32(10)
+    step = LiteralInt32(1)
+    body = Block()
+    body.append(LiteralInt32(2))
+    for_expr = AsyncForRangeLoopExpr(
+        variable=decl_a, start=start, end=end, step=step, body=body
+    )
+
+    assert str(for_expr)
+    assert for_expr.get_struct()
+    assert for_expr.get_struct(simplified=True)
+    visualize(for_expr.get_struct())
+
+
+def test_async_for_range_loop_stmt() -> None:
+    """Test `Async For Range Loop` statement."""
+    decl_a = InlineVariableDeclaration(
+        "a", type_=Int32(), value=LiteralInt32(-1)
+    )
+    start = LiteralInt32(1)
+    end = LiteralInt32(10)
+    step = LiteralInt32(1)
+    body = Block()
+    body.append(LiteralInt32(2))
+    for_stmt = AsyncForRangeLoopStmt(
+        variable=decl_a, start=start, end=end, step=step, body=body
+    )
+
+    assert str(for_stmt)
+    assert for_stmt.get_struct()
+    assert for_stmt.get_struct(simplified=True)
+    visualize(for_stmt.get_struct())
 
 
 def test_while_expr() -> None:

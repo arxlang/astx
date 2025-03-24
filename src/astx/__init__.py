@@ -43,6 +43,7 @@ from astx.callables import (
     FunctionReturn,
     LambdaExpr,
     YieldExpr,
+    YieldFromExpr,
 )
 from astx.classes import (
     ClassDeclStmt,
@@ -58,6 +59,8 @@ from astx.exceptions import (
     ThrowStmt,
 )
 from astx.flows import (
+    AsyncForRangeLoopExpr,
+    AsyncForRangeLoopStmt,
     CaseStmt,
     ForCountLoopExpr,
     ForCountLoopStmt,
@@ -112,9 +115,10 @@ from astx.modifiers import (
 )
 from astx.operators import (
     AssignmentExpr,
-    CompareOp,
+    AugAssign,
     VariableAssignment,
     WalrusOp,
+    CompareOp,
 )
 from astx.packages import (
     AliasExpr,
@@ -188,7 +192,7 @@ def get_version() -> str:
     try:
         return importlib_metadata.version(__name__)
     except importlib_metadata.PackageNotFoundError:  # pragma: no cover
-        return "0.18.2"  # semantic-release
+        return "0.19.0"  # semantic-release
 
 
 __all__ = [
@@ -200,6 +204,9 @@ __all__ = [
     "Argument",
     "Arguments",
     "AssignmentExpr",
+    "AsyncForRangeLoopExpr",
+    "AsyncForRangeLoopStmt",
+    "AugAssign",
     "AwaitExpr",
     "BinaryOp",
     "Block",
@@ -332,6 +339,7 @@ __all__ = [
     "XnorOp",
     "XorOp",
     "YieldExpr",
+    "YieldFromExpr",
     "base",
     "blocks",
     "callables",

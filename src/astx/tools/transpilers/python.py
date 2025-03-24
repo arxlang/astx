@@ -5,6 +5,7 @@ from typing import Union, cast
 from plum import dispatch
 
 import astx
+import astx.operators
 
 from astx.tools.typing import typechecked
 
@@ -65,6 +66,31 @@ class ASTxPythonTranspiler:
         """Handle AssignmentExpr nodes."""
         target_str = " = ".join(self.visit(target) for target in node.targets)
         return f"{target_str} = {self.visit(node.value)}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AsyncForRangeLoopExpr) -> str:
+        """Handle AsyncForRangeLoopExpr nodes."""
+        if len(node.body) > 1:
+            raise ValueError(
+                "AsyncForRangeLoopExpr in Python just accept 1 node in the "
+                "body attribute."
+            )
+        start = (
+            self.visit(node.start)
+            if getattr(node, "start", None) is not None
+            else "0"
+        )
+        end = self.visit(node.end)
+        step = (
+            self.visit(node.step)
+            if getattr(node, "step", None) is not None
+            else "1"
+        )
+
+        return (
+            f"result = [{self.visit(node.body).strip()} async for "
+            f"{node.variable.name} in range({start}, {end}, {step})]"
+        )
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AwaitExpr) -> str:
@@ -503,6 +529,13 @@ class ASTxPythonTranspiler:
         return f"({self.visit(node.lhs)} := {self.visit(node.rhs)})"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AugAssign) -> str:
+        """Handle Augmented assign operator."""
+        target = self.visit(node.target)
+        value = self.visit(node.value)
+        return f"{target} {node.op_code} {value}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> str:
         """Handle WhileExpr nodes."""
         if len(node.body) > 1:
@@ -526,6 +559,12 @@ class ASTxPythonTranspiler:
         """Handle YieldExpr nodes."""
         value = self.visit(node.value) if node.value else ""
         return f"yield {value}".strip()
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.YieldFromExpr) -> str:
+        """Handle YieldFromExpr nodes."""
+        value = self.visit(node.value)
+        return f"yield from {value}".strip()
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Date) -> str:
