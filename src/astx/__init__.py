@@ -116,9 +116,9 @@ from astx.modifiers import (
 from astx.operators import (
     AssignmentExpr,
     AugAssign,
+    CompareOp,
     VariableAssignment,
     WalrusOp,
-    CompareOp,
 )
 from astx.packages import (
     AliasExpr,

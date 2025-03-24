@@ -8,6 +8,9 @@ from astx.operators import CompareOp, WalrusOp
 from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
 
+EXPECTED_COMPARATORS_LENGTH = 2
+
+# Test fixtures
 lit_1 = LiteralInt32(1)
 lit_2 = LiteralInt32(2)
 lit_3 = LiteralInt32(3)
@@ -80,17 +83,25 @@ def test_compare_op_get_struct() -> None:
     """Test CompareOp get_struct returns correct structure."""
     compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
     struct = compare.get_struct(simplified=False)
-    assert struct["type"] == "COMPARE[==]"
-    assert "left" in struct["content"]
-    assert "comparators" in struct["content"]
-    assert "ops" not in struct["content"]
+
+    assert isinstance(struct, dict)
+    expected_type = "COMPARE[==]"
+    # Safe dictionary access with type checking
+    assert expected_type in struct
+    struct_content = struct.get(expected_type)
+    assert isinstance(struct_content, dict)
+    content = struct_content.get("content", {})
+    assert isinstance(content, dict)
+    assert "left" in content
+    assert "comparators" in content
+    assert "ops" not in content
 
 
 def test_compare_op_with_variables() -> None:
     """Test CompareOp with variables."""
     var = Variable("x")
     compare = CompareOp(left=var, ops=[">"], comparators=[lit_1])
-    assert str(compare) == f"CompareOp(x > {lit_1})"
+    assert str(compare) == "Compare[>]"
     assert compare.left == var
     assert compare.comparators[0] == lit_1
 
@@ -98,24 +109,28 @@ def test_compare_op_with_variables() -> None:
 def test_chained_compare_op() -> None:
     """Test CompareOp with multiple chained comparisons."""
     var_a = Variable("a")
-    var_b = Variable("b") 
+    var_b = Variable("b")
     var_c = Variable("c")
-    
-    compare = CompareOp(
-        left=var_a,
-        ops=["<", "<"],
-        comparators=[var_b, var_c]
-    )
-    
+
+    compare = CompareOp(left=var_a, ops=["<", "<"], comparators=[var_b, var_c])
+
     assert compare.kind == ASTKind.CompareOpKind
     assert compare.left == var_a
     assert compare.ops == ["<", "<"]
     assert compare.comparators == [var_b, var_c]
     assert str(compare) == "Compare[<, <]"
-    
-    struct = compare.get_struct(simplified=False)
-    assert struct["type"] == "COMPARE[<, <]"
-    assert "left" in struct["content"]
-    assert "comparators" in struct["content"]
-    assert len(struct["content"]["comparators"]) == 2
 
+    struct = compare.get_struct(simplified=False)
+    assert isinstance(struct, dict)
+    expected_type = "COMPARE[<, <]"
+    # Safe dictionary access with type checking
+    assert expected_type in struct
+    struct_content = struct.get(expected_type)
+    assert isinstance(struct_content, dict)
+    content = struct_content.get("content", {})
+    assert isinstance(content, dict)
+    assert "left" in content
+    assert "comparators" in content
+    comparators = content.get("comparators", [])
+    assert isinstance(comparators, list)
+    assert len(comparators) == EXPECTED_COMPARATORS_LENGTH

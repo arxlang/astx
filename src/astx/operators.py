@@ -131,6 +131,7 @@ class VariableAssignment(StatementType):
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
 
+
 OpCodeAugAssign: TypeAlias = Literal[
     "+=",
     "-=",
@@ -181,7 +182,8 @@ class AugAssign(DataType):
             "value": self.value.get_struct(simplified),
         }
         return self._prepare_struct(key, value, simplified)
-      
+
+
 @public
 @typechecked
 class CompareOp(DataType):
@@ -199,7 +201,9 @@ class CompareOp(DataType):
         self.ops = list(ops)
         self.comparators = list(comparators)
         if len(self.ops) != len(self.comparators):
-            raise ValueError("Number of operators must equal number of comparators.")
+            raise ValueError(
+                "Number of operators must equal number of comparators."
+            )
         for op in self.ops:
             if op not in ["==", "!=", "<", ">", "<=", ">="]:
                 raise ValueError(f"Invalid comparison operator: {op}")
@@ -217,6 +221,8 @@ class CompareOp(DataType):
         key = f"COMPARE[{ops_str}]"
         content: ReprStruct = {
             "left": self.left.get_struct(simplified),
-            "comparators": [comp.get_struct(simplified) for comp in self.comparators],
+            "comparators": [
+                comp.get_struct(simplified) for comp in self.comparators
+            ],
         }
         return self._prepare_struct(key, content, simplified)

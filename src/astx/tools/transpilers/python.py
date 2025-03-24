@@ -136,10 +136,10 @@ class ASTxPythonTranspiler:
         """Handle CompareOp nodes."""
         comparisons = []
         left = self.visit(node.left)
-        
+
         for op, comparator in zip(node.ops, node.comparators):
             comparisons.append(f"{op} {self.visit(comparator)}")
-        
+
         chain = " ".join(comparisons)
         return f"({left} {chain})"
 
