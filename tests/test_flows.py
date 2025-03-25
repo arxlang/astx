@@ -323,3 +323,22 @@ def test_goto_stmt() -> None:
     assert goto_stmt.get_struct()
     assert goto_stmt.get_struct(simplified=True)
     visualize(goto_stmt.get_struct())
+
+
+def test_comprehension() -> None:
+    """Test generic comphrehension."""
+    target = astx.LiteralString("x")
+    iterable = astx.LiteralString("range(10)")
+    condition = astx.LiteralString("x > 5")
+
+    comp = astx.Comprehension(
+        target=target,
+        iterable=iterable,
+        conditions=[condition],
+        is_async=True,
+    )
+
+    expected_str = "COMPREHENSION[is_async=True]"
+    assert str(comp) == expected_str
+    assert comp.get_struct(simplified=True)
+    assert comp.get_struct(simplified=False)
