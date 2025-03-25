@@ -182,3 +182,47 @@ class AugAssign(DataType):
             "value": self.value.get_struct(simplified),
         }
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class CompareOp(DataType):
+    """AST class for comparison operators acting as properties."""
+
+    def __init__(
+        self,
+        left: DataType,
+        ops: Iterable[Literal["==", "!=", "<", ">", "<=", ">="]],
+        comparators: Iterable[DataType],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize the CompareOp instance."""
+        super().__init__(loc=loc)
+        self.ops = list(ops)
+        self.comparators = list(comparators)
+        if len(self.ops) != len(self.comparators):
+            raise ValueError(
+                "Number of operators must equal number of comparators."
+            )
+        for op in self.ops:
+            if op not in ["==", "!=", "<", ">", "<=", ">="]:
+                raise ValueError(f"Invalid comparison operator: {op}")
+        self.left = left
+        self.kind = ASTKind.CompareOpKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        ops_str = ", ".join(self.ops)
+        return f"Compare[{ops_str}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure that represents the object."""
+        ops_str = ", ".join(self.ops)
+        key = f"COMPARE[{ops_str}]"
+        content: ReprStruct = {
+            "left": self.left.get_struct(simplified),
+            "comparators": [
+                comp.get_struct(simplified) for comp in self.comparators
+            ],
+        }
+        return self._prepare_struct(key, content, simplified)

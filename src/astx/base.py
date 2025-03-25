@@ -104,6 +104,7 @@ class ASTKind(Enum):
     WalrusOpKind = -302
     AssignmentExprKind = -303
     AugmentedAssignKind = -304
+    CompareOpKind = -305
 
     # functions
     PrototypeKind = -400
