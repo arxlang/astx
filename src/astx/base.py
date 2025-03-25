@@ -104,6 +104,7 @@ class ASTKind(Enum):
     WalrusOpKind = -302
     AssignmentExprKind = -303
     AugmentedAssignKind = -304
+    CompareOpKind = -305
 
     # functions
     PrototypeKind = -400
@@ -113,8 +114,9 @@ class ASTKind(Enum):
     LambdaExprKind = -404
     FunctionAsyncDefKind = -405
     AwaitExprKind = -406
-    YieldExprKind = -510
-    YieldFromExprKind = -407
+    YieldExprKind = -407
+    YieldFromExprKind = -408
+    ComprehensionKind = -409
 
     # control flow
     IfStmtKind = -500
