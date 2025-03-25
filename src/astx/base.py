@@ -117,9 +117,7 @@ class ASTKind(Enum):
     YieldExprKind = -407
     YieldFromExprKind = -408
     ComprehensionKind = -409
-    YieldExprKind = -510
-    YieldFromExprKind = -407
-    DeleteStmtKind = -515
+    DeleteStmtKind = -410
 
     # control flow
     IfStmtKind = -500

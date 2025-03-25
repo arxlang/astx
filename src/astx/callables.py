@@ -415,6 +415,7 @@ class YieldFromExpr(Expr):
         """Return the AST structure of the object."""
         key = "YIELDFROM-EXPR"
         value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
 
 
 class DeleteStmt(StatementType):
@@ -441,7 +442,12 @@ class DeleteStmt(StatementType):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "DELETE"
-        value = [value.get_struct(simplified) for value in self.value]
+        # Convert list to a dictionary or other ReprStruct-compatible format
+        value: ReprStruct = {
+            f"target_{i}": val.get_struct(simplified)
+            for i, val in enumerate(self.value)
+        }
+
         return self._prepare_struct(key, value, simplified)
 
 
