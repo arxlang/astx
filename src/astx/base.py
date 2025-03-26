@@ -97,6 +97,7 @@ class ASTKind(Enum):
     VarsDeclKind = -204
     VariableAssignmentKind = -205
     VarsAssignKind = -206
+    DeleteStmtKind = -207
 
     # operators
     UnaryOpKind = -300
@@ -117,7 +118,6 @@ class ASTKind(Enum):
     YieldExprKind = -407
     YieldFromExprKind = -408
     ComprehensionKind = -409
-    DeleteStmtKind = -410
 
     # control flow
     IfStmtKind = -500

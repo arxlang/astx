@@ -37,7 +37,6 @@ from astx.callables import (
     Arguments,
     AwaitExpr,
     Comprehension,
-    DeleteStmt,
     FunctionAsyncDef,
     FunctionCall,
     FunctionDef,
@@ -183,6 +182,7 @@ from astx.types import (
     XorOp,
 )
 from astx.variables import (
+    DeleteStmt,
     InlineVariableDeclaration,
     Variable,
     VariableDeclaration,
