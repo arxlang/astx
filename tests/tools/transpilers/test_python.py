@@ -1404,8 +1404,10 @@ def test_transpiler_setcomprehension_var_var() -> None:
     """Test SetComprehension with variable element and variable generator."""
     var_x = astx.Variable(name="x")
     var_nums = astx.Variable(name="nums")
-    set_comp = SetComprehension(elt=var_x, generators=[var_nums])
-
+    comprehension = astx.Comprehension(
+        var_x, var_nums, []
+    )  # Changed to positional args
+    set_comp = SetComprehension(elt=var_x, generators=[comprehension])
     generated_code = translate(set_comp)
     expected_code = "{x for x in nums}"
 
@@ -1418,8 +1420,11 @@ def test_transpiler_setcomprehension_var_range() -> None:
     """Test SetComprehension with variable element and range generator."""
     var_x = astx.Variable(name="x")
     range_5 = astx.LiteralInt32(value=5)
+    comprehension = astx.Comprehension(
+        var_x, range_5, []
+    )  # Changed to positional args
+    set_comp = SetComprehension(elt=var_x, generators=[comprehension])
 
-    set_comp = SetComprehension(elt=var_x, generators=[range_5])
     generated_code = translate(set_comp)
     expected_code = "{x for x in range(5)}"
 
@@ -1431,9 +1436,12 @@ def test_transpiler_setcomprehension_var_range() -> None:
 def test_transpiler_setcomprehension_int_var() -> None:
     """Test SetComprehension with integer element and variable generator."""
     lit_1 = astx.LiteralInt32(value=1)
+    var_x = astx.Variable(name="x")
     var_nums = astx.Variable(name="nums")
-
-    set_comp = SetComprehension(elt=lit_1, generators=[var_nums])
+    comprehension = astx.Comprehension(
+        var_x, var_nums, []
+    )  # Changed to positional args
+    set_comp = SetComprehension(elt=lit_1, generators=[comprehension])
 
     generated_code = translate(set_comp)
     expected_code = "{1 for x in nums}"
@@ -1449,7 +1457,14 @@ def test_transpiler_setcomprehension_multiple_generators() -> None:
     var_nums = astx.Variable(name="nums")
     range_3 = astx.LiteralInt32(value=3)
 
-    set_comp = SetComprehension(elt=var_x, generators=[var_nums, range_3])
+    comp1 = astx.Comprehension(
+        var_x, var_nums, []
+    )  # Changed to positional args
+    comp2 = astx.Comprehension(
+        var_x, range_3, []
+    )  # Changed to positional args
+
+    set_comp = SetComprehension(elt=var_x, generators=[comp1, comp2])
 
     generated_code = translate(set_comp)
     expected_code = "{x for x in nums for x in range(3)}"

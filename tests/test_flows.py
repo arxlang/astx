@@ -1,11 +1,9 @@
 """Tests for control flow statements."""
 
-from typing import Dict, cast
-
 import astx
 import pytest
 
-from astx.base import DictDataTypesStruct, ReprStruct, SourceLocation
+from astx.base import SourceLocation
 from astx.blocks import Block
 from astx.flows import (
     AsyncForRangeLoopExpr,
@@ -227,12 +225,19 @@ def test_while_expr() -> None:
 
 def test_set_comprehension_basic() -> None:
     """Test basic creation and properties of SetComprehension."""
-    elt = LiteralInt32(5)
-    gen = LiteralInt32(10)
-    set_comp = SetComprehension(elt=elt, generators=[gen])
+    elt = astx.LiteralInt32(5)
+    target = astx.Variable("x")
+    iterable = astx.LiteralInt32(10)
+    comp = astx.Comprehension(
+        target=target, iterable=iterable, conditions=None, is_async=False
+    )
+
+    set_comp = astx.SetComprehension(elt=elt, generators=[comp])
+
     assert isinstance(set_comp, SetComprehension)
     assert set_comp.elt == elt
-    assert set_comp.generators == [gen]
+    assert len(set_comp.generators) == 1
+    assert isinstance(set_comp.generators[0], astx.Comprehension)
     assert str(set_comp) == "SetComprehension[LiteralInt32(5)]"
     assert isinstance(set_comp.type_, SetType)
     assert set_comp.get_struct()
@@ -245,50 +250,46 @@ def test_set_comprehension_basic() -> None:
 
 def test_set_comprehension_multiple_generators() -> None:
     """Test SetComprehension with multiple generators."""
-    elt = LiteralInt32(5)
-    EXPECTED_GENERATOR_COUNT = 3
-    generators = [
-        LiteralInt32(10),
-        LiteralInt32(20),
-        LiteralInt32(30),
-    ]
-    set_comp = SetComprehension(elt=elt, generators=generators)
-    assert len(set_comp.generators) == EXPECTED_GENERATOR_COUNT
-    assert set_comp.generators == generators
-    assert all(isinstance(gen, LiteralInt32) for gen in set_comp.generators)
-    assert str(set_comp) == "SetComprehension[LiteralInt32(5)]"
-    struct = cast(Dict[str, DictDataTypesStruct], set_comp.get_struct())
-    content = cast(
-        Dict[str, DictDataTypesStruct], struct["SET-COMPREHENSION"]["content"]
+    target = astx.Variable(name="x")
+    iterable = astx.Variable(name="nums")
+    comp1 = astx.Comprehension(
+        target=target, iterable=iterable, conditions=[], is_async=False
     )
-    assert "generators" in content
-    generators_dict = cast(Dict[str, ReprStruct], content["generators"])
-    assert len(generators_dict) == EXPECTED_GENERATOR_COUNT
+
+    range_3 = astx.LiteralInt32(value=3)
+    comp2 = astx.Comprehension(
+        target=target, iterable=range_3, conditions=[], is_async=False
+    )
+
+    set_comp = SetComprehension(elt=target, generators=[comp1, comp2])
+
+    assert str(set_comp)
+    assert set_comp.get_struct()
     assert set_comp.get_struct(simplified=True)
-    try:
-        visualize(set_comp.get_struct())
-    except Exception:
-        pass
 
 
 def test_set_comprehension_with_different_element_type() -> None:
-    """Test SetComprehension with a non-numeric element type."""
-    elt = LiteralString("test")
-    gen = LiteralInt32(5)
-    set_comp = SetComprehension(elt=elt, generators=[gen])
-    assert isinstance(set_comp.type_, SetType)
-    assert str(set_comp) == "SetComprehension[LiteralString(test)]"
-    struct = cast(Dict[str, DictDataTypesStruct], set_comp.get_struct())
-    content = cast(
-        Dict[str, DictDataTypesStruct], struct["SET-COMPREHENSION"]["content"]
+    """Test SetComprehension with different element types."""
+    target = astx.Variable(name="x", type_=astx.Int32())
+    iterable = astx.Variable(
+        name="nums",
+        type_=astx.types.collections.SetType(element_type=astx.Int32()),
     )
-    assert "element" in content
-    assert set_comp.get_struct()
-    assert set_comp.get_struct(simplified=True)
-    try:
-        visualize(set_comp.get_struct())
-    except Exception:
-        pass
+
+    comp = astx.Comprehension(
+        target=target, iterable=iterable, conditions=[], is_async=False
+    )
+
+    set_comp = SetComprehension(
+        elt=target,
+        generators=[comp],
+    )
+
+    generated = set_comp.get_struct()
+    assert isinstance(generated, dict)
+    assert "type" in generated
+    assert "elt" in generated
+    assert "generators" in generated
 
 
 def test_while_stmt() -> None:

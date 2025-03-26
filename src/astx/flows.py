@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, Sequence, cast
+from typing import Optional, cast
 
 from public import public
 
@@ -18,7 +18,9 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
+from astx.callables import Comprehension
 from astx.tools.typing import typechecked
+from astx.types.base import AnyType
 from astx.types.collections import SetType
 from astx.variables import InlineVariableDeclaration
 
@@ -313,8 +315,8 @@ class ForCountLoopExpr(Expr):
         condition: Expr,
         update: Expr,
         body: Block,
-        loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the ForLoopCountExpr instance."""
         super().__init__(loc=loc, parent=parent)
@@ -557,12 +559,12 @@ class SetComprehension(Expr):
     """AST class for a set comprehension expression."""
 
     elt: Expr
-    generators: Sequence[Expr]
+    generators: list[Comprehension]
 
     def __init__(
         self,
         elt: Expr,
-        generators: Sequence[Expr],
+        generators: list[Comprehension],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -570,12 +572,9 @@ class SetComprehension(Expr):
         super().__init__(loc=loc, parent=parent)
         self.elt = elt
         self.generators = generators
-        element_type = getattr(self.elt, "type_", None)
-        self.type_ = (
-            SetType(element_type) if element_type is not None else None
-        )
+        # Initialize type internally based on element
+        self.type_ = SetType(element_type=getattr(elt, "type_", AnyType()))
         self.kind = ASTKind.SetComprehensionKind
-        self.loc = loc
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
@@ -583,15 +582,15 @@ class SetComprehension(Expr):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        elt_struct = {"element": self.elt.get_struct(simplified)}
-        generators_struct = {
-            f"generator_{i}": gen.get_struct(simplified)
-            for i, gen in enumerate(self.generators)
-        }
         key = "SET-COMPREHENSION"
         value: ReprStruct = {
-            **cast(DictDataTypesStruct, elt_struct),
-            **cast(DictDataTypesStruct, {"generators": generators_struct}),
+            "content": {
+                "type": {"SET": {}},
+                "element": self.elt.get_struct(simplified),
+                "generators": [
+                    gen.get_struct(simplified) for gen in self.generators
+                ],
+            }
         }
         return self._prepare_struct(key, value, simplified)
 
