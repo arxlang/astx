@@ -97,6 +97,7 @@ class ASTKind(Enum):
     VarsDeclKind = -204
     VariableAssignmentKind = -205
     VarsAssignKind = -206
+    DeleteStmtKind = -207
 
     # operators
     UnaryOpKind = -300

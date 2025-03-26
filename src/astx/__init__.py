@@ -182,6 +182,7 @@ from astx.types import (
     XorOp,
 )
 from astx.variables import (
+    DeleteStmt,
     InlineVariableDeclaration,
     Variable,
     VariableDeclaration,
@@ -228,6 +229,7 @@ __all__ = [
     "DataTypeOps",
     "Date",
     "DateTime",
+    "DeleteStmt",
     "DictType",
     "EnumDeclStmt",
     "ExceptionHandlerStmt",

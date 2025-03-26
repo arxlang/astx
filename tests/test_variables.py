@@ -75,3 +75,28 @@ def test_arguments() -> None:
     assert args.get_struct(simplified=True)
 
     visualize(args.get_struct())
+
+
+def test_delete_stmt() -> None:
+    """Test DeleteStmt creation and properties."""
+    var1 = astx.Identifier(value="x")
+    var2 = astx.Identifier(value="y")
+
+    # Create a DeleteStmt with multiple values
+    delete_stmt = astx.DeleteStmt(value=[var1, var2])
+
+    # Test basic properties
+    assert str(delete_stmt)
+    assert delete_stmt.get_struct()
+    assert delete_stmt.get_struct(simplified=True)
+
+    # Visualize for documentation
+    visualize(delete_stmt.get_struct())
+
+    # Test with a single value
+    single_delete = astx.DeleteStmt(value=[var1])
+    assert str(single_delete)
+    assert single_delete.get_struct()
+
+    # Optional: visualize single value case too
+    visualize(single_delete.get_struct())
