@@ -1117,6 +1117,33 @@ def test_transpiler_assignmentexpr() -> None:
     )
 
 
+def test_transpiler_delete_stmt() -> None:
+    """Test astx.DeleteStmt transpilation."""
+    # Create identifiers to be deleted
+    var1 = astx.Identifier(value="x")
+    var2 = astx.Identifier(value="y")
+
+    # Create a DeleteStmt with multiple targets
+    delete_stmt = astx.DeleteStmt(value=[var1, var2])
+
+    # Generate Python code
+    generated_code = translate(delete_stmt)
+    expected_code = "del x, y"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+    # Test single target deletion
+    single_delete = astx.DeleteStmt(value=[var1])
+    generated_code = translate(single_delete)
+    expected_code = "del x"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
 def test_transpiler_throwstmt() -> None:
     """Test astx.ThrowStmt."""
     # create throw statement
