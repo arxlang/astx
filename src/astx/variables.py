@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Iterable, Optional
 
 from public import public
 
@@ -12,6 +12,7 @@ from astx.base import (
     ASTNodes,
     DataType,
     Expr,
+    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
@@ -145,4 +146,37 @@ class Variable(DataTypeOps):
         """Return the AST structure of the object."""
         key = f"Variable[{self.name}]"
         value = self.name
+        return self._prepare_struct(key, value, simplified)
+
+
+class DeleteStmt(StatementType):
+    """AST class for 'del' statements."""
+
+    value: Iterable[Identifier]
+
+    def __init__(
+        self,
+        value: Iterable[Identifier],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the DeleteStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.DeleteStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        value_str = ", ".join(str(value) for value in self.value)
+        return f"DeleteStmt[{value_str}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "DELETE"
+
+        value: ReprStruct = {
+            f"target_{i}": val.get_struct(simplified)
+            for i, val in enumerate(self.value)
+        }
+
         return self._prepare_struct(key, value, simplified)
