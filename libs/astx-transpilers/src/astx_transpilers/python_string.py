@@ -2,12 +2,11 @@
 
 from typing import Union, cast
 
-from plum import dispatch
-
 import astx
 import astx.operators
 
 from astx.tools.typing import typechecked
+from plum import dispatch
 
 
 @typechecked

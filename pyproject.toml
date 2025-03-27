@@ -1,5 +1,5 @@
 [project]
-name = "astx"
+name = "astx-dev"
 version = "0.19.0"  # semantic-release
 description = "ASTx is an agnostic expression structure for AST."
 readme = "docs/index.md"
@@ -8,32 +8,18 @@ authors = [
 ]
 license = "BSD 3 Clause"
 requires-python = ">=3.9,<4"
-dependencies = [
-  "atpublic >= 4.0",
-  "graphviz >= 0.20.1",
-  "asciinet >= 0.3.1",
-  "msgpack >= 1",
-  "plum-dispatch >= 2",
-  "typeguard >= 4",
-  "typing-extensions >=4 ; python_version < '3.9'",
-  "eval-type-backport >=0.2 ; python_version < '3.10'",
-]
-
-
-[build-system]
-requires = ["poetry-core>=2"]
-build-backend = "poetry.core.masonry.api"
-
 
 [tool.poetry]
 exclude = [
   ".git/*",
   ".env*",
 ]
-packages = [
-  {include = "astx", from="src"},
-]
-include = ["src/astx/py.typed"]
+package-mode = false
+
+[tool.poetry.dependencies]
+# directory
+astx = { path = "libs/astx/", develop = true }
+astx-transpilers= { path = "libs/astx-transpilers/", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.3.2"
@@ -61,9 +47,14 @@ nbmake = ">=1.4.6"
 mkdocs-gen-files = ">=0.5.0"
 types-requests = ">=2.31.0.20240406"
 
+[build-system]
+requires = ["poetry-core>=2"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.pytest.ini_options]
 testpaths = [
-    "tests",
+    "libs/astx/tests",
+    "libs/astx-transpilers/tests",
 ]
 filterwarnings = [
     "error::RuntimeWarning",
