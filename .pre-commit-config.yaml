@@ -75,7 +75,7 @@ repos:
         name: vulture
         entry: vulture --min-confidence 80
         language: system
-        files: "src/astx"
+        files: "libs"
         description: Find unused Python code.
         pass_filenames: true
         types:
@@ -85,7 +85,7 @@ repos:
         name: mccabe
         entry: python -m mccabe --min 10
         language: system
-        files: "src/astx"
+        files: "libs"
         pass_filenames: true
         types:
           - python

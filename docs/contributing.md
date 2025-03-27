@@ -1,8 +1,12 @@
 # Contributing Guideline
 
+The projetc uses the _monorepo_ approach, so the libraries are stored at
+**libs/astx**, and **libs/astx-transpilers**.
+
 In order to be able to contribute, it is important that you understand the
 project layout. This project uses the _src layout_, which means that the package
-code is located at `./src/astx`.
+code is main located at `./libs/astx/src/astx` and
+`./libs/astx-transpilers/src/astx`.
 
 For more information, check the official documentation:
 https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/
