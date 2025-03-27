@@ -64,6 +64,20 @@
             "countMatches": true
           },
           {
+            "files": ["libs/astx-transpilers/pyproject.toml"],
+            "from": "astx == \".*\",  # semantic-release",
+            "to": "astx == \"${nextRelease.version}\",  # semantic-release",
+            "results": [
+              {
+                "file": "libs/astx-transpilers/pyproject.toml",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
             "files": ["libs/astx-transpilers/src/astx_transpilers/__init__.py"],
             "from": "return \".*\"  # semantic-release",
             "to": "return \"${nextRelease.version}\"  # semantic-release",
