@@ -65,8 +65,8 @@
           },
           {
             "files": ["libs/astx-transpilers/pyproject.toml"],
-            "from": "astx == \".*\",  # semantic-release",
-            "to": "astx == \"${nextRelease.version}\",  # semantic-release",
+            "from": "  \"astx == .*\",  # semantic-release",
+            "to": "  \"astx == ${nextRelease.version}\",  # semantic-release",
             "results": [
               {
                 "file": "libs/astx-transpilers/pyproject.toml",
