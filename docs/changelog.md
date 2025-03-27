@@ -1,6 +1,22 @@
 # Release Notes
 ---
 
+# [0.20.0](https://github.com/arxlang/astx/compare/0.19.0...0.20.0) (2025-03-27)
+
+
+### Bug Fixes
+
+* Fix ASCII representation ([#214](https://github.com/arxlang/astx/issues/214)) ([f12305d](https://github.com/arxlang/astx/commit/f12305d65c078709affe14ccd2b6718fd38f9f48))
+* Fix the release workflow ([#227](https://github.com/arxlang/astx/issues/227)) ([a48d21b](https://github.com/arxlang/astx/commit/a48d21bf3ea0a351359abb5f6946d7dbe33475c8))
+* Fix the release workflow (2) ([#228](https://github.com/arxlang/astx/issues/228)) ([9f808be](https://github.com/arxlang/astx/commit/9f808bed30c1d436e11bd9c013835e71b2c563b8))
+
+
+### Features
+
+* Add support for Comprehension ([#225](https://github.com/arxlang/astx/issues/225)) ([81ad947](https://github.com/arxlang/astx/commit/81ad94792a3ae7d766717220533b64ec6e5b3602))
+* Add support for DeleteStmt ([#224](https://github.com/arxlang/astx/issues/224)) ([806d402](https://github.com/arxlang/astx/commit/806d402727dc9bdf7ad317c87d8e5ef28af160c9))
+* **compare:** Add support for comparison operators ([0d0e859](https://github.com/arxlang/astx/commit/0d0e859c0f1619d0b52e33f88a37aef02d889a89))
+
 # [0.19.0](https://github.com/arxlang/astx/compare/0.18.2...0.19.0) (2025-03-18)
 
 
