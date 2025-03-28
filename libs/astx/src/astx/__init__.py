@@ -310,6 +310,7 @@ __all__ = [
     "Program",
     "ScopeKind",
     "SetComprehension",
+    "SetComprehension",
     "SetType",
     "SignedInteger",
     "SourceLocation",

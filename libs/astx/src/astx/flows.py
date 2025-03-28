@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Any, Dict, List, Optional, cast
 
 from public import public
 
@@ -553,18 +553,16 @@ class WhileExpr(Expr):
         return self._prepare_struct(key, value, simplified)
 
 
-@public
-@typechecked
 class SetComprehension(Expr):
     """AST class for a set comprehension expression."""
 
     elt: Expr
-    generators: list[Comprehension]
+    generators: List[Comprehension]
 
     def __init__(
         self,
         elt: Expr,
-        generators: list[Comprehension],
+        generators: List[Comprehension],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -572,7 +570,6 @@ class SetComprehension(Expr):
         super().__init__(loc=loc, parent=parent)
         self.elt = elt
         self.generators = generators
-        # Initialize type internally based on element
         self.type_ = SetType(element_type=getattr(elt, "type_", AnyType()))
         self.kind = ASTKind.SetComprehensionKind
 
@@ -583,13 +580,15 @@ class SetComprehension(Expr):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "SET-COMPREHENSION"
-        value: ReprStruct = {
+        value: Dict[str, Any] = {
             "content": {
-                "type": {"SET": {}},
-                "element": self.elt.get_struct(simplified),
-                "generators": [
-                    gen.get_struct(simplified) for gen in self.generators
-                ],
+                "content": {
+                    "type": {"SET": {}},
+                    "element": self.elt.get_struct(simplified),
+                    "generators": [
+                        gen.get_struct(simplified) for gen in self.generators
+                    ],
+                }
             }
         }
         return self._prepare_struct(key, value, simplified)

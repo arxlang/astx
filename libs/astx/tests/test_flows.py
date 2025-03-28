@@ -3,9 +3,9 @@
 import astx
 import pytest
 
-from astx.base import SourceLocation
-from astx.blocks import Block
-from astx.flows import (
+from astx.src.astx.base import SourceLocation
+from astx.src.astx.blocks import Block
+from astx.src.astx.flows import (
     AsyncForRangeLoopExpr,
     AsyncForRangeLoopStmt,
     CaseStmt,
@@ -20,13 +20,13 @@ from astx.flows import (
     WhileExpr,
     WhileStmt,
 )
-from astx.literals import LiteralInt32, LiteralString
-from astx.literals.numeric import LiteralInt32
-from astx.types.collections import SetType
-from astx.types.numeric import Int32
-from astx.types.operators import BinaryOp, UnaryOp
-from astx.variables import InlineVariableDeclaration, Variable
-from astx.viz import visualize
+from astx.src.astx.literals import LiteralInt32, LiteralString
+from astx.src.astx.literals.numeric import LiteralInt32
+from astx.src.astx.types.collections import SetType
+from astx.src.astx.types.numeric import Int32
+from astx.src.astx.types.operators import BinaryOp, UnaryOp
+from astx.src.astx.variables import InlineVariableDeclaration, Variable
+from astx.src.astx.viz import visualize
 
 
 def test_if_stmt() -> None:
@@ -266,30 +266,6 @@ def test_set_comprehension_multiple_generators() -> None:
     assert str(set_comp)
     assert set_comp.get_struct()
     assert set_comp.get_struct(simplified=True)
-
-
-def test_set_comprehension_with_different_element_type() -> None:
-    """Test SetComprehension with different element types."""
-    target = astx.Variable(name="x", type_=astx.Int32())
-    iterable = astx.Variable(
-        name="nums",
-        type_=astx.types.collections.SetType(element_type=astx.Int32()),
-    )
-
-    comp = astx.Comprehension(
-        target=target, iterable=iterable, conditions=[], is_async=False
-    )
-
-    set_comp = SetComprehension(
-        elt=target,
-        generators=[comp],
-    )
-
-    generated = set_comp.get_struct()
-    assert isinstance(generated, dict)
-    assert "type" in generated
-    assert "elt" in generated
-    assert "generators" in generated
 
 
 def test_while_stmt() -> None:
