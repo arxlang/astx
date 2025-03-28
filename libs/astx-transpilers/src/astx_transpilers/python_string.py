@@ -708,7 +708,11 @@ class ASTxPythonTranspiler:
         generators_parts = []
         for gen in node.generators:
             target = self.visit(gen.target)
-            iterable = self.visit(gen.iterable)
+            # Handle LiteralInt32 by wrapping it in range()
+            if isinstance(gen.iterable, astx.LiteralInt32):
+                iterable = f"range({self.visit(gen.iterable)})"
+            else:
+                iterable = self.visit(gen.iterable)
             generators_parts.append(f"for {target} in {iterable}")
         generators_str = " ".join(generators_parts)
         return f"{{{elt} {generators_str}}}"
