@@ -5,8 +5,8 @@ from typing import Union, cast
 import astx
 import astx.operators
 
-from astx.tools.typing import typechecked
 from astx.flows import SetComprehension
+from astx.tools.typing import typechecked
 from plum import dispatch
 
 
