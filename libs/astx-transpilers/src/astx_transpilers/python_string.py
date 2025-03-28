@@ -1,12 +1,12 @@
-"""ASTx Python transpiler."""
+"""Python string transpiler for ASTx."""
 
 from typing import Union, cast
 
 import astx
-import astx.src.astx.operators
+import astx.operators
 
+from astx.tools.typing import typechecked
 from astx.flows import SetComprehension
-from astx.src.astx.tools.typing import typechecked
 from plum import dispatch
 
 

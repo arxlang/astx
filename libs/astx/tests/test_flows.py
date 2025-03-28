@@ -3,9 +3,9 @@
 import astx
 import pytest
 
-from astx.src.astx.base import SourceLocation
-from astx.src.astx.blocks import Block
-from astx.src.astx.flows import (
+from astx.base import SourceLocation
+from astx.blocks import Block
+from astx.flows import (
     AsyncForRangeLoopExpr,
     AsyncForRangeLoopStmt,
     CaseStmt,
@@ -20,13 +20,13 @@ from astx.src.astx.flows import (
     WhileExpr,
     WhileStmt,
 )
-from astx.src.astx.literals import LiteralInt32, LiteralString
-from astx.src.astx.literals.numeric import LiteralInt32
-from astx.src.astx.types.collections import SetType
-from astx.src.astx.types.numeric import Int32
-from astx.src.astx.types.operators import BinaryOp, UnaryOp
-from astx.src.astx.variables import InlineVariableDeclaration, Variable
-from astx.src.astx.viz import visualize
+from astx.literals import LiteralInt32, LiteralString
+from astx.literals.numeric import LiteralInt32
+from astx.types.collections import SetType
+from astx.types.numeric import Int32
+from astx.types.operators import BinaryOp, UnaryOp
+from astx.variables import InlineVariableDeclaration, Variable
+from astx.viz import visualize
 
 
 def test_if_stmt() -> None:
