@@ -8,12 +8,12 @@
       {
         "replacements": [
           {
-            "files": ["src/astx/__init__.py"],
-            "from": "return \".*\"  # semantic-release",
-            "to": "return \"${nextRelease.version}\"  # semantic-release",
+            "files": ["pyproject.toml"],
+            "from": "version = \".*\"  # semantic-release",
+            "to": "version = \"${nextRelease.version}\"  # semantic-release",
             "results": [
               {
-                "file": "src/astx/__init__.py",
+                "file": "pyproject.toml",
                 "hasChanged": true,
                 "numMatches": 1,
                 "numReplacements": 1
@@ -22,12 +22,68 @@
             "countMatches": true
           },
           {
-            "files": ["pyproject.toml"],
+            "files": ["libs/astx/pyproject.toml"],
             "from": "version = \".*\"  # semantic-release",
             "to": "version = \"${nextRelease.version}\"  # semantic-release",
             "results": [
               {
-                "file": "pyproject.toml",
+                "file": "libs/astx/pyproject.toml",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
+            "files": ["libs/astx/src/astx/__init__.py"],
+            "from": "return \".*\"  # semantic-release",
+            "to": "return \"${nextRelease.version}\"  # semantic-release",
+            "results": [
+              {
+                "file": "libs/astx/src/astx/__init__.py",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
+            "files": ["libs/astx-transpilers/pyproject.toml"],
+            "from": "version = \".*\"  # semantic-release",
+            "to": "version = \"${nextRelease.version}\"  # semantic-release",
+            "results": [
+              {
+                "file": "libs/astx-transpilers/pyproject.toml",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
+            "files": ["libs/astx-transpilers/pyproject.toml"],
+            "from": "  \"astx == .*\",  # semantic-release",
+            "to": "  \"astx == ${nextRelease.version}\",  # semantic-release",
+            "results": [
+              {
+                "file": "libs/astx-transpilers/pyproject.toml",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          },
+          {
+            "files": ["libs/astx-transpilers/src/astx_transpilers/__init__.py"],
+            "from": "return \".*\"  # semantic-release",
+            "to": "return \"${nextRelease.version}\"  # semantic-release",
+            "results": [
+              {
+                "file": "libs/astx-transpilers/src/astx_transpilers/__init__.py",
                 "hasChanged": true,
                 "numMatches": 1,
                 "numReplacements": 1
@@ -49,8 +105,8 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "poetry build",
-        "publishCmd": "poetry publish"
+        "prepareCmd": "./scripts/build.sh",
+        "publishCmd": "./scripts/publish.sh"
       }
     ],
     [
@@ -65,7 +121,10 @@
         "assets": [
           "pyproject.toml",
           "docs/changelog.md",
-          "src/astx/__init__.py"
+          "libs/astx/pyproject.toml",
+          "libs/astx/src/astx/__init__.py",
+          "libs/astx-transpilers/pyproject.toml",
+          "libs/astx-transpilers/src/astx/__init__.py"
         ],
         "message": "chore(release): ${nextRelease.version}"
       }

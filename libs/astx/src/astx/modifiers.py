@@ -9,22 +9,22 @@ from public import public
 class VisibilityKind(Enum):
     """Definition of different kind of visibility."""
 
-    public: int = 1
-    private: int = 2
-    protected: int = 3
+    public = 1
+    private = 2
+    protected = 3
 
 
 @public
 class ScopeKind(Enum):
     """Definition for different kind of scopes."""
 
-    global_: int = 1
-    local: int = 2
+    global_ = 1
+    local = 2
 
 
 @public
 class MutabilityKind(Enum):
     """Definition for different kind of mutability."""
 
-    constant: int = 1
-    mutable: int = 2
+    constant = 1
+    mutable = 2
