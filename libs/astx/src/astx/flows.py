@@ -552,7 +552,8 @@ class WhileExpr(Expr):
 
         return self._prepare_struct(key, value, simplified)
 
-
+@public
+@typechecked
 class SetComprehension(Expr):
     """AST class for a set comprehension expression."""
 
