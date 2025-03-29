@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Any, Dict, List, Optional, cast
 
 from public import public
 
@@ -18,7 +18,10 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
+from astx.callables import Comprehension
 from astx.tools.typing import typechecked
+from astx.types.base import AnyType
+from astx.types.collections import SetType
 from astx.variables import InlineVariableDeclaration
 
 
@@ -312,8 +315,8 @@ class ForCountLoopExpr(Expr):
         condition: Expr,
         update: Expr,
         body: Block,
-        loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
         """Initialize the ForLoopCountExpr instance."""
         super().__init__(loc=loc, parent=parent)
@@ -547,6 +550,49 @@ class WhileExpr(Expr):
             **cast(DictDataTypesStruct, while_body),
         }
 
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class SetComprehension(Expr):
+    """AST class for a set comprehension expression."""
+
+    elt: Expr
+    generators: List[Comprehension]
+
+    def __init__(
+        self,
+        elt: Expr,
+        generators: List[Comprehension],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the SetComprehension instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.elt = elt
+        self.generators = generators
+        self.type_ = SetType(element_type=getattr(elt, "type_", AnyType()))
+        self.kind = ASTKind.SetComprehensionKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"SetComprehension[{self.elt}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "SET-COMPREHENSION"
+        value: Dict[str, Any] = {
+            "content": {
+                "content": {
+                    "type": {"SET": {}},
+                    "element": self.elt.get_struct(simplified),
+                    "generators": [
+                        gen.get_struct(simplified) for gen in self.generators
+                    ],
+                }
+            }
+        }
         return self._prepare_struct(key, value, simplified)
 
 

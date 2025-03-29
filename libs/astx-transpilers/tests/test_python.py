@@ -6,6 +6,7 @@ import sys
 import astx
 import pytest
 
+from astx.flows import SetComprehension
 from astx_transpilers import python_string as astx2py
 
 transpiler = astx2py.ASTxPythonTranspiler()
@@ -1424,3 +1425,58 @@ def test_transpiler_literal_dict() -> None:
         1: 10,
         2: 20,
     }, f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_setcomprehension_var_var() -> None:
+    """Test SetComprehension with variable element and variable generator."""
+    varic_x = astx.Variable(name="x")
+    var_nums = astx.Variable(name="nums")
+    comprehension = astx.Comprehension(varic_x, var_nums, [])
+    set_comp = SetComprehension(elt=varic_x, generators=[comprehension])
+    generated_code = translate(set_comp)
+    expected_code = "{x for x in nums}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_setcomprehension_var_range() -> None:
+    """Test SetComprehension with variable element and range generator."""
+    varic_x = astx.Variable(name="x")
+    range_5 = astx.LiteralInt32(value=5)
+    comprehension = astx.Comprehension(varic_x, range_5, [])
+    set_comp = SetComprehension(elt=varic_x, generators=[comprehension])
+    generated_code = translate(set_comp)
+    expected_code = "{x for x in range(5)}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_setcomprehension_int_var() -> None:
+    """Test SetComprehension with integer element and variable generator."""
+    lit_1 = astx.LiteralInt32(value=1)
+    varic_x = astx.Variable(name="x")
+    var_nums = astx.Variable(name="nums")
+    comprehension = astx.Comprehension(varic_x, var_nums, [])
+    set_comp = SetComprehension(elt=lit_1, generators=[comprehension])
+    generated_code = translate(set_comp)
+    expected_code = "{1 for x in nums}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_setcomprehension_multiple_generators() -> None:
+    """Test SetComprehension with multiple generators."""
+    varic_x = astx.Variable(name="x")
+    var_nums = astx.Variable(name="nums")
+    range_3 = astx.LiteralInt32(value=3)
+    comp1 = astx.Comprehension(varic_x, var_nums, [])
+    comp2 = astx.Comprehension(varic_x, range_3, [])
+    set_comp = SetComprehension(elt=varic_x, generators=[comp1, comp2])
+    generated_code = translate(set_comp)
+    expected_code = "{x for x in nums for x in range(3)}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )

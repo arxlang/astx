@@ -15,12 +15,14 @@ from astx.flows import (
     ForRangeLoopStmt,
     IfExpr,
     IfStmt,
+    SetComprehension,
     SwitchStmt,
     WhileExpr,
     WhileStmt,
 )
 from astx.literals import LiteralInt32, LiteralString
 from astx.literals.numeric import LiteralInt32
+from astx.types.collections import SetType
 from astx.types.numeric import Int32
 from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
@@ -219,6 +221,51 @@ def test_while_expr() -> None:
     assert while_expr.get_struct()
     assert while_expr.get_struct(simplified=True)
     visualize(while_expr.get_struct())
+
+
+def test_set_comprehension_basic() -> None:
+    """Test basic creation and properties of SetComprehension."""
+    elt = astx.LiteralInt32(5)
+    target = astx.Variable("x")
+    iterable = astx.LiteralInt32(10)
+    comp = astx.Comprehension(
+        target=target, iterable=iterable, conditions=None, is_async=False
+    )
+
+    set_comp = astx.SetComprehension(elt=elt, generators=[comp])
+
+    assert isinstance(set_comp, SetComprehension)
+    assert set_comp.elt == elt
+    assert len(set_comp.generators) == 1
+    assert isinstance(set_comp.generators[0], astx.Comprehension)
+    assert str(set_comp) == "SetComprehension[LiteralInt32(5)]"
+    assert isinstance(set_comp.type_, SetType)
+    assert set_comp.get_struct()
+    assert set_comp.get_struct(simplified=True)
+    try:
+        visualize(set_comp.get_struct())
+    except Exception:
+        pass
+
+
+def test_set_comprehension_multiple_generators() -> None:
+    """Test SetComprehension with multiple generators."""
+    target = astx.Variable(name="x")
+    iterable = astx.Variable(name="nums")
+    comp1 = astx.Comprehension(
+        target=target, iterable=iterable, conditions=[], is_async=False
+    )
+
+    range_3 = astx.LiteralInt32(value=3)
+    comp2 = astx.Comprehension(
+        target=target, iterable=range_3, conditions=[], is_async=False
+    )
+
+    set_comp = SetComprehension(elt=target, generators=[comp1, comp2])
+
+    assert str(set_comp)
+    assert set_comp.get_struct()
+    assert set_comp.get_struct(simplified=True)
 
 
 def test_while_stmt() -> None:

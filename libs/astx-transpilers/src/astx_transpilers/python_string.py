@@ -1,10 +1,11 @@
-"""ASTx Python transpiler."""
+"""Python string transpiler for ASTx."""
 
 from typing import Union, cast
 
 import astx
 import astx.operators
 
+from astx.flows import SetComprehension
 from astx.tools.typing import typechecked
 from plum import dispatch
 
@@ -699,3 +700,19 @@ class ASTxPythonTranspiler:
             for key, value in node.elements.items()
         )
         return f"{{{items_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: SetComprehension) -> str:
+        """Handle SetComprehension nodes."""
+        elt = self.visit(node.elt)
+        generators_parts = []
+        for gen in node.generators:
+            target = self.visit(gen.target)
+            # Handle LiteralInt32 by wrapping it in range()
+            if isinstance(gen.iterable, astx.LiteralInt32):
+                iterable = f"range({self.visit(gen.iterable)})"
+            else:
+                iterable = self.visit(gen.iterable)
+            generators_parts.append(f"for {target} in {iterable}")
+        generators_str = " ".join(generators_parts)
+        return f"{{{elt} {generators_str}}}"
