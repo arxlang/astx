@@ -388,3 +388,6 @@ def test_do_while_stmt() -> None:
     assert do_while_stmt.get_struct()
     assert do_while_stmt.get_struct(simplified=True)
     visualize(do_while_stmt.get_struct())
+
+
+test_do_while_stmt()
