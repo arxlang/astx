@@ -382,6 +382,8 @@ def test_do_while_stmt() -> None:
     # Create the DoWhileLoopStmt
     do_while_stmt = DoWhileLoopStmt(condition=condition, body=body_block)
 
+    print(repr(do_while_stmt))
+
     assert str(do_while_stmt)
     assert do_while_stmt.get_struct()
     assert do_while_stmt.get_struct(simplified=True)

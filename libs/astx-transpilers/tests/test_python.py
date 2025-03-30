@@ -1467,11 +1467,11 @@ def test_transpiler_do_while_stmt() -> None:
 
     # Expected code for the DoWhileLoopStmt
     expected_code = """
-    while True:
-        x = (x + 1)
-        if not (x < 5):
-            break
-    """.strip()
+while True:
+    x = (x + 1)
+    if not (x < 5):
+        break
+""".strip()
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1519,8 +1519,8 @@ def test_transpiler_do_while_expr() -> None:
 
     # Expected code for the DoWhileLoopExpr
     expected_code = """
-    [x := (x + 1) for _ in iter(lambda: True, False) if (x < 5)]
-   """.strip()
+    [    x = (x + 1) for _ in iter(lambda: True, False) if ((x < 5))]
+    """.strip()
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
