@@ -70,14 +70,15 @@ jobs:
           poetry install
 
       - name: Run unit tests (linux/macos)
-        if: ${{ matrix.os != "windows" }}
+        if: ${{ matrix.os != 'windows' }}
         run: makim tests.unit
 
       - name: Run unit tests (windows)
-        if: ${{ matrix.os == "windows" }}
+        if: ${{ matrix.os == 'windows' }}
         run: makim tests.unit
 
       - name: Test jupyter notebooks
+        if: ${{ matrix.os != 'windows' }}
         run: makim tests.notebooks
 
   linter:
