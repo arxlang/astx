@@ -40,6 +40,7 @@ jobs:
         os:
           - "ubuntu"
           - "macos"
+          - "windows"
 
     runs-on: ${{ matrix.os }}-latest
     concurrency:
@@ -68,7 +69,12 @@ jobs:
           poetry check
           poetry install
 
-      - name: Run unit tests
+      - name: Run unit tests (linux/macos)
+        if: ${{ matrix.os != "windows" }}
+        run: makim tests.unit
+
+      - name: Run unit tests (windows)
+        if: ${{ matrix.os == "windows" }}
         run: makim tests.unit
 
       - name: Test jupyter notebooks
