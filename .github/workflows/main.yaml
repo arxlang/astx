@@ -75,7 +75,7 @@ jobs:
 
       - name: Run unit tests (windows)
         if: ${{ matrix.os == 'windows' }}
-        run: makim tests.unit
+        run: pytest
 
       - name: Test jupyter notebooks
         if: ${{ matrix.os != 'windows' }}
