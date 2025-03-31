@@ -40,6 +40,7 @@ jobs:
         os:
           - "ubuntu"
           - "macos"
+          - "windows"
 
     runs-on: ${{ matrix.os }}-latest
     concurrency:
@@ -68,11 +69,21 @@ jobs:
           poetry check
           poetry install
 
-      - name: Run unit tests
+      - name: Run unit tests (linux/macos)
+        if: ${{ matrix.os != 'windows' }}
         run: makim tests.unit
 
-      - name: Test jupyter notebooks
+      - name: Run unit tests (windows)
+        if: ${{ matrix.os == 'windows' }}
+        run: pytest
+
+      - name: Test jupyter notebooks (linux/macos)
+        if: ${{ matrix.os != 'windows' }}
         run: makim tests.notebooks
+
+      - name: Test jupyter notebooks (windows)
+        if: ${{ matrix.os == 'windows' }}
+        run: pytest -vv --nbmake docs/tutorials
 
   linter:
     needs: check-branch
