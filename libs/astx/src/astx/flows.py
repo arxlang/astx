@@ -502,8 +502,7 @@ class WhileStmt(StatementType):
         while_condition = self.condition.get_struct(simplified)
         while_body = self.body.get_struct(simplified)
 
-        # key = f"WHILE-STMT[{id(self)}]" if simplified else "WHILE-STMT"
-        key = str(self)
+        key = f"WHILE-STMT[{id(self)}]" if simplified else "WHILE-STMT"
         value: ReprStruct = {
             **cast(DictDataTypesStruct, while_condition),
             **cast(DictDataTypesStruct, while_body),
