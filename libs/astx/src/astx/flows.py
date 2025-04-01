@@ -495,7 +495,7 @@ class WhileStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"WhileStmt[condition={self.condition}]"
+        return f"WhileStmt[{self.condition}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -713,14 +713,21 @@ class DoWhileLoopStmt(WhileStmt):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"DoWhileLoopStmt[condition={self.condition}]"
+        return f"DoWhileLoopStmt[{self.condition}]"
 
-    # def get_struct(self, simplified: bool = False) -> ReprStruct:
-    #     """Return the AST structure of the object."""
-    #     struct = super().get_struct(simplified)
-    #     if isinstance(struct, dict):
-    #         struct["exec_order"] = "check-after-body"
-    #     return struct
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the DoWhileLoopStmt."""
+        condition_struct = self.condition.get_struct(simplified)
+        body_struct = self.body.get_struct(simplified)
+
+        key = f"DO-WHILE-STMT[{id(self)}]" if simplified else "DO-WHILE-STMT"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, condition_struct),
+            **cast(DictDataTypesStruct, body_struct),
+            "exec_order": "check-after-body",
+        }
+
+        return self._prepare_struct(key, value, simplified)
 
 
 @public
@@ -743,11 +750,18 @@ class DoWhileLoopExpr(WhileExpr):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"DoWhileLoopExpr[condition={self.condition}]"
+        return f"DoWhileLoopExpr[{self.condition}]"
 
-    # def get_struct(self, simplified: bool = False) -> ReprStruct:
-    #     """Return the AST structure of the object."""
-    #     struct = super().get_struct(simplified)
-    #     if isinstance(struct, dict):
-    #         struct["exec_order"] = "check-after-body"
-    #     return struct
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the DoWhileLoopExpr."""
+        condition_struct = self.condition.get_struct(simplified)
+        body_struct = self.body.get_struct(simplified)
+
+        key = f"DO-WHILE-EXPR[{id(self)}]" if simplified else "DO-WHILE-EXPR"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, condition_struct),
+            **cast(DictDataTypesStruct, body_struct),
+            "exec_order": "check-after-body",
+        }
+
+        return self._prepare_struct(key, value, simplified)
