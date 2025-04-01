@@ -502,7 +502,8 @@ class WhileStmt(StatementType):
         while_condition = self.condition.get_struct(simplified)
         while_body = self.body.get_struct(simplified)
 
-        key = f"WHILE-STMT[{id(self)}]" if simplified else "WHILE-STMT"
+        # key = f"WHILE-STMT[{id(self)}]" if simplified else "WHILE-STMT"
+        key = str(self)
         value: ReprStruct = {
             **cast(DictDataTypesStruct, while_condition),
             **cast(DictDataTypesStruct, while_body),
@@ -695,7 +696,7 @@ class GotoStmt(StatementType):
 
 @public
 @typechecked
-class DoWhileLoopStmt(WhileStmt):
+class DoWhileStmt(WhileStmt):
     """AST class for `do-while` statement."""
 
     def __init__(
@@ -705,34 +706,20 @@ class DoWhileLoopStmt(WhileStmt):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the DoWhileLoopStmt instance."""
+        """Initialize the DoWhileStmt instance."""
         super().__init__(
             condition=condition, body=body, loc=loc, parent=parent
         )
-        self.kind = ASTKind.DoWhileLoopStmtKind
+        self.kind = ASTKind.DoWhileStmtKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"DoWhileLoopStmt[{self.condition}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the DoWhileLoopStmt."""
-        condition_struct = self.condition.get_struct(simplified)
-        body_struct = self.body.get_struct(simplified)
-
-        key = f"DO-WHILE-STMT[{id(self)}]" if simplified else "DO-WHILE-STMT"
-        value: ReprStruct = {
-            **cast(DictDataTypesStruct, condition_struct),
-            **cast(DictDataTypesStruct, body_struct),
-            "exec_order": "check-after-body",
-        }
-
-        return self._prepare_struct(key, value, simplified)
+        return f"DoWhileStmt[{self.condition}]"
 
 
 @public
 @typechecked
-class DoWhileLoopExpr(WhileExpr):
+class DoWhileExpr(WhileExpr):
     """AST class for `do-while` expression."""
 
     def __init__(
@@ -742,26 +729,12 @@ class DoWhileLoopExpr(WhileExpr):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the DoWhileLoopExpr instance."""
+        """Initialize the DoWhileExpr instance."""
         super().__init__(
             condition=condition, body=body, loc=loc, parent=parent
         )
-        self.kind = ASTKind.DoWhileLoopExprKind
+        self.kind = ASTKind.DoWhileExprKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"DoWhileLoopExpr[{self.condition}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the DoWhileLoopExpr."""
-        condition_struct = self.condition.get_struct(simplified)
-        body_struct = self.body.get_struct(simplified)
-
-        key = f"DO-WHILE-EXPR[{id(self)}]" if simplified else "DO-WHILE-EXPR"
-        value: ReprStruct = {
-            **cast(DictDataTypesStruct, condition_struct),
-            **cast(DictDataTypesStruct, body_struct),
-            "exec_order": "check-after-body",
-        }
-
-        return self._prepare_struct(key, value, simplified)
+        return f"DoWhileExpr[{self.condition}]"

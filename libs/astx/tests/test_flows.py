@@ -9,8 +9,8 @@ from astx.flows import (
     AsyncForRangeLoopExpr,
     AsyncForRangeLoopStmt,
     CaseStmt,
-    DoWhileLoopExpr,
-    DoWhileLoopStmt,
+    DoWhileExpr,
+    DoWhileStmt,
     ForCountLoopExpr,
     ForCountLoopStmt,
     ForRangeLoopExpr,
@@ -347,7 +347,7 @@ def test_comprehension() -> None:
 
 
 def test_do_while_expr() -> None:
-    """Test `DoWhileLoopExpr` class."""
+    """Test `DoWhileExpr` class."""
     # Define a condition: x < 5
     x_var = Variable(name="x")
     condition = BinaryOp(
@@ -359,7 +359,7 @@ def test_do_while_expr() -> None:
     body_block = Block(name="do_while_body")
 
     # Create the DoWhileLoopExpr
-    do_while_expr = DoWhileLoopExpr(condition=condition, body=body_block)
+    do_while_expr = DoWhileExpr(condition=condition, body=body_block)
 
     assert str(do_while_expr)
     assert do_while_expr.get_struct()
@@ -368,7 +368,7 @@ def test_do_while_expr() -> None:
 
 
 def test_do_while_stmt() -> None:
-    """Test `DoWhileLoopStmt` class."""
+    """Test `DoWhileStmt` class."""
     # Define a condition: x < 5
     x_var = Variable(name="x")
     condition = BinaryOp(
@@ -379,8 +379,8 @@ def test_do_while_stmt() -> None:
 
     body_block = Block(name="do_while_body")
 
-    # Create the DoWhileLoopStmt
-    do_while_stmt = DoWhileLoopStmt(condition=condition, body=body_block)
+    # Create the DoWhileStmt
+    do_while_stmt = DoWhileStmt(condition=condition, body=body_block)
 
     assert str(do_while_stmt)
     assert do_while_stmt.get_struct()

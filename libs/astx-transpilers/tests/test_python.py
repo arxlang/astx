@@ -1427,7 +1427,7 @@ def test_transpiler_literal_dict() -> None:
 
 
 def test_transpiler_do_while_stmt() -> None:
-    """Test astx.DoWhileLoopStmt."""
+    """Test astx.DoWhileStmt."""
     # Define a condition: x < 5
     x_var = astx.Variable(name="x")
     condition = astx.BinaryOp(
@@ -1453,7 +1453,7 @@ def test_transpiler_do_while_stmt() -> None:
     body_block = astx.Block(name="do_while_body")
     body_block.append(update_expr)
 
-    do_while_stmt = astx.DoWhileLoopStmt(
+    do_while_stmt = astx.DoWhileStmt(
         body=body_block,
         condition=condition,
         loc=astx.SourceLocation(line=1, col=0),
@@ -1465,7 +1465,7 @@ def test_transpiler_do_while_stmt() -> None:
     # Generate Python code
     generated_code = generator.visit(do_while_stmt)
 
-    # Expected code for the DoWhileLoopStmt
+    # Expected code for DoWhileStmt
     expected_code = """
 while True:
     x = (x + 1)
@@ -1479,7 +1479,7 @@ while True:
 
 
 def test_transpiler_do_while_expr() -> None:
-    """Test astx.DoWhileLoopExpr."""
+    """Test astx.DoWhileExpr."""
     # Define a condition: x < 5
     x_var = astx.Variable(name="x")
     condition = astx.BinaryOp(
@@ -1505,7 +1505,7 @@ def test_transpiler_do_while_expr() -> None:
     body_block = astx.Block(name="do_while_body")
     body_block.append(update_expr)
 
-    do_while_expr = astx.DoWhileLoopExpr(
+    do_while_expr = astx.DoWhileExpr(
         body=body_block,
         condition=condition,
         loc=astx.SourceLocation(line=1, col=0),
@@ -1517,7 +1517,7 @@ def test_transpiler_do_while_expr() -> None:
     # Generate Python code
     generated_code = generator.visit(do_while_expr)
 
-    # Expected code for the DoWhileLoopExpr
+    # Expected code for the DoWhileExpr
     expected_code = """
     [    x = (x + 1) for _ in iter(lambda: True, False) if ((x < 5))]
     """.strip()
