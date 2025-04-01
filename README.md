@@ -87,8 +87,8 @@ fn_body.append(
         value=astx.BinaryOp(op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("y"))
     )
 )
-add_function = astx.Function(
-    prototype=astx.FunctionPrototype(name="add", args=args, return_type=astx.Int32),
+add_function = astx.FunctionDef(
+    prototype=astx.FunctionPrototype(name="add", args=args, return_type=astx.Int32()),
     body=fn_body,
 )
 ```
@@ -98,7 +98,7 @@ add_function = astx.Function(
 Use a transpiler to convert the AST to Python code:
 
 ```python
-from astx.transpilers.python import ASTxPythonTranspiler
+from astx_transpilers.python_string import ASTxPythonTranspiler
 
 # Transpile the AST to Python
 transpiler = ASTxPythonTranspiler()
