@@ -33,8 +33,8 @@ class Literal(DataTypeOps):
 
     def __str__(self) -> str:
         """Return a string that represents the object."""
-        klass = self.__class__.__name__
-        return f"{klass}({self.value})"
+        class_name = self.__class__.__name__
+        return f"{class_name}({self.value})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST representation for the object."""
