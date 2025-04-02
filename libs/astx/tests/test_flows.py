@@ -386,3 +386,26 @@ def test_do_while_stmt() -> None:
     assert do_while_stmt.get_struct()
     assert do_while_stmt.get_struct(simplified=True)
     visualize(do_while_stmt.get_struct())
+
+
+def test_generator_expr() -> None:
+    """Test `GeneratorExpr` class."""
+    gen_expr = astx.GeneratorExpr(
+        element=astx.Variable("x"),
+        target=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        iterable=astx.Identifier("range(10)"),
+        conditions=[
+            astx.BinaryOp(
+                op_code=">", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(3)
+            ),
+            astx.BinaryOp(
+                op_code="<", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(7)
+            ),
+        ],
+    )
+    assert str(gen_expr)
+    assert gen_expr.get_struct()
+    assert gen_expr.get_struct(simplified=True)
+    visualize(gen_expr.get_struct())

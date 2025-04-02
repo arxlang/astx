@@ -136,7 +136,8 @@ class ASTKind(Enum):
     AsyncRangeLoopExprKind = -514
     DoWhileStmtKind = -515
     DoWhileExprKind = -516
-
+    GeneratorExprKind = -517
+    
     # data types
     NullDTKind = -600
     BooleanDTKind = -601

@@ -737,3 +737,61 @@ class DoWhileExpr(WhileExpr):
     def __str__(self) -> str:
         """Return a string representation of the object."""
         return f"DoWhileExpr[{self.condition}]"
+
+
+@public
+@typechecked
+class GeneratorExpr(Expr):
+    """AST class for generator expressions."""
+
+    element: Expr
+    target: Expr
+    iterable: Expr
+    conditions: list[Expr]
+
+    def __init__(
+        self,
+        element: Expr,
+        target: Expr,
+        iterable: Expr,
+        conditions: Optional[list[Expr]] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the GeneratorExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.element = element
+        self.target = target
+        self.iterable = iterable
+        self.conditions = conditions if conditions is not None else []
+        self.kind = ASTKind.GeneratorExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        ret_str = (
+            f"GeneratorExpr[element={self.element}, target={self.target},"
+            f" iterable={self.iterable},"
+        )
+        if self.conditions is not None:
+            cons_list = []
+            for cond in self.conditions:
+                cons_list.append(str(cond))
+            ret_str += f" conditions={(cons_list)}]"
+        return ret_str
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = f"GENERATOR-EXPR#{id(self)}" if simplified else "GENERATOR-EXPR"
+        value: ReprStruct = {
+            "element": self.element.get_struct(simplified),
+            "target": self.target.get_struct(simplified),
+            "iterable": self.iterable.get_struct(simplified),
+            "conditions": cast(
+                ReprStruct,
+                {
+                    str(cond): cond.get_struct(simplified)
+                    for cond in self.conditions
+                },
+            ),
+        }
+        return self._prepare_struct(key, value, simplified)

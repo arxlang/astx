@@ -1525,3 +1525,44 @@ def test_transpiler_do_while_expr() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_generator_expr() -> None:
+    """Test astx.GeneratorExpr."""
+    gen_expr = astx.GeneratorExpr(
+        element=astx.Variable("x"),
+        target=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        iterable=astx.Identifier("range(10)"),
+        conditions=[
+            astx.BinaryOp(
+                op_code=">", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(3)
+            ),
+            astx.BinaryOp(
+                op_code="<", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(7)
+            ),
+        ],
+    )
+    generated_code = transpiler.visit(gen_expr)
+    expected_code = "(x for (x + x) in range(10) if (x > 3) if (x < 7))"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_generator_expr_no_conditions() -> None:
+    """Test astx.GeneratorExpr with no conditions."""
+    gen_expr = astx.GeneratorExpr(
+        element=astx.Variable("x"),
+        target=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        iterable=astx.Identifier("range(10)"),
+    )
+
+    generated_code = transpiler.visit(gen_expr)
+    expected_code = "(x for (x + x) in range(10))"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
