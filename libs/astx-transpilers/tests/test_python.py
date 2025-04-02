@@ -1424,3 +1424,104 @@ def test_transpiler_literal_dict() -> None:
         1: 10,
         2: 20,
     }, f"Expected '{expected_code}', but got '{generated_code}'"
+
+
+def test_transpiler_do_while_stmt() -> None:
+    """Test astx.DoWhileStmt."""
+    # Define a condition: x < 5
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=astx.LiteralInt32(5),
+        loc=astx.SourceLocation(line=2, col=4),
+    )
+
+    # Define the loop body: x = x + 1
+    update_expr = astx.VariableAssignment(
+        name="x",
+        value=astx.BinaryOp(
+            op_code="+",
+            lhs=x_var,
+            rhs=astx.LiteralInt32(1),
+            loc=astx.SourceLocation(line=1, col=0),
+        ),
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Create the body block
+    body_block = astx.Block(name="do_while_body")
+    body_block.append(update_expr)
+
+    do_while_stmt = astx.DoWhileStmt(
+        body=body_block,
+        condition=condition,
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(do_while_stmt)
+
+    # Expected code for DoWhileStmt
+    expected_code = """
+while True:
+    x = (x + 1)
+    if not (x < 5):
+        break
+""".strip()
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_do_while_expr() -> None:
+    """Test astx.DoWhileExpr."""
+    # Define a condition: x < 5
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=astx.LiteralInt32(5),
+        loc=astx.SourceLocation(line=2, col=4),
+    )
+
+    # Define the loop body: x = x + 1
+    update_expr = astx.VariableAssignment(
+        name="x",
+        value=astx.BinaryOp(
+            op_code="+",
+            lhs=x_var,
+            rhs=astx.LiteralInt32(1),
+            loc=astx.SourceLocation(line=1, col=0),
+        ),
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Create the body block
+    body_block = astx.Block(name="do_while_body")
+    body_block.append(update_expr)
+
+    do_while_expr = astx.DoWhileExpr(
+        body=body_block,
+        condition=condition,
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(do_while_expr)
+
+    # Expected code for the DoWhileExpr
+    expected_code = """
+    [    x = (x + 1) for _ in iter(lambda: True, False) if ((x < 5))]
+    """.strip()
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
