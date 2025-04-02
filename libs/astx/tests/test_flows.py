@@ -9,6 +9,7 @@ from astx.flows import (
     AsyncForRangeLoopExpr,
     AsyncForRangeLoopStmt,
     CaseStmt,
+    DictComprehension,
     DoWhileExpr,
     DoWhileStmt,
     ForCountLoopExpr,
@@ -386,3 +387,22 @@ def test_do_while_stmt() -> None:
     assert do_while_stmt.get_struct()
     assert do_while_stmt.get_struct(simplified=True)
     visualize(do_while_stmt.get_struct())
+
+
+def test_dict_comprehension() -> None:
+    """Test `DictComprehension` class."""
+    dict_comprehension = DictComprehension(
+        key=Variable("x"),
+        value=BinaryOp(op_code="*", lhs=Variable("x"), rhs=Variable("x")),
+        target=Variable("x"),
+        iterable=Variable("range(10)"),
+        conditions=[
+            BinaryOp(op_code=">", lhs=Variable("x"), rhs=LiteralInt32(5)),
+            BinaryOp(op_code="<", lhs=Variable("x"), rhs=LiteralInt32(7)),
+        ],
+    )
+
+    assert str(dict_comprehension)
+    assert dict_comprehension.get_struct()
+    assert dict_comprehension.get_struct(simplified=True)
+    visualize(dict_comprehension.get_struct())

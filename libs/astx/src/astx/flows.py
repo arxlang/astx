@@ -18,6 +18,9 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
+from astx.callables import (
+    Comprehension,
+)
 from astx.tools.typing import typechecked
 from astx.variables import InlineVariableDeclaration
 
@@ -737,3 +740,71 @@ class DoWhileExpr(WhileExpr):
     def __str__(self) -> str:
         """Return a string representation of the object."""
         return f"DoWhileExpr[{self.condition}]"
+
+
+@public
+@typechecked
+class DictComprehension(Comprehension):
+    """AST node for dictionary comprehensions."""
+
+    key: Expr
+    value: Expr
+
+    def __init__(
+        self,
+        key: Expr,
+        value: Expr,
+        target: Expr,
+        iterable: Expr,
+        conditions: Optional[list[Expr]] = None,
+        is_async: bool = False,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(
+            target=target,
+            iterable=iterable,
+            conditions=conditions,
+            is_async=is_async,
+            loc=loc,
+            parent=parent,
+        )
+        self.key = key
+        self.value = value
+        self.kind = ASTKind.DictComprehensionKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        ret_str = (
+            f"DictComprehension[key={self.key}, value={self.value},"
+            f" target={self.target}, iterable={self.iterable},"
+        )
+        if self.conditions is not None:
+            cons_list = []
+            for cond in self.conditions:
+                cons_list.append(str(cond))
+            ret_str += f" conditions={(cons_list)}]"
+        return ret_str
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        value: ReprStruct = {
+            "key": self.key.get_struct(simplified),
+            "value": self.value.get_struct(simplified),
+            "target": self.value.get_struct(simplified),
+            "iterable": self.iterable.get_struct(simplified),
+            "conditions": cast(
+                ReprStruct,
+                {
+                    str(cond): cond.get_struct(simplified)
+                    for cond in self.conditions
+                },
+            ),
+        }
+
+        key = (
+            f"DICT-COMPREHENSION#{id(self)}"
+            if simplified
+            else "DICT-COMPREHENSION"
+        )
+        return self._prepare_struct(key, value, simplified)
