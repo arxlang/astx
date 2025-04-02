@@ -69,21 +69,11 @@ jobs:
           poetry check
           poetry install
 
-      - name: Run unit tests (linux/macos)
-        if: ${{ matrix.os != 'windows' }}
+      - name: Run unit tests
         run: makim tests.unit
 
-      - name: Run unit tests (windows)
-        if: ${{ matrix.os == 'windows' }}
-        run: pytest
-
-      - name: Test jupyter notebooks (linux/macos)
-        if: ${{ matrix.os != 'windows' }}
+      - name: Test jupyter notebooks
         run: makim tests.notebooks
-
-      - name: Test jupyter notebooks (windows)
-        if: ${{ matrix.os == 'windows' }}
-        run: pytest -vv --nbmake docs/tutorials
 
   linter:
     needs: check-branch
