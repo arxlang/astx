@@ -3,11 +3,11 @@
 import ast
 import sys
 
-import astx
 import pytest
 
-from astx.flows import SetComprehension
 from astx_transpilers import python_string as astx2py
+
+import astx
 
 transpiler = astx2py.ASTxPythonTranspiler()
 
@@ -1468,8 +1468,64 @@ def test_transpiler_do_while_stmt() -> None:
 
     # Expected code for DoWhileStmt
     expected_code = """
+while True:
+    x = (x + 1)
+    if not (x < 5):
+        break
+""".strip()
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_do_while_expr() -> None:
+    """Test astx.DoWhileExpr."""
+    # Define a condition: x < 5
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(
+        op_code="<",
+        lhs=x_var,
+        rhs=astx.LiteralInt32(5),
+        loc=astx.SourceLocation(line=2, col=4),
+    )
+
+    # Define the loop body: x = x + 1
+    update_expr = astx.VariableAssignment(
+        name="x",
+        value=astx.BinaryOp(
+            op_code="+",
+            lhs=x_var,
+            rhs=astx.LiteralInt32(1),
+            loc=astx.SourceLocation(line=1, col=0),
+        ),
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Create the body block
+    body_block = astx.Block(name="do_while_body")
+    body_block.append(update_expr)
+
+    do_while_expr = astx.DoWhileExpr(
+        body=body_block,
+        condition=condition,
+        loc=astx.SourceLocation(line=1, col=0),
+    )
+
+    # Initialize the generator
+    generator = astx2py.ASTxPythonTranspiler()
+
+    # Generate Python code
+    generated_code = generator.visit(do_while_expr)
+
+    # Expected code for the DoWhileExpr
+    expected_code = """
     [    x = (x + 1) for _ in iter(lambda: True, False) if ((x < 5))]
     """.strip()
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_setcomprehension_var_var() -> None:
@@ -1477,7 +1533,7 @@ def test_transpiler_setcomprehension_var_var() -> None:
     varic_x = astx.Variable(name="x")
     var_nums = astx.Variable(name="nums")
     comprehension = astx.Comprehension(varic_x, var_nums, [])
-    set_comp = SetComprehension(elt=varic_x, generators=[comprehension])
+    set_comp = astx.SetComprehension(elt=varic_x, generators=[comprehension])
     generated_code = translate(set_comp)
     expected_code = "{x for x in nums}"
     assert generated_code == expected_code, (
@@ -1488,11 +1544,16 @@ def test_transpiler_setcomprehension_var_var() -> None:
 def test_transpiler_setcomprehension_var_range() -> None:
     """Test SetComprehension with variable element and range generator."""
     varic_x = astx.Variable(name="x")
-    range_5 = astx.LiteralInt32(value=5)
-    comprehension = astx.Comprehension(varic_x, range_5, [])
-    set_comp = SetComprehension(elt=varic_x, generators=[comprehension])
+    range_fn = astx.Variable(name="range")
+    range_arg = astx.LiteralInt32(value=5)
+    range_call = astx.FunctionCall(fn=range_fn, args=[range_arg])
+    
+    comprehension = astx.Comprehension(varic_x, range_call, [])
+    set_comp = astx.SetComprehension(elt=varic_x, generators=[comprehension])
+    
     generated_code = translate(set_comp)
     expected_code = "{x for x in range(5)}"
+    
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
@@ -1504,21 +1565,33 @@ def test_transpiler_setcomprehension_int_var() -> None:
     varic_x = astx.Variable(name="x")
     var_nums = astx.Variable(name="nums")
     comprehension = astx.Comprehension(varic_x, var_nums, [])
-    set_comp = SetComprehension(elt=lit_1, generators=[comprehension])
+    set_comp = astx.SetComprehension(elt=lit_1, generators=[comprehension])
     generated_code = translate(set_comp)
     expected_code = "{1 for x in nums}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
 
 def test_transpiler_setcomprehension_multiple_generators() -> None:
     """Test SetComprehension with multiple generators."""
     varic_x = astx.Variable(name="x")
     var_nums = astx.Variable(name="nums")
-    range_3 = astx.LiteralInt32(value=3)
+    
+    # Create range function call properly
+    range_fn = astx.Variable(name="range")
+    range_arg = astx.LiteralInt32(value=3)
+    range_call = astx.FunctionCall(fn=range_fn, args=[range_arg])
+    
     comp1 = astx.Comprehension(varic_x, var_nums, [])
-    comp2 = astx.Comprehension(varic_x, range_3, [])
-    set_comp = SetComprehension(elt=varic_x, generators=[comp1, comp2])
+    comp2 = astx.Comprehension(varic_x, range_call, [])
+    set_comp = astx.SetComprehension(elt=varic_x, generators=[comp1, comp2])
+    
+    print(f"Set Comprehension AST: {set_comp}")  # Debug print
     generated_code = translate(set_comp)
+    print(f"Generated code: {generated_code}")  # Debug print
+    
     expected_code = "{x for x in nums for x in range(3)}"
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
-

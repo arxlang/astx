@@ -2,12 +2,13 @@
 
 from typing import Union, cast
 
+from plum import dispatch
+
 import astx
 import astx.operators
 
 from astx.flows import SetComprehension
 from astx.tools.typing import typechecked
-from plum import dispatch
 
 
 @typechecked
@@ -701,6 +702,7 @@ class ASTxPythonTranspiler:
         )
         return f"{{{items_code}}}"
 
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DoWhileExpr) -> str:
         """Handle DoWhileExpr nodes."""
         body = self.visit(node.body)
@@ -712,20 +714,19 @@ class ASTxPythonTranspiler:
         """Handle DoWhileStmt nodes."""
         body = self._generate_block(node.body)
         condition = self.visit(node.condition)
-        return f"while True:\n{body}\n    if not {condition}:\n        break
-    
+        return f"while True:\n{body}\n    if not {condition}:\n        break"
+
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: SetComprehension) -> str:
         """Handle SetComprehension nodes."""
         elt = self.visit(node.elt)
-        generators_parts = []
+        generators = []
+        
         for gen in node.generators:
             target = self.visit(gen.target)
-            # Handle LiteralInt32 by wrapping it in range()
-            if isinstance(gen.iterable, astx.LiteralInt32):
-                iterable = f"range({self.visit(gen.iterable)})"
-            else:
-                iterable = self.visit(gen.iterable)
-            generators_parts.append(f"for {target} in {iterable}")
-        generators_str = " ".join(generators_parts)
+            iter_value = self.visit(gen.iterable)
+            generators.append(f"for {target} in {iter_value}")
+        
+        generators_str = " ".join(generators)
         return f"{{{elt} {generators_str}}}"
+    
