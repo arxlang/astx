@@ -235,7 +235,6 @@ def test_set_comprehension_basic() -> None:
         target=target, iterable=iterable, conditions=None, is_async=False
     )
     set_comp = astx.SetComprehension(elt=elt, generators=[comp])
-
     assert isinstance(set_comp, SetComprehension)
     assert set_comp.elt == elt
     assert len(set_comp.generators) == 1
