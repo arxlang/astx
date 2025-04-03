@@ -45,6 +45,7 @@ from astx.callables import (
     LambdaExpr,
     YieldExpr,
     YieldFromExpr,
+    YieldStmt,
 )
 from astx.classes import (
     ClassDeclStmt,
@@ -348,6 +349,7 @@ __all__ = [
     "XorOp",
     "YieldExpr",
     "YieldFromExpr",
+    "YieldStmt",
     "base",
     "blocks",
     "callables",
