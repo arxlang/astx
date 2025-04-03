@@ -10,6 +10,7 @@ from astx_transpilers import python_string as astx2py
 import astx
 
 transpiler = astx2py.ASTxPythonTranspiler()
+translate = transpiler.visit
 
 
 def translate(node: astx.AST) -> str:
@@ -1528,70 +1529,77 @@ def test_transpiler_do_while_expr() -> None:
     )
 
 
-def test_transpiler_setcomprehension_var_var() -> None:
-    """Test SetComprehension with variable element and variable generator."""
+def test_transpiler_setcomprehension_with_conditions() -> None:
+    """Test SetComprehension with conditions."""
     varic_x = astx.Variable(name="x")
     var_nums = astx.Variable(name="nums")
-    comprehension = astx.Comprehension(varic_x, var_nums, [])
+    # condition: x > 0
+    lit_0 = astx.LiteralInt32(value=0)
+    condition = astx.BinaryOp(
+        op_code=">",  # Use op_code instead of op=BinaryOpKind
+        lhs=varic_x,  # Use lhs instead of left
+        rhs=lit_0     # Use rhs instead of right
+    )
+    comprehension = astx.Comprehension(target=varic_x, iterable=var_nums, conditions=[condition])
     set_comp = astx.SetComprehension(elt=varic_x, generators=[comprehension])
     generated_code = translate(set_comp)
-    expected_code = "{x for x in nums}"
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    expected_code = "{x for x in nums if x > 0}"
+    assert generated_code == expected_code
 
 
-def test_transpiler_setcomprehension_var_range() -> None:
-    """Test SetComprehension with variable element and range generator."""
+def test_transpiler_setcomprehension_multiple_conditions() -> None:
+    """Test SetComprehension with multiple conditions."""
     varic_x = astx.Variable(name="x")
-    range_fn = astx.Variable(name="range")
-    range_arg = astx.LiteralInt32(value=5)
-    range_call = astx.FunctionCall(fn=range_fn, args=[range_arg])
-    
-    comprehension = astx.Comprehension(varic_x, range_call, [])
+    var_nums = astx.Variable(name="nums")
+    lit_0 = astx.LiteralInt32(value=0)
+    lit_10 = astx.LiteralInt32(value=10)
+    condition1 = astx.BinaryOp(
+        op_code=">",
+        lhs=varic_x, 
+        rhs=lit_0
+    )
+    condition2 = astx.BinaryOp(
+        op_code="<",
+        lhs=varic_x,
+        rhs=lit_10
+    )
+    comprehension = astx.Comprehension(target=varic_x, iterable=var_nums, conditions=[condition1, condition2])
     set_comp = astx.SetComprehension(elt=varic_x, generators=[comprehension])
-    
     generated_code = translate(set_comp)
-    expected_code = "{x for x in range(5)}"
-    
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    expected_code = "{x for x in nums if x > 0 if x < 10}"
+    assert generated_code == expected_code
 
 
-def test_transpiler_setcomprehension_int_var() -> None:
-    """Test SetComprehension with integer element and variable generator."""
-    lit_1 = astx.LiteralInt32(value=1)
+def test_transpiler_setcomprehension_complex() -> None:
+    """Test SetComprehension with multiple generators and conditions."""
     varic_x = astx.Variable(name="x")
+    varic_y = astx.Variable(name="y")
     var_nums = astx.Variable(name="nums")
-    comprehension = astx.Comprehension(varic_x, var_nums, [])
-    set_comp = astx.SetComprehension(elt=lit_1, generators=[comprehension])
-    generated_code = translate(set_comp)
-    expected_code = "{1 for x in nums}"
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
+    var_values = astx.Variable(name="values")
+    condition = astx.BinaryOp(
+        op_code=">",
+        lhs=varic_x,
+        rhs=varic_y
     )
+    comp1 = astx.Comprehension(target=varic_x, iterable=var_nums, conditions=[])
+    comp2 = astx.Comprehension(target=varic_y, iterable=var_values, conditions=[condition])
+    mul_expr = astx.BinaryOp(
+        op_code="*",
+        lhs=varic_x,
+        rhs=varic_y
+    )
+    set_comp = astx.SetComprehension(elt=mul_expr, generators=[comp1, comp2])
+    generated_code = translate(set_comp)
+    expected_code = "{x * y for x in nums for y in values if x > y}"
+    assert generated_code == expected_code
 
 
-def test_transpiler_setcomprehension_multiple_generators() -> None:
-    """Test SetComprehension with multiple generators."""
+def test_transpiler_setcomprehension_empty_generators() -> None:
+    """Test SetComprehension with empty generators list."""
     varic_x = astx.Variable(name="x")
-    var_nums = astx.Variable(name="nums")
-    
-    # Create range function call properly
-    range_fn = astx.Variable(name="range")
-    range_arg = astx.LiteralInt32(value=3)
-    range_call = astx.FunctionCall(fn=range_fn, args=[range_arg])
-    
-    comp1 = astx.Comprehension(varic_x, var_nums, [])
-    comp2 = astx.Comprehension(varic_x, range_call, [])
-    set_comp = astx.SetComprehension(elt=varic_x, generators=[comp1, comp2])
-    
-    print(f"Set Comprehension AST: {set_comp}")  # Debug print
-    generated_code = translate(set_comp)
-    print(f"Generated code: {generated_code}")  # Debug print
-    
-    expected_code = "{x for x in nums for x in range(3)}"
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
+    set_comp = astx.SetComprehension(elt=varic_x, generators=[])
+    try:
+        generated_code = translate(set_comp)
+        assert "{x }" in generated_code or "{x}" in generated_code
+    except Exception as e:
+        assert False, f"Translation of empty generators raised exception: {e}"

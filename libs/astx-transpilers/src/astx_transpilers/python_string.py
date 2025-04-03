@@ -720,13 +720,25 @@ class ASTxPythonTranspiler:
     def visit(self, node: SetComprehension) -> str:
         """Handle SetComprehension nodes."""
         elt = self.visit(node.elt)
-        generators = []
+        if isinstance(node.elt, astx.BinaryOp):
+            elt = self.visit(node.elt).strip('()')
         
+        generators = []
         for gen in node.generators:
             target = self.visit(gen.target)
             iter_value = self.visit(gen.iterable)
-            generators.append(f"for {target} in {iter_value}")
-        
+
+            conditions = []
+            for cond in gen.conditions:
+                # Remove parentheses from conditions
+                condition_code = self.visit(cond).strip('()')
+                conditions.append(f"if {condition_code}")
+            conditions_str = " ".join(conditions)
+
+            generator_str = f"for {target} in {iter_value}"
+            if conditions_str:
+                generator_str = f"{generator_str} {conditions_str}"
+            generators.append(generator_str)
+
         generators_str = " ".join(generators)
         return f"{{{elt} {generators_str}}}"
-    

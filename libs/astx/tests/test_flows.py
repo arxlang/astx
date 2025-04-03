@@ -1,7 +1,8 @@
 """Tests for control flow statements."""
 
-import astx
 import pytest
+
+import astx
 
 from astx.base import SourceLocation
 from astx.blocks import Block
@@ -233,14 +234,13 @@ def test_set_comprehension_basic() -> None:
     comp = astx.Comprehension(
         target=target, iterable=iterable, conditions=None, is_async=False
     )
-
     set_comp = astx.SetComprehension(elt=elt, generators=[comp])
 
     assert isinstance(set_comp, SetComprehension)
     assert set_comp.elt == elt
     assert len(set_comp.generators) == 1
     assert isinstance(set_comp.generators[0], astx.Comprehension)
-    assert str(set_comp) == "SetComprehension[LiteralInt32(5)]"
+    assert str(set_comp) == "SET-COMPREHENSION[LiteralInt32(5)]"
     assert isinstance(set_comp.type_, SetType)
     assert set_comp.get_struct()
     assert set_comp.get_struct(simplified=True)
@@ -252,22 +252,32 @@ def test_set_comprehension_basic() -> None:
 
 def test_set_comprehension_multiple_generators() -> None:
     """Test SetComprehension with multiple generators."""
+    generator_count = 2
     target = astx.Variable(name="x")
     iterable = astx.Variable(name="nums")
     comp1 = astx.Comprehension(
         target=target, iterable=iterable, conditions=[], is_async=False
     )
-
     range_3 = astx.LiteralInt32(value=3)
     comp2 = astx.Comprehension(
         target=target, iterable=range_3, conditions=[], is_async=False
     )
-
-    set_comp = SetComprehension(elt=target, generators=[comp1, comp2])
-
-    assert str(set_comp)
+    set_comp = SetComprehension(elt=target, generators=(comp1, comp2))
+    assert str(set_comp) == f"SET-COMPREHENSION[{target}]"
     assert set_comp.get_struct()
     assert set_comp.get_struct(simplified=True)
+    assert len(set_comp.generators) == generator_count
+    assert isinstance(set_comp.generators, list)
+
+
+def test_set_comprehension_with_empty_generators() -> None:
+    """Test SetComprehension with an empty generators sequence."""
+    elt = astx.LiteralInt32(5)
+    set_comp = SetComprehension(elt=elt, generators=())
+    assert isinstance(set_comp.generators, list)
+    assert len(set_comp.generators) == 0
+    assert str(set_comp) == f"SET-COMPREHENSION[{elt}]"
+    assert set_comp.get_struct()
 
 
 def test_while_stmt() -> None:

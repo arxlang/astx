@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, cast
+from typing import Optional, Sequence, cast
 
 from public import public
 
@@ -556,43 +556,38 @@ class WhileExpr(Expr):
 @public
 @typechecked
 class SetComprehension(Expr):
-    """AST class for a set comprehension expression."""
+    """AST node for set comprehension expressions."""
 
     elt: Expr
-    generators: List[Comprehension]
+    generators: list[Comprehension]
 
     def __init__(
         self,
         elt: Expr,
-        generators: List[Comprehension],
+        generators: Sequence[Comprehension],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the SetComprehension instance."""
         super().__init__(loc=loc, parent=parent)
         self.elt = elt
-        self.generators = generators
+        self.generators = list(generators)
         self.type_ = SetType(element_type=getattr(elt, "type_", AnyType()))
         self.kind = ASTKind.SetComprehensionKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"SetComprehension[{self.elt}]"
+        return f"SET-COMPREHENSION[{self.elt}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = "SET-COMPREHENSION"
-        value: Dict[str, Any] = {
-            "content": {
-                "content": {
-                    "type": {"SET": {}},
-                    "element": self.elt.get_struct(simplified),
-                    "generators": [
-                        gen.get_struct(simplified) for gen in self.generators
-                    ],
-                }
-            }
+        value: ReprStruct = {
+            "elt": self.elt.get_struct(simplified),
+            "generators": [
+                gen.get_struct(simplified) for gen in self.generators
+            ],
         }
+        key = f"{self}" if not simplified else f"{self}#{id(self)}"
         return self._prepare_struct(key, value, simplified)
 
 
