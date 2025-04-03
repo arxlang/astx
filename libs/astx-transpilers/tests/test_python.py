@@ -10,7 +10,6 @@ from astx_transpilers import python_string as astx2py
 import astx
 
 transpiler = astx2py.ASTxPythonTranspiler()
-translate = transpiler.visit
 
 
 def translate(node: astx.AST) -> str:
