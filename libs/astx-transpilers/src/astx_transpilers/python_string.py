@@ -721,8 +721,8 @@ class ASTxPythonTranspiler:
         """Handle SetComprehension nodes."""
         elt = self.visit(node.elt)
         if isinstance(node.elt, astx.BinaryOp):
-            elt = self.visit(node.elt).strip('()')
-        
+            elt = self.visit(node.elt).strip("()")
+
         generators = []
         for gen in node.generators:
             target = self.visit(gen.target)
@@ -731,7 +731,7 @@ class ASTxPythonTranspiler:
             conditions = []
             for cond in gen.conditions:
                 # Remove parentheses from conditions
-                condition_code = self.visit(cond).strip('()')
+                condition_code = self.visit(cond).strip("()")
                 conditions.append(f"if {condition_code}")
             conditions_str = " ".join(conditions)
 

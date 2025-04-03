@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import Callable, Type
 
-import astx
 import pytest
+
+import astx
 
 from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
