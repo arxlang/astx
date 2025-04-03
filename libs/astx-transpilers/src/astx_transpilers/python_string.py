@@ -713,3 +713,15 @@ class ASTxPythonTranspiler:
         body = self._generate_block(node.body)
         condition = self.visit(node.condition)
         return f"while True:\n{body}\n    if not {condition}:\n        break"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.DictComprehension) -> str:
+        """Handle DictComprehension nodes."""
+        ret_str = (
+            f"{self.visit(node.key)}: {self.visit(node.value)}"
+            f" for {self.visit(node.target)} in {self.visit(node.iterable)}"
+        )
+        if node.conditions is not None:
+            for cond in node.conditions:
+                ret_str += f" if {self.visit(cond)}"
+        return f"{{{ret_str}}}"
