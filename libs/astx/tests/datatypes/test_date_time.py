@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from typing import Callable, Type
 
-import pytest
-
 import astx
+import pytest
 
 from astx.literals.temporal import (
     LiteralDate,
