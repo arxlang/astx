@@ -391,10 +391,10 @@ def test_do_while_stmt() -> None:
 def test_generator_expr() -> None:
     """Test `GeneratorExpr` class."""
     gen_expr = astx.GeneratorExpr(
-        element=astx.Variable("x"),
-        target=astx.BinaryOp(
+        element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
         ),
+        target=astx.Variable("x"),
         iterable=astx.Identifier("range(10)"),
         conditions=[
             astx.BinaryOp(
