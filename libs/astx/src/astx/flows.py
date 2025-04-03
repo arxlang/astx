@@ -737,3 +737,49 @@ class GotoStmt(StatementType):
         key = f"GOTO-STMT[{self.label.value}]"
         value: DictDataTypesStruct = {}
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class DoWhileStmt(WhileStmt):
+    """AST class for `do-while` statement."""
+
+    def __init__(
+        self,
+        condition: Expr,
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the DoWhileStmt instance."""
+        super().__init__(
+            condition=condition, body=body, loc=loc, parent=parent
+        )
+        self.kind = ASTKind.DoWhileStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"DoWhileStmt[{self.condition}]"
+
+
+@public
+@typechecked
+class DoWhileExpr(WhileExpr):
+    """AST class for `do-while` expression."""
+
+    def __init__(
+        self,
+        condition: Expr,
+        body: Block,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the DoWhileExpr instance."""
+        super().__init__(
+            condition=condition, body=body, loc=loc, parent=parent
+        )
+        self.kind = ASTKind.DoWhileExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"DoWhileExpr[{self.condition}]"

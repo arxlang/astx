@@ -134,7 +134,9 @@ class ASTKind(Enum):
     WithStmtKind = -512
     AsyncRangeLoopStmtKind = -513
     AsyncRangeLoopExprKind = -514
-    SetComprehensionKind = -515
+    DoWhileStmtKind = -515
+    DoWhileExprKind = -516
+    SetComprehensionKind = -517
 
     # data types
     NullDTKind = -600
