@@ -121,3 +121,44 @@ class SubscriptExpr(Expr):
         value = self._get_struct_wrapper(simplified)
 
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class Ellipsis(Expr):
+    """
+    AST class representing the ellipsis (...) syntax in Python.
+    
+    The ellipsis is used in several contexts:
+    1. In slicing: arr[start:stop:...]
+    2. As a placeholder in type hints: Callable[..., ReturnType]
+    3. As a general placeholder in code
+    """
+    
+    def __init__(
+        self,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """
+        Initialize the Ellipsis instance.
+        
+        Parameters
+        ----------
+        loc: SourceLocation
+            The source location of the expression.
+        parent (optional): ASTNodes
+            The parent AST node.
+        """
+        super().__init__(loc=loc, parent=parent)
+        self.kind = ASTKind.EllipsisKind
+    
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return "..."
+    
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "Ellipsis"
+        value: DictDataTypesStruct = {}
+        return self._prepare_struct(key, value, simplified)
