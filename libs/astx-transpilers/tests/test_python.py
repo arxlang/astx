@@ -1535,14 +1535,16 @@ def test_transpiler_setcomprehension_with_conditions() -> None:
     # condition: x > 0
     lit_0 = astx.LiteralInt32(value=0)
     condition = astx.BinaryOp(
-        op_code=">",  # Use op_code instead of op=BinaryOpKind
-        lhs=varic_x,  # Use lhs instead of left
-        rhs=lit_0,  # Use rhs instead of right
+        op_code=">",
+        lhs=varic_x,
+        rhs=lit_0,
     )
     comprehension = astx.Comprehension(
         target=varic_x, iterable=var_nums, conditions=[condition]
     )
-    set_comp = astx.SetComprehension(elt=varic_x, generators=[comprehension])
+    set_comp = astx.SetComprehension(
+        element=varic_x, generators=[comprehension]
+    )
     generated_code = translate(set_comp)
     expected_code = "{x for x in nums if x > 0}"
     assert generated_code == expected_code
@@ -1559,7 +1561,9 @@ def test_transpiler_setcomprehension_multiple_conditions() -> None:
     comprehension = astx.Comprehension(
         target=varic_x, iterable=var_nums, conditions=[condition1, condition2]
     )
-    set_comp = astx.SetComprehension(elt=varic_x, generators=[comprehension])
+    set_comp = astx.SetComprehension(
+        element=varic_x, generators=[comprehension]
+    )
     generated_code = translate(set_comp)
     expected_code = "{x for x in nums if x > 0 if x < 10}"
     assert generated_code == expected_code
@@ -1579,7 +1583,9 @@ def test_transpiler_setcomprehension_complex() -> None:
         target=varic_y, iterable=var_values, conditions=[condition]
     )
     mul_expr = astx.BinaryOp(op_code="*", lhs=varic_x, rhs=varic_y)
-    set_comp = astx.SetComprehension(elt=mul_expr, generators=[comp1, comp2])
+    set_comp = astx.SetComprehension(
+        element=mul_expr, generators=[comp1, comp2]
+    )
     generated_code = translate(set_comp)
     expected_code = "{x * y for x in nums for y in values if x > y}"
     assert generated_code == expected_code
@@ -1588,7 +1594,7 @@ def test_transpiler_setcomprehension_complex() -> None:
 def test_transpiler_setcomprehension_empty_generators() -> None:
     """Test SetComprehension with empty generators list."""
     varic_x = astx.Variable(name="x")
-    set_comp = astx.SetComprehension(elt=varic_x, generators=[])
+    set_comp = astx.SetComprehension(element=varic_x, generators=[])
     try:
         generated_code = translate(set_comp)
         assert "{x }" in generated_code or "{x}" in generated_code
