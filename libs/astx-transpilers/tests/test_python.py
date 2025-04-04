@@ -1532,18 +1532,18 @@ def test_transpiler_setcomprehension_with_conditions() -> None:
     """Test SetComprehension with conditions."""
     varic_x = astx.Variable(name="x")
     var_nums = astx.Variable(name="nums")
-    # condition: x > 0
     lit_0 = astx.LiteralInt32(value=0)
     condition = astx.BinaryOp(
         op_code=">",
         lhs=varic_x,
-        rhs=lit_0,
+        rhs=lit_0
     )
     comprehension = astx.Comprehension(
         target=varic_x, iterable=var_nums, conditions=[condition]
     )
     set_comp = astx.SetComprehension(
-        element=varic_x, generators=[comprehension]
+        element=varic_x,
+        generators=[comprehension]
     )
     generated_code = translate(set_comp)
     expected_code = "{x for x in nums if x > 0}"
