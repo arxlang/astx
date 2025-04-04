@@ -228,15 +228,15 @@ def test_while_expr() -> None:
 
 def test_set_comprehension_basic() -> None:
     """Test basic creation and properties of SetComprehension."""
-    elt = astx.LiteralInt32(5)
+    element = astx.LiteralInt32(5)
     target = astx.Variable("x")
     iterable = astx.LiteralInt32(10)
     comp = astx.Comprehension(
         target=target, iterable=iterable, conditions=None, is_async=False
     )
-    set_comp = astx.SetComprehension(elt=elt, generators=[comp])
+    set_comp = astx.SetComprehension(element=element, generators=[comp])
     assert isinstance(set_comp, SetComprehension)
-    assert set_comp.elt == elt
+    assert set_comp.element == element
     assert len(set_comp.generators) == 1
     assert isinstance(set_comp.generators[0], astx.Comprehension)
     assert str(set_comp) == "SET-COMPREHENSION[LiteralInt32(5)]"
@@ -271,11 +271,11 @@ def test_set_comprehension_multiple_generators() -> None:
 
 def test_set_comprehension_with_empty_generators() -> None:
     """Test SetComprehension with an empty generators sequence."""
-    elt = astx.LiteralInt32(5)
-    set_comp = SetComprehension(elt=elt, generators=())
+    element = astx.LiteralInt32(5)
+    set_comp = SetComprehension(element=element, generators=())
     assert isinstance(set_comp.generators, list)
     assert len(set_comp.generators) == 0
-    assert str(set_comp) == f"SET-COMPREHENSION[{elt}]"
+    assert str(set_comp) == f"SET-COMPREHENSION[{element}]"
     assert set_comp.get_struct()
 
 

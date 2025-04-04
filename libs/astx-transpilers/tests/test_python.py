@@ -1537,9 +1537,11 @@ def test_transpiler_setcomprehension_with_conditions() -> None:
     condition = astx.BinaryOp(
         op_code=">",  # Use op_code instead of op=BinaryOpKind
         lhs=varic_x,  # Use lhs instead of left
-        rhs=lit_0     # Use rhs instead of right
+        rhs=lit_0,  # Use rhs instead of right
     )
-    comprehension = astx.Comprehension(target=varic_x, iterable=var_nums, conditions=[condition])
+    comprehension = astx.Comprehension(
+        target=varic_x, iterable=var_nums, conditions=[condition]
+    )
     set_comp = astx.SetComprehension(elt=varic_x, generators=[comprehension])
     generated_code = translate(set_comp)
     expected_code = "{x for x in nums if x > 0}"
@@ -1552,17 +1554,11 @@ def test_transpiler_setcomprehension_multiple_conditions() -> None:
     var_nums = astx.Variable(name="nums")
     lit_0 = astx.LiteralInt32(value=0)
     lit_10 = astx.LiteralInt32(value=10)
-    condition1 = astx.BinaryOp(
-        op_code=">",
-        lhs=varic_x, 
-        rhs=lit_0
+    condition1 = astx.BinaryOp(op_code=">", lhs=varic_x, rhs=lit_0)
+    condition2 = astx.BinaryOp(op_code="<", lhs=varic_x, rhs=lit_10)
+    comprehension = astx.Comprehension(
+        target=varic_x, iterable=var_nums, conditions=[condition1, condition2]
     )
-    condition2 = astx.BinaryOp(
-        op_code="<",
-        lhs=varic_x,
-        rhs=lit_10
-    )
-    comprehension = astx.Comprehension(target=varic_x, iterable=var_nums, conditions=[condition1, condition2])
     set_comp = astx.SetComprehension(elt=varic_x, generators=[comprehension])
     generated_code = translate(set_comp)
     expected_code = "{x for x in nums if x > 0 if x < 10}"
@@ -1575,18 +1571,14 @@ def test_transpiler_setcomprehension_complex() -> None:
     varic_y = astx.Variable(name="y")
     var_nums = astx.Variable(name="nums")
     var_values = astx.Variable(name="values")
-    condition = astx.BinaryOp(
-        op_code=">",
-        lhs=varic_x,
-        rhs=varic_y
+    condition = astx.BinaryOp(op_code=">", lhs=varic_x, rhs=varic_y)
+    comp1 = astx.Comprehension(
+        target=varic_x, iterable=var_nums, conditions=[]
     )
-    comp1 = astx.Comprehension(target=varic_x, iterable=var_nums, conditions=[])
-    comp2 = astx.Comprehension(target=varic_y, iterable=var_values, conditions=[condition])
-    mul_expr = astx.BinaryOp(
-        op_code="*",
-        lhs=varic_x,
-        rhs=varic_y
+    comp2 = astx.Comprehension(
+        target=varic_y, iterable=var_values, conditions=[condition]
     )
+    mul_expr = astx.BinaryOp(op_code="*", lhs=varic_x, rhs=varic_y)
     set_comp = astx.SetComprehension(elt=mul_expr, generators=[comp1, comp2])
     generated_code = translate(set_comp)
     expected_code = "{x * y for x in nums for y in values if x > y}"

@@ -558,31 +558,31 @@ class WhileExpr(Expr):
 class SetComprehension(Expr):
     """AST node for set comprehension expressions."""
 
-    elt: Expr
+    element: Expr
     generators: list[Comprehension]
 
     def __init__(
         self,
-        elt: Expr,
+        element: Expr,
         generators: Sequence[Comprehension],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the SetComprehension instance."""
         super().__init__(loc=loc, parent=parent)
-        self.elt = elt
+        self.element = element
         self.generators = list(generators)
-        self.type_ = SetType(element_type=getattr(elt, "type_", AnyType()))
+        self.type_ = SetType(element_type=getattr(element, "type_", AnyType()))
         self.kind = ASTKind.SetComprehensionKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"SET-COMPREHENSION[{self.elt}]"
+        return f"SET-COMPREHENSION[{self.element}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         value: ReprStruct = {
-            "elt": self.elt.get_struct(simplified),
+            "elt": self.element.get_struct(simplified),
             "generators": [
                 gen.get_struct(simplified) for gen in self.generators
             ],
