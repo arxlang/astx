@@ -5,12 +5,14 @@ from typing import cast
 import astx
 import pytest
 
-from astx.literals.numeric import LiteralInt32
+from astx.base import ASTKind, Identifier
+from astx.literals.numeric import LiteralInt32, IntegerLiteral
 from astx.operators import (
     AssignmentExpr,
     AugAssign,
     OpCodeAugAssign,
     VariableAssignment,
+    Starred,
 )
 from astx.variables import Variable
 from astx.viz import visualize
@@ -152,3 +154,54 @@ def test_aug_assign_operations(operator: OpCodeAugAssign, value: int) -> None:
     assert str(aug_assign) == f"AugAssign[{operator}]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
+
+def test_starred_initialization():
+    """Test that a Starred instance can be initialized."""
+    var = Variable(name="args")
+    starred = Starred(value=var)
+    
+    assert starred.value == var
+    assert starred.kind == ASTKind.StarredKind
+    assert str(starred) == f"Starred[*]({var})"
+
+
+def test_starred_with_identifier():
+    """Test that a Starred instance can be initialized with an Identifier."""
+    ident = Identifier(name="args")
+    starred = Starred(value=ident)
+    
+    assert starred.value == ident
+    assert starred.kind == ASTKind.StarredKind
+
+
+def test_starred_with_literal():
+    """Test that a Starred instance can be initialized with a literal."""
+    lit = IntegerLiteral(value=42)
+    starred = Starred(value=lit)
+    
+    assert starred.value == lit
+    assert starred.kind == ASTKind.StarredKind
+
+
+def test_starred_struct():
+    """Test the get_struct method of a Starred instance."""
+    var = Variable(name="args")
+    starred = Starred(value=var)
+    
+    struct = starred.get_struct()
+    
+    assert struct["kind"] == ASTKind.StarredKind
+    assert "value" in struct["content"]
+    assert struct["content"]["value"]["content"]["name"] == "args"
+
+
+def test_starred_simplified_struct():
+    """Test the get_struct method with simplified=True."""
+    var = Variable(name="args")
+    starred = Starred(value=var)
+    
+    struct = starred.get_struct(simplified=True)
+    
+    assert "kind" not in struct
+    assert struct["key"] == "STARRED[*]"
+    assert "value" in struct["content"]

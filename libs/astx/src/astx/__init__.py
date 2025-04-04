@@ -122,6 +122,7 @@ from astx.operators import (
     CompareOp,
     VariableAssignment,
     WalrusOp,
+    Starred,
 )
 from astx.packages import (
     AliasExpr,
@@ -342,6 +343,7 @@ __all__ = [
     "VariableDeclaration",
     "VisibilityKind",
     "WalrusOp",
+    "Starred",
     "WhileExpr",
     "WhileStmt",
     "XnorOp",
