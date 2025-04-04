@@ -388,8 +388,8 @@ def test_do_while_stmt() -> None:
     visualize(do_while_stmt.get_struct())
 
 
-def test_generator_expr() -> None:
-    """Test `GeneratorExpr` class."""
+def test_generator_expr_1() -> None:
+    """Test `GeneratorExpr` class with conditions of Iterable type."""
     gen_expr = astx.GeneratorExpr(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
@@ -398,13 +398,41 @@ def test_generator_expr() -> None:
         iterable=astx.Identifier("range(10)"),
         conditions=[
             astx.BinaryOp(
-                op_code=">", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(3)
+                op_code="<", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(8)
             ),
             astx.BinaryOp(
-                op_code="<", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(7)
+                op_code="%", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(2)
             ),
         ],
     )
+    assert str(gen_expr)
+    assert gen_expr.get_struct()
+    assert gen_expr.get_struct(simplified=True)
+    visualize(gen_expr.get_struct())
+
+
+def test_generator_expr_2() -> None:
+    """Test `GeneratorExpr` class with conditions of ASTNodes type."""
+    conditions = astx.ASTNodes[astx.Expr]()
+    conditions.append(
+        astx.BinaryOp(
+            op_code="<", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(8)
+        )
+    )
+    conditions.append(
+        astx.BinaryOp(
+            op_code="%", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(2)
+        )
+    )
+    gen_expr = astx.GeneratorExpr(
+        element=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        target=astx.Variable("x"),
+        iterable=astx.Identifier("range(10)"),
+        conditions=conditions,
+    )
+    print(gen_expr)
     assert str(gen_expr)
     assert gen_expr.get_struct()
     assert gen_expr.get_struct(simplified=True)

@@ -1544,7 +1544,6 @@ def test_transpiler_generator_expr() -> None:
             ),
         ],
     )
-    print
     generated_code = translate(gen_expr)
     expected_code = "((x + x) for x in range(10) if (x > 3) if (x < 7))"
     assert generated_code == expected_code, (

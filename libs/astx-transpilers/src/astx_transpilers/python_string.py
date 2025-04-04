@@ -721,7 +721,7 @@ class ASTxPythonTranspiler:
             f"{self.visit(node.element)} for {self.visit(node.target)}"
             f" in {self.visit(node.iterable)}"
         )
-        if node.conditions:
-            for condition in node.conditions:
-                ret_str += f" if {self.visit(condition)}"
+        for cond in node.conditions:
+            ret_str += f" if {self.visit(cond)}"
+
         return f"({ret_str})"

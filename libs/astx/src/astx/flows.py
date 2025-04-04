@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Iterable, Optional, cast
 
 from public import public
 
@@ -747,14 +747,14 @@ class GeneratorExpr(Expr):
     element: Expr
     target: Expr
     iterable: Expr
-    conditions: list[Expr]
+    conditions: ASTNodes[Expr] | Iterable[Expr]
 
     def __init__(
         self,
         element: Expr,
         target: Expr,
         iterable: Expr,
-        conditions: Optional[list[Expr]] = None,
+        conditions: Optional[ASTNodes[Expr]] | Optional[Iterable[Expr]] = [],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -763,20 +763,21 @@ class GeneratorExpr(Expr):
         self.element = element
         self.target = target
         self.iterable = iterable
-        self.conditions = conditions if conditions is not None else []
+        if isinstance(conditions, ASTNodes):
+            self.conditions = conditions
+        elif isinstance(conditions, Iterable):
+            self.conditions = ASTNodes()
+            for condition in conditions:
+                self.conditions.append(condition)
         self.kind = ASTKind.GeneratorExprKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
         ret_str = (
             f"GeneratorExpr[element={self.element}, target={self.target},"
-            f" iterable={self.iterable},"
+            f" iterable={self.iterable}, conditions="
+            f"{[str(cond) for cond in self.conditions]}"
         )
-        if self.conditions is not None:
-            cons_list = []
-            for cond in self.conditions:
-                cons_list.append(str(cond))
-            ret_str += f" conditions={(cons_list)}]"
         return ret_str
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
@@ -786,12 +787,8 @@ class GeneratorExpr(Expr):
             "element": self.element.get_struct(simplified),
             "target": self.target.get_struct(simplified),
             "iterable": self.iterable.get_struct(simplified),
-            "conditions": cast(
-                ReprStruct,
-                {
-                    str(cond): cond.get_struct(simplified)
-                    for cond in self.conditions
-                },
-            ),
+            "conditions": self.conditions.get_struct(simplified)
+            if isinstance(self.conditions, ASTNodes)
+            else ASTNodes().get_struct(simplified),
         }
         return self._prepare_struct(key, value, simplified)
