@@ -424,9 +424,7 @@ class YieldStmt(StatementType):
         """Return the AST structure of the object."""
         key = f"YIELD-STMT[{id(self)}]" if simplified else "YIELD-STMT"
         value = (
-            {"value": self.value.get_struct(simplified)}
-            if self.value is not None
-            else {}
+            self.value.get_struct(simplified) if self.value is not None else {}
         )
         return self._prepare_struct(key, value, simplified)
 
