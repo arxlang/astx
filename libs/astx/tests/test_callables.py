@@ -15,12 +15,14 @@ from astx.callables import (
     LambdaExpr,
     YieldExpr,
     YieldFromExpr,
+    YieldStmt,
 )
+from astx.flows import WhileStmt
 from astx.literals.numeric import LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
 from astx.types.numeric import Int32
-from astx.types.operators import BinaryOp
-from astx.variables import Variable
+from astx.types.operators import BinaryOp, UnaryOp
+from astx.variables import InlineVariableDeclaration, Variable
 from astx.viz import visualize
 
 
@@ -174,3 +176,66 @@ def test_yieldfrom_expr() -> None:
     assert yieldfrom_expr.get_struct()
     assert yieldfrom_expr.get_struct(simplified=True)
     visualize(yieldfrom_expr.get_struct())
+
+
+def test_yield_stmt_basic() -> None:
+    """Test basic YieldStmt without a value."""
+    yield_stmt = YieldStmt()
+
+    assert str(yield_stmt) == "YieldStmt"
+    assert yield_stmt.get_struct()
+    assert yield_stmt.get_struct(simplified=True)
+    visualize(yield_stmt.get_struct())
+
+
+def test_yield_stmt_with_value() -> None:
+    """Test YieldStmt with a literal value."""
+    yield_stmt = YieldStmt(value=LiteralInt32(42))
+
+    assert str(yield_stmt)
+    assert yield_stmt.get_struct()
+    assert yield_stmt.get_struct(simplified=True)
+    visualize(yield_stmt.get_struct())
+
+
+def test_yield_stmt_with_expression() -> None:
+    """Test YieldStmt with a complex expression."""
+    var_x = Variable("x")
+    expr = BinaryOp(op_code="+", lhs=var_x, rhs=LiteralInt32(1))
+    yield_stmt = YieldStmt(value=expr)
+
+    assert str(yield_stmt)
+    assert yield_stmt.get_struct()
+    assert yield_stmt.get_struct(simplified=True)
+    visualize(yield_stmt.get_struct())
+
+
+def test_yield_stmt_in_generator_block() -> None:
+    """Test YieldStmt as part of a generator function block."""
+    EXPECTED_BLOCK_LENGTH = 2
+
+    gen_block = Block(name="generator_body")
+
+    counter_decl = InlineVariableDeclaration(
+        "i", type_=Int32(), value=LiteralInt32(0)
+    )
+    gen_block.append(counter_decl)
+
+    i_var = Variable("i")
+    condition = BinaryOp(
+        op_code="<",
+        lhs=i_var,
+        rhs=LiteralInt32(5),
+    )
+
+    while_block = Block()
+    while_block.append(YieldStmt(i_var))
+    while_block.append(UnaryOp("++", i_var))
+
+    while_stmt = WhileStmt(condition=condition, body=while_block)
+    gen_block.append(while_stmt)
+
+    assert len(gen_block) == EXPECTED_BLOCK_LENGTH
+    assert isinstance(gen_block[1], WhileStmt)
+    assert str(gen_block[1].body[0])
+    visualize(gen_block.get_struct())

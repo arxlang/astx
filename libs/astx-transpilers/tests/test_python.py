@@ -1070,6 +1070,29 @@ def test_transpiler_yieldexpr_whilestmt() -> None:
     )
 
 
+def test_transpiler_yieldstmt_whilestmt() -> None:
+    """Test astx.YieldStmt (using WhileStmt)."""
+    # Create the `while True` loop
+    while_cond = astx.LiteralBoolean(True)
+    while_body = astx.Block()
+
+    yield_stmt = astx.YieldExpr(value=astx.LiteralInt32(1))
+
+    assign_value = astx.VariableAssignment(name="value", value=yield_stmt)
+
+    while_body.append(assign_value)
+
+    while_stmt = astx.WhileStmt(condition=while_cond, body=while_body)
+
+    # Generate Python code
+    generated_code = translate(while_stmt)
+    expected_code = "while True:\n    value = yield 1"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
 def test_transpiler_yieldfromexpr_whilestmt() -> None:
     """Test astx.YieldFromExpr (using WhileStmt)."""
     # Create the `while True` loop
