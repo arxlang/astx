@@ -333,7 +333,7 @@ def test_comprehension() -> None:
     iterable = astx.LiteralString("range(10)")
     condition = astx.LiteralString("x > 5")
 
-    comp = astx.Comprehension(
+    comp = astx.ComprehensionClause(
         target=target,
         iterable=iterable,
         conditions=[condition],
