@@ -390,6 +390,47 @@ class YieldExpr(Expr):
 
 @public
 @typechecked
+class YieldStmt(StatementType):
+    """AST class for yield statement."""
+
+    value: Optional[Expr]
+
+    def __init__(
+        self,
+        value: Optional[Expr] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the YieldStmt instance.
+
+        Args:
+            value: The expression to yield (optional)
+            loc: Source location of the statement
+            parent: Parent AST node
+        """
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.YieldStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return (
+            f"YieldStmt[{self.value}]"
+            if self.value is not None
+            else "YieldStmt"
+        )
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = f"YIELD-STMT[{id(self)}]" if simplified else "YIELD-STMT"
+        value = (
+            self.value.get_struct(simplified) if self.value is not None else {}
+        )
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
 class YieldFromExpr(Expr):
     """AST class for YieldFromExpr."""
 

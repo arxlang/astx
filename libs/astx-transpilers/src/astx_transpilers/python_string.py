@@ -571,6 +571,12 @@ class ASTxPythonTranspiler:
         return f"yield {value}".strip()
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.YieldStmt) -> str:
+        """Handle YieldStmt nodes."""
+        value = self.visit(node.value) if node.value else ""
+        return f"yield {value}".strip()
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.YieldFromExpr) -> str:
         """Handle YieldFromExpr nodes."""
         value = self.visit(node.value)
