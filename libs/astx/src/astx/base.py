@@ -11,6 +11,7 @@ from typing import (
     ClassVar,
     Dict,
     Generic,
+    Iterable,
     Iterator,
     List,
     Optional,
@@ -514,4 +515,88 @@ class ParenthesizedExpr(DataType):
         """Return the AST structure of the object."""
         key = "PARENTHESIZED-EXPR"
         value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class ComprehensionClause(Expr):
+    """AST node for generic comprehensions."""
+
+    target: Expr
+    iterable: Expr
+    conditions: ASTNodes[Expr]
+    is_async: bool
+
+    def __init__(
+        self,
+        target: Expr,
+        iterable: Expr,
+        conditions: Optional[Iterable[Expr] | ASTNodes[Expr]] = None,
+        is_async: bool = False,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.target = target
+        self.iterable = iterable
+        self.is_async = is_async
+        self.kind = ASTKind.ComprehensionKind
+
+        if isinstance(conditions, ASTNodes):
+            self.conditions = conditions
+        elif isinstance(conditions, Iterable):
+            self.conditions = ASTNodes()
+            for condition in conditions:
+                self.conditions.append(condition)
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"COMPREHENSION[is_async={self.is_async}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        value: ReprStruct = {
+            "target": self.target.get_struct(simplified),
+            "iterable": self.iterable.get_struct(simplified),
+            "conditions": self.conditions.get_struct(simplified),
+        }
+        key = f"{self}" if not simplified else f"{self}#{id(self)}"
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class Comprehension(Expr):
+    generators: ASTNodes[ComprehensionClause]
+
+    def __init__(
+        self,
+        generators: Optional[
+            Iterable[ComprehensionClause] | ASTNodes[ComprehensionClause]
+        ] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+
+        if isinstance(generators, ASTNodes):
+            self.generators = generators
+        elif isinstance(generators, Iterable):
+            self.generators = ASTNodes[ComprehensionClause]()
+            for generator in generators:
+                self.generators.append(generator)
+
+    @abstractmethod
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return "Comprehension"
+
+    @abstractmethod
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        value: ReprStruct = {
+            "generators": self.generators.get_struct(simplified),
+        }
+        key = f"{self}" if not simplified else f"{self}#{id(self)}"
         return self._prepare_struct(key, value, simplified)
