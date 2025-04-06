@@ -465,14 +465,14 @@ class Comprehension(Expr):
 
     target: Expr
     iterable: Expr
-    conditions: list[Expr]
+    conditions: ASTNodes[Expr]
     is_async: bool
 
     def __init__(
         self,
         target: Expr,
         iterable: Expr,
-        conditions: Optional[list[Expr]] = None,
+        conditions: Optional[Iterable[Expr] | ASTNodes[Expr]] = None,
         is_async: bool = False,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
@@ -480,9 +480,15 @@ class Comprehension(Expr):
         super().__init__(loc=loc, parent=parent)
         self.target = target
         self.iterable = iterable
-        self.conditions = conditions if conditions is not None else []
         self.is_async = is_async
         self.kind = ASTKind.ComprehensionKind
+
+        if isinstance(conditions, ASTNodes):
+            self.conditions = conditions
+        elif isinstance(conditions, Iterable):
+            self.conditions = ASTNodes()
+            for condition in conditions:
+                self.conditions.append(condition)
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
@@ -493,9 +499,7 @@ class Comprehension(Expr):
         value: ReprStruct = {
             "target": self.target.get_struct(simplified),
             "iterable": self.iterable.get_struct(simplified),
-            "conditions": [
-                cond.get_struct(simplified) for cond in self.conditions
-            ],
+            "conditions": self.conditions.get_struct(simplified),
         }
         key = f"{self}" if not simplified else f"{self}#{id(self)}"
         return self._prepare_struct(key, value, simplified)
