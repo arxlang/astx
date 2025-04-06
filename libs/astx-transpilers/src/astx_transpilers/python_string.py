@@ -731,3 +731,15 @@ class ASTxPythonTranspiler:
             ret_str += f" if {self.visit(cond)}"
 
         return f"({ret_str})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.DictComprehension) -> str:
+        """Handle DictComprehension nodes."""
+        ret_str = (
+            f"{self.visit(node.key)}: {self.visit(node.value)}"
+            f" for {self.visit(node.target)} in {self.visit(node.iterable)}"
+        )
+        if hasattr(node, "conditions") and node.conditions:
+            for cond in node.conditions:
+                ret_str += f" if {self.visit(cond)}"
+        return f"{{{ret_str}}}"

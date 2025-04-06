@@ -18,6 +18,9 @@ from astx.base import (
     StatementType,
 )
 from astx.blocks import Block
+from astx.callables import (
+    Comprehension,
+)
 from astx.tools.typing import typechecked
 from astx.variables import InlineVariableDeclaration
 
@@ -791,4 +794,67 @@ class GeneratorExpr(Expr):
             if isinstance(self.conditions, ASTNodes)
             else ASTNodes().get_struct(simplified),
         }
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class DictComprehension(Comprehension):
+    """AST node for dictionary comprehensions."""
+
+    key: Expr
+    value: Expr
+
+    def __init__(
+        self,
+        key: Expr,
+        value: Expr,
+        target: Expr,
+        iterable: Expr,
+        conditions: Optional[Iterable[Expr] | ASTNodes[Expr]] = None,
+        is_async: bool = False,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(
+            target=target,
+            iterable=iterable,
+            conditions=conditions,
+            is_async=is_async,
+            loc=loc,
+            parent=parent,
+        )
+        self.key = key
+        self.value = value
+        self.kind = ASTKind.DictComprehensionKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        conditions_str = []
+        if hasattr(self, "conditions") and self.conditions:
+            conditions_str = [str(cond) for cond in self.conditions]
+
+        ret_str = (
+            f"DictComprehension[key={self.key}, value={self.value},"
+            f" target={self.target}, iterable={self.iterable}, "
+            f" conditions={conditions_str},"
+            f" is_async={self.is_async}]"
+        )
+        return ret_str
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        value: DictDataTypesStruct = {
+            "key": self.key.get_struct(simplified),
+            "value": self.value.get_struct(simplified),
+            "target": self.target.get_struct(simplified),
+            "iterable": self.iterable.get_struct(simplified),
+        }
+        if hasattr(self, "conditions") and self.conditions:
+            value["conditions"] = self.conditions.get_struct(simplified)
+        key = (
+            f"DICT-COMPREHENSION#{id(self)}"
+            if simplified
+            else "DICT-COMPREHENSION"
+        )
         return self._prepare_struct(key, value, simplified)
