@@ -549,6 +549,8 @@ class ComprehensionClause(Expr):
             self.conditions = ASTNodes()
             for condition in conditions:
                 self.conditions.append(condition)
+        else:
+            self.conditions = ASTNodes[Expr]()
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
@@ -556,11 +558,18 @@ class ComprehensionClause(Expr):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
+        conditions = (
+            {"conditions": self.conditions.get_struct(simplified)}
+            if self.conditions.nodes
+            else {}
+        )
+
         value: ReprStruct = {
             "target": self.target.get_struct(simplified),
             "iterable": self.iterable.get_struct(simplified),
-            "conditions": self.conditions.get_struct(simplified),
+            **conditions,
         }
+
         key = f"{self}" if not simplified else f"{self}#{id(self)}"
         return self._prepare_struct(key, value, simplified)
 
@@ -572,9 +581,9 @@ class Comprehension(Expr):
 
     def __init__(
         self,
-        generators: Optional[
+        generators: (
             Iterable[ComprehensionClause] | ASTNodes[ComprehensionClause]
-        ] = None,
+        ),
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
