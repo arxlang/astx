@@ -597,11 +597,6 @@ class Comprehension(Expr):
                 self.generators.append(generator)
 
     @abstractmethod
-    def __str__(self) -> str:
-        """Return a string representation of the object."""
-        return "Comprehension"
-
-    @abstractmethod
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         value: ReprStruct = {

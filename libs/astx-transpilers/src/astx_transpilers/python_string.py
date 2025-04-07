@@ -67,6 +67,12 @@ class ASTxPythonTranspiler:
         return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ASTNodes) -> str:
+        """Handle AliasExpr nodes."""
+        lines = [self.visit(node) for node in node.nodes]
+        return " ".join(lines)
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AsyncForRangeLoopExpr) -> str:
         """Handle AsyncForRangeLoopExpr nodes."""
         if len(node.body) > 1:
@@ -147,6 +153,20 @@ class ASTxPythonTranspiler:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
         return f"class {node.name}{class_type}:\n{self.visit(node.body)}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ComprehensionClause) -> str:
+        """Handle ComprehensionClause nodes."""
+        conditions = " if ".join(
+            [self.visit(condition) for condition in node.conditions]
+        )
+        if conditions:
+            conditions = f"if {conditions}"
+
+        async_kw = "async " if node.is_async else ""
+        target = self.visit(node.target)
+        iter = self.visit(node.iterable)
+        return f"{async_kw}for {target} in {iter} {conditions}".strip()
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DeleteStmt) -> str:
@@ -360,6 +380,12 @@ class ASTxPythonTranspiler:
         """Handle LambdaExpr nodes."""
         params_str = ", ".join(param.name for param in node.params)
         return f"lambda {params_str}: {self.visit(node.body)}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ListComprehension) -> str:
+        """Handle ListComprehension nodes."""
+        generators = [self.visit(node.generators)]
+        return f"[{self.visit(node.element).strip()} {' '.join(generators)}]"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralBoolean) -> str:
