@@ -333,13 +333,12 @@ def test_comprehension() -> None:
     iterable = astx.LiteralString("range(10)")
     condition = astx.LiteralString("x > 5")
 
-    comp = astx.ComprehensionClause(
+    comp = astx.Comprehension(
         target=target,
         iterable=iterable,
         conditions=[condition],
         is_async=True,
     )
-
     expected_str = "COMPREHENSION[is_async=True]"
     assert str(comp) == expected_str
     assert comp.get_struct(simplified=True)
@@ -432,7 +431,6 @@ def test_generator_expr_2() -> None:
         iterable=astx.Identifier("range(10)"),
         conditions=conditions,
     )
-    print(gen_expr)
     assert str(gen_expr)
     assert gen_expr.get_struct()
     assert gen_expr.get_struct(simplified=True)

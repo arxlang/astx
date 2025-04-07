@@ -10,6 +10,7 @@ from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
+    Comprehension,
     DictDataTypesStruct,
     Expr,
     Identifier,
@@ -741,42 +742,42 @@ class DoWhileExpr(WhileExpr):
 
 @public
 @typechecked
-class GeneratorExpr(Expr):
+class GeneratorExpr(Comprehension):
     """AST class for generator expressions."""
 
     element: Expr
-    target: Expr
-    iterable: Expr
-    conditions: ASTNodes[Expr] | Iterable[Expr]
 
     def __init__(
         self,
         element: Expr,
         target: Expr,
         iterable: Expr,
-        conditions: Optional[ASTNodes[Expr]] | Optional[Iterable[Expr]] = [],
+        conditions: Optional[Iterable[Expr] | ASTNodes[Expr]] = None,
+        is_async: bool = False,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the GeneratorExpr instance."""
-        super().__init__(loc=loc, parent=parent)
+        super().__init__(
+            target=target,
+            iterable=iterable,
+            conditions=conditions,
+            is_async=is_async,
+            loc=loc,
+            parent=parent,
+        )
         self.element = element
-        self.target = target
-        self.iterable = iterable
-        if isinstance(conditions, ASTNodes):
-            self.conditions = conditions
-        elif isinstance(conditions, Iterable):
-            self.conditions = ASTNodes()
-            for condition in conditions:
-                self.conditions.append(condition)
         self.kind = ASTKind.GeneratorExprKind
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
+        conditions_str = []
+        if hasattr(self, "conditions") and self.conditions:
+            conditions_str = [str(cond) for cond in self.conditions]
         ret_str = (
             f"GeneratorExpr[element={self.element}, target={self.target},"
-            f" iterable={self.iterable}, conditions="
-            f"{[str(cond) for cond in self.conditions]}"
+            f" iterable={self.iterable}, conditions={conditions_str}"
+            f" is_async={self.is_async}]"
         )
         return ret_str
 
@@ -788,7 +789,8 @@ class GeneratorExpr(Expr):
             "target": self.target.get_struct(simplified),
             "iterable": self.iterable.get_struct(simplified),
             "conditions": self.conditions.get_struct(simplified)
-            if isinstance(self.conditions, ASTNodes)
+            if hasattr(self, "conditions") and self.conditions is not None
             else ASTNodes().get_struct(simplified),
         }
+        key = f"GENERATOR-EXPR#{id(self)}" if simplified else "GENERATOR-EXPR"
         return self._prepare_struct(key, value, simplified)

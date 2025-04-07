@@ -120,6 +120,7 @@ class ASTKind(Enum):
     YieldFromExprKind = -408
     ComprehensionKind = -409
     YieldStmtKind = -410
+    GeneratorsKind = -411
 
     # control flow
     IfStmtKind = -500
@@ -520,7 +521,7 @@ class ParenthesizedExpr(DataType):
 
 @public
 @typechecked
-class ComprehensionClause(Expr):
+class Comprehension(Expr):
     """AST node for generic comprehensions."""
 
     target: Expr
@@ -556,25 +557,25 @@ class ComprehensionClause(Expr):
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        value: ReprStruct = {
+        value: DictDataTypesStruct = {
             "target": self.target.get_struct(simplified),
             "iterable": self.iterable.get_struct(simplified),
-            "conditions": self.conditions.get_struct(simplified),
         }
+        if hasattr(self, "conditions") and self.conditions is not None:
+            value["conditions"] = self.conditions.get_struct(simplified)
+
         key = f"{self}" if not simplified else f"{self}#{id(self)}"
         return self._prepare_struct(key, value, simplified)
 
 
 @public
 @typechecked
-class Comprehension(Expr):
-    generators: ASTNodes[ComprehensionClause]
+class Generators(Expr):
+    generators: ASTNodes[Comprehension]
 
     def __init__(
         self,
-        generators: Optional[
-            Iterable[ComprehensionClause] | ASTNodes[ComprehensionClause]
-        ] = None,
+        generators: Iterable[Comprehension] | ASTNodes[Comprehension],
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
@@ -583,19 +584,20 @@ class Comprehension(Expr):
         if isinstance(generators, ASTNodes):
             self.generators = generators
         elif isinstance(generators, Iterable):
-            self.generators = ASTNodes[ComprehensionClause]()
+            self.generators = ASTNodes[Comprehension]()
             for generator in generators:
                 self.generators.append(generator)
+        self.kind = ASTKind.GeneratorsKind
 
     @abstractmethod
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return "Comprehension"
+        return "Generators"
 
     @abstractmethod
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        value: ReprStruct = {
+        value: DictDataTypesStruct = {
             "generators": self.generators.get_struct(simplified),
         }
         key = f"{self}" if not simplified else f"{self}#{id(self)}"
