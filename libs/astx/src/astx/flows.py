@@ -10,8 +10,6 @@ from astx.base import (
     NO_SOURCE_LOCATION,
     ASTKind,
     ASTNodes,
-    Comprehension,
-    ComprehensionClause,
     DictDataTypesStruct,
     Expr,
     Identifier,
@@ -792,42 +790,5 @@ class GeneratorExpr(Expr):
             "conditions": self.conditions.get_struct(simplified)
             if isinstance(self.conditions, ASTNodes)
             else ASTNodes().get_struct(simplified),
-        }
-        return self._prepare_struct(key, value, simplified)
-
-
-@public
-@typechecked
-class ListComprehension(Comprehension):
-    """ListComprehension class."""
-
-    element: Expr
-
-    def __init__(
-        self,
-        element: Expr,
-        generators: ASTNodes[ComprehensionClause]
-        | Iterable[ComprehensionClause] = [],
-        loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
-    ) -> None:
-        """Initialize the GeneratorExpr instance."""
-        super().__init__(generators=generators, loc=loc, parent=parent)
-        self.element = element
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
-        key = f"{self}"
-        key += f"#{id(self)}" if simplified else ""
-
-        generators = (
-            {"generators": self.generators.get_struct(simplified)}
-            if self.generators.nodes
-            else {}
-        )
-
-        value: ReprStruct = {
-            "element": self.element.get_struct(simplified),
-            **generators,
         }
         return self._prepare_struct(key, value, simplified)

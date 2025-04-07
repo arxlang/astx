@@ -19,8 +19,6 @@ from astx.base import (
     AST,
     ASTKind,
     ASTNodes,
-    Comprehension,
-    ComprehensionClause,
     DataType,
     Expr,
     ExprType,
@@ -55,6 +53,11 @@ from astx.classes import (
     StructDeclStmt,
     StructDefStmt,
 )
+from astx.comprehensions import (
+    Comprehension,
+    ComprehensionClause,
+    ListComprehension,
+)
 from astx.exceptions import (
     CatchHandlerStmt,
     ExceptionHandlerStmt,
@@ -75,7 +78,6 @@ from astx.flows import (
     GotoStmt,
     IfExpr,
     IfStmt,
-    ListComprehension,
     SwitchStmt,
     WhileExpr,
     WhileStmt,
