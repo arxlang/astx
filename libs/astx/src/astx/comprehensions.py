@@ -186,3 +186,33 @@ class SetComprehension(Comprehension):
         }
         key = f"{self}#{id(self)}" if simplified else f"{self}"
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class GeneratorExpr(Comprehension):
+    """AST class for generator expressions."""
+
+    element: Expr
+
+    def __init__(
+        self,
+        element: Expr,
+        generators: Iterable[ComprehensionClause]
+        | ASTNodes[ComprehensionClause],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the GeneratorExpr instance."""
+        super().__init__(generators=generators, loc=loc, parent=parent)
+        self.element = element
+        self.kind = ASTKind.GeneratorExprKind
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = f"GENERATOR-EXPR#{id(self)}" if simplified else "GENERATOR-EXPR"
+        value: ReprStruct = {
+            "element": self.element.get_struct(simplified),
+            "generators": self.generators.get_struct(simplified),
+        }
+        return self._prepare_struct(key, value, simplified)

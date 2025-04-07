@@ -254,6 +254,12 @@ class ASTxPythonTranspiler:
         return f"return {value}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.GeneratorExpr) -> str:
+        """Handle GeneratorExpr nodes."""
+        generators = [self.visit(node.generators)]
+        return f"({self.visit(node.element).strip()} {' '.join(generators)})"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Identifier) -> str:
         """Handle Identifier nodes."""
         return f"{node.value}"
@@ -751,15 +757,3 @@ class ASTxPythonTranspiler:
         body = self._generate_block(node.body)
         condition = self.visit(node.condition)
         return f"while True:\n{body}\n    if not {condition}:\n        break"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.GeneratorExpr) -> str:
-        """Handle GeneratorExpr nodes."""
-        ret_str = (
-            f"{self.visit(node.element)} for {self.visit(node.target)}"
-            f" in {self.visit(node.iterable)}"
-        )
-        for cond in node.conditions:
-            ret_str += f" if {self.visit(cond)}"
-
-        return f"({ret_str})"

@@ -8,7 +8,7 @@ from astx.viz import visualize
 
 def test_list_comprehension() -> None:
     """Test ListComprehension."""
-    gen_expr = astx.ListComprehension(
+    list_compre = astx.ListComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
         ),
@@ -31,8 +31,54 @@ def test_list_comprehension() -> None:
             )
         ],
     )
+    print(list_compre)
+    repr(list_compre)
+    assert str(list_compre)
+    assert list_compre.get_struct()
+    assert list_compre.get_struct(simplified=True)
+    visualize(list_compre.get_struct())
+
+
+def test_generator_expr() -> None:
+    """Test `GeneratorExpr` class with conditions of Iterable type."""
+    comp_1 = astx.ComprehensionClause(
+        target=astx.Variable("x"),
+        iterable=astx.Variable("my_list"),
+        conditions=[
+            astx.BoolBinaryOp(
+                op_code="==",
+                lhs=astx.BinaryOp(
+                    op_code="%",
+                    lhs=astx.Variable("x"),
+                    rhs=astx.LiteralInt32(2),
+                ),
+                rhs=astx.LiteralInt32(1),
+            )
+        ],
+    )
+    comp_2 = astx.ComprehensionClause(
+        target=astx.Variable("y"),
+        iterable=astx.Variable("my_list"),
+        conditions=[
+            astx.BoolBinaryOp(
+                op_code="==",
+                lhs=astx.BinaryOp(
+                    op_code="%",
+                    lhs=astx.Variable("y"),
+                    rhs=astx.LiteralInt32(2),
+                ),
+                rhs=astx.LiteralInt32(0),
+            )
+        ],
+    )
+    gen_expr = astx.GeneratorExpr(
+        element=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("y")
+        ),
+        generators=[comp_1, comp_2],
+    )
     print(gen_expr)
-    repr(gen_expr)
+    print(repr(gen_expr))
     assert str(gen_expr)
     assert gen_expr.get_struct()
     assert gen_expr.get_struct(simplified=True)

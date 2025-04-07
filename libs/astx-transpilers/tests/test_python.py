@@ -1552,40 +1552,49 @@ def test_transpiler_do_while_expr() -> None:
 
 def test_transpiler_generator_expr() -> None:
     """Test astx.GeneratorExpr."""
-    gen_expr = astx.GeneratorExpr(
-        element=astx.BinaryOp(
-            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
-        ),
+    comp_1 = astx.ComprehensionClause(
         target=astx.Variable("x"),
-        iterable=astx.Identifier("range(10)"),
+        iterable=astx.Variable("list_1"),
         conditions=[
-            astx.BinaryOp(
-                op_code=">", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(3)
-            ),
-            astx.BinaryOp(
-                op_code="<", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(7)
-            ),
+            astx.BoolBinaryOp(
+                op_code="==",
+                lhs=astx.BinaryOp(
+                    op_code="%",
+                    lhs=astx.Variable("x"),
+                    rhs=astx.LiteralInt32(2),
+                ),
+                rhs=astx.LiteralInt32(1),
+            )
         ],
     )
-    generated_code = translate(gen_expr)
-    expected_code = "((x + x) for x in range(10) if (x > 3) if (x < 7))"
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
+    comp_2 = astx.ComprehensionClause(
+        target=astx.Variable("y"),
+        iterable=astx.Variable("list_2"),
+        conditions=[
+            astx.BoolBinaryOp(
+                op_code="==",
+                lhs=astx.BinaryOp(
+                    op_code="%",
+                    lhs=astx.Variable("y"),
+                    rhs=astx.LiteralInt32(2),
+                ),
+                rhs=astx.LiteralInt32(0),
+            )
+        ],
     )
-
-
-def test_transpiler_generator_expr_no_conditions() -> None:
-    """Test astx.GeneratorExpr with no conditions."""
     gen_expr = astx.GeneratorExpr(
-        target=astx.Variable("x"),
         element=astx.BinaryOp(
-            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("y")
         ),
-        iterable=astx.Identifier("range(10)"),
+        generators=[comp_1, comp_2],
     )
 
     generated_code = translate(gen_expr)
-    expected_code = "((x + x) for x in range(10))"
+    expected_code = (
+        "((x + y) "
+        "for x in list_1 if ((x % 2) == 1) "
+        "for y in list_2 if ((y % 2) == 0))"
+    )
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
