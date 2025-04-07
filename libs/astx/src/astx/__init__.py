@@ -19,8 +19,6 @@ from astx.base import (
     AST,
     ASTKind,
     ASTNodes,
-    Comprehension,
-    ComprehensionClause,
     DataType,
     Expr,
     ExprType,
@@ -54,6 +52,11 @@ from astx.classes import (
     EnumDeclStmt,
     StructDeclStmt,
     StructDefStmt,
+)
+from astx.comprehensions import (
+    Comprehension,
+    ComprehensionClause,
+    ListComprehension,
 )
 from astx.exceptions import (
     CatchHandlerStmt,
@@ -273,6 +276,7 @@ __all__ = [
     "Int64",
     "Integer",
     "LambdaExpr",
+    "ListComprehension",
     "ListType",
     "Literal",
     "LiteralBoolean",
