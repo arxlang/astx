@@ -9,6 +9,7 @@ import pytest
 
 from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import Variable
+from astx.base import Expr
 
 VAR_A = Variable("a")
 
@@ -20,6 +21,9 @@ UTF8_STRING_LITERAL_CLASSES = [
     astx.LiteralUTF8String,
 ]
 
+FORMATTED_STRING_LITERAL_CLASSES = [
+    astx.LiteralFormattedString,
+]
 
 def test_variable() -> None:
     """Test variable UTF-8 character and string."""
@@ -131,3 +135,98 @@ def test_unary_ops_string(
     assert repr(unary_op) != ""
     assert unary_op.get_struct() != {}
     assert unary_op.get_struct(simplified=True) != {}
+
+def test_formatted_string_literal() -> None:
+    """Test formatted string literals."""
+    # Simple case with just an expression
+    expr = Variable("x")
+    formatted = astx.LiteralFormattedString(value=expr)
+    assert formatted.value == expr
+    assert formatted.format_spec is None
+    assert formatted.conversion is None
+    
+    # With format spec
+    formatted_with_spec = astx.LiteralFormattedString(value=expr, format_spec=".2f")
+    assert formatted_with_spec.format_spec == ".2f"
+    
+    # With conversion
+    formatted_with_conversion = astx.LiteralFormattedString(value=expr, conversion="s")
+    assert formatted_with_conversion.conversion == "s"
+    
+    # With both format spec and conversion
+    formatted_complete = astx.LiteralFormattedString(
+        value=expr, format_spec=".2f", conversion="s"
+    )
+    assert formatted_complete.format_spec == ".2f"
+    assert formatted_complete.conversion == "s"
+
+
+def test_formatted_string_str_repr() -> None:
+    """Test string representation of formatted string literals."""
+    expr = Variable("x")
+    
+    # Simple case
+    formatted = astx.LiteralFormattedString(value=expr)
+    assert str(formatted) == f"LiteralFormattedString({expr})"
+    
+    # With format spec
+    formatted_with_spec = astx.LiteralFormattedString(value=expr, format_spec=".2f")
+    assert str(formatted_with_spec) == f"LiteralFormattedString({expr}:.2f)"
+    
+    # With conversion
+    formatted_with_conversion = astx.LiteralFormattedString(value=expr, conversion="s")
+    assert str(formatted_with_conversion) == f"LiteralFormattedString({expr}!s)"
+    
+    # With both
+    formatted_complete = astx.LiteralFormattedString(
+        value=expr, format_spec=".2f", conversion="s"
+    )
+    assert str(formatted_complete) == f"LiteralFormattedString({expr}!s:.2f)"
+
+
+def test_formatted_string_structure() -> None:
+    """Test the AST structure of formatted string literals."""
+    expr = Variable("x")
+    formatted = astx.LiteralFormattedString(
+        value=expr, format_spec=".2f", conversion="s"
+    )
+    
+    # Test regular structure
+    struct = formatted.get_struct()
+    assert "LiteralFormattedString" in struct
+    content = struct["LiteralFormattedString"]["content"]
+    assert "value" in content
+    assert "format_spec" in content
+    assert "conversion" in content
+    assert content["format_spec"] == ".2f"
+    assert content["conversion"] == "s"
+    
+    # Test simplified structure
+    simple_struct = formatted.get_struct(simplified=True)
+    assert "LiteralFormattedString" in simple_struct
+    simple_content = simple_struct["LiteralFormattedString"]
+    assert "value" in simple_content
+    assert "format_spec" in simple_content
+    assert "conversion" in simple_content
+
+
+@pytest.mark.parametrize(
+    "fn_bin_op,op_code",
+    [
+        (lambda literal_class, expr: VAR_A + literal_class(expr), "+"),
+        (lambda literal_class, expr: VAR_A == literal_class(expr), "=="),
+        (lambda literal_class, expr: VAR_A != literal_class(expr), "!="),
+    ],
+)
+def test_bin_ops_formatted_string(
+    fn_bin_op: Callable[[Type[astx.Literal], Expr], BinaryOp],
+    op_code: str,
+) -> None:
+    """Test binary operations on formatted strings."""
+    expr = Variable("x")
+    bin_op = fn_bin_op(astx.LiteralFormattedString, expr)
+    assert bin_op.op_code == op_code
+    assert str(bin_op) != ""
+    assert repr(bin_op) != ""
+    assert bin_op.get_struct() != {}
+    assert bin_op.get_struct(simplified=True) != {}

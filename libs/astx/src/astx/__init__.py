@@ -113,6 +113,7 @@ from astx.literals import (
     LiteralUInt128,
     LiteralUTF8Char,
     LiteralUTF8String,
+    LiteralFormattedString,
 )
 from astx.mixes import (
     NamedExpr,
@@ -308,6 +309,7 @@ __all__ = [
     "LiteralUInt128",
     "LiteralUTF8Char",
     "LiteralUTF8String",
+    "LiteralFormattedString",
     "Module",
     "MutabilityKind",
     "NamedExpr",
