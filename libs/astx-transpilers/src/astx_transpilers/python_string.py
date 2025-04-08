@@ -457,6 +457,12 @@ class ASTxPythonTranspiler:
         return f"@dataclass \nclass {node.name}:\n    {attrs_str}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.SetComprehension) -> str:
+        """Handle SetComprehension nodes."""
+        generators = [self.visit(node.generators)]
+        return f"{{{self.visit(node.element).strip()} {' '.join(generators)}}}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SubscriptExpr) -> str:
         """Handle SubscriptExpr nodes."""
         lower_str = (

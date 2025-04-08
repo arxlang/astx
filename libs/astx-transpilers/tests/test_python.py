@@ -1622,3 +1622,36 @@ def test_transpiler_list_comprehension() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_set_comprehension() -> None:
+    """Test SetComprehension."""
+    set_comp = astx.SetComprehension(
+        element=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        generators=[
+            astx.ComprehensionClause(
+                target=astx.Variable("x"),
+                iterable=astx.Identifier("range_10"),
+                conditions=[
+                    astx.BinaryOp(
+                        op_code=">",
+                        lhs=astx.Variable("x"),
+                        rhs=astx.LiteralInt32(3),
+                    ),
+                    astx.BinaryOp(
+                        op_code="<",
+                        lhs=astx.Variable("x"),
+                        rhs=astx.LiteralInt32(7),
+                    ),
+                ],
+            )
+        ],
+    )
+
+    generated_code = translate(set_comp)
+    expected_code = "{(x + x) for x in range_10 if (x > 3) if (x < 7)}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )

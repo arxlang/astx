@@ -57,6 +57,7 @@ from astx.comprehensions import (
     Comprehension,
     ComprehensionClause,
     ListComprehension,
+    SetComprehension,
 )
 from astx.exceptions import (
     CatchHandlerStmt,
@@ -321,6 +322,7 @@ __all__ = [
     "ParenthesizedExpr",
     "Program",
     "ScopeKind",
+    "SetComprehension",
     "SetType",
     "SignedInteger",
     "SourceLocation",
