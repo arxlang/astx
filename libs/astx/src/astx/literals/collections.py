@@ -9,7 +9,12 @@ from public import public
 from astx.base import NO_SOURCE_LOCATION, SourceLocation
 from astx.literals.base import Literal
 from astx.tools.typing import typechecked
-from astx.types.collections import DictType, ListType, SetType, TupleType
+from astx.types.collections import (
+    DictType,
+    ListType,
+    SetType,
+    TupleType,
+)
 from astx.types.numeric import Int32
 
 

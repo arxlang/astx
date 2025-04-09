@@ -138,6 +138,7 @@ class ASTKind(Enum):
     DoWhileStmtKind = -515
     DoWhileExprKind = -516
     GeneratorExprKind = -517
+    SetComprehensionKind = -518
 
     # data types
     NullDTKind = -600

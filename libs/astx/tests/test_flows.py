@@ -1,7 +1,8 @@
 """Tests for control flow statements."""
 
-import astx
 import pytest
+
+import astx
 
 from astx.base import SourceLocation
 from astx.blocks import Block
@@ -17,12 +18,14 @@ from astx.flows import (
     ForRangeLoopStmt,
     IfExpr,
     IfStmt,
+    SetComprehension,
     SwitchStmt,
     WhileExpr,
     WhileStmt,
 )
 from astx.literals import LiteralInt32, LiteralString
 from astx.literals.numeric import LiteralInt32
+from astx.types.collections import SetType
 from astx.types.numeric import Int32
 from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
@@ -221,6 +224,59 @@ def test_while_expr() -> None:
     assert while_expr.get_struct()
     assert while_expr.get_struct(simplified=True)
     visualize(while_expr.get_struct())
+
+
+def test_set_comprehension_basic() -> None:
+    """Test basic creation and properties of SetComprehension."""
+    element = astx.LiteralInt32(5)
+    target = astx.Variable("x")
+    iterable = astx.LiteralInt32(10)
+    comp = astx.Comprehension(
+        target=target, iterable=iterable, conditions=None, is_async=False
+    )
+    set_comp = astx.SetComprehension(element=element, generators=[comp])
+    assert isinstance(set_comp, SetComprehension)
+    assert set_comp.element == element
+    assert len(set_comp.generators) == 1
+    assert isinstance(set_comp.generators[0], astx.Comprehension)
+    assert str(set_comp) == "SET-COMPREHENSION[LiteralInt32(5)]"
+    assert isinstance(set_comp.type_, SetType)
+    assert set_comp.get_struct()
+    assert set_comp.get_struct(simplified=True)
+    try:
+        visualize(set_comp.get_struct())
+    except Exception:
+        pass
+
+
+def test_set_comprehension_multiple_generators() -> None:
+    """Test SetComprehension with multiple generators."""
+    generator_count = 2
+    target = astx.Variable(name="x")
+    iterable = astx.Variable(name="nums")
+    comp1 = astx.Comprehension(
+        target=target, iterable=iterable, conditions=[], is_async=False
+    )
+    range_3 = astx.LiteralInt32(value=3)
+    comp2 = astx.Comprehension(
+        target=target, iterable=range_3, conditions=[], is_async=False
+    )
+    set_comp = SetComprehension(elt=target, generators=(comp1, comp2))
+    assert str(set_comp) == f"SET-COMPREHENSION[{target}]"
+    assert set_comp.get_struct()
+    assert set_comp.get_struct(simplified=True)
+    assert len(set_comp.generators) == generator_count
+    assert isinstance(set_comp.generators, list)
+
+
+def test_set_comprehension_with_empty_generators() -> None:
+    """Test SetComprehension with an empty generators sequence."""
+    element = astx.LiteralInt32(5)
+    set_comp = SetComprehension(element=element, generators=())
+    assert isinstance(set_comp.generators, list)
+    assert len(set_comp.generators) == 0
+    assert str(set_comp) == f"SET-COMPREHENSION[{element}]"
+    assert set_comp.get_struct()
 
 
 def test_while_stmt() -> None:

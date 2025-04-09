@@ -3,10 +3,11 @@
 import ast
 import sys
 
-import astx
 import pytest
 
 from astx_transpilers import python_string as astx2py
+
+import astx
 
 transpiler = astx2py.ASTxPythonTranspiler()
 
@@ -1548,7 +1549,78 @@ def test_transpiler_do_while_expr() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+def test_transpiler_setcomprehension_with_conditions() -> None:
+    """Test SetComprehension with conditions."""
+    varic_x = astx.Variable(name="x")
+    var_nums = astx.Variable(name="nums")
+    lit_0 = astx.LiteralInt32(value=0)
+    condition = astx.BinaryOp(
+        op_code=">",
+        lhs=varic_x,
+        rhs=lit_0
+    )
+    comprehension = astx.Comprehension(
+        target=varic_x, iterable=var_nums, conditions=[condition]
+    )
+    set_comp = astx.SetComprehension(
+        element=varic_x,
+        generators=[comprehension]
+    )
+    generated_code = translate(set_comp)
+    expected_code = "{x for x in nums if x > 0}"
+    assert generated_code == expected_code
 
+
+def test_transpiler_setcomprehension_multiple_conditions() -> None:
+    """Test SetComprehension with multiple conditions."""
+    varic_x = astx.Variable(name="x")
+    var_nums = astx.Variable(name="nums")
+    lit_0 = astx.LiteralInt32(value=0)
+    lit_10 = astx.LiteralInt32(value=10)
+    condition1 = astx.BinaryOp(op_code=">", lhs=varic_x, rhs=lit_0)
+    condition2 = astx.BinaryOp(op_code="<", lhs=varic_x, rhs=lit_10)
+    comprehension = astx.Comprehension(
+        target=varic_x, iterable=var_nums, conditions=[condition1, condition2]
+    )
+    set_comp = astx.SetComprehension(
+        element=varic_x, generators=[comprehension]
+    )
+    generated_code = translate(set_comp)
+    expected_code = "{x for x in nums if x > 0 if x < 10}"
+    assert generated_code == expected_code
+
+
+def test_transpiler_setcomprehension_complex() -> None:
+    """Test SetComprehension with multiple generators and conditions."""
+    varic_x = astx.Variable(name="x")
+    varic_y = astx.Variable(name="y")
+    var_nums = astx.Variable(name="nums")
+    var_values = astx.Variable(name="values")
+    condition = astx.BinaryOp(op_code=">", lhs=varic_x, rhs=varic_y)
+    comp1 = astx.Comprehension(
+        target=varic_x, iterable=var_nums, conditions=[]
+    )
+    comp2 = astx.Comprehension(
+        target=varic_y, iterable=var_values, conditions=[condition]
+    )
+    mul_expr = astx.BinaryOp(op_code="*", lhs=varic_x, rhs=varic_y)
+    set_comp = astx.SetComprehension(
+        element=mul_expr, generators=[comp1, comp2]
+    )
+    generated_code = translate(set_comp)
+    expected_code = "{x * y for x in nums for y in values if x > y}"
+    assert generated_code == expected_code
+
+
+def test_transpiler_setcomprehension_empty_generators() -> None:
+    """Test SetComprehension with empty generators list."""
+    varic_x = astx.Variable(name="x")
+    set_comp = astx.SetComprehension(element=varic_x, generators=[])
+    try:
+        generated_code = translate(set_comp)
+        assert "{x }" in generated_code or "{x}" in generated_code
+    except Exception as e:
+        assert False, f"Translation of empty generators raised exception: {e}"
 
 def test_transpiler_generator_expr() -> None:
     """Test astx.GeneratorExpr."""
