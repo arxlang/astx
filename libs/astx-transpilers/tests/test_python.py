@@ -1071,6 +1071,29 @@ def test_transpiler_yieldexpr_whilestmt() -> None:
     )
 
 
+def test_transpiler_yieldstmt_whilestmt() -> None:
+    """Test astx.YieldStmt (using WhileStmt)."""
+    # Create the `while True` loop
+    while_cond = astx.LiteralBoolean(True)
+    while_body = astx.Block()
+
+    yield_stmt = astx.YieldExpr(value=astx.LiteralInt32(1))
+
+    assign_value = astx.VariableAssignment(name="value", value=yield_stmt)
+
+    while_body.append(assign_value)
+
+    while_stmt = astx.WhileStmt(condition=while_cond, body=while_body)
+
+    # Generate Python code
+    generated_code = translate(while_stmt)
+    expected_code = "while True:\n    value = yield 1"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
 def test_transpiler_yieldfromexpr_whilestmt() -> None:
     """Test astx.YieldFromExpr (using WhileStmt)."""
     # Create the `while True` loop
@@ -1526,8 +1549,6 @@ def test_transpiler_do_while_expr() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
-
-
 def test_transpiler_setcomprehension_with_conditions() -> None:
     """Test SetComprehension with conditions."""
     varic_x = astx.Variable(name="x")
@@ -1600,3 +1621,76 @@ def test_transpiler_setcomprehension_empty_generators() -> None:
         assert "{x }" in generated_code or "{x}" in generated_code
     except Exception as e:
         assert False, f"Translation of empty generators raised exception: {e}"
+
+def test_transpiler_generator_expr() -> None:
+    """Test astx.GeneratorExpr."""
+    gen_expr = astx.GeneratorExpr(
+        element=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        target=astx.Variable("x"),
+        iterable=astx.Identifier("range(10)"),
+        conditions=[
+            astx.BinaryOp(
+                op_code=">", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(3)
+            ),
+            astx.BinaryOp(
+                op_code="<", lhs=astx.Variable("x"), rhs=astx.LiteralInt32(7)
+            ),
+        ],
+    )
+    generated_code = translate(gen_expr)
+    expected_code = "((x + x) for x in range(10) if (x > 3) if (x < 7))"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_generator_expr_no_conditions() -> None:
+    """Test astx.GeneratorExpr with no conditions."""
+    gen_expr = astx.GeneratorExpr(
+        target=astx.Variable("x"),
+        element=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        iterable=astx.Identifier("range(10)"),
+    )
+
+    generated_code = translate(gen_expr)
+    expected_code = "((x + x) for x in range(10))"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_list_comprehension() -> None:
+    """Test ListComprehension."""
+    gen_expr = astx.ListComprehension(
+        element=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        generators=[
+            astx.ComprehensionClause(
+                target=astx.Variable("x"),
+                iterable=astx.Identifier("range_10"),
+                conditions=[
+                    astx.BinaryOp(
+                        op_code=">",
+                        lhs=astx.Variable("x"),
+                        rhs=astx.LiteralInt32(3),
+                    ),
+                    astx.BinaryOp(
+                        op_code="<",
+                        lhs=astx.Variable("x"),
+                        rhs=astx.LiteralInt32(7),
+                    ),
+                ],
+            )
+        ],
+    )
+
+    generated_code = translate(gen_expr)
+    expected_code = "[(x + x) for x in range_10 if (x > 3) if (x < 7)]"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )

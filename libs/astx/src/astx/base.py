@@ -118,6 +118,7 @@ class ASTKind(Enum):
     YieldExprKind = -407
     YieldFromExprKind = -408
     ComprehensionKind = -409
+    YieldStmtKind = -410
 
     # control flow
     IfStmtKind = -500
@@ -136,7 +137,8 @@ class ASTKind(Enum):
     AsyncRangeLoopExprKind = -514
     DoWhileStmtKind = -515
     DoWhileExprKind = -516
-    SetComprehensionKind = -517
+    GeneratorExprKind = -517
+    SetComprehensionKind = -518
 
     # data types
     NullDTKind = -600

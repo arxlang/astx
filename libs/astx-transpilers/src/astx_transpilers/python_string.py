@@ -69,6 +69,12 @@ class ASTxPythonTranspiler:
         return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ASTNodes) -> str:
+        """Handle AliasExpr nodes."""
+        lines = [self.visit(node) for node in node.nodes]
+        return " ".join(lines)
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AsyncForRangeLoopExpr) -> str:
         """Handle AsyncForRangeLoopExpr nodes."""
         if len(node.body) > 1:
@@ -149,6 +155,20 @@ class ASTxPythonTranspiler:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
         return f"class {node.name}{class_type}:\n{self.visit(node.body)}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ComprehensionClause) -> str:
+        """Handle ComprehensionClause nodes."""
+        conditions = " if ".join(
+            [self.visit(condition) for condition in node.conditions]
+        )
+        if conditions:
+            conditions = f"if {conditions}"
+
+        async_kw = "async " if node.is_async else ""
+        target = self.visit(node.target)
+        iter = self.visit(node.iterable)
+        return f"{async_kw}for {target} in {iter} {conditions}".strip()
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DeleteStmt) -> str:
@@ -364,6 +384,12 @@ class ASTxPythonTranspiler:
         return f"lambda {params_str}: {self.visit(node.body)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ListComprehension) -> str:
+        """Handle ListComprehension nodes."""
+        generators = [self.visit(node.generators)]
+        return f"[{self.visit(node.element).strip()} {' '.join(generators)}]"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralBoolean) -> str:
         """Handle LiteralBoolean nodes."""
         return "True" if node.value else "False"
@@ -573,6 +599,12 @@ class ASTxPythonTranspiler:
         return f"yield {value}".strip()
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.YieldStmt) -> str:
+        """Handle YieldStmt nodes."""
+        value = self.visit(node.value) if node.value else ""
+        return f"yield {value}".strip()
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.YieldFromExpr) -> str:
         """Handle YieldFromExpr nodes."""
         value = self.visit(node.value)
@@ -717,7 +749,17 @@ class ASTxPythonTranspiler:
         return f"while True:\n{body}\n    if not {condition}:\n        break"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: SetComprehension) -> str:
+    def visit(self, node: astx.GeneratorExpr) -> str:
+        """Handle GeneratorExpr nodes."""
+        ret_str = (
+            f"{self.visit(node.element)} for {self.visit(node.target)}"
+            f" in {self.visit(node.iterable)}"
+        )
+        for cond in node.conditions:
+            ret_str += f" if {self.visit(cond)}"
+
+        return f"({ret_str})"
+         def visit(self, node: SetComprehension) -> str:
         """Handle SetComprehension nodes."""
         elt = self.visit(node.elt)
         if isinstance(node.elt, astx.BinaryOp):

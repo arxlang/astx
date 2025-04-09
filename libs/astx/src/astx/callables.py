@@ -390,6 +390,47 @@ class YieldExpr(Expr):
 
 @public
 @typechecked
+class YieldStmt(StatementType):
+    """AST class for yield statement."""
+
+    value: Optional[Expr]
+
+    def __init__(
+        self,
+        value: Optional[Expr] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the YieldStmt instance.
+
+        Args:
+            value: The expression to yield (optional)
+            loc: Source location of the statement
+            parent: Parent AST node
+        """
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.YieldStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return (
+            f"YieldStmt[{self.value}]"
+            if self.value is not None
+            else "YieldStmt"
+        )
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = f"YIELD-STMT[{id(self)}]" if simplified else "YIELD-STMT"
+        value = (
+            self.value.get_struct(simplified) if self.value is not None else {}
+        )
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
 class YieldFromExpr(Expr):
     """AST class for YieldFromExpr."""
 
@@ -414,47 +455,4 @@ class YieldFromExpr(Expr):
         """Return the AST structure of the object."""
         key = "YIELDFROM-EXPR"
         value = self.value.get_struct(simplified)
-        return self._prepare_struct(key, value, simplified)
-
-
-@public
-@typechecked
-class Comprehension(Expr):
-    """AST node for generic comprehensions."""
-
-    target: Expr
-    iterable: Expr
-    conditions: list[Expr]
-    is_async: bool
-
-    def __init__(
-        self,
-        target: Expr,
-        iterable: Expr,
-        conditions: Optional[list[Expr]] = None,
-        is_async: bool = False,
-        loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
-    ) -> None:
-        super().__init__(loc=loc, parent=parent)
-        self.target = target
-        self.iterable = iterable
-        self.conditions = conditions if conditions is not None else []
-        self.is_async = is_async
-        self.kind = ASTKind.ComprehensionKind
-
-    def __str__(self) -> str:
-        """Return a string representation of the object."""
-        return f"COMPREHENSION[is_async={self.is_async}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
-        value: ReprStruct = {
-            "target": self.target.get_struct(simplified),
-            "iterable": self.iterable.get_struct(simplified),
-            "conditions": [
-                cond.get_struct(simplified) for cond in self.conditions
-            ],
-        }
-        key = f"{self}" if not simplified else f"{self}#{id(self)}"
         return self._prepare_struct(key, value, simplified)

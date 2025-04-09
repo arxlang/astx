@@ -36,7 +36,6 @@ from astx.callables import (
     Argument,
     Arguments,
     AwaitExpr,
-    Comprehension,
     FunctionAsyncDef,
     FunctionCall,
     FunctionDef,
@@ -45,6 +44,7 @@ from astx.callables import (
     LambdaExpr,
     YieldExpr,
     YieldFromExpr,
+    YieldStmt,
 )
 from astx.classes import (
     ClassDeclStmt,
@@ -52,6 +52,11 @@ from astx.classes import (
     EnumDeclStmt,
     StructDeclStmt,
     StructDefStmt,
+)
+from astx.comprehensions import (
+    Comprehension,
+    ComprehensionClause,
+    ListComprehension,
 )
 from astx.exceptions import (
     CatchHandlerStmt,
@@ -69,6 +74,7 @@ from astx.flows import (
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
+    GeneratorExpr,
     GotoStmt,
     IfExpr,
     IfStmt,
@@ -228,6 +234,7 @@ __all__ = [
     "Complex32",
     "Complex64",
     "Comprehension",
+    "ComprehensionClause",
     "DataType",
     "DataTypeOps",
     "Date",
@@ -254,6 +261,7 @@ __all__ = [
     "FunctionDef",
     "FunctionPrototype",
     "FunctionReturn",
+    "GeneratorExpr",
     "GotoStmt",
     "Identifier",
     "IfExpr",
@@ -269,6 +277,7 @@ __all__ = [
     "Int64",
     "Integer",
     "LambdaExpr",
+    "ListComprehension",
     "ListType",
     "Literal",
     "LiteralBoolean",
@@ -351,6 +360,7 @@ __all__ = [
     "XorOp",
     "YieldExpr",
     "YieldFromExpr",
+    "YieldStmt",
     "base",
     "blocks",
     "callables",
