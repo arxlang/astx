@@ -13,7 +13,7 @@ from astx import (
     packages,
     symbol_table,
     types,
-    variables,
+    variables,    
 )
 from astx.base import (
     AST,
@@ -140,7 +140,10 @@ from astx.packages import (
     Program,
     Target,
 )
-from astx.subscript import SubscriptExpr
+from astx.subscript import (
+    SubscriptExpr,
+    Ellipsis,
+)
 from astx.types import (
     AndOp,
     BinaryOp,
@@ -329,6 +332,7 @@ __all__ = [
     "StructDeclStmt",
     "StructDefStmt",
     "SubscriptExpr",
+    "Ellipses",
     "SwitchStmt",
     "Target",
     "ThrowStmt",
