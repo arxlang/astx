@@ -226,3 +226,37 @@ class CompareOp(DataType):
             ],
         }
         return self._prepare_struct(key, content, simplified)
+
+@public
+@typechecked
+class Starred(Expr):
+    """AST class for starred expressions (e.g., *args) used in unpacking operations."""
+
+    value: DataType
+
+    def __init__(
+        self,
+        value: DataType,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Starred instance.
+        
+        Args:
+            value: The expression being unpacked with the star operator.
+            loc: Source location of this expression.
+            parent: Parent node in the AST.
+        """
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.StarredKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Starred[*]({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure that represents the object."""
+        key = "STARRED[*]"
+        content: ReprStruct = {"value": self.value.get_struct(simplified)}
+        return self._prepare_struct(key, content, simplified)

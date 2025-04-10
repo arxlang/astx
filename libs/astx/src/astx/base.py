@@ -106,6 +106,7 @@ class ASTKind(Enum):
     AssignmentExprKind = -303
     AugmentedAssignKind = -304
     CompareOpKind = -305
+    StarredKind = -306
 
     # functions
     PrototypeKind = -400
