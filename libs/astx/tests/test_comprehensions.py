@@ -53,12 +53,12 @@ def test_set_comprehension() -> None:
                     astx.BinaryOp(
                         op_code=">",
                         lhs=astx.Variable("x"),
-                        rhs=astx.LiteralInt32(3),
+                        rhs=astx.LiteralInt32(10),
                     ),
                     astx.BinaryOp(
                         op_code="<",
                         lhs=astx.Variable("x"),
-                        rhs=astx.LiteralInt32(7),
+                        rhs=astx.LiteralInt32(20),
                     ),
                 ],
             )
