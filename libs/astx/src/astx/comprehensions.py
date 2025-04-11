@@ -146,3 +146,43 @@ class ListComprehension(Comprehension):
             **generators,
         }
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class SetComprehension(Comprehension):
+    """AST node representing set comprehension expressions."""
+
+    element: Expr
+
+    def __init__(
+        self,
+        element: Expr,
+        generators: ASTNodes[ComprehensionClause]
+        | Iterable[ComprehensionClause] = [],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the SetComprehension instance."""
+        super().__init__(generators=generators, loc=loc, parent=parent)
+        self.element = element
+        self.kind = ASTKind.SetComprehensionKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return "SET-COMPREHENSION"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        generators = (
+            {"generators": self.generators.get_struct(simplified)}
+            if self.generators.nodes
+            else {}
+        )
+
+        value: ReprStruct = {
+            "element": self.element.get_struct(simplified),
+            **generators,
+        }
+        key = f"{self}#{id(self)}" if simplified else f"{self}"
+        return self._prepare_struct(key, value, simplified)
