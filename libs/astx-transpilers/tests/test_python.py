@@ -1622,3 +1622,109 @@ def test_transpiler_list_comprehension() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_set_comprehension() -> None:
+    """Test SetComprehension code generation."""
+    set_comp = astx.SetComprehension(
+        element=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
+        ),
+        generators=[
+            astx.ComprehensionClause(
+                target=astx.Variable("x"),
+                iterable=astx.Identifier("range_10"),
+                conditions=[
+                    astx.BinaryOp(
+                        op_code=">",
+                        lhs=astx.Variable("x"),
+                        rhs=astx.LiteralInt32(3),
+                    ),
+                    astx.BinaryOp(
+                        op_code="<",
+                        lhs=astx.Variable("x"),
+                        rhs=astx.LiteralInt32(7),
+                    ),
+                ],
+            )
+        ],
+    )
+
+    generated_code = translate(set_comp)
+    expected_code = "{(x + x) for x in range_10 if (x > 3) if (x < 7)}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_set_comprehension_no_conditions() -> None:
+    """Test SetComprehension without conditions."""
+    set_comp = astx.SetComprehension(
+        element=astx.Variable("x"),
+        generators=[
+            astx.ComprehensionClause(
+                target=astx.Variable("x"),
+                iterable=astx.Identifier("range(10)"),
+            )
+        ],
+    )
+
+    generated_code = translate(set_comp)
+    expected_code = "{x for x in range(10)}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_nested_set_comprehension() -> None:
+    """Test nested SetComprehension."""
+    set_comp = astx.SetComprehension(
+        element=astx.BinaryOp(
+            op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("y")
+        ),
+        generators=[
+            astx.ComprehensionClause(
+                target=astx.Variable("x"), iterable=astx.Identifier("range(5)")
+            ),
+            astx.ComprehensionClause(
+                target=astx.Variable("y"), iterable=astx.Identifier("range(3)")
+            ),
+        ],
+    )
+
+    generated_code = translate(set_comp)
+    expected_code = "{(x + y) for x in range(5) for y in range(3)}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
+    """Test SetComprehension with multiple conditions."""
+    set_comp = astx.SetComprehension(
+        element=astx.Variable("x"),
+        generators=[
+            astx.ComprehensionClause(
+                target=astx.Variable("x"),
+                iterable=astx.Identifier("range(100)"),
+                conditions=[
+                    astx.BinaryOp(
+                        op_code="%",
+                        lhs=astx.Variable("x"),
+                        rhs=astx.LiteralInt32(2),
+                    ),
+                    astx.BinaryOp(
+                        op_code="<",
+                        lhs=astx.Variable("x"),
+                        rhs=astx.LiteralInt32(50),
+                    ),
+                ],
+            )
+        ],
+    )
+
+    generated_code = translate(set_comp)
+    expected_code = "{x for x in range(100) if (x % 2) if (x < 50)}"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )

@@ -449,6 +449,12 @@ class ASTxPythonTranspiler:
         return repr(node.value)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.SetComprehension) -> str:
+        """Handle SetComprehension nodes."""
+        generators = [self.visit(gen) for gen in node.generators]
+        return f"{{{self.visit(node.element)} {' '.join(generators)}}}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(
         self, node: Union[astx.StructDeclStmt, astx.StructDefStmt]
     ) -> str:
