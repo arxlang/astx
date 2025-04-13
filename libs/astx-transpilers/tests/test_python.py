@@ -1728,3 +1728,65 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_object_list_Literal_type_object() -> None:
+    """Test list object having elements of literal type."""
+    ls = astx.ObjectList(elements=[astx.LiteralInt32(1), astx.LiteralInt32(2)])
+
+    generated_code = translate(ls)
+    expected_code = "[1, 2]"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_object_list_object_type_collection() -> None:
+    """Test list object having elements of collection type."""
+    ls = astx.ObjectList(
+        elements=[
+            astx.ObjectList(
+                elements=[astx.LiteralInt32(1), astx.LiteralInt32(2)]
+            ),
+            astx.ObjectList(
+                elements=[astx.LiteralInt32(3), astx.LiteralInt32(4)]
+            ),
+        ]
+    )
+    generated_code = translate(ls)
+    expected_code = "[[1, 2], [3, 4]]"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_object_tuple_Literal_type_object() -> None:
+    """Test tuple object having elements of literal type."""
+    tp = astx.ObjectTuple(
+        elements=(astx.LiteralInt32(1), astx.LiteralInt32(2))
+    )
+
+    generated_code = translate(tp)
+    expected_code = "(1, 2)"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_object_tuple_object_type_collection() -> None:
+    """Test tuple object having elements of collection type."""
+    tp = astx.ObjectTuple(
+        elements=(
+            astx.ObjectList(
+                elements=[astx.LiteralInt32(1), astx.LiteralInt32(2)]
+            ),
+            astx.ObjectList(
+                elements=[astx.LiteralInt32(3), astx.LiteralInt32(4)]
+            ),
+        )
+    )
+    generated_code = translate(tp)
+    expected_code = "([1, 2], [3, 4])"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )

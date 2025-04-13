@@ -53,6 +53,12 @@ from astx.classes import (
     StructDeclStmt,
     StructDefStmt,
 )
+from astx.collection_objects import (
+    ObjectDict,
+    ObjectList,
+    ObjectSet,
+    ObjectTuple,
+)
 from astx.comprehensions import (
     Comprehension,
     ComprehensionClause,
@@ -316,6 +322,10 @@ __all__ = [
     "NorOp",
     "NotOp",
     "Number",
+    "ObjectDict",
+    "ObjectList",
+    "ObjectSet",
+    "ObjectTuple",
     "OperatorType",
     "OrOp",
     "Package",

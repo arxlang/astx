@@ -204,6 +204,12 @@ class ASTKind(Enum):
     XnorOpKind = -1205
     NotOpKind = -1206
 
+    # Object collections
+    ObjectListKind = -1300
+    ObjectTupleKind = -1301
+    ObjectSetKind = -1302
+    ObjectDictKind = -1303
+
 
 class ASTMeta(type):
     def __str__(cls) -> str:

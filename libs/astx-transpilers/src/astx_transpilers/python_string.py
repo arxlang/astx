@@ -449,6 +449,39 @@ class ASTxPythonTranspiler:
         return repr(node.value)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ObjectList) -> str:
+        """Handle ObjectList nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"[{elements_code}]"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ObjectTuple) -> str:
+        """Handle ObjectTuple nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"({elements_code})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ObjectSet) -> str:
+        """Handle ObjectSet nodes."""
+        elements_code = ", ".join(
+            self.visit(element) for element in node.elements
+        )
+        return f"{{{elements_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ObjectDict) -> str:
+        """Handle ObjectDict nodes."""
+        elements_code = ", ".join(
+            f"{self.visit(key)}:{self.visit(value)}"
+            for key, value in node.elements.items()
+        )
+        return f"{{{elements_code}}}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SetComprehension) -> str:
         """Handle SetComprehension nodes."""
         generators = [self.visit(gen) for gen in node.generators]
