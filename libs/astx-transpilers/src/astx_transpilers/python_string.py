@@ -116,6 +116,11 @@ class ASTxPythonTranspiler:
         return self._generate_block(node)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.BreakStmt) -> str:
+        """Handle BreakStmt nodes."""
+        return "break"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CaseStmt) -> str:
         """Handle CaseStmt nodes."""
         cond_str = (
@@ -153,6 +158,11 @@ class ASTxPythonTranspiler:
         """Handle ClassDefStmt nodes."""
         class_type = "(ABC)" if node.is_abstract else ""
         return f"class {node.name}{class_type}:\n{self.visit(node.body)}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.ContinueStmt) -> str:
+        """Handle ContinueStmt nodes."""
+        return "continue"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ComprehensionClause) -> str:

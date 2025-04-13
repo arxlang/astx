@@ -1,14 +1,18 @@
 """Tests for control flow statements."""
 
+from typing import Any, cast
+
 import astx
 import pytest
 
-from astx.base import SourceLocation
+from astx.base import ReprStruct, SourceLocation
 from astx.blocks import Block
 from astx.flows import (
     AsyncForRangeLoopExpr,
     AsyncForRangeLoopStmt,
+    BreakStmt,
     CaseStmt,
+    ContinueStmt,
     DoWhileExpr,
     DoWhileStmt,
     ForCountLoopExpr,
@@ -157,6 +161,38 @@ def test_for_count_loop_expr() -> None:
     assert for_expr.get_struct()
     assert for_expr.get_struct(simplified=True)
     visualize(for_expr.get_struct())
+
+
+def test_break_stmt() -> None:
+    """Test BreakStmt class."""
+    break_stmt = BreakStmt()
+
+    assert str(break_stmt) == "BreakStmt"
+    assert break_stmt.kind == astx.ASTKind.BreakStmtKind
+
+    struct: ReprStruct = break_stmt.get_struct()
+    assert "BREAK-STMT" in cast(dict[str, Any], struct)
+
+    struct_simplified: ReprStruct = break_stmt.get_struct(simplified=True)
+    assert "BREAK-STMT" in cast(dict[str, Any], struct_simplified)
+
+    visualize(struct)
+
+
+def test_continue_stmt() -> None:
+    """Test ContinueStmt class."""
+    continue_stmt = ContinueStmt()
+
+    assert str(continue_stmt) == "ContinueStmt"
+    assert continue_stmt.kind == astx.ASTKind.ContinueStmtKind
+
+    struct: ReprStruct = continue_stmt.get_struct()
+    assert "CONTINUE-STMT" in cast(dict[str, Any], struct)
+
+    struct_simplified: ReprStruct = continue_stmt.get_struct(simplified=True)
+    assert "CONTINUE-STMT" in cast(dict[str, Any], struct_simplified)
+
+    visualize(struct)
 
 
 def test_async_for_range_loop_expr() -> None:

@@ -474,6 +474,56 @@ class AsyncForRangeLoopExpr(Expr):
 
 @public
 @typechecked
+class BreakStmt(StatementType):
+    """AST class for break statement."""
+
+    def __init__(
+        self,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the BreakStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.kind = ASTKind.BreakStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return "BreakStmt"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "BREAK-STMT"
+        value: DictDataTypesStruct = {}
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class ContinueStmt(StatementType):
+    """AST class for continue statement."""
+
+    def __init__(
+        self,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the ContinueStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.kind = ASTKind.ContinueStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return "ContinueStmt"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        key = "CONTINUE-STMT"
+        value: DictDataTypesStruct = {}
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
 class WhileStmt(StatementType):
     """AST class for `while` statement."""
 
