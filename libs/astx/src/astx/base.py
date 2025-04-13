@@ -140,6 +140,8 @@ class ASTKind(Enum):
     DoWhileStmtKind = -515
     DoWhileExprKind = -516
     GeneratorExprKind = -517
+    BreakStmtKind = -518
+    ContinueStmtKind = -519
 
     # data types
     NullDTKind = -600

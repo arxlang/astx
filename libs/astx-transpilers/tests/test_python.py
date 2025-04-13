@@ -457,6 +457,52 @@ def test_transpiler_async_for_range_loop_expr() -> None:
     )
 
 
+def test_transpiler_break_stmt() -> None:
+    """Test astx.BreakStmt transpilation."""
+    # Create a simple loop structure (e.g., WhileStmt)
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(op_code="<", lhs=x_var, rhs=astx.LiteralInt32(5))
+
+    # Create the loop body with a break statement
+    body_block = astx.Block(name="while_body")
+    body_block.append(astx.BreakStmt())
+
+    while_stmt = astx.WhileStmt(condition=condition, body=body_block)
+
+    # Generate Python code
+    generated_code = translate(while_stmt)
+
+    # Expected code for the WhileStmt with break
+    expected_code = "while (x < 5):\n    break"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_continue_stmt() -> None:
+    """Test astx.ContinueStmt transpilation."""
+    # Create a simple loop structure (e.g., WhileStmt)
+    x_var = astx.Variable(name="x")
+    condition = astx.BinaryOp(op_code="<", lhs=x_var, rhs=astx.LiteralInt32(5))
+
+    # Create the loop body with a continue statement
+    body_block = astx.Block(name="while_body")
+    body_block.append(astx.ContinueStmt())
+
+    while_stmt = astx.WhileStmt(condition=condition, body=body_block)
+
+    # Generate Python code
+    generated_code = translate(while_stmt)
+
+    # Expected code for the WhileStmt with continue
+    expected_code = "while (x < 5):\n    continue"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
 def test_transpiler_binary_op() -> None:
     """Test astx.BinaryOp for addition operation."""
     # Create a BinaryOp node for the expression "x + y"
