@@ -56,6 +56,7 @@ from astx.classes import (
 from astx.comprehensions import (
     Comprehension,
     ComprehensionClause,
+    GeneratorExpr,
     ListComprehension,
     SetComprehension,
 )
@@ -75,7 +76,6 @@ from astx.flows import (
     ForCountLoopStmt,
     ForRangeLoopExpr,
     ForRangeLoopStmt,
-    GeneratorExpr,
     GotoStmt,
     IfExpr,
     IfStmt,
