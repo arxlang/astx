@@ -171,6 +171,7 @@ class ASTKind(Enum):
     TimeDTKind = -624
     DateDTKind = -625
     DateTimeDTKind = -626
+    LiteralFormattedStringKind = -650
 
     # imports(packages)
     ImportStmtKind = -700
