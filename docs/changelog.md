@@ -1,6 +1,24 @@
 # Release Notes
 ---
 
+# [0.21.0](https://github.com/arxlang/astx/compare/0.20.0...0.21.0) (2025-04-14)
+
+
+### Bug Fixes
+
+* Fix Comprehension ([#243](https://github.com/arxlang/astx/issues/243)) ([0fc8192](https://github.com/arxlang/astx/commit/0fc8192a283fc57ca93bb431ae1aedbaec919837))
+* Fix Comprehension and ComprehensionClause ([#247](https://github.com/arxlang/astx/issues/247)) ([77c6d8c](https://github.com/arxlang/astx/commit/77c6d8c58f796af6feddab4988b18bdc1aeaadcc))
+* fix GeneratorExp class to inherit from comprehension class ([#244](https://github.com/arxlang/astx/issues/244)) ([94456ac](https://github.com/arxlang/astx/commit/94456acbbf4213bca2da420ce3b096765294a4c3))
+
+
+### Features
+
+* Add `DoWhile` class ([#229](https://github.com/arxlang/astx/issues/229)) ([874bf53](https://github.com/arxlang/astx/commit/874bf53b1c71830b72dfa754753ca9ff52723781))
+* add ContinueStmt and BreakStmt ([#255](https://github.com/arxlang/astx/issues/255)) ([158e237](https://github.com/arxlang/astx/commit/158e2371860f753a56d7e6ab475dbbf8732e6477))
+* Add Generator Expr support ([#232](https://github.com/arxlang/astx/issues/232)) ([c163c4c](https://github.com/arxlang/astx/commit/c163c4c5a04341658c3a4b79b22bcb832ddea0e7))
+* Add support for ComprehensionList ([#250](https://github.com/arxlang/astx/issues/250)) ([91edba7](https://github.com/arxlang/astx/commit/91edba793a826714471a61cebed369eba91f68e4))
+* Add support for Set-Comprehension ([#253](https://github.com/arxlang/astx/issues/253)) ([8d7ba85](https://github.com/arxlang/astx/commit/8d7ba858d3ee0b5d61e698b7ce1363a12e5fd8a3))
+
 # [0.20.0](https://github.com/arxlang/astx/compare/0.19.0...0.20.0) (2025-03-27)
 
 
