@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.21.1](https://github.com/arxlang/astx/compare/0.21.0...0.21.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* Fix semantic release configuration ([#257](https://github.com/arxlang/astx/issues/257)) ([c8dc5a2](https://github.com/arxlang/astx/commit/c8dc5a2c582a17abf5f1f9057a65131f86c456d0))
+
 # [0.21.0](https://github.com/arxlang/astx/compare/0.20.0...0.21.0) (2025-04-14)
 
 

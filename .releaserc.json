@@ -124,7 +124,7 @@
           "libs/astx/pyproject.toml",
           "libs/astx/src/astx/__init__.py",
           "libs/astx-transpilers/pyproject.toml",
-          "libs/astx-transpilers/src/astx/__init__.py"
+          "libs/astx-transpilers/src/astx_transpilers/__init__.py"
         ],
         "message": "chore(release): ${nextRelease.version}"
       }
