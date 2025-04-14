@@ -185,6 +185,11 @@ class ASTxPythonTranspiler:
         return f"del {targets}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Ellipsis) -> str:
+        """Handle Ellipsis nodes."""
+        return "..."
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.EnumDeclStmt) -> str:
         """Handle EnumDeclStmt nodes."""
         attr_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
@@ -481,22 +486,33 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SubscriptExpr) -> str:
         """Handle SubscriptExpr nodes."""
+        value_str = self.visit(node.value)
+
+        # Handle Ellipsis in index position
+        if not isinstance(node.index, astx.LiteralNone):
+            index_str = self.visit(node.index)
+            return f"{value_str}[{index_str}]"
+
+        # Handle slicing
         lower_str = (
-            str(node.lower.value)
+            self.visit(node.lower)
             if not isinstance(node.lower, astx.LiteralNone)
-            else str(node.index.value)
-        )
-        upper_str = (
-            ":" + str(node.upper.value)
-            if not isinstance(node.upper, astx.LiteralNone)
             else ""
         )
+
+        upper_str = (
+            f":{self.visit(node.upper)}"
+            if not isinstance(node.upper, astx.LiteralNone)
+            else ":"
+        )
+
         step_str = (
-            ":" + str(node.step.value)
+            f":{self.visit(node.step)}"
             if not isinstance(node.step, astx.LiteralNone)
             else ""
         )
-        return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
+
+        return f"{value_str}[{lower_str}{upper_str}{step_str}]"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
