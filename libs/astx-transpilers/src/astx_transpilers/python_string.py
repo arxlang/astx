@@ -211,6 +211,27 @@ class ASTxPythonTranspiler:
         return f"finally:\n{body_str}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralFormattedString) -> str:
+        """Handle LiteralFormattedString nodes (f-string parts)."""
+        value_str = self.visit(node.value)
+        # Basic wrapping for non-simple values
+        if not isinstance(
+            node.value, (astx.Variable, astx.Identifier, astx.Literal)
+        ):
+            value_str = f"({value_str})"
+
+        conv_char = f"!{chr(node.conversion)}" if node.conversion else ""
+        format_spec_str = ""
+        if node.format_spec:
+            if isinstance(node.format_spec, astx.LiteralString):
+                format_spec_inner = node.format_spec.value
+            else:
+                format_spec_inner = self.visit(node.format_spec)
+            format_spec_str = f":{format_spec_inner}"
+
+        return f"{{{value_str}{conv_char}{format_spec_str}}}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
         """Handle ForRangeLoopExpr nodes."""
         if len(node.body) > 1:

@@ -411,6 +411,29 @@ def test_transpiler_literal_utf8_string() -> None:
     )
 
 
+def test_transpiler_literal_formatted_string_simple() -> None:
+    """Test astx.LiteralFormattedString simple case."""
+    var_x = astx.Variable("x")
+    fmt_val = astx.LiteralFormattedString(value=var_x)
+    generated_code = transpiler.visit(fmt_val)
+    expected_code = "{x}"
+    assert generated_code == expected_code
+
+
+def test_transpiler_literal_formatted_string_full() -> None:
+    """Test astx.LiteralFormattedString with conversion and format spec."""
+    var_y = astx.Variable("y")
+    fmt_spec = astx.LiteralString(".2f")
+    fmt_val = astx.LiteralFormattedString(
+        value=var_y,
+        conversion=ord("r"),  # !r
+        format_spec=fmt_spec,
+    )
+    generated_code = transpiler.visit(fmt_val)
+    expected_code = "{y!r:.2f}"
+    assert generated_code == expected_code
+
+
 def test_transpiler_for_range_loop_expr() -> None:
     """Test `For Range Loop` expression`."""
     decl_a = astx.InlineVariableDeclaration(

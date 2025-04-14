@@ -32,6 +32,7 @@ from astx.literals.numeric import (
     LiteralUInt128,
 )
 from astx.literals.string import (
+    LiteralFormattedString,
     LiteralString,
     LiteralUTF8Char,
     LiteralUTF8String,
@@ -55,6 +56,7 @@ __all__ = [
     "LiteralFloat16",
     "LiteralFloat32",
     "LiteralFloat64",
+    "LiteralFormattedString",
     "LiteralInt8",
     "LiteralInt16",
     "LiteralInt32",
