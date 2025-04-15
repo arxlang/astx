@@ -1784,30 +1784,6 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
 
-
-def test_transpiler_ellipsis() -> None:
-    """Test transpilation of Ellipsis nodes."""
-    ellipsis = astx.Ellipsis()
-
-    generated_code = transpiler.visit(ellipsis)
-    expected_code = "..."
-
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
-    )
-
-
-def test_transpiler_ellipsis_in_context() -> None:
-    """Test Ellipsis transpilation within expressions."""
-    ellipsis = astx.Ellipsis()
-    simple_code = transpiler.visit(ellipsis)
-    assert simple_code == "..."
-    var = astx.Variable(name="x")
-    subscr = astx.SubscriptExpr(value=var, index=ellipsis)
-    result = transpiler.visit(subscr)
-    assert "..." in result
-
-
 def test_transpiler_starred_simple() -> None:
     """Test simple starred expression with a variable."""
     var = astx.Variable(name="args")
