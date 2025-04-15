@@ -5,6 +5,7 @@ from typing import Union, cast
 import astx
 import astx.operators
 
+from astx import Starred
 from astx.tools.typing import typechecked
 from plum import dispatch
 
@@ -474,6 +475,12 @@ class ASTxPythonTranspiler:
         """Handle SetComprehension nodes."""
         generators = [self.visit(gen) for gen in node.generators]
         return f"{{{self.visit(node.element)} {' '.join(generators)}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Starred) -> str:
+        """Handle Starred nodes."""
+        value = self.visit(node.value)
+        return f"*{value}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(
