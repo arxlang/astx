@@ -535,6 +535,16 @@ class ASTxPythonTranspiler:
         return "int"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Boolean) -> str:
+        """Handle Boolean type nodes."""
+        return "bool"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.String) -> str:
+        """Handle String type nodes."""
+        return "str"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.TypeCastExpr) -> str:
         """Handle TypeCastExpr nodes."""
         return f"cast({self.visit(node.target_type)}, {node.expr.name})"
@@ -767,3 +777,55 @@ class ASTxPythonTranspiler:
         body = self._generate_block(node.body)
         condition = self.visit(node.condition)
         return f"while True:\n{body}\n    if not {condition}:\n        break"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.InterfaceDefStmt) -> str:
+        """Handle InterfaceDefStmt nodes (minimal implementation)."""
+        class_header = f"class {node.name}(ABC):"
+        self.indent_level += 1
+        indent = self.indent_str * self.indent_level
+        inner_indent = indent + self.indent_str
+
+        method_strs = []
+        if not node.methods:
+            method_strs.append(f"{indent}pass")
+        else:
+            for method_def in node.methods:
+                proto = method_def.prototype
+                arg_parts = []
+                for arg in proto.args.nodes:
+                    type_str = "Any"
+                    if isinstance(arg.type_, astx.Int32):
+                        type_str = "int"
+                    elif isinstance(arg.type_, astx.Boolean):
+                        type_str = "bool"
+                    elif isinstance(arg.type_, astx.String):
+                        type_str = "str"
+                    elif isinstance(arg.type_, astx.Float64):
+                        type_str = "float"
+                    arg_parts.append(f"{arg.name}: {type_str}")
+                args_str = ", ".join(["self", *arg_parts])
+
+                returns = ""
+                if proto.return_type and not isinstance(
+                    proto.return_type, astx.Int32
+                ):
+                    ret_type_str = "Any"
+                    if isinstance(proto.return_type, astx.Boolean):
+                        ret_type_str = "bool"
+                    elif isinstance(proto.return_type, astx.String):
+                        ret_type_str = "str"
+                    elif isinstance(proto.return_type, astx.Float64):
+                        ret_type_str = "float"
+                    returns = f" -> {ret_type_str}"
+
+                method_str = (
+                    f"{indent}@abstractmethod\n"
+                    f"{indent}def {proto.name}({args_str}){returns}:\n"
+                    f"{inner_indent}pass"
+                )
+                method_strs.append(method_str)
+
+        self.indent_level -= 1
+        body_str = "\n".join(method_strs)
+        return f"{class_header}\n{body_str}"
