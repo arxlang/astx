@@ -129,6 +129,7 @@ from astx.operators import (
     AssignmentExpr,
     AugAssign,
     CompareOp,
+    Starred,
     VariableAssignment,
     WalrusOp,
 )
@@ -334,6 +335,7 @@ __all__ = [
     "SetType",
     "SignedInteger",
     "SourceLocation",
+    "Starred",
     "StatementType",
     "String",
     "StructDeclStmt",
