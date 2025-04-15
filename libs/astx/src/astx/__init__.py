@@ -50,6 +50,7 @@ from astx.classes import (
     ClassDeclStmt,
     ClassDefStmt,
     EnumDeclStmt,
+    InterfaceDefStmt,
     StructDeclStmt,
     StructDefStmt,
 )
@@ -280,6 +281,7 @@ __all__ = [
     "Int32",
     "Int64",
     "Integer",
+    "InterfaceDefStmt",
     "LambdaExpr",
     "ListComprehension",
     "ListType",

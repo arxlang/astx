@@ -2,15 +2,17 @@
 
 from astx.base import DataType
 from astx.blocks import Block
-from astx.callables import Arguments, FunctionDef, FunctionPrototype
+from astx.callables import Argument, Arguments, FunctionDef, FunctionPrototype
 from astx.classes import (
     ClassDeclStmt,
     ClassDefStmt,
     EnumDeclStmt,
+    InterfaceDefStmt,
     StructDeclStmt,
     StructDefStmt,
 )
 from astx.literals import LiteralInt32
+from astx.modifiers import VisibilityKind
 from astx.types.base import AnyType
 from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize
@@ -144,3 +146,53 @@ def test_struct_def() -> None:
     assert struct_def.get_struct()
     assert struct_def.get_struct(simplified=True)
     visualize(struct_def.get_struct())
+
+
+def test_interface_def_stmt() -> None:
+    """Test `InterfaceDefStmt` class."""
+    decorator1 = Variable(name="MarkerInterface")
+    base1 = Variable(name="Iterable")
+    attr1 = VariableDeclaration(
+        name="MAX_SIZE", type_=DataType(), value=LiteralInt32(100)
+    )
+    method_proto = FunctionPrototype(
+        name="process",
+        args=Arguments(*[Argument(name="data", type_=AnyType())]),
+        return_type=AnyType(),
+    )
+    method1 = FunctionDef(prototype=method_proto, body=Block())
+
+    interface_def_stmt = InterfaceDefStmt(
+        name="MyInterface",
+        bases=[base1],
+        decorators=[decorator1],
+        attributes=[attr1],
+        methods=[method1],
+        visibility=VisibilityKind.public,
+    )
+
+    print(f"\nGenerated __str__ for InterfaceDefStmt:\n{interface_def_stmt!s}")
+
+    assert str(interface_def_stmt)
+    struct = interface_def_stmt.get_struct()
+    assert struct
+
+    assert isinstance(struct, dict), (
+        "get_struct should return a dict for InterfaceDefStmt"
+    )
+    expected_key = "INTERFACE-DEF-STMT[+MyInterface]"
+    assert expected_key in struct, (
+        f"Expected key '{expected_key}' not found in struct: {struct}"
+    )
+
+    struct_simplified = interface_def_stmt.get_struct(simplified=True)
+    assert struct_simplified
+    assert isinstance(struct_simplified, dict), (
+        "Simplified struct should be a dict"
+    )
+    assert expected_key in struct_simplified, (
+        f"Expected key '{expected_key}' not found in "
+        f"simplified struct: {struct_simplified}"
+    )
+
+    visualize(struct)

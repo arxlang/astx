@@ -187,6 +187,7 @@ class ASTKind(Enum):
     EnumDeclStmtKind = -902
     StructDeclStmtKind = -903
     StructDefStmtKind = -904
+    InterfaceDefStmtKind = -905
 
     # subscrpts
     SubscriptExprKind = -1000

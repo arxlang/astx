@@ -1783,3 +1783,62 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_interfacedefstmt() -> None:
+    """Test astx.InterfaceDefStmt transpilation."""
+    proto1 = astx.FunctionPrototype(
+        name="method_a",
+        args=astx.Arguments(astx.Argument("x", type_=astx.Int32())),
+        return_type=astx.Boolean(),
+    )
+    proto2 = astx.FunctionPrototype(
+        name="method_b",
+        args=astx.Arguments(),
+        return_type=astx.String(),
+    )
+    proto3 = astx.FunctionPrototype(
+        name="method_c",
+        args=astx.Arguments(
+            astx.Argument("y", type_=astx.Float64()),
+            astx.Argument("z", type_=astx.String()),
+        ),
+        return_type=astx.Int32(),
+    )
+
+    method1_def = astx.FunctionDef(prototype=proto1, body=astx.Block())
+    method2_def = astx.FunctionDef(prototype=proto2, body=astx.Block())
+    method3_def = astx.FunctionDef(prototype=proto3, body=astx.Block())
+
+    interface_def = astx.InterfaceDefStmt(
+        name="MyInterface", methods=[method1_def, method2_def, method3_def]
+    )
+
+    generated_code = translate(interface_def)
+
+    expected_code = """\
+class MyInterface(ABC):
+    @abstractmethod
+    def method_a(self, x: int) -> bool:
+        pass
+    @abstractmethod
+    def method_b(self) -> str:
+        pass
+    @abstractmethod
+    def method_c(self, y: float, z: str):
+        pass"""
+
+    assert generated_code.strip() == expected_code.strip(), (
+        "Mismatch for standard interface.\n"
+        f"Expected:\n{expected_code}\nGot:\n{generated_code}"
+    )
+
+    empty_interface = astx.InterfaceDefStmt(name="EmptyInterface", methods=[])
+    generated_empty = translate(empty_interface)
+    expected_empty = """\
+class EmptyInterface(ABC):
+    pass"""
+    assert generated_empty.strip() == expected_empty.strip(), (
+        "Mismatch for empty interface.\n"
+        f"Expected:\n{expected_empty}\nGot:\n{generated_empty}"
+    )
