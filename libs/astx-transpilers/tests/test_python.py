@@ -1784,6 +1784,7 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
 
+
 def test_transpiler_starred_simple() -> None:
     """Test simple starred expression with a variable."""
     var = astx.Variable(name="args")
