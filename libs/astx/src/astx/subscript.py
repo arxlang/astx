@@ -136,12 +136,8 @@ class Ellipsis(Expr):
         super().__init__(loc=loc, parent=parent)
         self.kind = ASTKind.EllipsisKind
 
-    def __str__(self) -> str:
-        """Return a string that represents the object."""
-        return "..."
-
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = "Ellipsis"
+        key = str(self)
         value: DictDataTypesStruct = {}
         return self._prepare_struct(key, value, simplified)

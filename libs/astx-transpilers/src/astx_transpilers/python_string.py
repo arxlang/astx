@@ -489,7 +489,9 @@ class ASTxPythonTranspiler:
         value_str = self.visit(node.value)
 
         # Handle Ellipsis in index position
-        if not isinstance(node.index, astx.LiteralNone):
+        if isinstance(node.index, astx.Ellipsis):
+            return f"{value_str}[...]"
+        elif not isinstance(node.index, astx.LiteralNone):
             index_str = self.visit(node.index)
             return f"{value_str}[{index_str}]"
 

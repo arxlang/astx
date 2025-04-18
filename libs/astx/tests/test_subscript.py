@@ -49,7 +49,7 @@ def test_ellipsis_basic_properties() -> None:
     """Test basic properties of the Ellipsis class."""
     ellip = Ellipsis()
     assert ellip.kind == ASTKind.EllipsisKind
-    assert str(ellip) == "..."
+    assert str(ellip) == "Ellipsis"
     struct = ellip.get_struct()
     struct_dict = cast(DictDataTypesStruct, struct)
     assert "Ellipsis" in struct_dict
