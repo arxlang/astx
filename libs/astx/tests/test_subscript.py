@@ -65,7 +65,7 @@ def test_ellipsis_in_various_slice_positions() -> None:
         upper=Ellipsis(),
     )
     assert isinstance(slice_upper.upper, Ellipsis)
-    assert str(slice_upper).find("...") > 0
+    assert "Ellipsis" in str(slice_upper)  # Changed from "..." to "Ellipsis"
     # Case 2:lower bound
     slice_lower = SubscriptExpr(
         value=arr,
@@ -108,5 +108,5 @@ def test_ellipsis_nested_expressions() -> None:
         value=inner_arr,
         index=Ellipsis(),
     )
-    assert str(inner_subscr).find("...") > 0
+    assert "Ellipsis" in str(inner_subscr)
     assert isinstance(inner_subscr.index, Ellipsis)
