@@ -228,7 +228,9 @@ def test_starred_with_different_expressions() -> None:
     """Test Starred with different types of expressions."""
     ident = Identifier("a")
     starred_ident = astx.Starred(value=ident)
-    assert str(starred_ident) == "Starred[*](Identifier)"  # Updated to match actual output
+    assert (
+        str(starred_ident) == "Starred[*](Identifier)"
+    )  # Updated to match actual output
     assert starred_ident.kind == ASTKind.StarredKind
 
     lit = LiteralInt32(42)
@@ -245,7 +247,13 @@ def test_starred_struct_representation() -> None:
     ident = astx.Identifier("x")
     starred = astx.Starred(value=ident)
     struct = starred.get_struct(simplified=True)
+
+    # Add type checking before using 'in' operator
+    assert isinstance(struct, dict)
     assert "STARRED[*]" in struct
+
+    # Add type checking before dictionary access
+    assert isinstance(struct["STARRED[*]"], dict)
     content = struct["STARRED[*]"]
     assert "value" in content
 
@@ -256,11 +264,7 @@ def test_starred_location_and_parent() -> None:
     loc = astx.SourceLocation(line=1, col=0)
     parent = astx.Block()
 
-    starred = astx.Starred(
-        value=ident,
-        loc=loc,
-        parent=parent
-    )
+    starred = astx.Starred(value=ident, loc=loc, parent=parent)
 
     assert starred.loc == loc
     assert starred.parent is parent
@@ -271,10 +275,11 @@ def test_starred_location_and_parent() -> None:
 def test_starred_type_validation() -> None:
     """Test type validation for Starred expressions."""
     with pytest.raises(TypeCheckError):
-        astx.Starred(value="not_an_expr")
+        astx.Starred(value="not_an_expr")  # type: ignore
 
     with pytest.raises(TypeCheckError):
-        astx.Starred(value=None)
+        astx.Starred(value=None)  # type: ignore
+
 
 @pytest.mark.parametrize(
     "operator, value",

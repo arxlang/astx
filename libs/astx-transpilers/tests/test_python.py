@@ -1785,7 +1785,9 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
     )
 
 
-def test_transpiler_starred_simple() -> None:
+def test_transpiler_starred_simple_alt() -> (
+    None
+):  # Renamed from test_transpiler_starred_simple
     """Test simple starred expression with a variable."""
     var = astx.Variable(name="args")
     starred = astx.Starred(value=var)
@@ -1797,7 +1799,9 @@ def test_transpiler_starred_simple() -> None:
     )
 
 
-def test_transpiler_starred_in_list() -> None:
+def test_transpiler_starred_in_list_alt() -> (
+    None
+):  # Renamed from test_transpiler_starred_in_list
     """Test starred expression within a list literal."""
     var = astx.Variable(name="items")
     starred = astx.Starred(value=var)
@@ -1815,7 +1819,9 @@ def test_transpiler_starred_in_list() -> None:
     )
 
 
-def test_transpiler_multiple_starred() -> None:
+def test_transpiler_multiple_starred_alt() -> (
+    None
+):  # Renamed from test_transpiler_multiple_starred
     """Test multiple starred expressions."""
     var1 = astx.Variable(name="args1")
     var2 = astx.Variable(name="args2")
@@ -1833,3 +1839,26 @@ def test_transpiler_multiple_starred() -> None:
     assert manual_result == expected_code, (
         f"Expected '{expected_code}', but got '{manual_result}'"
     )
+
+
+def test_transpiler_ellipsis() -> None:
+    """Test transpilation of Ellipsis nodes."""
+    ellipsis = astx.Ellipsis()
+
+    generated_code = transpiler.visit(ellipsis)
+    expected_code = "..."
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_ellipsis_in_context() -> None:
+    """Test Ellipsis transpilation within expressions."""
+    ellipsis = astx.Ellipsis()
+    simple_code = transpiler.visit(ellipsis)
+    assert simple_code == "..."
+    var = astx.Variable(name="x")
+    subscr = astx.SubscriptExpr(value=var, index=ellipsis)
+    result = transpiler.visit(subscr)
+    assert "..." in result
