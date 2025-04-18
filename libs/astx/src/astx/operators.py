@@ -233,11 +233,11 @@ class CompareOp(DataType):
 class Starred(Expr):
     """AST class for starred expressions."""
 
-    value: DataType
+    value: Expr
 
     def __init__(
         self,
-        value: DataType,
+        value: Expr,
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
