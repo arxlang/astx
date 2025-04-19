@@ -449,7 +449,7 @@ def test_transpiler_formatted_value_complex_expr() -> None:
 
 
 def test_transpiler_formatted_value_complex_format_spec() -> None:
-    """Test FormattedValue with an expression as format spec."""
+    """Test FormattedValue with expression as format spec."""
     var_val = astx.Variable("value")
     var_width = astx.Variable("width")
     fmt_val = astx.FormattedValue(value=var_val, format_spec=var_width)

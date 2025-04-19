@@ -20,8 +20,9 @@ UTF8_STRING_LITERAL_CLASSES = [
     astx.LiteralUTF8String,
 ]
 
-NUM_VALUES_SIMPLE = 2
-NUM_VALUES_MIXED = 3
+# Constants for test validation
+_LIST_SIZE_SIMPLE = 2
+_LIST_SIZE_MIXED = 3
 
 
 def test_variable() -> None:
@@ -265,7 +266,7 @@ def test_joined_str_creation_simple() -> None:
     assert isinstance(struct_content, dict)
     assert "values" in struct_content
     assert isinstance(struct_content["values"], list)
-    assert len(struct_content["values"]) == NUM_VALUES_SIMPLE
+    assert len(struct_content["values"]) == _LIST_SIZE_SIMPLE
     assert isinstance(struct_content["values"][0], dict)
     assert "LiteralString: hello " in struct_content["values"][0]
     assert isinstance(struct_content["values"][1], dict)
@@ -282,11 +283,11 @@ def test_joined_str_creation_mixed() -> None:
 
     assert isinstance(joined, astx.JoinedStr)
     assert joined.values == [lit1, fmt_val, lit2]
-    expected_str = (
+    expected_joined_str = (
         "JoinedStr([LiteralString(Value is ), "
         "FormattedValue(x!r), LiteralString(.)])"
     )
-    assert str(joined) == expected_str
+    assert str(joined) == expected_joined_str
 
     struct = joined.get_struct()
     assert isinstance(struct, dict)
@@ -295,7 +296,7 @@ def test_joined_str_creation_mixed() -> None:
     struct_content = outer_val.get("content")
     assert isinstance(struct_content, dict)
     assert "values" in struct_content
-    assert len(struct_content["values"]) == NUM_VALUES_MIXED
+    assert len(struct_content["values"]) == _LIST_SIZE_MIXED
     assert "LiteralString: Value is " in struct_content["values"][0]
     assert "FormattedValue" in struct_content["values"][1]
     assert "LiteralString: ." in struct_content["values"][2]
