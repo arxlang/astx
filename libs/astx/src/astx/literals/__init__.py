@@ -32,7 +32,8 @@ from astx.literals.numeric import (
     LiteralUInt128,
 )
 from astx.literals.string import (
-    LiteralFormattedString,
+    FormattedValue,
+    JoinedStr,
     LiteralString,
     LiteralUTF8Char,
     LiteralUTF8String,
@@ -45,6 +46,8 @@ from astx.literals.temporal import (
 )
 
 __all__ = [
+    "FormattedValue",
+    "JoinedStr",
     "Literal",
     "LiteralBoolean",
     "LiteralComplex",
