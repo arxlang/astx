@@ -186,11 +186,6 @@ class ASTxPythonTranspiler:
         return f"del {targets}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Ellipsis) -> str:
-        """Handle Ellipsis nodes."""
-        return "..."
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.EnumDeclStmt) -> str:
         """Handle EnumDeclStmt nodes."""
         attr_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
