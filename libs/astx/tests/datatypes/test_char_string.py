@@ -20,6 +20,9 @@ UTF8_STRING_LITERAL_CLASSES = [
     astx.LiteralUTF8String,
 ]
 
+NUM_VALUES_SIMPLE = 2
+NUM_VALUES_MIXED = 3
+
 
 def test_variable() -> None:
     """Test variable UTF-8 character and string."""
@@ -133,24 +136,21 @@ def test_unary_ops_string(
     assert unary_op.get_struct(simplified=True) != {}
 
 
-# --- Tests for LiteralFormattedString ---
-
-
-def test_literal_formatted_string_simple() -> None:
-    """Test simple LiteralFormattedString instantiation."""
+def test_formatted_value_simple() -> None:
+    """Test simple FormattedValue instantiation."""
     var_x = astx.Variable("x")
-    fmt_val = astx.LiteralFormattedString(value=var_x)
+    fmt_val = astx.FormattedValue(value=var_x)
 
-    assert isinstance(fmt_val, astx.LiteralFormattedString)
+    assert isinstance(fmt_val, astx.FormattedValue)
     assert fmt_val.value == var_x
     assert fmt_val.conversion is None
     assert fmt_val.format_spec is None
-    assert str(fmt_val) == "LiteralFormattedString(x)"
+    assert str(fmt_val) == "FormattedValue(x)"
 
     struct = fmt_val.get_struct()
     assert isinstance(struct, dict)
-    assert "LiteralFormattedString" in struct
-    outer_val = cast(Dict[str, Any], struct["LiteralFormattedString"])
+    assert "FormattedValue" in struct
+    outer_val = cast(Dict[str, Any], struct["FormattedValue"])
     struct_content = outer_val.get("content")
     assert isinstance(struct_content, dict)
     assert "value" in struct_content
@@ -159,52 +159,46 @@ def test_literal_formatted_string_simple() -> None:
 
     struct_simple = fmt_val.get_struct(simplified=True)
     assert isinstance(struct_simple, dict)
-    assert "LiteralFormattedString" in struct_simple
-    struct_simple_val = cast(
-        Dict[str, Any], struct_simple["LiteralFormattedString"]
-    )
+    assert "FormattedValue" in struct_simple
+    struct_simple_val = cast(Dict[str, Any], struct_simple["FormattedValue"])
     assert "value" in struct_simple_val
     assert "conversion" not in struct_simple_val
     assert "format_spec" not in struct_simple_val
 
 
-def test_literal_formatted_string_with_conversion() -> None:
-    """Test LiteralFormattedString with conversion."""
+def test_formatted_value_with_conversion() -> None:
+    """Test FormattedValue with conversion."""
     var_y = astx.Variable("y")
-    fmt_val = astx.LiteralFormattedString(value=var_y, conversion=ord("r"))
+    fmt_val = astx.FormattedValue(value=var_y, conversion=ord("r"))
 
     assert fmt_val.conversion == ord("r")
-    assert str(fmt_val) == "LiteralFormattedString(y!r)"
+    assert str(fmt_val) == "FormattedValue(y!r)"
 
     struct = fmt_val.get_struct()
     assert isinstance(struct, dict)
-    outer_val = cast(Dict[str, Any], struct["LiteralFormattedString"])
+    outer_val = cast(Dict[str, Any], struct["FormattedValue"])
     struct_content = outer_val.get("content")
     assert isinstance(struct_content, dict)
     assert struct_content.get("conversion") == "r"
 
     struct_simple = fmt_val.get_struct(simplified=True)
     assert isinstance(struct_simple, dict)
-    struct_simple_val = cast(
-        Dict[str, Any], struct_simple["LiteralFormattedString"]
-    )
+    struct_simple_val = cast(Dict[str, Any], struct_simple["FormattedValue"])
     assert struct_simple_val.get("conversion") == "r"
 
 
-def test_literal_formatted_string_with_format_spec() -> None:
-    """Test LiteralFormattedString with format specifier."""
+def test_formatted_value_with_format_spec() -> None:
+    """Test FormattedValue with format specifier."""
     var_z = astx.Variable("z")
     format_spec_node = astx.LiteralString(".2f")
-    fmt_val = astx.LiteralFormattedString(
-        value=var_z, format_spec=format_spec_node
-    )
+    fmt_val = astx.FormattedValue(value=var_z, format_spec=format_spec_node)
 
     assert fmt_val.format_spec is format_spec_node
-    assert str(fmt_val) == "LiteralFormattedString(z:.2f)"
+    assert str(fmt_val) == "FormattedValue(z:.2f)"
 
     struct = fmt_val.get_struct()
     assert isinstance(struct, dict)
-    outer_val = cast(Dict[str, Any], struct["LiteralFormattedString"])
+    outer_val = cast(Dict[str, Any], struct["FormattedValue"])
     struct_content = outer_val.get("content")
     assert isinstance(struct_content, dict)
     format_spec_struct = struct_content.get("format_spec")
@@ -213,29 +207,27 @@ def test_literal_formatted_string_with_format_spec() -> None:
 
     struct_simple = fmt_val.get_struct(simplified=True)
     assert isinstance(struct_simple, dict)
-    struct_simple_val = cast(
-        Dict[str, Any], struct_simple["LiteralFormattedString"]
-    )
+    struct_simple_val = cast(Dict[str, Any], struct_simple["FormattedValue"])
     format_spec_struct_simple = struct_simple_val.get("format_spec")
     assert isinstance(format_spec_struct_simple, dict)
     assert "LiteralString: .2f" in format_spec_struct_simple
 
 
-def test_literal_formatted_string_with_conversion_and_format_spec() -> None:
-    """Test LiteralFormattedString with conversion and format specifier."""
+def test_formatted_value_with_conversion_and_format_spec() -> None:
+    """Test FormattedValue with conversion and format specifier."""
     var_a = astx.Variable("a")
     format_spec_node = astx.LiteralString(" >10")
-    fmt_val = astx.LiteralFormattedString(
+    fmt_val = astx.FormattedValue(
         value=var_a, conversion=ord("s"), format_spec=format_spec_node
     )
 
     assert fmt_val.conversion == ord("s")
     assert fmt_val.format_spec is format_spec_node
-    assert str(fmt_val) == "LiteralFormattedString(a!s: >10)"
+    assert str(fmt_val) == "FormattedValue(a!s: >10)"
 
     struct = fmt_val.get_struct()
     assert isinstance(struct, dict)
-    outer_val = cast(Dict[str, Any], struct["LiteralFormattedString"])
+    outer_val = cast(Dict[str, Any], struct["FormattedValue"])
     struct_content = outer_val.get("content")
     assert isinstance(struct_content, dict)
     assert struct_content.get("conversion") == "s"
@@ -245,10 +237,65 @@ def test_literal_formatted_string_with_conversion_and_format_spec() -> None:
 
     struct_simple = fmt_val.get_struct(simplified=True)
     assert isinstance(struct_simple, dict)
-    struct_simple_val = cast(
-        Dict[str, Any], struct_simple["LiteralFormattedString"]
-    )
+    struct_simple_val = cast(Dict[str, Any], struct_simple["FormattedValue"])
     assert struct_simple_val.get("conversion") == "s"
     format_spec_struct_simple = struct_simple_val.get("format_spec")
     assert isinstance(format_spec_struct_simple, dict)
     assert "LiteralString:  >10" in format_spec_struct_simple
+
+
+def test_joined_str_creation_simple() -> None:
+    """Test JoinedStr with only LiteralString."""
+    lit1 = astx.LiteralString("hello ")
+    lit2 = astx.LiteralString("world")
+    joined = astx.JoinedStr(values=[lit1, lit2])
+
+    assert isinstance(joined, astx.JoinedStr)
+    assert joined.values == [lit1, lit2]
+    assert (
+        str(joined)
+        == "JoinedStr([LiteralString(hello ), LiteralString(world)])"
+    )
+
+    struct = joined.get_struct()
+    assert isinstance(struct, dict)
+    assert "JoinedStr" in struct
+    outer_val = cast(Dict[str, Any], struct["JoinedStr"])
+    struct_content = outer_val.get("content")
+    assert isinstance(struct_content, dict)
+    assert "values" in struct_content
+    assert isinstance(struct_content["values"], list)
+    assert len(struct_content["values"]) == NUM_VALUES_SIMPLE
+    assert isinstance(struct_content["values"][0], dict)
+    assert "LiteralString: hello " in struct_content["values"][0]
+    assert isinstance(struct_content["values"][1], dict)
+    assert "LiteralString: world" in struct_content["values"][1]
+
+
+def test_joined_str_creation_mixed() -> None:
+    """Test JoinedStr with LiteralString and FormattedValue."""
+    lit1 = astx.LiteralString("Value is ")
+    var_x = astx.Variable("x")
+    fmt_val = astx.FormattedValue(value=var_x, conversion=ord("r"))
+    lit2 = astx.LiteralString(".")
+    joined = astx.JoinedStr(values=[lit1, fmt_val, lit2])
+
+    assert isinstance(joined, astx.JoinedStr)
+    assert joined.values == [lit1, fmt_val, lit2]
+    expected_str = (
+        "JoinedStr([LiteralString(Value is ), "
+        "FormattedValue(x!r), LiteralString(.)])"
+    )
+    assert str(joined) == expected_str
+
+    struct = joined.get_struct()
+    assert isinstance(struct, dict)
+    assert "JoinedStr" in struct
+    outer_val = cast(Dict[str, Any], struct["JoinedStr"])
+    struct_content = outer_val.get("content")
+    assert isinstance(struct_content, dict)
+    assert "values" in struct_content
+    assert len(struct_content["values"]) == NUM_VALUES_MIXED
+    assert "LiteralString: Value is " in struct_content["values"][0]
+    assert "FormattedValue" in struct_content["values"][1]
+    assert "LiteralString: ." in struct_content["values"][2]
