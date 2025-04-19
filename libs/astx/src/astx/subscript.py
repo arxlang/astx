@@ -121,23 +121,3 @@ class SubscriptExpr(Expr):
         value = self._get_struct_wrapper(simplified)
 
         return self._prepare_struct(key, value, simplified)
-
-
-@public
-@typechecked
-class Ellipsis(Expr):
-    """AST class for Ellipsis expressions."""
-
-    def __init__(
-        self,
-        loc: SourceLocation = NO_SOURCE_LOCATION,
-        parent: Optional[ASTNodes] = None,
-    ) -> None:
-        super().__init__(loc=loc, parent=parent)
-        self.kind = ASTKind.EllipsisKind
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
-        key = str(self)
-        value: DictDataTypesStruct = {}
-        return self._prepare_struct(key, value, simplified)
