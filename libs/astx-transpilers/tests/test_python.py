@@ -1783,3 +1783,18 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_interactive() -> None:
+    """Test astx.Interactive transpilation."""
+    interactive = astx.Interactive()
+
+    interactive.append(astx.LiteralInt32(42))
+    interactive.append(astx.Variable("x"))
+
+    generated_code = translate(interactive)
+    expected_code = "42\nx"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )

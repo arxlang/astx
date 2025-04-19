@@ -348,3 +348,47 @@ class ImportFromExpr(Expr):
         )
 
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class Interactive(Block):
+    """
+    Interactive input representation (e.g., REPL code).
+
+    Container for statements entered in an interactive session, similar to
+    Module but specifically for code entered in interactive contexts like
+    Python REPL.
+    """
+
+    name: str
+
+    def __init__(
+        self,
+        name: str = "interactive",
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+    ) -> None:
+        """Initialize the AST instance."""
+        super().__init__(name=name, loc=loc)
+        self.kind = ASTKind.InteractiveKind
+
+    def __str__(self) -> str:
+        """Return the string representation of the object."""
+        return f"Interactive[{self.name}]"
+
+    @property
+    def body(self) -> list[AST]:
+        """Define an alias for self.nodes."""
+        return self.nodes
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        block_node = []
+
+        for node in self.nodes:
+            block_node.append(node.get_struct(simplified))
+
+        key = f"INTERACTIVE[{self.name}]"
+        value = cast(ReprStruct, block_node)
+
+        return self._prepare_struct(key, value, simplified)

@@ -67,6 +67,12 @@ class ASTxPythonTranspiler:
         return f"{target_str} = {self.visit(node.value)}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Interactive) -> str:
+        """Handle Interactive nodes."""
+        lines = [self.visit(stmt) for stmt in node.nodes]
+        return "\n".join(lines)
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ASTNodes) -> str:
         """Handle AliasExpr nodes."""
         lines = [self.visit(node) for node in node.nodes]

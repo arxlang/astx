@@ -88,6 +88,7 @@ class ASTKind(Enum):
     GenericKind = -100
     ModuleKind = -101
     ParenthesizedExprKind = -102
+    InteractiveKind = -103
 
     # variables
     ArgumentKind = -200
