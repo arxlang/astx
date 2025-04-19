@@ -1,10 +1,7 @@
 """Tests for subscripts."""
 
-from typing import cast
-
-from astx.base import ASTKind, DictDataTypesStruct
 from astx.literals import LiteralInt32
-from astx.subscript import Ellipsis, SubscriptExpr
+from astx.subscript import SubscriptExpr
 from astx.variables import Variable
 from astx.viz import visualize
 
@@ -43,4 +40,3 @@ def test_subscriptexpr_index() -> None:
     assert subscr_expr.get_struct()
     assert subscr_expr.get_struct(simplified=True)
     visualize(subscr_expr.get_struct())
-
