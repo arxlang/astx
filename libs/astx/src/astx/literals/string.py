@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from public import public
 
@@ -98,16 +98,14 @@ class LiteralUTF8Char(LiteralString):
 
 @public
 @typechecked
-class LiteralFormattedString(Expr):
-    """Represents formatted string parts (e.g., {x:.2f} in f-strings)."""
+class FormattedValue(Expr):
+    """Represents formatted value parts within a JoinedStr (e.g., {x:.2f})."""
 
     value: Expr
-    conversion: Optional[
-        int
-    ]  # e.g., ord('r') for !r, ord('s') for !s, ord('a') for !a
+    conversion: Optional[int]
     format_spec: Optional[Expr]
 
-    kind: ASTKind = ASTKind.LiteralFormattedStringKind
+    kind: ASTKind = ASTKind.FormattedValueKind
 
     def __init__(
         self,
@@ -145,7 +143,7 @@ class LiteralFormattedString(Expr):
 
         fmt_spec_str = f":{fmt_spec_inner_str}" if self.format_spec else ""
 
-        return f"LiteralFormattedString({value_str}{conv_char}{fmt_spec_str})"
+        return f"FormattedValue({value_str}{conv_char}{fmt_spec_str})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
@@ -155,5 +153,42 @@ class LiteralFormattedString(Expr):
         if self.format_spec is not None:
             content["format_spec"] = self.format_spec.get_struct(simplified)
 
-        key = "LiteralFormattedString"
+        key = "FormattedValue"
+        return self._prepare_struct(key, content, simplified)
+
+
+@public
+@typechecked
+class JoinedStr(Expr):
+    """Represents an f-string literal (e.g., f'hello {name}')."""
+
+    values: List[Expr]
+
+    kind: ASTKind = ASTKind.JoinedStrKind
+
+    def __init__(
+        self,
+        values: List[Expr],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        for val in values:
+            if not isinstance(val, (LiteralString, FormattedValue)):
+                raise TypeError(
+                    "JoinedStr values must be LiteralString or FormattedValue"
+                )
+        self.values = values
+
+    def __str__(self) -> str:
+        """Return a string representation of the joined string structure."""
+        value_strs = [str(v) for v in self.values]
+        return f"JoinedStr([{', '.join(value_strs)}])"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        content: Dict[str, Any] = {
+            "values": [v.get_struct(simplified) for v in self.values]
+        }
+        key = "JoinedStr"
         return self._prepare_struct(key, content, simplified)
