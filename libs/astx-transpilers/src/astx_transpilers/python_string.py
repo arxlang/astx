@@ -5,7 +5,6 @@ from typing import Union, cast
 import astx
 import astx.operators
 
-from astx import Starred
 from astx.tools.typing import typechecked
 from plum import dispatch
 
@@ -472,7 +471,7 @@ class ASTxPythonTranspiler:
         return f"{{{self.visit(node.element)} {' '.join(generators)}}}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Starred) -> str:
+    def visit(self, node: astx.Starred) -> str:
         """Handle Starred nodes."""
         value = self.visit(node.value)
         return f"*{value}"
@@ -490,10 +489,9 @@ class ASTxPythonTranspiler:
         """Handle SubscriptExpr nodes."""
         value_str = self.visit(node.value)
 
-        # Handle Ellipsis in index position
+        # Handle direct index access
         if not isinstance(node.index, astx.LiteralNone):
-            index_str = self.visit(node.index)
-            return f"{value_str}[{index_str}]"
+            return f"{value_str}[{self.visit(node.index)}]"
 
         # Handle slicing
         lower_str = (

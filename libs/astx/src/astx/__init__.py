@@ -144,6 +144,7 @@ from astx.packages import (
     Program,
     Target,
 )
+from astx.subscript import SubscriptExpr
 from astx.types import (
     AndOp,
     BinaryOp,
