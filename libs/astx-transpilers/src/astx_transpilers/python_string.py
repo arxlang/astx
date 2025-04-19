@@ -211,25 +211,49 @@ class ASTxPythonTranspiler:
         return f"finally:\n{body_str}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralFormattedString) -> str:
-        """Handle LiteralFormattedString nodes (f-string parts)."""
+    def visit(self, node: astx.FormattedValue) -> str:
+        """Handle FormattedValue nodes (f-string parts like {x!r:.2f})."""
         value_str = self.visit(node.value)
-        # Basic wrapping for non-simple values
         if not isinstance(
             node.value, (astx.Variable, astx.Identifier, astx.Literal)
         ):
-            value_str = f"({value_str})"
+            if not (value_str.startswith("(") and value_str.endswith(")")):
+                value_str = f"({value_str})"
 
         conv_char = f"!{chr(node.conversion)}" if node.conversion else ""
         format_spec_str = ""
         if node.format_spec:
             if isinstance(node.format_spec, astx.LiteralString):
                 format_spec_inner = node.format_spec.value
+                format_spec_str = f":{format_spec_inner}"
             else:
-                format_spec_inner = self.visit(node.format_spec)
-            format_spec_str = f":{format_spec_inner}"
+                format_spec_inner_expr = self.visit(node.format_spec)
+                format_spec_str = f":{{{format_spec_inner_expr}}}"
 
         return f"{{{value_str}{conv_char}{format_spec_str}}}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralString) -> str:
+        """Handle LiteralString nodes. Escapes braces for f-strings."""
+        escaped_value = node.value.replace("{", "{{").replace("}", "}}")
+        return repr(escaped_value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.JoinedStr) -> str:
+        """Handle JoinedStr nodes (f-string)."""
+        parts = []
+        for value_node in node.values:
+            if isinstance(value_node, astx.LiteralString):
+                parts.append(
+                    value_node.value.replace("{", "{{").replace("}", "}}")
+                )
+            elif isinstance(value_node, astx.FormattedValue):
+                parts.append(self.visit(value_node))
+            else:
+                raise TypeError(
+                    f"Unexpected node type in JoinedStr: {type(value_node)}"
+                )
+        return f"f'{''.join(parts)}'"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> str:
