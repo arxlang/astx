@@ -471,6 +471,12 @@ class ASTxPythonTranspiler:
         return f"{{{self.visit(node.element)} {' '.join(generators)}}}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Starred) -> str:
+        """Handle Starred nodes."""
+        value = self.visit(node.value)
+        return f"*{value}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(
         self, node: Union[astx.StructDeclStmt, astx.StructDefStmt]
     ) -> str:
@@ -481,22 +487,32 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SubscriptExpr) -> str:
         """Handle SubscriptExpr nodes."""
+        value_str = self.visit(node.value)
+
+        # Handle direct index access
+        if not isinstance(node.index, astx.LiteralNone):
+            return f"{value_str}[{self.visit(node.index)}]"
+
+        # Handle slicing
         lower_str = (
-            str(node.lower.value)
+            self.visit(node.lower)
             if not isinstance(node.lower, astx.LiteralNone)
-            else str(node.index.value)
-        )
-        upper_str = (
-            ":" + str(node.upper.value)
-            if not isinstance(node.upper, astx.LiteralNone)
             else ""
         )
+
+        upper_str = (
+            f":{self.visit(node.upper)}"
+            if not isinstance(node.upper, astx.LiteralNone)
+            else ":"
+        )
+
         step_str = (
-            ":" + str(node.step.value)
+            f":{self.visit(node.step)}"
             if not isinstance(node.step, astx.LiteralNone)
             else ""
         )
-        return f"{node.value.name}[{lower_str}{upper_str}{step_str}]"
+
+        return f"{value_str}[{lower_str}{upper_str}{step_str}]"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> str:
