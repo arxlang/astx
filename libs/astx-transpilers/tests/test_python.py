@@ -1825,7 +1825,7 @@ class MyInterface(ABC):
     def method_b(self) -> str:
         pass
     @abstractmethod
-    def method_c(self, y: float, z: str):
+    def method_c(self, y: float, z: str) -> int:
         pass"""
 
     assert generated_code.strip() == expected_code.strip(), (
