@@ -411,6 +411,116 @@ def test_transpiler_literal_utf8_string() -> None:
     )
 
 
+def test_transpiler_formatted_value_simple() -> None:
+    """Test transpiling astx.FormattedValue simple case."""
+    var_x = astx.Variable("x")
+    fmt_val = astx.FormattedValue(value=var_x)
+    generated_code = transpiler.visit(fmt_val)
+    expected_code = "{x}"
+    assert generated_code == expected_code
+    check_transpilation(f"f'{generated_code}'")
+
+
+def test_transpiler_formatted_value_full() -> None:
+    """Test transpiling astx.FormattedValue with conversion and format spec."""
+    var_y = astx.Variable("y")
+    fmt_spec = astx.LiteralString(".2f")
+    fmt_val = astx.FormattedValue(
+        value=var_y,
+        conversion=ord("r"),
+        format_spec=fmt_spec,
+    )
+    generated_code = transpiler.visit(fmt_val)
+    expected_code = "{y!r:.2f}"
+    assert generated_code == expected_code
+    check_transpilation(f"f'{generated_code}'")
+
+
+def test_transpiler_formatted_value_complex_expr() -> None:
+    """Test transpiling astx.FormattedValue with a complex expression."""
+    expr = astx.BinaryOp(
+        op_code="+", lhs=astx.Variable("a"), rhs=astx.LiteralInt32(1)
+    )
+    fmt_val = astx.FormattedValue(value=expr)
+    generated_code = transpiler.visit(fmt_val)
+    expected_code = "{(a + 1)}"
+    assert generated_code == expected_code
+    check_transpilation(f"f'{generated_code}'")
+
+
+def test_transpiler_formatted_value_complex_format_spec() -> None:
+    """Test FormattedValue with an expression as format spec."""
+    var_val = astx.Variable("value")
+    var_width = astx.Variable("width")
+    fmt_val = astx.FormattedValue(value=var_val, format_spec=var_width)
+    generated_code = transpiler.visit(fmt_val)
+    expected_code = "{value:{width}}"
+    assert generated_code == expected_code
+    check_transpilation(f"f'{generated_code}'")
+
+
+def test_transpiler_joined_str_simple() -> None:
+    """Test transpiling a simple astx.JoinedStr."""
+    lit1 = astx.LiteralString("Hello ")
+    var_name = astx.Variable("name")
+    fmt_val = astx.FormattedValue(value=var_name)
+    lit2 = astx.LiteralString("!")
+    joined = astx.JoinedStr(values=[lit1, fmt_val, lit2])
+    generated_code = translate(joined)
+    expected_code = "f'Hello {name}!'"
+    assert generated_code == expected_code
+
+
+def test_transpiler_joined_str_complex() -> None:
+    """Test transpiling a more complex astx.JoinedStr."""
+    lit1 = astx.LiteralString("Value: ")
+    var_y = astx.Variable("y")
+    fmt_spec = astx.LiteralString(".2f")
+    fmt_val = astx.FormattedValue(
+        value=var_y,
+        conversion=ord("r"),
+        format_spec=fmt_spec,
+    )
+    lit2 = astx.LiteralString(" (result)")
+    joined = astx.JoinedStr(values=[lit1, fmt_val, lit2])
+    generated_code = translate(joined)
+    expected_code = "f'Value: {y!r:.2f} (result)'"
+    assert generated_code == expected_code
+
+
+def test_transpiler_joined_str_with_escapes() -> None:
+    """Test transpiling JoinedStr with literal braces."""
+    lit1 = astx.LiteralString("Show {curly} braces and ")
+    var_x = astx.Variable("x")
+    fmt_val = astx.FormattedValue(value=var_x)
+    joined = astx.JoinedStr(values=[lit1, fmt_val])
+    generated_code = translate(joined)
+    expected_code = "f'Show {{curly}} braces and {x}'"
+    assert generated_code == expected_code
+
+
+def test_transpiler_joined_str_nested_format_spec() -> None:
+    """Test transpiling JoinedStr with nested format specifier expression."""
+    lit1 = astx.LiteralString("Result: ")
+    var_val = astx.Variable("value")
+    var_width = astx.Variable("width")
+    fmt_val = astx.FormattedValue(value=var_val, format_spec=var_width)
+    joined = astx.JoinedStr(values=[lit1, fmt_val])
+    generated_code = translate(joined)
+    expected_code = "f'Result: {value:{width}}'"
+    assert generated_code == expected_code
+
+
+def test_transpiler_joined_str_only_literals() -> None:
+    """Test transpiling JoinedStr with only literal parts."""
+    lit1 = astx.LiteralString("Just a literal ")
+    lit2 = astx.LiteralString("string with {escaped} braces.")
+    joined = astx.JoinedStr(values=[lit1, lit2])
+    generated_code = translate(joined)
+    expected_code = "f'Just a literal string with {{escaped}} braces.'"
+    assert generated_code == expected_code
+
+
 def test_transpiler_for_range_loop_expr() -> None:
     """Test `For Range Loop` expression`."""
     decl_a = astx.InlineVariableDeclaration(

@@ -86,6 +86,8 @@ from astx.flows import (
     WhileStmt,
 )
 from astx.literals import (
+    FormattedValue,
+    JoinedStr,
     Literal,
     LiteralBoolean,
     LiteralComplex,
@@ -260,6 +262,7 @@ __all__ = [
     "ForCountLoopStmt",
     "ForRangeLoopExpr",
     "ForRangeLoopStmt",
+    "FormattedValue",
     "FunctionAsyncDef",
     "FunctionCall",
     "FunctionDef",
@@ -280,6 +283,7 @@ __all__ = [
     "Int32",
     "Int64",
     "Integer",
+    "JoinedStr",
     "LambdaExpr",
     "ListComprehension",
     "ListType",
