@@ -86,6 +86,8 @@ from astx.flows import (
     WhileStmt,
 )
 from astx.literals import (
+    FormattedValue,
+    JoinedStr,
     Literal,
     LiteralBoolean,
     LiteralComplex,
@@ -97,7 +99,6 @@ from astx.literals import (
     LiteralFloat16,
     LiteralFloat32,
     LiteralFloat64,
-    LiteralFormattedString,
     LiteralInt8,
     LiteralInt16,
     LiteralInt32,
@@ -206,7 +207,7 @@ def get_version() -> str:
     try:
         return importlib_metadata.version(__name__)
     except importlib_metadata.PackageNotFoundError:  # pragma: no cover
-        return "0.21.1"  # semantic-release
+        return "0.21.0"  # semantic-release
 
 
 __all__ = [
@@ -261,6 +262,7 @@ __all__ = [
     "ForCountLoopStmt",
     "ForRangeLoopExpr",
     "ForRangeLoopStmt",
+    "FormattedValue",
     "FunctionAsyncDef",
     "FunctionCall",
     "FunctionDef",
@@ -281,6 +283,7 @@ __all__ = [
     "Int32",
     "Int64",
     "Integer",
+    "JoinedStr",
     "LambdaExpr",
     "ListComprehension",
     "ListType",
@@ -295,7 +298,6 @@ __all__ = [
     "LiteralFloat16",
     "LiteralFloat32",
     "LiteralFloat64",
-    "LiteralFormattedString",
     "LiteralInt8",
     "LiteralInt16",
     "LiteralInt32",
