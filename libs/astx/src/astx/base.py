@@ -205,6 +205,8 @@ class ASTKind(Enum):
     NorOpKind = -1204
     XnorOpKind = -1205
     NotOpKind = -1206
+    AttributeExprKind = -1300
+    MethodCallKind = -1301
 
 
 class ASTMeta(type):
@@ -517,5 +519,44 @@ class ParenthesizedExpr(DataType):
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
         key = "PARENTHESIZED-EXPR"
+        value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class AttributeExpr(Expr):
+    """
+    Represents accessing a member of an object (e.g., obj.member).
+
+    Equivalent to Python's ast.Attribute, this node represents attribute access
+    in object-oriented programming (accessing fields/methods of objects).
+    """
+
+    value: Expr
+    attr: str
+
+    def __init__(
+        self,
+        value: Expr,
+        attr: str,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the AttributeExpr instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.attr = attr
+        self.kind = ASTKind.AttributeExprKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the attribute expression."""
+        if hasattr(self.value, "name"):
+            return f"{self.value.name}.{self.attr}"
+        return f"{self.value}.{self.attr}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the attribute expression."""
+        key = f"ATTRIBUTE[{self.attr}]"
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)

@@ -103,6 +103,27 @@ def test_struct_representation() -> None:
     assert struct == {"IDENTIFIER[test_var]": "test_var"}
 
 
+def test_attribute_expr_basic() -> None:
+    """Test basic attribute access."""
+    obj = astx.Variable(name="obj")
+    attr_expr = astx.AttributeExpr(value=obj, attr="method")
+
+    assert str(attr_expr) == "obj.method"
+    struct = attr_expr.get_struct(simplified=True)
+    assert isinstance(struct, dict)
+    key = next(iter(struct.keys()))
+    assert key == "ATTRIBUTE[method]"
+
+
+def test_attribute_expr_nested() -> None:
+    """Test nested attribute access (obj.attr1.attr2)."""
+    obj = astx.Variable(name="obj")
+    attr1 = astx.AttributeExpr(value=obj, attr="attr1")
+    attr2 = astx.AttributeExpr(value=attr1, attr="attr2")
+
+    assert str(attr2) == "obj.attr1.attr2"
+
+
 def test_parenthesized_expr_1() -> None:
     """Test ParenthesizedExpr 1."""
     node = astx.ParenthesizedExpr(

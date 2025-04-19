@@ -73,6 +73,19 @@ class ASTxPythonTranspiler:
         return " ".join(lines)
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.AttributeExpr) -> str:
+        """Handle AttributeExpr nodes."""
+        value = self.visit(node.value)
+        return f"{value}.{node.attr}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.MethodCall) -> str:
+        """Handle MethodCall nodes."""
+        obj = self.visit(node.obj)
+        args = ", ".join(self.visit(arg) for arg in node.args)
+        return f"{obj}.{node.method}({args})"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AsyncForRangeLoopExpr) -> str:
         """Handle AsyncForRangeLoopExpr nodes."""
         if len(node.body) > 1:

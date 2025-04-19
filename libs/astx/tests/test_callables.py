@@ -13,6 +13,7 @@ from astx.callables import (
     FunctionPrototype,
     FunctionReturn,
     LambdaExpr,
+    MethodCall,
     YieldExpr,
     YieldFromExpr,
     YieldStmt,
@@ -239,3 +240,37 @@ def test_yield_stmt_in_generator_block() -> None:
     assert isinstance(gen_block[1], WhileStmt)
     assert str(gen_block[1].body[0])
     visualize(gen_block.get_struct())
+
+
+def test_method_call() -> None:
+    """Test the MethodCall class."""
+    # Setup an object
+    obj = Variable(name="obj")
+
+    # Method call with no arguments
+    method_call_empty = MethodCall(obj=obj, method="empty_method")
+
+    assert str(method_call_empty) == "obj.empty_method()"
+    assert method_call_empty.get_struct()
+    assert method_call_empty.get_struct(simplified=True)
+
+    # Method call with arguments
+    method_call_with_args = MethodCall(
+        obj=obj,
+        method="method_with_args",
+        args=[LiteralInt32(42), Variable(name="x")],
+    )
+
+    assert str(method_call_with_args) == "obj.method_with_args(42, x)"
+    assert method_call_with_args.get_struct()
+    assert method_call_with_args.get_struct(simplified=True)
+
+    # Nested method calls (chained methods)
+    inner_method = MethodCall(obj=obj, method="inner")
+    outer_method = MethodCall(obj=inner_method, method="outer")
+
+    assert "outer()" in str(outer_method)
+    assert outer_method.get_struct()
+    assert outer_method.get_struct(simplified=True)
+
+    visualize(method_call_with_args.get_struct())
