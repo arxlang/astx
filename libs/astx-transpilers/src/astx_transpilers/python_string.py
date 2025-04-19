@@ -780,7 +780,7 @@ class ASTxPythonTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.InterfaceDefStmt) -> str:
-        """Handle InterfaceDefStmt nodes (minimal implementation)."""
+        """Handle InterfaceDefStmt nodes using dynamic type visiting."""
         class_header = f"class {node.name}(ABC):"
         self.indent_level += 1
         indent = self.indent_str * self.indent_level
@@ -795,29 +795,24 @@ class ASTxPythonTranspiler:
                 arg_parts = []
                 for arg in proto.args.nodes:
                     type_str = "Any"
-                    if isinstance(arg.type_, astx.Int32):
-                        type_str = "int"
-                    elif isinstance(arg.type_, astx.Boolean):
-                        type_str = "bool"
-                    elif isinstance(arg.type_, astx.String):
-                        type_str = "str"
-                    elif isinstance(arg.type_, astx.Float64):
-                        type_str = "float"
+                    if arg.type_ is not None:
+                        try:
+                            type_str = self.visit(arg.type_)
+                        except Exception:
+                            pass
+
                     arg_parts.append(f"{arg.name}: {type_str}")
+
                 args_str = ", ".join(["self", *arg_parts])
 
                 returns = ""
-                if proto.return_type and not isinstance(
-                    proto.return_type, astx.Int32
-                ):
-                    ret_type_str = "Any"
-                    if isinstance(proto.return_type, astx.Boolean):
-                        ret_type_str = "bool"
-                    elif isinstance(proto.return_type, astx.String):
-                        ret_type_str = "str"
-                    elif isinstance(proto.return_type, astx.Float64):
-                        ret_type_str = "float"
-                    returns = f" -> {ret_type_str}"
+                if proto.return_type is not None:
+                    try:
+                        ret_type_str = self.visit(proto.return_type)
+                        if ret_type_str:
+                            returns = f" -> {ret_type_str}"
+                    except Exception:
+                        pass
 
                 method_str = (
                     f"{indent}@abstractmethod\n"
