@@ -448,3 +448,139 @@ class StructDefStmt(StructDeclStmt):
         }
 
         return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class InterfaceDefStmt(StatementType):
+    """AST class for interface definition."""
+
+    name: str
+    bases: ASTNodes[Expr]
+    decorators: ASTNodes[Expr]
+    visibility: VisibilityKind
+    methods: ASTNodes[FunctionDef]
+    attributes: ASTNodes[VariableDeclaration]
+
+    def __init__(
+        self,
+        name: str,
+        bases: Iterable[Expr] | ASTNodes[Expr] = [],
+        decorators: Iterable[Expr] | ASTNodes[Expr] = [],
+        visibility: VisibilityKind = VisibilityKind.public,
+        methods: Iterable[FunctionDef] | ASTNodes[FunctionDef] = [],
+        attributes: Iterable[VariableDeclaration]
+        | ASTNodes[VariableDeclaration] = [],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize InterfaceDefStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.name = name
+
+        if isinstance(bases, ASTNodes):
+            self.bases = bases
+        else:
+            self.bases = ASTNodes[Expr]()
+            for base in bases:
+                self.bases.append(base)
+
+        if isinstance(decorators, ASTNodes):
+            self.decorators = decorators
+        else:
+            self.decorators = ASTNodes[Expr]()
+            for decorator in decorators:
+                self.decorators.append(decorator)
+
+        if isinstance(methods, ASTNodes):
+            self.methods = methods
+        else:
+            self.methods = ASTNodes[FunctionDef]()
+            for m in methods:
+                self.methods.append(m)
+
+        if isinstance(attributes, ASTNodes):
+            self.attributes = attributes
+        else:
+            self.attributes = ASTNodes[VariableDeclaration]()
+            for a in attributes:
+                self.attributes.append(a)
+
+        self.visibility = visibility
+        self.kind = ASTKind.InterfaceDefStmtKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        modifiers = []
+        if self.visibility != VisibilityKind.public:
+            modifiers.append(self.visibility.name)
+        modifiers_str = " ".join(modifiers)
+        bases_str = (
+            f" extends {', '.join(str(base) for base in self.bases)}"
+            if self.bases
+            else ""
+        )
+        decorators_str = "".join(
+            f"@{decorator}\n" for decorator in self.decorators
+        )
+        interface_header = f"interface {self.name}{bases_str}"
+
+        members_str_list: list[str] = []
+        indent = "    "
+        if self.attributes:
+            members_str_list.extend(
+                f"{indent}{attr}" for attr in self.attributes
+            )
+        if self.methods:
+            members_str_list.extend(
+                f"{indent}{str(method).replace(chr(10), chr(10) + indent)}"
+                for method in self.methods
+            )
+
+        if not members_str_list:
+            body_str = f"{indent}pass"
+        else:
+            body_str = "\n".join(members_str_list)
+
+        full_str = (
+            f"{decorators_str}{modifiers_str} {interface_header}".strip()
+        )
+        if full_str:
+            full_str += ":"
+        full_str += f"\n{body_str}"
+
+        return full_str
+
+    def _get_struct_wrapper(self, simplified: bool) -> DictDataTypesStruct:
+        """Return the AST structure of the object (helper)."""
+        bases_dict: ReprStruct = {}
+        decors_dict: ReprStruct = {}
+        methods_dict: ReprStruct = {}
+        attrs_dict: ReprStruct = {}
+
+        if self.bases:
+            bases_dict = {"bases": self.bases.get_struct(simplified)}
+        if self.decorators:
+            decors_dict = {
+                "decorators": self.decorators.get_struct(simplified)
+            }
+        if self.methods:
+            methods_dict = {"methods": self.methods.get_struct(simplified)}
+        if self.attributes:
+            attrs_dict = {"attributes": self.attributes.get_struct(simplified)}
+
+        value: DictDataTypesStruct = {
+            **cast(DictDataTypesStruct, bases_dict),
+            **cast(DictDataTypesStruct, decors_dict),
+            **cast(DictDataTypesStruct, methods_dict),
+            **cast(DictDataTypesStruct, attrs_dict),
+        }
+        return value
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        vis = dict(zip(("public", "private", "protected"), ("+", "-", "#")))
+        key = f"INTERFACE-DEF-STMT[{vis[self.visibility.name]}{self.name}]"
+        value = self._get_struct_wrapper(simplified)
+
+        return self._prepare_struct(key, value, simplified)
