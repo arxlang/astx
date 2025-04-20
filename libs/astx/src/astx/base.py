@@ -190,6 +190,7 @@ class ASTKind(Enum):
 
     # subscrpts
     SubscriptExprKind = -1000
+    EllipsisKind = -1001
 
     # exceptions
     ThrowStmtKind = -1100

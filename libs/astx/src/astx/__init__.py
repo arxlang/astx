@@ -143,7 +143,10 @@ from astx.packages import (
     Program,
     Target,
 )
-from astx.subscript import SubscriptExpr
+from astx.subscript import (
+    Ellipsis,
+    SubscriptExpr,
+)
 from astx.types import (
     AndOp,
     BinaryOp,
@@ -247,6 +250,7 @@ __all__ = [
     "DictType",
     "DoWhileExpr",
     "DoWhileStmt",
+    "Ellipsis",
     "EnumDeclStmt",
     "ExceptionHandlerStmt",
     "Expr",
