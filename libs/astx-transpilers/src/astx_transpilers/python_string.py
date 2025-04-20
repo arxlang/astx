@@ -3,8 +3,8 @@
 from typing import Union, cast
 
 import astx
-import astx.operators
 
+from astx.operators import Starred
 from astx.tools.typing import typechecked
 from plum import dispatch
 
@@ -482,6 +482,12 @@ class ASTxPythonTranspiler:
         """Handle StructDeclStmt and StructDefStmt nodes."""
         attrs_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
         return f"@dataclass \nclass {node.name}:\n    {attrs_str}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Starred) -> str:
+        """Handle Starred nodes."""
+        value = self.visit(node.value)
+        return f"*{value}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SubscriptExpr) -> str:

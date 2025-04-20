@@ -226,3 +226,31 @@ class CompareOp(DataType):
             ],
         }
         return self._prepare_struct(key, content, simplified)
+
+
+@public
+@typechecked
+class Starred(Expr):
+    """AST class for starred expressions (*expr)."""
+
+    value: Expr
+
+    def __init__(
+        self,
+        value: Expr,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        super().__init__(loc=loc, parent=parent)
+        self.value = value
+        self.kind = ASTKind.StarredKind
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"Starred[*]({self.value})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure that represents the object."""
+        key = "STARRED[*]"
+        content: ReprStruct = {"value": self.value.get_struct(simplified)}
+        return self._prepare_struct(key, content, simplified)

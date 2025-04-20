@@ -5,6 +5,7 @@ from typing import cast
 import astx
 import pytest
 
+from astx.base import ASTKind, Identifier
 from astx.literals.numeric import LiteralInt32
 from astx.operators import (
     AssignmentExpr,
@@ -152,3 +153,39 @@ def test_aug_assign_operations(operator: OpCodeAugAssign, value: int) -> None:
     assert str(aug_assign) == f"AugAssign[{operator}]"
     assert aug_assign.get_struct()
     assert aug_assign.get_struct(simplified=True)
+
+
+def test_starred_creation() -> None:
+    """Test creating a Starred operator."""
+    var = astx.Variable(name="args")
+    starred = astx.Starred(value=var)
+    assert starred.value == var
+    assert starred.kind == ASTKind.StarredKind
+    assert str(starred) == "Starred[*](Variable[args])"
+
+    # Test structure
+    struct = starred.get_struct()
+    assert struct is not None
+    simplified_struct = starred.get_struct(simplified=True)
+    assert simplified_struct is not None
+
+
+def test_starred_with_different_expressions() -> None:
+    """Test Starred with different types of expressions."""
+    # Test with Identifier
+    ident = Identifier("a")
+    starred_ident = astx.Starred(value=ident)
+    assert starred_ident.kind == ASTKind.StarredKind
+    assert starred_ident.get_struct() is not None
+
+    # Test with Literal
+    lit = LiteralInt32(42)
+    starred_lit = astx.Starred(value=lit)
+    assert str(starred_lit) == "Starred[*](LiteralInt32(42))"
+    assert starred_lit.get_struct() is not None
+
+    # Test with Variable
+    var = Variable(name="x")
+    starred_var = astx.Starred(value=var)
+    assert str(starred_var) == "Starred[*](Variable[x])"
+    assert starred_var.get_struct() is not None
