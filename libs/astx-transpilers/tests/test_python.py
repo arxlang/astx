@@ -1783,3 +1783,44 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="requires python>=3.10")
+def test_transpiler_match_stmt() -> None:
+    """Test transpiling match statements (Python 3.10+)."""
+    subject = astx.Variable(name="value")
+
+    pattern1 = astx.LiteralInt32(value=1)
+    body1 = astx.Block()
+    body1.append(astx.LiteralString(value="one"))
+    case1 = astx.MatchCase(pattern=pattern1, body=body1)
+
+    pattern2 = astx.LiteralInt32(value=2)
+    body2 = astx.Block()
+    body2.append(astx.LiteralString(value="two"))
+    case2 = astx.MatchCase(pattern=pattern2, body=body2)
+
+    pattern_default = astx.Identifier(value="_")
+    body_default = astx.Block()
+    body_default.append(astx.LiteralString(value="other"))
+    case_default = astx.MatchCase(pattern=pattern_default, body=body_default)
+
+    match_stmt = astx.MatchStmt(
+        subject=subject,
+        cases=[case1, case2, case_default],
+    )
+
+    generated_code = translate(match_stmt)
+    expected_code = (
+        "match value:\n"
+        "    case 1:\n"
+        "        'one'\n"
+        "    case 2:\n"
+        "        'two'\n"
+        "    case _:\n"
+        "        'other'"
+    )
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )

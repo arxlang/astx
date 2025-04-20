@@ -5,7 +5,7 @@ from typing import Any, cast
 import astx
 import pytest
 
-from astx.base import ReprStruct, SourceLocation
+from astx.base import Identifier, ReprStruct, SourceLocation
 from astx.blocks import Block
 from astx.flows import (
     AsyncForRangeLoopExpr,
@@ -21,6 +21,8 @@ from astx.flows import (
     ForRangeLoopStmt,
     IfExpr,
     IfStmt,
+    MatchCase,
+    MatchStmt,
     SwitchStmt,
     WhileExpr,
     WhileStmt,
@@ -422,3 +424,55 @@ def test_do_while_stmt() -> None:
     assert do_while_stmt.get_struct()
     assert do_while_stmt.get_struct(simplified=True)
     visualize(do_while_stmt.get_struct())
+
+
+def test_match_case() -> None:
+    """Test MatchCase class."""
+    pattern = LiteralInt32(value=1)
+    body = Block()
+    body.append(LiteralString(value="one"))
+
+    case1 = MatchCase(pattern=pattern, body=body)
+
+    assert str(case1) == "MatchCase[LiteralInt32(1)]"
+    assert case1.get_struct()
+    assert case1.get_struct(simplified=True)
+
+    guard = BinaryOp(op_code=">", lhs=Variable(name="x"), rhs=LiteralInt32(0))
+    case2 = MatchCase(pattern=pattern, body=body, guard=guard)
+
+    assert "if" in str(case2)
+    assert case2.get_struct()
+
+    visualize(case2.get_struct())
+
+
+def test_match_stmt() -> None:
+    """Test MatchStmt class."""
+    subject = Variable(name="value")
+
+    pattern1 = LiteralInt32(value=1)
+    body1 = Block()
+    body1.append(LiteralString(value="one"))
+    case1 = MatchCase(pattern=pattern1, body=body1)
+
+    pattern2 = LiteralInt32(value=2)
+    body2 = Block()
+    body2.append(LiteralString(value="two"))
+    case2 = MatchCase(pattern=pattern2, body=body2)
+
+    pattern_default = Identifier(value="_")
+    body_default = Block()
+    body_default.append(LiteralString(value="other"))
+    case_default = MatchCase(pattern=pattern_default, body=body_default)
+
+    match_stmt = MatchStmt(
+        subject=subject,
+        cases=[case1, case2, case_default],
+    )
+
+    assert "MatchStmt" in str(match_stmt)
+    assert match_stmt.get_struct()
+    assert match_stmt.get_struct(simplified=True)
+
+    visualize(match_stmt.get_struct())

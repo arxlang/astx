@@ -205,6 +205,8 @@ class ASTKind(Enum):
     NorOpKind = -1204
     XnorOpKind = -1205
     NotOpKind = -1206
+    MatchStmtKind = -1500
+    MatchCaseKind = -1501
 
 
 class ASTMeta(type):

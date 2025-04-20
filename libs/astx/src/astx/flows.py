@@ -524,6 +524,104 @@ class ContinueStmt(StatementType):
 
 @public
 @typechecked
+class MatchCase(StatementType):
+    """
+    AST class for a Match statement (Python 3.10+).
+
+    Represents a single case pattern in a match statement.
+    """
+
+    pattern: Expr
+    body: Block
+    guard: Optional[Expr]
+
+    def __init__(
+        self,
+        pattern: Expr,
+        body: Block,
+        guard: Optional[Expr] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the MatchCase instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.pattern = pattern
+        self.body = body
+        self.guard = guard
+        self.kind = ASTKind.MatchCaseKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        guard_str = f" if {self.guard}" if self.guard else ""
+        return f"MatchCase[{self.pattern}{guard_str}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        pattern_part = {"pattern": self.pattern.get_struct(simplified)}
+        body_part = {"body": self.body.get_struct(simplified)}
+        guard_part = {}
+
+        if self.guard is not None:
+            guard_part = {"guard": self.guard.get_struct(simplified)}
+
+        key = f"MATCH-CASE[{id(self)}]" if simplified else "MATCH-CASE"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, pattern_part),
+            **cast(DictDataTypesStruct, body_part),
+            **cast(DictDataTypesStruct, guard_part),
+        }
+
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class MatchStmt(StatementType):
+    """
+    AST class for Match statement (Python 3.10+).
+
+    The match statement introduced in Python 3.10.
+    """
+
+    subject: Expr
+    cases: list[MatchCase]
+
+    def __init__(
+        self,
+        subject: Expr,
+        cases: list[MatchCase],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the MatchStmt instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.subject = subject
+        self.cases = cases
+        self.kind = ASTKind.MatchStmtKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the object."""
+        return f"MatchStmt[subject={self.subject}, cases={len(self.cases)}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the object."""
+        subject_part = {"subject": self.subject.get_struct(simplified)}
+
+        cases_part = {}
+        for i, case in enumerate(self.cases):
+            cases_part[f"case_{i}"] = case.get_struct(simplified)
+
+        key = f"MATCH-STMT[{id(self)}]" if simplified else "MATCH-STMT"
+        value: ReprStruct = {
+            **cast(DictDataTypesStruct, subject_part),
+            **cast(DictDataTypesStruct, {"cases": cases_part}),
+        }
+
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
 class WhileStmt(StatementType):
     """AST class for `while` statement."""
 

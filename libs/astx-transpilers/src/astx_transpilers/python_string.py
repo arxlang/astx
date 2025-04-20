@@ -130,6 +130,51 @@ class ASTxPythonTranspiler:
         return f"case {cond_str}:\n{body_str}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.MatchCase) -> str:
+        """Handle MatchCase nodes."""
+        pattern = self.visit(node.pattern)
+        guard = f" if {self.visit(node.guard)}" if node.guard else ""
+
+        case_line = f"case {pattern}{guard}:"
+
+        self.indent_level += 1
+        body_lines = []
+        for stmt in node.body.nodes:
+            body_lines.append(self.visit(stmt))
+        self.indent_level -= 1
+
+        if not body_lines:
+            body = f"{self.indent_str}pass"
+        else:
+            body = self.indent_str + "\n".join(body_lines)
+
+        return f"{case_line}\n{body}"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.MatchStmt) -> str:
+        """Handle MatchStmt nodes."""
+        subject = self.visit(node.subject)
+
+        result = f"match {subject}:"
+
+        self.indent_level += 1
+
+        cases_lines = []
+        for case in node.cases:
+            case_str = self.visit(case)
+            indented_case = self.indent_str + case_str.replace(
+                "\n", f"\n{self.indent_str}"
+            )
+            cases_lines.append(indented_case)
+
+        self.indent_level -= 1
+
+        if cases_lines:
+            result += "\n" + "\n".join(cases_lines)
+
+        return result
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CatchHandlerStmt) -> str:
         """Handle CatchHandlerStmt nodes."""
         types_str = (
