@@ -185,11 +185,6 @@ class ASTxPythonTranspiler:
         return f"del {targets}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Ellipsis) -> str:
-        """Handle Ellipsis nodes."""
-        return "..."
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.EnumDeclStmt) -> str:
         """Handle EnumDeclStmt nodes."""
         attr_str = "\n    ".join(self.visit(attr) for attr in node.attributes)
@@ -476,6 +471,12 @@ class ASTxPythonTranspiler:
         return f"{{{self.visit(node.element)} {' '.join(generators)}}}"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Starred) -> str:
+        """Handle Starred nodes."""
+        value = self.visit(node.value)
+        return f"*{value}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(
         self, node: Union[astx.StructDeclStmt, astx.StructDefStmt]
     ) -> str:
@@ -488,12 +489,9 @@ class ASTxPythonTranspiler:
         """Handle SubscriptExpr nodes."""
         value_str = self.visit(node.value)
 
-        # Handle Ellipsis in index position
-        if isinstance(node.index, astx.Ellipsis):
-            return f"{value_str}[...]"
-        elif not isinstance(node.index, astx.LiteralNone):
-            index_str = self.visit(node.index)
-            return f"{value_str}[{index_str}]"
+        # Handle direct index access
+        if not isinstance(node.index, astx.LiteralNone):
+            return f"{value_str}[{self.visit(node.index)}]"
 
         # Handle slicing
         lower_str = (

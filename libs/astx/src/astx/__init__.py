@@ -129,6 +129,7 @@ from astx.operators import (
     AssignmentExpr,
     AugAssign,
     CompareOp,
+    Starred,
     VariableAssignment,
     WalrusOp,
 )
@@ -143,10 +144,7 @@ from astx.packages import (
     Program,
     Target,
 )
-from astx.subscript import (
-    Ellipsis,
-    SubscriptExpr,
-)
+from astx.subscript import SubscriptExpr
 from astx.types import (
     AndOp,
     BinaryOp,
@@ -250,7 +248,6 @@ __all__ = [
     "DictType",
     "DoWhileExpr",
     "DoWhileStmt",
-    "Ellipsis",
     "EnumDeclStmt",
     "ExceptionHandlerStmt",
     "Expr",
@@ -334,6 +331,7 @@ __all__ = [
     "SetType",
     "SignedInteger",
     "SourceLocation",
+    "Starred",
     "StatementType",
     "String",
     "StructDeclStmt",
