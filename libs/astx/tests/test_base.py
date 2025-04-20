@@ -124,3 +124,28 @@ def test_parenthesized_expr_2() -> None:
     node_2 = astx.OrOp(node_1, node_1)
     assert node_2.get_struct(simplified=True)
     assert node_2.get_struct(simplified=False)
+
+
+def test_slice_expr() -> None:
+    """Test slice expression."""
+    # Simple slice with all components
+    slice_full = astx.Slice(
+        lower=astx.LiteralInt32(1),
+        upper=astx.LiteralInt32(10),
+        step=astx.LiteralInt32(2),
+    )
+
+    assert str(slice_full) == "1:10:2"
+    assert slice_full.get_struct(simplified=True)
+
+    # Slice with missing components
+    slice_partial = astx.Slice(upper=astx.LiteralInt32(5))
+
+    assert str(slice_partial) == ":5"
+    assert slice_partial.get_struct(simplified=True)
+
+    # Empty slice
+    slice_empty = astx.Slice()
+
+    assert str(slice_empty) == ":"
+    assert slice_empty.get_struct(simplified=True)

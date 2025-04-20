@@ -205,6 +205,7 @@ class ASTKind(Enum):
     NorOpKind = -1204
     XnorOpKind = -1205
     NotOpKind = -1206
+    SliceKind = -1302
 
 
 class ASTMeta(type):
@@ -518,4 +519,80 @@ class ParenthesizedExpr(DataType):
         """Return the AST structure of the object."""
         key = "PARENTHESIZED-EXPR"
         value = self.value.get_struct(simplified)
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
+class Slice(Expr):
+    """
+    Represents a slice object [start:stop:step].
+
+    Used within subscript expressions for slicing operations.
+    Equivalent to Python's ast.Slice.
+    """
+
+    lower: Optional[Expr]
+    upper: Optional[Expr]
+    step: Optional[Expr]
+
+    def __init__(
+        self,
+        lower: Optional[Expr] = None,
+        upper: Optional[Expr] = None,
+        step: Optional[Expr] = None,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Slice instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.lower = lower
+        self.upper = upper
+        self.step = step
+        self.kind = ASTKind.SliceKind
+
+    def _get_part_str(self, part: Optional[Expr]) -> str:
+        """Get the string representation of a slice part."""
+        if part is None:
+            return ""
+
+        if hasattr(part, "value"):
+            value = getattr(part, "value")
+            if isinstance(value, (int, float, str, bool)):
+                return str(value)
+
+        if hasattr(part, "name"):
+            return str(getattr(part, "name"))
+
+        result: str = str(part)
+        return result
+
+    def __str__(self) -> str:
+        """Return a string representation of the slice."""
+        lower_str = self._get_part_str(self.lower)
+        upper_str = self._get_part_str(self.upper)
+
+        if self.step is not None:
+            step_str = ":" + self._get_part_str(self.step)
+        else:
+            step_str = ""
+
+        return f"{lower_str}:{upper_str}{step_str}"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the slice."""
+        slice_parts = {}
+
+        if self.lower is not None:
+            slice_parts["lower"] = self.lower.get_struct(simplified)
+
+        if self.upper is not None:
+            slice_parts["upper"] = self.upper.get_struct(simplified)
+
+        if self.step is not None:
+            slice_parts["step"] = self.step.get_struct(simplified)
+
+        key = "SLICE"
+        value = cast(ReprStruct, slice_parts)
+
         return self._prepare_struct(key, value, simplified)
