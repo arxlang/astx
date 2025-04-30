@@ -473,7 +473,12 @@ def test_transpiler_break_stmt() -> None:
     generated_code = translate(while_stmt)
 
     # Expected code for the WhileStmt with break
-    expected_code = "while (x < 5):\n    break"
+    expected_code = "\n".join(
+        [
+            "while (x < 5):",
+            "    break",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -496,7 +501,12 @@ def test_transpiler_continue_stmt() -> None:
     generated_code = translate(while_stmt)
 
     # Expected code for the WhileStmt with continue
-    expected_code = "while (x < 5):\n    continue"
+    expected_code = "\n".join(
+        [
+            "while (x < 5):",
+            "    continue",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -558,7 +568,12 @@ def test_transpiler_while_stmt() -> None:
     generated_code = translate(while_stmt)
 
     # Expected code for the WhileStmt
-    expected_code = "while (x < 5):\n    x = (x + 1)"
+    expected_code = "\n".join(
+        [
+            "while (x < 5):",
+            "    x = (x + 1)",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -698,7 +713,14 @@ def test_transpiler_ifstmt_with_else() -> None:
     generated_code = translate(if_stmt)
 
     # Expected code for the binary operation
-    expected_code = "if (1 > 2):\n    (2 + 3)\nelse:\n    (2 - 3)"
+    expected_code = "\n".join(
+        [
+            "if (1 > 2):",
+            "    (2 + 3)",
+            "else:",
+            "    (2 - 3)",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -732,7 +754,12 @@ def test_transpiler_ifstmt_without_else() -> None:
     generated_code = translate(if_stmt)
 
     # Expected code for the binary operation
-    expected_code = "if (1 > 2):\n    (2 + 3)"
+    expected_code = "\n".join(
+        [
+            "if (1 > 2):",
+            "    (2 + 3)",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -858,7 +885,12 @@ def test_transpiler_classdefstmt() -> None:
 
     # Generate Python code
     generated_code = translate(class_def)
-    expected_code = "class MyClass:\n    var1"
+    expected_code = "\n".join(
+        [
+            "class MyClass:",
+            "    var1",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -887,8 +919,12 @@ def test_transpiler_enumdeclstmt() -> None:
 
     # Generate Python code
     generated_code = translate(enum_decl)
-    expected_code = (
-        "class Color(Enum):\n    RED: Int32 = 1\n    GREEN: Int32 = 2"
+    expected_code = "\n".join(
+        [
+            "class Color(Enum):",
+            "    RED: Int32 = 1",
+            "    GREEN: Int32 = 2",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -939,9 +975,13 @@ def test_transpiler_structdeclstmt() -> None:
 
     # Generate Python code
     generated_code = translate(struct_decl)
-    expected_code = (
-        "@dataclass \nclass DataPoint:\n    id: Int32 = 3\n    "
-        "value: Int32 = 1"
+    expected_code = "\n".join(
+        [
+            "@dataclass ",
+            "class DataPoint:",
+            "    id: Int32 = 3",
+            "    value: Int32 = 1",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -975,9 +1015,13 @@ def test_transpiler_structdefstmt() -> None:
 
     # Generate Python code
     generated_code = translate(struct_def)
-    expected_code = (
-        "@dataclass \nclass DataPoint:\n    id: Int32 = 3\n    "
-        "value: Int32 = 1"
+    expected_code = "\n".join(
+        [
+            "@dataclass ",
+            "class DataPoint:",
+            "    id: Int32 = 3",
+            "    value: Int32 = 1",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -1074,14 +1118,16 @@ def test_transpiler_switchstmt() -> None:
 
     # Generate Python code
     generated_code = translate(switch_stmt)
-    expected_code = (
-        "match x:\n"
-        "    case 1:\n"
-        "        print('one')\n"
-        "    case 2:\n"
-        "        print('two')\n"
-        "    case _:\n"
-        "        print('other')"
+    expected_code = "\n".join(
+        [
+            "match x:",
+            "    case 1:",
+            "        print('one')",
+            "    case 2:",
+            "        print('two')",
+            "    case _:",
+            "        print('other')",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -1109,7 +1155,12 @@ def test_transpiler_yieldexpr_whilestmt() -> None:
 
     # Generate Python code
     generated_code = translate(while_stmt)
-    expected_code = "while True:\n    value = yield 1"
+    expected_code = "\n".join(
+        [
+            "while True:",
+            "    value = yield 1",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1132,7 +1183,12 @@ def test_transpiler_yieldstmt_whilestmt() -> None:
 
     # Generate Python code
     generated_code = translate(while_stmt)
-    expected_code = "while True:\n    value = yield 1"
+    expected_code = "\n".join(
+        [
+            "while True:",
+            "    value = yield 1",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1159,7 +1215,12 @@ def test_transpiler_yieldfromexpr_whilestmt() -> None:
 
     # Generate Python code
     generated_code = translate(while_stmt)
-    expected_code = "while True:\n    value = yield from x"
+    expected_code = "\n".join(
+        [
+            "while True:",
+            "    value = yield from x",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1247,8 +1308,13 @@ def test_transpiler_exception_handler_stmt() -> None:
 
     # Generate Python code
     generated_code = translate(try_except_stmt)
-    expected_code = (
-        "try:\n    print('passed')\nexcept (A) as e:\n    print('failed')"
+    expected_code = "\n".join(
+        [
+            "try:",
+            "    print('passed')",
+            "except (A) as e:",
+            "    print('failed')",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -1286,13 +1352,15 @@ def test_transpiler_exception_handler_stmt_with_finally() -> None:
 
     # Generate Python code
     generated_code = translate(try_except_stmt)
-    expected_code = (
-        "try:\n"
-        "    print('passed')\n"
-        "except (A ,B) as e:\n"
-        "    print('failed')\n"
-        "finally:\n"
-        "    print('run complete')"
+    expected_code = "\n".join(
+        [
+            "try:",
+            "    print('passed')",
+            "except (A ,B) as e:",
+            "    print('failed')",
+            "finally:",
+            "    print('run complete')",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -1419,7 +1487,12 @@ def test_transpiler_functionasyncdef() -> None:
 
     # Generate Python code
     generated_code = translate(fn_a)
-    expected_code = "async def aget(a: int) -> int:\n    return a"
+    expected_code = "\n".join(
+        [
+            "async def aget(a: int) -> int:",
+            "    return a",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
