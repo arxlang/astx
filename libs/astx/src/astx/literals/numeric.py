@@ -18,22 +18,42 @@ from astx.types.numeric import (
     Float16,
     Float32,
     Float64,
+    Floating,
     Int8,
     Int16,
     Int32,
     Int64,
     Int128,
+    SignedInteger,
     UInt8,
     UInt16,
     UInt32,
     UInt64,
     UInt128,
+    UnsignedInteger,
 )
 
 
 @public
 @typechecked
-class LiteralInt8(Literal):
+class LiteralInt(Literal):
+    """LiteralInteger data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralInteger."""
+        super().__init__(loc)
+        self.value = value
+        self.type_ = SignedInteger()
+        self.loc = loc
+
+
+@public
+@typechecked
+class LiteralInt8(LiteralInt):
     """LiteralInt8 data type class."""
 
     value: int
@@ -42,15 +62,13 @@ class LiteralInt8(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt8."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = Int8()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralInt16(Literal):
+class LiteralInt16(LiteralInt):
     """LiteralInt16 data type class."""
 
     value: int
@@ -59,15 +77,13 @@ class LiteralInt16(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt16."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = Int16()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralInt32(Literal):
+class LiteralInt32(LiteralInt):
     """LiteralInt32 data type class."""
 
     value: int
@@ -76,15 +92,13 @@ class LiteralInt32(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt32."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = Int32()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralInt64(Literal):
+class LiteralInt64(LiteralInt):
     """LiteralInt64 data type class."""
 
     value: int
@@ -93,15 +107,13 @@ class LiteralInt64(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt64."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = Int64()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralInt128(Literal):
+class LiteralInt128(LiteralInt):
     """LiteralInt128 data type class."""
 
     value: int
@@ -110,15 +122,30 @@ class LiteralInt128(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralInt128."""
+        super().__init__(value, loc)
+        self.type_ = Int128()
+
+
+@public
+@typechecked
+class LiteralUInt(Literal):
+    """LiteralUInteger data type class."""
+
+    value: int
+
+    def __init__(
+        self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralUnsignedInteger."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Int128()
+        self.type_ = UnsignedInteger()
         self.loc = loc
 
 
 @public
 @typechecked
-class LiteralUInt8(Literal):
+class LiteralUInt8(LiteralUInt):
     """LiteralUInt8 data type class."""
 
     value: int
@@ -127,15 +154,13 @@ class LiteralUInt8(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralUInt8."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = UInt8()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralUInt16(Literal):
+class LiteralUInt16(LiteralUInt):
     """LiteralUInt16 data type class."""
 
     value: int
@@ -144,15 +169,13 @@ class LiteralUInt16(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralUInt16."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = UInt16()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralUInt32(Literal):
+class LiteralUInt32(LiteralUInt):
     """LiteralUInt32 data type class."""
 
     value: int
@@ -161,15 +184,13 @@ class LiteralUInt32(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralUInt32."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = UInt32()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralUInt64(Literal):
+class LiteralUInt64(LiteralUInt):
     """LiteralUInt64 data type class."""
 
     value: int
@@ -178,15 +199,13 @@ class LiteralUInt64(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralUInt64."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = UInt64()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralUInt128(Literal):
+class LiteralUInt128(LiteralUInt):
     """LiteralUInt128 data type class."""
 
     value: int
@@ -195,15 +214,13 @@ class LiteralUInt128(Literal):
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralUInt128."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = UInt128()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralFloat16(Literal):
+class LiteralFloat(Literal):
     """LiteralFloat16 data type class."""
 
     value: float
@@ -214,13 +231,28 @@ class LiteralFloat16(Literal):
         """Initialize LiteralFloat16."""
         super().__init__(loc)
         self.value = value
-        self.type_ = Float16()
+        self.type_ = Floating()
         self.loc = loc
 
 
 @public
 @typechecked
-class LiteralFloat32(Literal):
+class LiteralFloat16(LiteralFloat):
+    """LiteralFloat16 data type class."""
+
+    value: float
+
+    def __init__(
+        self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
+    ) -> None:
+        """Initialize LiteralFloat16."""
+        super().__init__(value, loc)
+        self.type_ = Float16()
+
+
+@public
+@typechecked
+class LiteralFloat32(LiteralFloat):
     """LiteralFloat32 data type class."""
 
     value: float
@@ -229,15 +261,13 @@ class LiteralFloat32(Literal):
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralFloat32."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = Float32()
-        self.loc = loc
 
 
 @public
 @typechecked
-class LiteralFloat64(Literal):
+class LiteralFloat64(LiteralFloat):
     """LiteralFloat64 data type class."""
 
     value: float
@@ -246,10 +276,8 @@ class LiteralFloat64(Literal):
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
         """Initialize LiteralFloat64."""
-        super().__init__(loc)
-        self.value = value
+        super().__init__(value, loc)
         self.type_ = Float64()
-        self.loc = loc
 
 
 @public
