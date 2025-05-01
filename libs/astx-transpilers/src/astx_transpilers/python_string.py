@@ -781,7 +781,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DoWhileExpr) -> str:
         """Handle DoWhileExpr nodes."""
-        body = self.visit(node.body)
+        body = self.visit(node.body).strip()
         condition = self.visit(node.condition)
         return f"[{body} for _ in iter(lambda: True, False) if ({condition})]"
 
