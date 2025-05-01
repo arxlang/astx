@@ -414,13 +414,6 @@ class ASTxPythonTranspiler:
         return "True" if node.value else "False"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralComplex32) -> str:
-        """Handle LiteralComplex32 nodes."""
-        real = node.value[0]
-        imag = node.value[1]
-        return f"complex({real}, {imag})"
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex) -> str:
         """Handle LiteralComplex nodes."""
         real = node.value[0]
@@ -428,36 +421,24 @@ class ASTxPythonTranspiler:
         return f"complex({real}, {imag})"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralComplex64) -> str:
-        """Handle LiteralComplex64 nodes."""
-        real = node.value[0]
-        imag = node.value[1]
-        return f"complex({real}, {imag})"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralFloat16) -> str:
+    def visit(self, node: astx.LiteralFloat) -> str:
         """Handle LiteralFloat nodes."""
         return str(node.value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralFloat32) -> str:
-        """Handle LiteralFloat nodes."""
-        return str(node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralFloat64) -> str:
-        """Handle LiteralFloat nodes."""
-        return str(node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralInt32) -> str:
-        """Handle LiteralInt32 nodes."""
+    def visit(self, node: astx.LiteralInt) -> str:
+        """Handle LiteralInt nodes."""
         return str(node.value)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralString) -> str:
         """Handle LiteralUTF8String nodes."""
         return repr(node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralUInt) -> str:
+        """Handle LiteralUInt nodes."""
+        return str(node.value)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralUTF8String) -> str:
@@ -529,33 +510,18 @@ class ASTxPythonTranspiler:
         return f"match {self.visit(node.value)}:\n{cases_visited}"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Complex32) -> str:
-        """Handle Complex32 nodes."""
+    def visit(self, node: astx.Complex) -> str:
+        """Handle Complex nodes."""
         return "Complex"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Complex64) -> str:
-        """Handle Complex64 nodes."""
-        return "Complex"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Float16) -> str:
+    def visit(self, node: astx.Floating) -> str:
         """Handle Float nodes."""
         return "float"
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Float32) -> str:
-        """Handle Float nodes."""
-        return "float"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Float64) -> str:
-        """Handle Float nodes."""
-        return "float"
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Int32) -> str:
-        """Handle Int32 nodes."""
+    def visit(self, node: astx.SignedInteger) -> str:
+        """Handle SignedInteger nodes."""
         return "int"
 
     @dispatch  # type: ignore[no-redef]
@@ -576,6 +542,11 @@ class ASTxPythonTranspiler:
         """Handle UnaryOp nodes."""
         operand = self.visit(node.operand)
         return f"({node.op_code}{operand})"
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.UnsignedInteger) -> str:
+        """Handle UnsignedInteger nodes."""
+        return "int"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UTF8Char) -> str:
