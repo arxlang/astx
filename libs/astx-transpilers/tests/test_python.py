@@ -37,7 +37,9 @@ def test_transpiler_multiple_imports_stmt() -> None:
 
     expected_code = "import math, matplotlib as mtlb"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_import_from_stmt() -> None:
@@ -53,7 +55,9 @@ def test_transpiler_import_from_stmt() -> None:
 
     expected_code = "from matplotlib import pyplot as plt"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_wildcard_import_from_stmt() -> None:
@@ -67,7 +71,9 @@ def test_transpiler_wildcard_import_from_stmt() -> None:
 
     expected_code = "from matplotlib import *"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_future_import_from_stmt() -> None:
@@ -81,7 +87,9 @@ def test_transpiler_future_import_from_stmt() -> None:
 
     expected_code = "from __future__ import division"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_multiple_imports_expr() -> None:
@@ -100,7 +108,9 @@ def test_transpiler_multiple_imports_expr() -> None:
         "__import__('pi') )"
     )
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_import_from_expr() -> None:
@@ -119,7 +129,9 @@ def test_transpiler_import_from_expr() -> None:
         "'sqrt as square_root')"
     )
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_wildcard_import_from_expr() -> None:
@@ -133,7 +145,9 @@ def test_transpiler_wildcard_import_from_expr() -> None:
 
     expected_code = "name = getattr(__import__('math', fromlist=['*']), '*')"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_future_import_from_expr() -> None:
@@ -152,7 +166,9 @@ def test_transpiler_future_import_from_expr() -> None:
         "'division')"
     )
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_relative_import_from_expr() -> None:
@@ -175,7 +191,9 @@ def test_transpiler_relative_import_from_expr() -> None:
         "'matplotlib as mtlb'))"
     )
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_lambdaexpr() -> None:
@@ -192,7 +210,9 @@ def test_transpiler_lambdaexpr() -> None:
 
     expected_code = "lambda x: (x + 1)"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_lambdaexpr_noparams() -> None:
@@ -206,7 +226,9 @@ def test_transpiler_lambdaexpr_noparams() -> None:
 
     expected_code = "lambda : 1"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_functiondef() -> None:
@@ -259,7 +281,9 @@ def test_transpiler_functiondef() -> None:
         ]
     )
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_literal_int32() -> None:
@@ -271,7 +295,9 @@ def test_literal_int32() -> None:
     generated_code = translate(literal_int32_node)
     expected_code = "42"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_literal_float16() -> None:
@@ -283,7 +309,9 @@ def test_literal_float16() -> None:
     generated_code = translate(literal_float16_node)
     expected_code = "3.14"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_literal_float32() -> None:
@@ -295,7 +323,9 @@ def test_literal_float32() -> None:
     generated_code = translate(literal_float32_node)
     expected_code = "2.718"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_literal_float64() -> None:
@@ -307,7 +337,9 @@ def test_literal_float64() -> None:
     generated_code = translate(literal_float64_node)
     expected_code = "1.414"
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_literal_complex32() -> None:
@@ -473,7 +505,12 @@ def test_transpiler_break_stmt() -> None:
     generated_code = translate(while_stmt)
 
     # Expected code for the WhileStmt with break
-    expected_code = "while (x < 5):\n    break"
+    expected_code = "\n".join(
+        [
+            "while (x < 5):",
+            "    break",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -496,7 +533,12 @@ def test_transpiler_continue_stmt() -> None:
     generated_code = translate(while_stmt)
 
     # Expected code for the WhileStmt with continue
-    expected_code = "while (x < 5):\n    continue"
+    expected_code = "\n".join(
+        [
+            "while (x < 5):",
+            "    continue",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -558,7 +600,12 @@ def test_transpiler_while_stmt() -> None:
     generated_code = translate(while_stmt)
 
     # Expected code for the WhileStmt
-    expected_code = "while (x < 5):\n    x = (x + 1)"
+    expected_code = "\n".join(
+        [
+            "while (x < 5):",
+            "    x = (x + 1)",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -587,8 +634,6 @@ def test_transpiler_ifexpr_with_else() -> None:
 
     # Generate Python code
     generated_code = translate(if_expr)
-
-    # Expected code for the binary operation
     expected_code = "2 if (1 > 2) else 3"
 
     assert generated_code == expected_code, (
@@ -614,25 +659,21 @@ def test_transpiler_while_expr() -> None:
             op_code="+",
             lhs=x_var,
             rhs=astx.LiteralInt32(1),
-            loc=astx.SourceLocation(line=2, col=4),
         ),
-        loc=astx.SourceLocation(line=2, col=4),
     )
 
     # Create the body block
-    body_block = astx.Block()
-    body_block.append(update_expr)
+    body = astx.Block()
+    body.append(update_expr)
 
     while_stmt = astx.WhileExpr(
         condition=condition,
-        body=body_block,
+        body=body,
         loc=astx.SourceLocation(line=1, col=0),
     )
 
     # Generate Python code
     generated_code = translate(while_stmt)
-
-    # Expected code for the WhileExpr
     expected_code = "[(x := (x + 1)) for _ in iter(lambda: (x < 5), False)]"
 
     assert generated_code == expected_code, (
@@ -698,7 +739,14 @@ def test_transpiler_ifstmt_with_else() -> None:
     generated_code = translate(if_stmt)
 
     # Expected code for the binary operation
-    expected_code = "if (1 > 2):\n    (2 + 3)\nelse:\n    (2 - 3)"
+    expected_code = "\n".join(
+        [
+            "if (1 > 2):",
+            "    (2 + 3)",
+            "else:",
+            "    (2 - 3)",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -732,7 +780,12 @@ def test_transpiler_ifstmt_without_else() -> None:
     generated_code = translate(if_stmt)
 
     # Expected code for the binary operation
-    expected_code = "if (1 > 2):\n    (2 + 3)"
+    expected_code = "\n".join(
+        [
+            "if (1 > 2):",
+            "    (2 + 3)",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -858,7 +911,12 @@ def test_transpiler_classdefstmt() -> None:
 
     # Generate Python code
     generated_code = translate(class_def)
-    expected_code = "class MyClass:\n    var1"
+    expected_code = "\n".join(
+        [
+            "class MyClass:",
+            "    var1",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -887,8 +945,12 @@ def test_transpiler_enumdeclstmt() -> None:
 
     # Generate Python code
     generated_code = translate(enum_decl)
-    expected_code = (
-        "class Color(Enum):\n    RED: Int32 = 1\n    GREEN: Int32 = 2"
+    expected_code = "\n".join(
+        [
+            "class Color(Enum):",
+            "    RED: Int32 = 1",
+            "    GREEN: Int32 = 2",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -939,9 +1001,13 @@ def test_transpiler_structdeclstmt() -> None:
 
     # Generate Python code
     generated_code = translate(struct_decl)
-    expected_code = (
-        "@dataclass \nclass DataPoint:\n    id: Int32 = 3\n    "
-        "value: Int32 = 1"
+    expected_code = "\n".join(
+        [
+            "@dataclass ",
+            "class DataPoint:",
+            "    id: Int32 = 3",
+            "    value: Int32 = 1",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -975,9 +1041,13 @@ def test_transpiler_structdefstmt() -> None:
 
     # Generate Python code
     generated_code = translate(struct_def)
-    expected_code = (
-        "@dataclass \nclass DataPoint:\n    id: Int32 = 3\n    "
-        "value: Int32 = 1"
+    expected_code = "\n".join(
+        [
+            "@dataclass ",
+            "class DataPoint:",
+            "    id: Int32 = 3",
+            "    value: Int32 = 1",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -1074,14 +1144,16 @@ def test_transpiler_switchstmt() -> None:
 
     # Generate Python code
     generated_code = translate(switch_stmt)
-    expected_code = (
-        "match x:\n"
-        "    case 1:\n"
-        "        print('one')\n"
-        "    case 2:\n"
-        "        print('two')\n"
-        "    case _:\n"
-        "        print('other')"
+    expected_code = "\n".join(
+        [
+            "match x:",
+            "    case 1:",
+            "        print('one')",
+            "    case 2:",
+            "        print('two')",
+            "    case _:",
+            "        print('other')",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -1109,7 +1181,12 @@ def test_transpiler_yieldexpr_whilestmt() -> None:
 
     # Generate Python code
     generated_code = translate(while_stmt)
-    expected_code = "while True:\n    value = yield 1"
+    expected_code = "\n".join(
+        [
+            "while True:",
+            "    value = yield 1",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1132,7 +1209,12 @@ def test_transpiler_yieldstmt_whilestmt() -> None:
 
     # Generate Python code
     generated_code = translate(while_stmt)
-    expected_code = "while True:\n    value = yield 1"
+    expected_code = "\n".join(
+        [
+            "while True:",
+            "    value = yield 1",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1159,7 +1241,12 @@ def test_transpiler_yieldfromexpr_whilestmt() -> None:
 
     # Generate Python code
     generated_code = translate(while_stmt)
-    expected_code = "while True:\n    value = yield from x"
+    expected_code = "\n".join(
+        [
+            "while True:",
+            "    value = yield from x",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1247,8 +1334,13 @@ def test_transpiler_exception_handler_stmt() -> None:
 
     # Generate Python code
     generated_code = translate(try_except_stmt)
-    expected_code = (
-        "try:\n    print('passed')\nexcept (A) as e:\n    print('failed')"
+    expected_code = "\n".join(
+        [
+            "try:",
+            "    print('passed')",
+            "except (A) as e:",
+            "    print('failed')",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -1286,13 +1378,15 @@ def test_transpiler_exception_handler_stmt_with_finally() -> None:
 
     # Generate Python code
     generated_code = translate(try_except_stmt)
-    expected_code = (
-        "try:\n"
-        "    print('passed')\n"
-        "except (A ,B) as e:\n"
-        "    print('failed')\n"
-        "finally:\n"
-        "    print('run complete')"
+    expected_code = "\n".join(
+        [
+            "try:",
+            "    print('passed')",
+            "except (A ,B) as e:",
+            "    print('failed')",
+            "finally:",
+            "    print('run complete')",
+        ]
     )
 
     assert generated_code == expected_code, (
@@ -1419,7 +1513,12 @@ def test_transpiler_functionasyncdef() -> None:
 
     # Generate Python code
     generated_code = translate(fn_a)
-    expected_code = "async def aget(a: int) -> int:\n    return a"
+    expected_code = "\n".join(
+        [
+            "async def aget(a: int) -> int:",
+            "    return a",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1445,7 +1544,7 @@ def test_transpiler_literal_list() -> None:
     lit_list = astx.LiteralList(
         [astx.LiteralInt32(1), astx.LiteralInt32(2), astx.LiteralInt32(3)]
     )
-    generated_code = transpiler.visit(lit_list)
+    generated_code = translate(lit_list)
     expected_code = "[1, 2, 3]"
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1456,7 +1555,7 @@ def test_transpiler_literal_tuple() -> None:
     """Test astx.LiteralTuple."""
     lit_tuple = astx.LiteralTuple((astx.LiteralInt32(1), astx.LiteralInt32(2)))
 
-    generated_code = transpiler.visit(lit_tuple)
+    generated_code = translate(lit_tuple)
     expected_code = "(1, 2)"
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1469,13 +1568,14 @@ def test_transpiler_literal_set() -> None:
         {astx.LiteralInt32(1), astx.LiteralInt32(2), astx.LiteralInt32(3)}
     )
 
-    generated_code = transpiler.visit(lit_set)
+    generated_code = translate(lit_set)
     expected_code = "{1, 2, 3}"
-    assert eval(generated_code) == {
-        1,
-        2,
-        3,
-    }, f"Expected '{expected_code}', but got '{generated_code}'"
+
+    # We need to eval the string because generated_code
+    # can contain a permuted version of the set
+    assert ast.literal_eval(generated_code) == ast.literal_eval(
+        expected_code
+    ), f"@Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_literal_dict() -> None:
@@ -1487,12 +1587,14 @@ def test_transpiler_literal_dict() -> None:
         }
     )
 
-    generated_code = transpiler.visit(lit_dict)
+    generated_code = translate(lit_dict)
     expected_code = "{1: 10, 2: 20}"
-    assert eval(generated_code) == {
-        1: 10,
-        2: 20,
-    }, f"Expected '{expected_code}', but got '{generated_code}'"
+
+    # We need to eval the string because generated_code
+    # can contain a permuted version of the dict
+    assert ast.literal_eval(generated_code) == ast.literal_eval(
+        expected_code
+    ), f"Expected '{expected_code}', but got '{generated_code}'"
 
 
 def test_transpiler_do_while_stmt() -> None:
@@ -1528,19 +1630,15 @@ def test_transpiler_do_while_stmt() -> None:
         loc=astx.SourceLocation(line=1, col=0),
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
-    # Generate Python code
-    generated_code = generator.visit(do_while_stmt)
-
-    # Expected code for DoWhileStmt
-    expected_code = """
-while True:
-    x = (x + 1)
-    if not (x < 5):
-        break
-""".strip()
+    generated_code = translate(do_while_stmt)
+    expected_code = "\n".join(
+        [
+            "while True:",
+            "    x = (x + 1)",
+            "    if not (x < 5):",
+            "        break",
+        ]
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1559,37 +1657,29 @@ def test_transpiler_do_while_expr() -> None:
     )
 
     # Define the loop body: x = x + 1
-    update_expr = astx.VariableAssignment(
-        name="x",
-        value=astx.BinaryOp(
+    update_expr = astx.WalrusOp(
+        lhs=x_var,
+        rhs=astx.BinaryOp(
             op_code="+",
             lhs=x_var,
             rhs=astx.LiteralInt32(1),
-            loc=astx.SourceLocation(line=1, col=0),
         ),
-        loc=astx.SourceLocation(line=1, col=0),
     )
 
     # Create the body block
-    body_block = astx.Block(name="do_while_body")
-    body_block.append(update_expr)
+    body = astx.Block()
+    body.append(update_expr)
 
     do_while_expr = astx.DoWhileExpr(
-        body=body_block,
+        body=body,
         condition=condition,
-        loc=astx.SourceLocation(line=1, col=0),
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
     # Generate Python code
-    generated_code = generator.visit(do_while_expr)
-
-    # Expected code for the DoWhileExpr
-    expected_code = """
-    [    x = (x + 1) for _ in iter(lambda: True, False) if ((x < 5))]
-    """.strip()
+    generated_code = translate(do_while_expr)
+    expected_code = (
+        "[(x := (x + 1)) for _ in iter(lambda: True, False) if ((x < 5))]"
+    )
 
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
@@ -1598,41 +1688,46 @@ def test_transpiler_do_while_expr() -> None:
 
 def test_transpiler_generator_expr() -> None:
     """Test astx.GeneratorExpr."""
-    comp_1 = astx.ComprehensionClause(
+    # Create the conditions for the generators
+    condition_1 = astx.BoolBinaryOp(
+        op_code="==",
+        lhs=astx.BinaryOp(
+            op_code="%",
+            lhs=astx.Variable("x"),
+            rhs=astx.LiteralInt32(2),
+        ),
+        rhs=astx.LiteralInt32(1),
+    )
+
+    condition_2 = astx.BoolBinaryOp(
+        op_code="==",
+        lhs=astx.BinaryOp(
+            op_code="%",
+            lhs=astx.Variable("y"),
+            rhs=astx.LiteralInt32(2),
+        ),
+        rhs=astx.LiteralInt32(0),
+    )
+
+    # Create the generators
+    generator_1 = astx.ComprehensionClause(
         target=astx.Variable("x"),
         iterable=astx.Variable("list_1"),
-        conditions=[
-            astx.BoolBinaryOp(
-                op_code="==",
-                lhs=astx.BinaryOp(
-                    op_code="%",
-                    lhs=astx.Variable("x"),
-                    rhs=astx.LiteralInt32(2),
-                ),
-                rhs=astx.LiteralInt32(1),
-            )
-        ],
+        conditions=[condition_1],
     )
-    comp_2 = astx.ComprehensionClause(
+
+    generator_2 = astx.ComprehensionClause(
         target=astx.Variable("y"),
         iterable=astx.Variable("list_2"),
-        conditions=[
-            astx.BoolBinaryOp(
-                op_code="==",
-                lhs=astx.BinaryOp(
-                    op_code="%",
-                    lhs=astx.Variable("y"),
-                    rhs=astx.LiteralInt32(2),
-                ),
-                rhs=astx.LiteralInt32(0),
-            )
-        ],
+        conditions=[condition_2],
     )
+
+    # Create the generator expression
     gen_expr = astx.GeneratorExpr(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("y")
         ),
-        generators=[comp_1, comp_2],
+        generators=[generator_1, generator_2],
     )
 
     generated_code = translate(gen_expr)
@@ -1648,32 +1743,36 @@ def test_transpiler_generator_expr() -> None:
 
 def test_transpiler_list_comprehension() -> None:
     """Test ListComprehension."""
+    # Create the conditions for the generator
+    condition_1 = astx.BinaryOp(
+        op_code=">",
+        lhs=astx.Variable("x"),
+        rhs=astx.LiteralInt32(3),
+    )
+
+    condition_2 = astx.BinaryOp(
+        op_code="<",
+        lhs=astx.Variable("x"),
+        rhs=astx.LiteralInt32(7),
+    )
+
+    # Create the generator
+    generator = astx.ComprehensionClause(
+        target=astx.Variable("x"),
+        iterable=astx.Identifier("range(10)"),
+        conditions=[condition_1, condition_2],
+    )
+
+    # Create the generator expression
     gen_expr = astx.ListComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
         ),
-        generators=[
-            astx.ComprehensionClause(
-                target=astx.Variable("x"),
-                iterable=astx.Identifier("range_10"),
-                conditions=[
-                    astx.BinaryOp(
-                        op_code=">",
-                        lhs=astx.Variable("x"),
-                        rhs=astx.LiteralInt32(3),
-                    ),
-                    astx.BinaryOp(
-                        op_code="<",
-                        lhs=astx.Variable("x"),
-                        rhs=astx.LiteralInt32(7),
-                    ),
-                ],
-            )
-        ],
+        generators=[generator],
     )
 
     generated_code = translate(gen_expr)
-    expected_code = "[(x + x) for x in range_10 if (x > 3) if (x < 7)]"
+    expected_code = "[(x + x) for x in range(10) if (x > 3) if (x < 7)]"
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
@@ -1681,32 +1780,36 @@ def test_transpiler_list_comprehension() -> None:
 
 def test_transpiler_set_comprehension() -> None:
     """Test SetComprehension code generation."""
+    # Create the conditions for the generator
+    condition_1 = astx.BinaryOp(
+        op_code=">",
+        lhs=astx.Variable("x"),
+        rhs=astx.LiteralInt32(3),
+    )
+
+    condition_2 = astx.BinaryOp(
+        op_code="<",
+        lhs=astx.Variable("x"),
+        rhs=astx.LiteralInt32(7),
+    )
+
+    # Create the generator
+    generator = astx.ComprehensionClause(
+        target=astx.Variable("x"),
+        iterable=astx.Identifier("range(10)"),
+        conditions=[condition_1, condition_2],
+    )
+
+    # Create the set comprehension
     set_comp = astx.SetComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
         ),
-        generators=[
-            astx.ComprehensionClause(
-                target=astx.Variable("x"),
-                iterable=astx.Identifier("range_10"),
-                conditions=[
-                    astx.BinaryOp(
-                        op_code=">",
-                        lhs=astx.Variable("x"),
-                        rhs=astx.LiteralInt32(3),
-                    ),
-                    astx.BinaryOp(
-                        op_code="<",
-                        lhs=astx.Variable("x"),
-                        rhs=astx.LiteralInt32(7),
-                    ),
-                ],
-            )
-        ],
+        generators=[generator],
     )
 
     generated_code = translate(set_comp)
-    expected_code = "{(x + x) for x in range_10 if (x > 3) if (x < 7)}"
+    expected_code = "{(x + x) for x in range(10) if (x > 3) if (x < 7)}"
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
@@ -1714,14 +1817,16 @@ def test_transpiler_set_comprehension() -> None:
 
 def test_transpiler_set_comprehension_no_conditions() -> None:
     """Test SetComprehension without conditions."""
+    # Create the generator
+    generator = astx.ComprehensionClause(
+        target=astx.Variable("x"),
+        iterable=astx.Identifier("range(10)"),
+    )
+
+    # Create the set comprehension
     set_comp = astx.SetComprehension(
         element=astx.Variable("x"),
-        generators=[
-            astx.ComprehensionClause(
-                target=astx.Variable("x"),
-                iterable=astx.Identifier("range(10)"),
-            )
-        ],
+        generators=[generator],
     )
 
     generated_code = translate(set_comp)
@@ -1733,18 +1838,21 @@ def test_transpiler_set_comprehension_no_conditions() -> None:
 
 def test_transpiler_nested_set_comprehension() -> None:
     """Test nested SetComprehension."""
+    # Create the generators
+    generator_1 = astx.ComprehensionClause(
+        target=astx.Variable("x"), iterable=astx.Identifier("range(5)")
+    )
+
+    generator_2 = astx.ComprehensionClause(
+        target=astx.Variable("y"), iterable=astx.Identifier("range(3)")
+    )
+
+    # Create the set comprehension
     set_comp = astx.SetComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("y")
         ),
-        generators=[
-            astx.ComprehensionClause(
-                target=astx.Variable("x"), iterable=astx.Identifier("range(5)")
-            ),
-            astx.ComprehensionClause(
-                target=astx.Variable("y"), iterable=astx.Identifier("range(3)")
-            ),
-        ],
+        generators=[generator_1, generator_2],
     )
 
     generated_code = translate(set_comp)
@@ -1756,26 +1864,30 @@ def test_transpiler_nested_set_comprehension() -> None:
 
 def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
     """Test SetComprehension with multiple conditions."""
+    # Create the conditions for the generator
+    condition_1 = astx.BinaryOp(
+        op_code="%",
+        lhs=astx.Variable("x"),
+        rhs=astx.LiteralInt32(2),
+    )
+
+    condition_2 = astx.BinaryOp(
+        op_code="<",
+        lhs=astx.Variable("x"),
+        rhs=astx.LiteralInt32(50),
+    )
+
+    # Create the generator fot the set comprehension
+    generator = astx.ComprehensionClause(
+        target=astx.Variable("x"),
+        iterable=astx.Identifier("range(100)"),
+        conditions=[condition_1, condition_2],
+    )
+
+    # Create the set comprehension
     set_comp = astx.SetComprehension(
         element=astx.Variable("x"),
-        generators=[
-            astx.ComprehensionClause(
-                target=astx.Variable("x"),
-                iterable=astx.Identifier("range(100)"),
-                conditions=[
-                    astx.BinaryOp(
-                        op_code="%",
-                        lhs=astx.Variable("x"),
-                        rhs=astx.LiteralInt32(2),
-                    ),
-                    astx.BinaryOp(
-                        op_code="<",
-                        lhs=astx.Variable("x"),
-                        rhs=astx.LiteralInt32(50),
-                    ),
-                ],
-            )
-        ],
+        generators=[generator],
     )
 
     generated_code = translate(set_comp)
@@ -1789,7 +1901,7 @@ def test_transpiler_ellipsis() -> None:
     """Test transpilation of Ellipsis nodes."""
     ellipsis = astx.Ellipsis()
 
-    generated_code = transpiler.visit(ellipsis)
+    generated_code = translate(ellipsis)
     expected_code = "..."
 
     assert generated_code == expected_code, (
@@ -1800,46 +1912,26 @@ def test_transpiler_ellipsis() -> None:
 def test_transpiler_ellipsis_in_context() -> None:
     """Test Ellipsis transpilation within expressions."""
     ellipsis = astx.Ellipsis()
-    simple_code = transpiler.visit(ellipsis)
-    assert simple_code == "..."
-    var = astx.Variable(name="x")
-    subscr = astx.SubscriptExpr(value=var, index=ellipsis)
-    result = transpiler.visit(subscr)
-    assert "..." in result
+
+    value = astx.Variable(name="x")
+    subscript = astx.SubscriptExpr(value=value, index=ellipsis)
+
+    generated_code = translate(subscript)
+    expected_code = "x[...]"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_transpiler_starred_simple() -> None:
     """Test simple starred expression transpilation."""
-    var = astx.Variable(name="args")
-    starred = astx.Starred(value=var)
+    value = astx.Variable(name="args")
+    starred = astx.Starred(value=value)
+
     generated_code = translate(starred)
     expected_code = "*args"
-    assert generated_code == expected_code
 
-
-def test_transpiler_starred_in_list() -> None:
-    """Test starred expression within a list literal transpilation."""
-    var = astx.Variable(name="items")
-    starred = astx.Starred(value=var)
-    lit_1 = astx.LiteralInt32(1)
-    lit_2 = astx.LiteralInt32(2)
-    starred_code = translate(starred)
-    assert starred_code == "*items"
-    expected_code = "[1, *items, 2]"
-    manual_result = f"[{translate(lit_1)}, {starred_code}, {translate(lit_2)}]"
-    assert manual_result == expected_code
-
-
-def test_transpiler_multiple_starred() -> None:
-    """Test multiple starred expressions transpilation."""
-    var1 = astx.Variable(name="args1")
-    var2 = astx.Variable(name="args2")
-    starred1 = astx.Starred(value=var1)
-    starred2 = astx.Starred(value=var2)
-    code1 = translate(starred1)
-    code2 = translate(starred2)
-    assert code1 == "*args1"
-    assert code2 == "*args2"
-    expected_code = "[*args1, *args2]"
-    manual_result = f"[{code1}, {code2}]"
-    assert manual_result == expected_code
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
