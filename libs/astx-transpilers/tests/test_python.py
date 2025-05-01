@@ -1630,13 +1630,7 @@ def test_transpiler_do_while_stmt() -> None:
         loc=astx.SourceLocation(line=1, col=0),
     )
 
-    # Initialize the generator
-    generator = astx2py.ASTxPythonTranspiler()
-
-    # Generate Python code
-    generated_code = generator.visit(do_while_stmt)
-
-    # Expected code for DoWhileStmt
+    generated_code = translate(do_while_stmt)
     expected_code = "\n".join(
         [
             "while True:",
