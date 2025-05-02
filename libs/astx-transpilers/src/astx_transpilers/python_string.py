@@ -121,6 +121,19 @@ class ASTxPythonTranspiler:
         return "break"
 
     @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.Slice) -> str:
+        """Handle Slice nodes."""
+        lower = self.visit(node.lower) if node.lower is not None else ""
+        upper = self.visit(node.upper) if node.upper is not None else ""
+
+        if node.step is not None:
+            step = ":" + self.visit(node.step)
+        else:
+            step = ""
+
+        return f"{lower}:{upper}{step}"
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CaseStmt) -> str:
         """Handle CaseStmt nodes."""
         cond_str = (

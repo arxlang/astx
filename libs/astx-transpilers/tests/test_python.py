@@ -1385,6 +1385,58 @@ def test_transpiler_xnor_op() -> None:
     )
 
 
+def test_transpiler_slice() -> None:
+    """Test transpiling Slice expressions."""
+    slice_full = astx.Slice(
+        lower=astx.LiteralInt32(1),
+        upper=astx.LiteralInt32(10),
+        step=astx.LiteralInt32(2),
+    )
+
+    code = transpiler.visit(slice_full)
+    expected_code = "1:10:2"
+    assert code == expected_code, (
+        f"Expected '{expected_code}', but got '{code}'"
+    )
+
+    # Slice with missing lower bound
+    slice_no_lower = astx.Slice(
+        upper=astx.Variable(name="end"), step=astx.LiteralInt32(-1)
+    )
+    code = transpiler.visit(slice_no_lower)
+    expected_code = ":end:-1"
+    assert code == expected_code, (
+        f"Expected '{expected_code}', but got '{code}'"
+    )
+
+    slice_only_upper = astx.Slice(upper=astx.LiteralInt32(5))
+    code = transpiler.visit(slice_only_upper)
+    expected_code = ":5"
+    assert code == expected_code, (
+        f"Expected '{expected_code}', but got '{code}'"
+    )
+
+    slice_empty = astx.Slice()
+    code = transpiler.visit(slice_empty)
+    expected_code = ":"
+    assert code == expected_code, (
+        f"Expected '{expected_code}', but got '{code}'"
+    )
+
+    my_list = astx.Variable(name="my_list")
+    subscript = astx.SubscriptExpr(
+        value=my_list,
+        lower=slice_full.lower,
+        upper=slice_full.upper,
+        step=slice_full.step,
+    )
+    generated_code = translate(subscript)
+    expected_code = "my_list[1:10:2]"
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
 def test_group_expr() -> None:
     """Test struct representation."""
     grp = astx.ParenthesizedExpr(
