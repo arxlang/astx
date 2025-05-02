@@ -1596,6 +1596,48 @@ def test_transpiler_do_while_expr() -> None:
     )
 
 
+def test_transpiler_attribute_expr() -> None:
+    """Test transpiling attribute expressions."""
+    # Simple attribute access
+    obj = astx.Variable(name="obj")
+    attr_expr = astx.AttributeExpr(value=obj, attr="method")
+
+    generated_code = translate(attr_expr)
+    expected_code = "obj.method"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+    # Nested attribute access
+    attr1 = astx.AttributeExpr(value=obj, attr="attr1")
+    attr2 = astx.AttributeExpr(value=attr1, attr="attr2")
+
+    generated_code = translate(attr2)
+    expected_code = "obj.attr1.attr2"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_method_call() -> None:
+    """Test transpiling method calls."""
+    obj = astx.Variable(name="obj")
+
+    # Method call with arguments
+    method_call = astx.MethodCall(
+        obj=obj, method="method", args=[astx.LiteralInt32(42)]
+    )
+
+    generated_code = translate(method_call)
+    expected_code = "obj.method(42)"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
 def test_transpiler_generator_expr() -> None:
     """Test astx.GeneratorExpr."""
     comp_1 = astx.ComprehensionClause(

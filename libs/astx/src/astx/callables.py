@@ -142,6 +142,69 @@ class FunctionCall(DataType):
 
 @public
 @typechecked
+class MethodCall(Expr):
+    """
+    Represents a method call on an object (e.g., obj.method(args)).
+
+    This is a specialized form of function call for methods on objects.
+    """
+
+    obj: Expr
+    method: str
+    args: list[Expr]
+
+    def __init__(
+        self,
+        obj: Expr,
+        method: str,
+        args: list[Expr] = [],
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the MethodCall instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.obj = obj
+        self.method = method
+        self.args = args
+        self.kind = ASTKind.MethodCallKind
+
+    def __str__(self) -> str:
+        """Return a string representation of the method call."""
+        if hasattr(self.obj, "name"):
+            obj_str = self.obj.name
+        else:
+            obj_str = str(self.obj)
+
+        args_str = []
+        for arg in self.args:
+            if hasattr(arg, "value") and isinstance(
+                getattr(arg, "value"), (int, float, str, bool)
+            ):
+                args_str.append(str(arg.value))
+            elif hasattr(arg, "name"):
+                args_str.append(arg.name)
+            else:
+                args_str.append(str(arg))
+
+        return f"{obj_str}.{self.method}({', '.join(args_str)})"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return the AST structure of the method call."""
+        args_struct = [arg.get_struct(simplified) for arg in self.args]
+        obj_struct = self.obj.get_struct(simplified)
+
+        key = f"METHOD-CALL[{self.method}]"
+        value_dict = {
+            "object": obj_struct,
+            "args": cast(ReprStruct, args_struct),
+        }
+        value = cast(ReprStruct, value_dict)
+
+        return self._prepare_struct(key, value, simplified)
+
+
+@public
+@typechecked
 class FunctionPrototype(StatementType):
     """AST class for function prototype declaration."""
 
