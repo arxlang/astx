@@ -13,11 +13,13 @@ from astx.variables import Variable
 VAR_A = Variable("a")
 
 LITERAL_CLASSES = [
+    astx.LiteralInt,
     astx.LiteralInt8,
     astx.LiteralInt16,
     astx.LiteralInt32,
     astx.LiteralInt64,
     astx.LiteralInt128,
+    astx.LiteralUInt,
     astx.LiteralUInt8,
     astx.LiteralUInt16,
     astx.LiteralUInt32,

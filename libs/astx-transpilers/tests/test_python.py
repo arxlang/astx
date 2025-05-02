@@ -262,6 +262,48 @@ def test_transpiler_functiondef() -> None:
     assert generated_code == expected_code, "generated_code != expected_code"
 
 
+def test_literal_int() -> None:
+    """Test astx.LiteralInt."""
+    # Create a LiteralInt node
+    literal_int_node = astx.LiteralInt(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_int_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_int8() -> None:
+    """Test astx.LiteralInt8."""
+    # Create a LiteralInt8 node
+    literal_int8_node = astx.LiteralInt8(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_int8_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_int16() -> None:
+    """Test astx.LiteralInt16."""
+    # Create a LiteralInt16 node
+    literal_int16_node = astx.LiteralInt16(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_int16_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
 def test_literal_int32() -> None:
     """Test astx.LiteralInt32."""
     # Create a LiteralInt32 node
@@ -272,6 +314,132 @@ def test_literal_int32() -> None:
     expected_code = "42"
 
     assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_int64() -> None:
+    """Test astx.LiteralInt64."""
+    # Create a LiteralInt64 node
+    literal_int64_node = astx.LiteralInt64(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_int64_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_int128() -> None:
+    """Test astx.LiteralInt128."""
+    # Create a LiteralInt128 node
+    literal_int128_node = astx.LiteralInt128(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_int128_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_Uint() -> None:
+    """Test astx.LiteralUInt."""
+    # Create a LiteralUInt node
+    literal_Uint_node = astx.LiteralUInt(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_Uint_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_Uint8() -> None:
+    """Test astx.LiteralUInt8."""
+    # Create a LiteralUInt8 node
+    literal_Uint8_node = astx.LiteralUInt8(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_Uint8_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_Uint16() -> None:
+    """Test astx.LiteralUInt16."""
+    # Create a LiteralUInt16 node
+    literal_Uint16_node = astx.LiteralUInt16(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_Uint16_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_Uint32() -> None:
+    """Test astx.LiteralUInt32."""
+    # Create a LiteralUInt32 node
+    literal_Uint32_node = astx.LiteralUInt32(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_Uint32_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_Uint64() -> None:
+    """Test astx.LiteralUInt64."""
+    # Create a LiteralInt64 node
+    literal_Uint64_node = astx.LiteralUInt64(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_Uint64_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_Uint128() -> None:
+    """Test astx.LiteralUInt128."""
+    # Create a LiteralUInt128 node
+    literal_Uint128_node = astx.LiteralUInt128(value=42)
+
+    # Generate Python code
+    generated_code = translate(literal_Uint128_node)
+    expected_code = "42"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_literal_float() -> None:
+    """Test astx.LiteralFloat."""
+    # Create a LiteralFloat node
+    literal_float_node = astx.LiteralFloat(value=3.14)
+
+    # Generate Python code
+    generated_code = translate(literal_float_node)
+    expected_code = "3.14"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_literal_float16() -> None:
@@ -308,6 +476,20 @@ def test_literal_float64() -> None:
     expected_code = "1.414"
 
     assert generated_code == expected_code, "generated_code != expected_code"
+
+
+def test_literal_complex() -> None:
+    """Test astx.LiteralComplex."""
+    # Create a LiteralComplex node
+    literal_complex_node = astx.LiteralComplex(real=1, imag=2.8)
+
+    # Generate Python code
+    generated_code = translate(literal_complex_node)
+    expected_code = "complex(1, 2.8)"
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
 
 
 def test_literal_complex32() -> None:

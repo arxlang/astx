@@ -13,6 +13,7 @@ from astx.variables import Variable
 VAR_A = Variable("a")
 
 FLOAT_LITERAL_CLASSES = [
+    astx.LiteralFloat,
     astx.LiteralFloat64,
     astx.LiteralFloat32,
     astx.LiteralFloat16,
