@@ -56,8 +56,6 @@ class LiteralInt(Literal):
 class LiteralInt8(LiteralInt):
     """LiteralInt8 data type class."""
 
-    value: int
-
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -70,8 +68,6 @@ class LiteralInt8(LiteralInt):
 @typechecked
 class LiteralInt16(LiteralInt):
     """LiteralInt16 data type class."""
-
-    value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
@@ -86,8 +82,6 @@ class LiteralInt16(LiteralInt):
 class LiteralInt32(LiteralInt):
     """LiteralInt32 data type class."""
 
-    value: int
-
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -101,8 +95,6 @@ class LiteralInt32(LiteralInt):
 class LiteralInt64(LiteralInt):
     """LiteralInt64 data type class."""
 
-    value: int
-
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -115,8 +107,6 @@ class LiteralInt64(LiteralInt):
 @typechecked
 class LiteralInt128(LiteralInt):
     """LiteralInt128 data type class."""
-
-    value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
@@ -148,8 +138,6 @@ class LiteralUInt(Literal):
 class LiteralUInt8(LiteralUInt):
     """LiteralUInt8 data type class."""
 
-    value: int
-
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -162,8 +150,6 @@ class LiteralUInt8(LiteralUInt):
 @typechecked
 class LiteralUInt16(LiteralUInt):
     """LiteralUInt16 data type class."""
-
-    value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
@@ -178,8 +164,6 @@ class LiteralUInt16(LiteralUInt):
 class LiteralUInt32(LiteralUInt):
     """LiteralUInt32 data type class."""
 
-    value: int
-
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -193,8 +177,6 @@ class LiteralUInt32(LiteralUInt):
 class LiteralUInt64(LiteralUInt):
     """LiteralUInt64 data type class."""
 
-    value: int
-
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -207,8 +189,6 @@ class LiteralUInt64(LiteralUInt):
 @typechecked
 class LiteralUInt128(LiteralUInt):
     """LiteralUInt128 data type class."""
-
-    value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
@@ -240,8 +220,6 @@ class LiteralFloat(Literal):
 class LiteralFloat16(LiteralFloat):
     """LiteralFloat16 data type class."""
 
-    value: float
-
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -255,8 +233,6 @@ class LiteralFloat16(LiteralFloat):
 class LiteralFloat32(LiteralFloat):
     """LiteralFloat32 data type class."""
 
-    value: float
-
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
@@ -269,8 +245,6 @@ class LiteralFloat32(LiteralFloat):
 @typechecked
 class LiteralFloat64(LiteralFloat):
     """LiteralFloat64 data type class."""
-
-    value: float
 
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
