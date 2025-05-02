@@ -106,6 +106,7 @@ class ASTKind(Enum):
     AssignmentExprKind = -303
     AugmentedAssignKind = -304
     CompareOpKind = -305
+    StarredKind = -306
 
     # functions
     PrototypeKind = -400
@@ -192,6 +193,7 @@ class ASTKind(Enum):
 
     # subscrpts
     SubscriptExprKind = -1000
+    EllipsisKind = -1001
 
     # exceptions
     ThrowStmtKind = -1100

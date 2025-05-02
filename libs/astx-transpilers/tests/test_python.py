@@ -1893,3 +1893,63 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
     assert generated_code == expected_code, (
         f"Expected '{expected_code}', but got '{generated_code}'"
     )
+
+
+def test_transpiler_ellipsis() -> None:
+    """Test transpilation of Ellipsis nodes."""
+    ellipsis = astx.Ellipsis()
+
+    generated_code = transpiler.visit(ellipsis)
+    expected_code = "..."
+
+    assert generated_code == expected_code, (
+        f"Expected '{expected_code}', but got '{generated_code}'"
+    )
+
+
+def test_transpiler_ellipsis_in_context() -> None:
+    """Test Ellipsis transpilation within expressions."""
+    ellipsis = astx.Ellipsis()
+    simple_code = transpiler.visit(ellipsis)
+    assert simple_code == "..."
+    var = astx.Variable(name="x")
+    subscr = astx.SubscriptExpr(value=var, index=ellipsis)
+    result = transpiler.visit(subscr)
+    assert "..." in result
+
+
+def test_transpiler_starred_simple() -> None:
+    """Test simple starred expression transpilation."""
+    var = astx.Variable(name="args")
+    starred = astx.Starred(value=var)
+    generated_code = translate(starred)
+    expected_code = "*args"
+    assert generated_code == expected_code
+
+
+def test_transpiler_starred_in_list() -> None:
+    """Test starred expression within a list literal transpilation."""
+    var = astx.Variable(name="items")
+    starred = astx.Starred(value=var)
+    lit_1 = astx.LiteralInt32(1)
+    lit_2 = astx.LiteralInt32(2)
+    starred_code = translate(starred)
+    assert starred_code == "*items"
+    expected_code = "[1, *items, 2]"
+    manual_result = f"[{translate(lit_1)}, {starred_code}, {translate(lit_2)}]"
+    assert manual_result == expected_code
+
+
+def test_transpiler_multiple_starred() -> None:
+    """Test multiple starred expressions transpilation."""
+    var1 = astx.Variable(name="args1")
+    var2 = astx.Variable(name="args2")
+    starred1 = astx.Starred(value=var1)
+    starred2 = astx.Starred(value=var2)
+    code1 = translate(starred1)
+    code2 = translate(starred2)
+    assert code1 == "*args1"
+    assert code2 == "*args2"
+    expected_code = "[*args1, *args2]"
+    manual_result = f"[{code1}, {code2}]"
+    assert manual_result == expected_code
