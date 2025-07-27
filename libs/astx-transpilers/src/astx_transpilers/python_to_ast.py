@@ -531,7 +531,6 @@ class ASTxPythonASTTranspiler:
         """Handle EnumDeclStmt nodes."""
         if not hasattr(node, "name") or not hasattr(node, "attributes"):
             return self._convert_using_unparse(node)
-
         body = []
         for attr in node.attributes:
             if isinstance(attr, astx.VariableDeclaration):
