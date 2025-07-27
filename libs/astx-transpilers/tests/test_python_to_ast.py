@@ -663,8 +663,8 @@ class TestEnumNodes:
 
     def test_enum_decl_stmt_simple(self) -> None:
         """Test astx.EnumDeclStmt with simple enum."""
-        attr1 = astx.VariableDeclaration(name="RED", type_=astx.DataType())
-        attr2 = astx.VariableDeclaration(name="BLUE", type_=astx.DataType())
+        attr1 = astx.Variable(name="RED")
+        attr2 = astx.Variable(name="BLUE")
         node = astx.EnumDeclStmt(name="Color", attributes=[attr1, attr2])
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.ClassDef)
