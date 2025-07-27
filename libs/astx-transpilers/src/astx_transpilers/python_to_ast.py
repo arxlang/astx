@@ -529,22 +529,41 @@ class ASTxPythonASTTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.EnumDeclStmt) -> ast.ClassDef:
         """Handle EnumDeclStmt nodes."""
-        if not hasattr(node, "name"):
+        if not hasattr(node, "name") or not hasattr(node, "attributes"):
             return self._convert_using_unparse(node)
-        bases = [ast.Name(id="Enum", ctx=ast.Load())]
+
         body = []
-        if hasattr(node, "attributes") and node.attributes:
-            for attr in node.attributes:
-                body.append(self.visit(attr))
-        else:
+        for attr in node.attributes:
+            if isinstance(attr, astx.VariableDeclaration):
+                # Create a simple assignment for enum attributes
+                target = ast.Name(id=attr.name, ctx=ast.Store())
+                # Use auto() for enum values
+                value = ast.Call(
+                    func=ast.Name(id="auto", ctx=ast.Load()),
+                    args=[],
+                    keywords=[],
+                )
+                assign = ast.Assign(targets=[target], value=value)
+                body.append(assign)
+            else:
+                # For other types, try to visit them directly
+                visited = self.visit(attr)
+                if isinstance(visited, (ast.stmt, ast.expr)):
+                    if isinstance(visited, ast.expr):
+                        # Wrap expressions in Expr statement
+                        body.append(ast.Expr(value=visited))
+                    else:
+                        body.append(visited)
+
+        if not body:
             body = [ast.Pass()]
 
         return ast.ClassDef(
             name=node.name,
-            bases=bases,
+            bases=[ast.Name(id="Enum", ctx=ast.Load())],
             keywords=[],
-            body=body,
             decorator_list=[],
+            body=body,
         )
 
     @dispatch  # type: ignore[no-redef]
