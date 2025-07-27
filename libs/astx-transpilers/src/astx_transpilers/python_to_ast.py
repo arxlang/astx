@@ -287,13 +287,13 @@ class ASTxPythonASTTranspiler:
             lhs = self.visit(node.lhs)
             rhs = self.visit(node.rhs)
 
-            func_name = f"operator_{
-                (
-                    node.op_code.replace('@', 'at')
-                    .replace('&', 'and')
-                    .replace('|', 'or')
-                )
-            }"
+            # Clean the operator code first
+            op_code_clean = (
+                node.op_code.replace("@", "at")
+                .replace("&", "and")
+                .replace("|", "or")
+            )
+            func_name = f"operator_{op_code_clean}"
 
             return ast.Call(
                 func=ast.Name(id=func_name, ctx=ast.Load()),
@@ -323,7 +323,7 @@ class ASTxPythonASTTranspiler:
 
         if node.condition is None:
             if sys.version_info >= (3, 10):
-                pattern = ast.MatchAs(name=None, pattern=None)  # type: ignore
+                pattern = ast.MatchAs(name=None, pattern=None)
             else:
                 return self._convert_using_unparse(node)
         else:
@@ -335,7 +335,7 @@ class ASTxPythonASTTranspiler:
         )
 
         if sys.version_info >= (3, 10):
-            return ast.match_case(pattern=pattern, guard=None, body=body)  # type: ignore
+            return ast.match_case(pattern=pattern, guard=None, body=body)
         else:
             return self._convert_using_unparse(node)
 
