@@ -1,13 +1,23 @@
 """ASTx to Python AST transpiler."""
 
 import ast
+import sys
 
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import astx
 
 from astx.tools.typing import typechecked
 from plum import dispatch
+
+# Python 3.10+ compatibility for match statements
+if sys.version_info >= (3, 10):
+    match_case = ast.match_case
+    Match = ast.Match
+else:
+    # Fallback for older Python versions
+    match_case = Any
+    Match = Any
 
 # Operator mappings
 BINARY_OP_MAP = {
@@ -278,9 +288,11 @@ class ASTxPythonASTTranspiler:
             rhs = self.visit(node.rhs)
 
             func_name = f"operator_{
-                node.op_code.replace('@', 'at')
-                .replace('&', 'and')
-                .replace('|', 'or')
+                (
+                    node.op_code.replace('@', 'at')
+                    .replace('&', 'and')
+                    .replace('|', 'or')
+                )
             }"
 
             return ast.Call(
@@ -304,13 +316,16 @@ class ASTxPythonASTTranspiler:
         return ast.Break()
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.CaseStmt) -> ast.match_case:
+    def visit(self, node: astx.CaseStmt) -> Any:
         """Handle CaseStmt nodes."""
         if not hasattr(node, "condition"):
             return self._convert_using_unparse(node)
 
         if node.condition is None:
-            pattern = ast.MatchAs(name=None, pattern=None)
+            if sys.version_info >= (3, 10):
+                pattern = ast.MatchAs(name=None, pattern=None)  # type: ignore
+            else:
+                return self._convert_using_unparse(node)
         else:
             pattern = self.visit(node.condition)
         body = (
@@ -319,7 +334,10 @@ class ASTxPythonASTTranspiler:
             else [ast.Pass()]
         )
 
-        return ast.match_case(pattern=pattern, guard=None, body=body)
+        if sys.version_info >= (3, 10):
+            return ast.match_case(pattern=pattern, guard=None, body=body)  # type: ignore
+        else:
+            return self._convert_using_unparse(node)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CatchHandlerStmt) -> ast.ExceptHandler:
@@ -514,7 +532,6 @@ class ASTxPythonASTTranspiler:
         if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
         bases = [ast.Name(id="Enum", ctx=ast.Load())]
-
         body = []
         if hasattr(node, "attributes") and node.attributes:
             for attr in node.attributes:
@@ -1377,7 +1394,7 @@ class ASTxPythonASTTranspiler:
         )
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.SwitchStmt) -> ast.Match:
+    def visit(self, node: astx.SwitchStmt) -> Any:
         """Handle SwitchStmt nodes."""
         if not hasattr(node, "value") or not hasattr(node, "cases"):
             return self._convert_using_unparse(node)
@@ -1385,7 +1402,10 @@ class ASTxPythonASTTranspiler:
         cases = []
         if hasattr(node.cases, "nodes"):
             cases = [self.visit(case) for case in node.cases.nodes]
-        return ast.Match(subject=subject, cases=cases)
+        if sys.version_info >= (3, 10):
+            return ast.Match(subject=subject, cases=cases)
+        else:
+            return self._convert_using_unparse(node)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SubscriptExpr) -> ast.Subscript:
@@ -1464,12 +1484,12 @@ class ASTxPythonASTTranspiler:
     def visit(self, node: astx.UTF8Char) -> ast.Name:
         """Handle UTF8Char nodes."""
         return ast.Name(id="str", ctx=ast.Load())
-    
+
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UTF8String) -> ast.Name:
         """Handle UTF8String nodes."""
         return ast.Name(id="str", ctx=ast.Load())
-    
+
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Variable) -> ast.Name:
         """Handle Variable nodes."""

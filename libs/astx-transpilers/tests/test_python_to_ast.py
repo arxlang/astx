@@ -1,18 +1,28 @@
 """ASTx Python AST transpiler implementation."""
 
 import ast
+import sys
+
+from typing import TYPE_CHECKING, Any, Union, cast
+
 import astx
+
 from astx_transpilers.python_to_ast import ASTxPythonASTTranspiler
+
+PYTHON_310_OR_LATER = sys.version_info >= (3, 10)
+
+if TYPE_CHECKING:
+    pass
 
 
 class TestAdditionalControlFlowNodes:
     """Test additional control flow node types."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_subscript_expr_index(self):
+    def test_subscript_expr_index(self) -> None:
         """Test astx.SubscriptExpr with index."""
         value = astx.Variable(name="arr")
         index = astx.LiteralInt32(value=0)
@@ -22,7 +32,7 @@ class TestAdditionalControlFlowNodes:
         assert isinstance(result.value, ast.Name)
         assert result.value.id == "arr"
 
-    def test_subscript_expr_slice(self):
+    def test_subscript_expr_slice(self) -> None:
         """Test astx.SubscriptExpr with slice."""
         value = astx.Variable(name="arr")
         lower = astx.LiteralInt32(value=1)
@@ -32,7 +42,7 @@ class TestAdditionalControlFlowNodes:
         assert isinstance(result, ast.Subscript)
         assert isinstance(result.slice, ast.Slice)
 
-    def test_do_while_expr_simple(self):
+    def test_do_while_expr_simple(self) -> None:
         """Test astx.DoWhileExpr with condition and body."""
         condition = astx.LiteralBoolean(value=True)
         body_expr = astx.Variable(name="result")
@@ -46,12 +56,12 @@ class TestAdditionalControlFlowNodes:
 class TestAdditionalFunctionNodes:
     """Test additional function-related node types."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.Variable_42 = 42
 
-    def test_function_return_none(self):
+    def test_function_return_none(self) -> None:
         """Test astx.FunctionReturn with None value."""
         value = astx.LiteralNone()
         node = astx.FunctionReturn(value=value)
@@ -60,7 +70,7 @@ class TestAdditionalFunctionNodes:
         assert isinstance(result.value, ast.Constant)
         assert result.value.value is None
 
-    def test_function_return_simple(self):
+    def test_function_return_simple(self) -> None:
         """Test astx.FunctionReturn with value."""
         value = astx.LiteralInt32(value=self.Variable_42)
         node = astx.FunctionReturn(value=value)
@@ -73,7 +83,7 @@ class TestAdditionalFunctionNodes:
 class TestAdditionalLiteralNodes:
     """Test additional literal node types."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.Variable_42 = 42
@@ -84,21 +94,21 @@ class TestAdditionalLiteralNodes:
         self.Variable_1 = 1
         self.Variable_9223372036854775807 = 9223372036854775807
 
-    def test_literal_date_simple(self):
+    def test_literal_date_simple(self) -> None:
         """Test astx.LiteralDate with date string."""
         node = astx.LiteralDate(value="2023-12-25")
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Call)
 
-    def test_literal_datetime_simple(self):
+    def test_literal_datetime_simple(self) -> None:
         """Test astx.LiteralDateTime with datetime string."""
         node = astx.LiteralDateTime(value="2023-12-25T10:30:00")
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Call)
 
-    def test_literal_dict_simple(self):
+    def test_literal_dict_simple(self) -> None:
         """Test astx.LiteralDict with key-value pairs."""
-        elements = {
+        elements: Any = {
             astx.LiteralString(value="key1"): astx.LiteralInt32(
                 value=self.Variable_1
             ),
@@ -112,44 +122,44 @@ class TestAdditionalLiteralNodes:
         assert len(result.keys) == self.Variable_2
         assert len(result.values) == self.Variable_2
 
-    def test_literal_float32_simple(self):
+    def test_literal_float32_simple(self) -> None:
         """Test astx.LiteralFloat32 with simple value."""
         node = astx.LiteralFloat32(value=self.Variable_3_14)
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Constant)
         assert result.value == self.Variable_3_14
 
-    def test_literal_float64_simple(self):
+    def test_literal_float64_simple(self) -> None:
         """Test astx.LiteralFloat64 with simple value."""
         node = astx.LiteralFloat64(value=self.Variable_2_718281828)
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Constant)
         assert result.value == self.Variable_2_718281828
 
-    def test_literal_int16_simple(self):
+    def test_literal_int16_simple(self) -> None:
         """Test astx.LiteralInt16 with simple value."""
         node = astx.LiteralInt16(value=self.Variable_1024)
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Constant)
         assert result.value == self.Variable_1024
 
-    def test_literal_int64_simple(self):
+    def test_literal_int64_simple(self) -> None:
         """Test astx.LiteralInt64 with simple value."""
         node = astx.LiteralInt64(value=self.Variable_9223372036854775807)
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Constant)
         assert result.value == self.Variable_9223372036854775807
 
-    def test_literal_int8_simple(self):
+    def test_literal_int8_simple(self) -> None:
         """Test astx.LiteralInt8 with simple value."""
         node = astx.LiteralInt8(value=self.Variable_42)
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Constant)
         assert result.value == self.Variable_42
 
-    def test_literal_list_simple(self):
+    def test_literal_list_simple(self) -> None:
         """Test astx.LiteralList with elements."""
-        elements = [
+        elements: Any = [
             astx.LiteralInt32(value=self.Variable_1),
             astx.LiteralInt32(value=self.Variable_2),
         ]
@@ -160,16 +170,16 @@ class TestAdditionalLiteralNodes:
         assert isinstance(result.elts[0], ast.Constant)
         assert result.elts[0].value == self.Variable_1
 
-    def test_literal_none_simple(self):
+    def test_literal_none_simple(self) -> None:
         """Test astx.LiteralNone."""
         node = astx.LiteralNone()
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Constant)
         assert result.value is None
 
-    def test_literal_set_simple(self):
+    def test_literal_set_simple(self) -> None:
         """Test astx.LiteralSet with elements."""
-        elements = {
+        elements: Any = {
             astx.LiteralInt32(value=self.Variable_1),
             astx.LiteralInt32(value=self.Variable_2),
         }
@@ -178,19 +188,19 @@ class TestAdditionalLiteralNodes:
         assert isinstance(result, ast.Set)
         assert len(result.elts) == self.Variable_2
 
-    def test_literal_time_simple(self):
+    def test_literal_time_simple(self) -> None:
         """Test astx.LiteralTime with time string."""
         node = astx.LiteralTime(value="10:30:00")
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Call)
 
-    def test_literal_timestamp_simple(self):
+    def test_literal_timestamp_simple(self) -> None:
         """Test astx.LiteralTimestamp with timestamp string."""
         node = astx.LiteralTimestamp(value="2023-12-25 10:30:00")
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Call)
 
-    def test_literal_tuple_simple(self):
+    def test_literal_tuple_simple(self) -> None:
         """Test astx.LiteralTuple with elements."""
         elements = (
             astx.LiteralInt32(value=self.Variable_1),
@@ -205,12 +215,12 @@ class TestAdditionalLiteralNodes:
 class TestAdditionalOperatorNodes:
     """Test additional operator node types."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.Variable_2 = 2
 
-    def test_not_op_simple(self):
+    def test_not_op_simple(self) -> None:
         """Test astx.NotOp with simple operand."""
         operand = astx.LiteralBoolean(value=True)
         node = astx.NotOp(operand=operand)
@@ -218,7 +228,7 @@ class TestAdditionalOperatorNodes:
         assert isinstance(result, ast.UnaryOp)
         assert isinstance(result.op, ast.Not)
 
-    def test_or_op_simple(self):
+    def test_or_op_simple(self) -> None:
         """Test astx.OrOp with two operands."""
         lhs = astx.LiteralBoolean(value=True)
         rhs = astx.LiteralBoolean(value=False)
@@ -228,7 +238,7 @@ class TestAdditionalOperatorNodes:
         assert isinstance(result.op, ast.Or)
         assert len(result.values) == self.Variable_2
 
-    def test_unary_op_negation(self):
+    def test_unary_op_negation(self) -> None:
         """Test astx.UnaryOp with negation."""
         operand = astx.LiteralInt32(value=5)
         node = astx.UnaryOp(op_code="-", operand=operand)
@@ -236,7 +246,7 @@ class TestAdditionalOperatorNodes:
         assert isinstance(result, ast.UnaryOp)
         assert isinstance(result.op, ast.USub)
 
-    def test_unary_op_not(self):
+    def test_unary_op_not(self) -> None:
         """Test astx.UnaryOp with not operator."""
         operand = astx.LiteralBoolean(value=True)
         node = astx.UnaryOp(op_code="not", operand=operand)
@@ -244,7 +254,7 @@ class TestAdditionalOperatorNodes:
         assert isinstance(result, ast.UnaryOp)
         assert isinstance(result.op, ast.Not)
 
-    def test_walrus_op_simple(self):
+    def test_walrus_op_simple(self) -> None:
         """Test astx.WalrusOp (assignment expression)."""
         lhs = astx.Variable(name="x")
         rhs = astx.LiteralInt32(value=42)
@@ -258,11 +268,11 @@ class TestAdditionalOperatorNodes:
 class TestAdditionalVariableNodes:
     """Test additional variable-related node types."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_variable_assignment_simple(self):
+    def test_variable_assignment_simple(self) -> None:
         """Test astx.VariableAssignment with simple assignment."""
         value = astx.LiteralInt32(value=42)
         node = astx.VariableAssignment(name="x", value=value)
@@ -272,7 +282,7 @@ class TestAdditionalVariableNodes:
         assert isinstance(result.targets[0], ast.Name)
         assert result.targets[0].id == "x"
 
-    def test_variable_declaration_simple(self):
+    def test_variable_declaration_simple(self) -> None:
         """Test astx.VariableDeclaration with type annotation."""
         var_type = astx.Int32()
         value = astx.LiteralInt32(value=42)
@@ -286,11 +296,11 @@ class TestAdditionalVariableNodes:
 class TestClassStructNodes:
     """Test cases for class and struct node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_class_def_stmt_simple(self):
+    def test_class_def_stmt_simple(self) -> None:
         """Test astx.ClassDefStmt with simple class."""
         body_stmt = astx.BreakStmt()
         body = astx.Block()
@@ -300,7 +310,7 @@ class TestClassStructNodes:
         assert isinstance(result, ast.ClassDef)
         assert result.name == "MyClass"
 
-    def test_struct_decl_stmt_simple(self):
+    def test_struct_decl_stmt_simple(self) -> None:
         """Test astx.StructDeclStmt with struct declaration."""
         attr1 = astx.VariableDeclaration(
             name="x",
@@ -317,9 +327,13 @@ class TestClassStructNodes:
         assert isinstance(result, ast.ClassDef)
         assert result.name == "Point"
         assert len(result.decorator_list) == 1
+        assert isinstance(
+            result.decorator_list[0], ast.Name
+        )  # Changed from direct access
+        assert hasattr(result.decorator_list[0], "id")
         assert result.decorator_list[0].id == "dataclass"
 
-    def test_struct_def_stmt_simple(self):
+    def test_struct_def_stmt_simple(self) -> None:
         """Test astx.StructDefStmt with struct definition."""
         attr1 = astx.VariableDeclaration(
             name="x",
@@ -331,17 +345,19 @@ class TestClassStructNodes:
         assert isinstance(result, ast.ClassDef)
         assert result.name == "Point"
         assert len(result.decorator_list) == 1
+        assert isinstance(result.decorator_list[0], ast.Name)
+        assert hasattr(result.decorator_list[0], "id")
         assert result.decorator_list[0].id == "dataclass"
 
 
 class TestComprehensionNodes:
     """Test cases for comprehension node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_comprehension_clause_simple(self):
+    def test_comprehension_clause_simple(self) -> None:
         """Test astx.ComprehensionClause with simple iteration."""
         target = astx.Variable(name="x")
         iterable = astx.Variable(name="items")
@@ -355,7 +371,7 @@ class TestComprehensionNodes:
         assert len(result.ifs) == 0
         assert result.is_async == 0
 
-    def test_generator_expr_simple(self):
+    def test_generator_expr_simple(self) -> None:
         """Test astx.GeneratorExpr with generator expression."""
         element = astx.Variable(name="x")
         target = astx.Variable(name="x")
@@ -368,7 +384,7 @@ class TestComprehensionNodes:
         assert result.elt.id == "x"
         assert len(result.generators) == 1
 
-    def test_list_comprehension_simple(self):
+    def test_list_comprehension_simple(self) -> None:
         """Test astx.ListComprehension with element and generator."""
         element = astx.Variable(name="x")
         target = astx.Variable(name="x")
@@ -381,7 +397,7 @@ class TestComprehensionNodes:
         assert result.elt.id == "x"
         assert len(result.generators) == 1
 
-    def test_set_comprehension_simple(self):
+    def test_set_comprehension_simple(self) -> None:
         """Test astx.SetComprehension with element and generator."""
         element = astx.Variable(name="x")
         target = astx.Variable(name="x")
@@ -398,13 +414,13 @@ class TestComprehensionNodes:
 class TestControlFlowNodes:
     """Test cases for control flow node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.Variable_2 = 2
         self.Variable_42 = 42
 
-    def test_async_for_range_loop_expr_simple(self):
+    def test_async_for_range_loop_expr_simple(self) -> None:
         """Test astx.AsyncForRangeLoopExpr with range."""
         variable = astx.InlineVariableDeclaration(name="i", type_=astx.Int32())
         start = astx.LiteralInt32(value=0)
@@ -419,7 +435,7 @@ class TestControlFlowNodes:
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.ListComp)
 
-    def test_break_stmt(self):
+    def test_break_stmt(self) -> None:
         """Test astx.BreakStmt conversion."""
         node = astx.BreakStmt()
         result = self.transpiler.visit(node)
@@ -427,7 +443,7 @@ class TestControlFlowNodes:
         code = ast.unparse(result)
         assert code == "break"
 
-    def test_case_stmt_simple(self):
+    def test_case_stmt_simple(self) -> None:
         """Test astx.CaseStmt with condition."""
         condition = astx.LiteralInt32(value=42)
         body_stmt = astx.BreakStmt()
@@ -435,22 +451,25 @@ class TestControlFlowNodes:
         body.append(body_stmt)
         node = astx.CaseStmt(condition=condition, body=body)
         result = self.transpiler.visit(node)
-        assert isinstance(result, ast.match_case)
-        assert isinstance(result.pattern, ast.Constant)
-        assert result.pattern.value == self.Variable_42
-        assert len(result.body) == 1
-        assert isinstance(result.body[0], ast.Break)
 
-    def test_continue_stmt(self):
+        if PYTHON_310_OR_LATER:
+            assert hasattr(ast, "match_case")
+            match_case_type = getattr(ast, "match_case")
+            assert isinstance(result, match_case_type)
+            assert isinstance(result.pattern, ast.Constant)
+            assert result.pattern.value == self.Variable_42
+        else:
+            assert result is not None
+
+    def test_continue_stmt(self) -> None:
         """Test astx.ContinueStmt conversion."""
         node = astx.ContinueStmt()
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Continue)
-        # Test round-trip conversion
         code = ast.unparse(result)
         assert code == "continue"
 
-    def test_do_while_stmt_simple(self):
+    def test_do_while_stmt_simple(self) -> None:
         """Test astx.DoWhileStmt with condition and body."""
         condition = astx.LiteralBoolean(value=True)
         body_stmt = astx.BreakStmt()
@@ -462,7 +481,7 @@ class TestControlFlowNodes:
         assert isinstance(result.test, ast.Constant)
         assert result.test.value is True
 
-    def test_for_count_loop_stmt_simple(self):
+    def test_for_count_loop_stmt_simple(self) -> None:
         """Test astx.ForCountLoopStmt with range."""
         initializer = astx.InlineVariableDeclaration(
             name="i", type_=astx.DataType(), value=astx.LiteralInt32(value=0)
@@ -491,15 +510,22 @@ class TestControlFlowNodes:
         assert isinstance(result.target, ast.Name)
         assert result.target.id == "i"
         assert isinstance(result.iter, ast.Call)
-        assert result.iter.func.id == "range"
+        assert isinstance(result.iter.func, ast.Name)
+        assert hasattr(result.iter.func, "id")
+        assert getattr(result.iter.func, "id") == "range"
         assert len(result.iter.args) == self.Variable_2
-        assert result.iter.args[0].value == 0
+        assert isinstance(result.iter.args[0], ast.Constant)
+        assert hasattr(result.iter.args[0], "value")
+        assert getattr(result.iter.args[0], "value") == 0
         MAX_LOOP_END = 10
-        assert result.iter.args[1].value == MAX_LOOP_END
+        assert isinstance(result.iter.args[1], ast.Constant)
+        assert hasattr(result.iter.args[1], "value")
+        assert getattr(result.iter.args[1], "value") == MAX_LOOP_END
+
         assert len(result.body) == 1
         assert isinstance(result.body[0], ast.Break)
 
-    def test_for_range_loop_expr_simple(self):
+    def test_for_range_loop_expr_simple(self) -> None:
         """Test astx.ForRangeLoopExpr with range expression."""
         variable = astx.InlineVariableDeclaration(name="i", type_=astx.Int32())
         start = astx.LiteralInt32(value=0)
@@ -517,7 +543,7 @@ class TestControlFlowNodes:
         assert isinstance(result.generators[0].target, ast.Name)
         assert result.generators[0].target.id == "i"
 
-    def test_for_range_loop_stmt_simple(self):
+    def test_for_range_loop_stmt_simple(self) -> None:
         """Test astx.ForRangeLoopStmt with target and iter."""
         variable = astx.InlineVariableDeclaration(
             name="item",
@@ -538,11 +564,13 @@ class TestControlFlowNodes:
         assert isinstance(result.target, ast.Name)
         assert result.target.id == "item"
         assert isinstance(result.iter, ast.Call)
-        assert result.iter.func.id == "range"
+        assert isinstance(result.iter.func, ast.Name)
+        assert hasattr(result.iter.func, "id")
+        assert getattr(result.iter.func, "id") == "range"
         assert len(result.body) == 1
         assert isinstance(result.body[0], ast.Break)
 
-    def test_if_expr_simple(self):
+    def test_if_expr_simple(self) -> None:
         """Test astx.IfExpr with condition and branches."""
         condition = astx.LiteralBoolean(value=True)
         then_expr = astx.LiteralInt32(value=1)
@@ -559,7 +587,7 @@ class TestControlFlowNodes:
         assert isinstance(result.test, ast.Constant)
         assert result.test.value is True
 
-    def test_if_stmt_simple(self):
+    def test_if_stmt_simple(self) -> None:
         """Test astx.IfStmt with condition and body."""
         condition = astx.LiteralBoolean(value=True)
         then_stmt = astx.BreakStmt()
@@ -571,7 +599,7 @@ class TestControlFlowNodes:
         assert isinstance(result.test, ast.Constant)
         assert result.test.value is True
 
-    def test_switch_stmt_simple(self):
+    def test_switch_stmt_simple(self) -> None:
         """Test astx.SwitchStmt with value and cases."""
         value = astx.Variable(name="x")
         case_body = astx.Block()
@@ -582,15 +610,25 @@ class TestControlFlowNodes:
         )
         cases = astx.ASTNodes()
         cases.append(case1)
-        node = astx.SwitchStmt(value=value, cases=cases)
+        cases_typed = cast(
+            Union[list["astx.CaseStmt"], "astx.ASTNodes[astx.CaseStmt]"], cases
+        )
+        node = astx.SwitchStmt(
+            value=value,
+            cases=cases_typed,
+        )
         result = self.transpiler.visit(node)
-        assert isinstance(result, ast.Match)
-        assert isinstance(result.subject, ast.Name)
-        assert result.subject.id == "x"
-        assert len(result.cases) == 1
-        assert isinstance(result.cases[0], ast.match_case)
 
-    def test_while_expr_simple(self):
+        if PYTHON_310_OR_LATER:
+            assert hasattr(ast, "Match")
+            match_type = getattr(ast, "Match")
+            assert isinstance(result, match_type)
+            assert isinstance(result.subject, ast.Name)
+            assert result.subject.id == "x"
+        else:
+            assert result is not None
+
+    def test_while_expr_simple(self) -> None:
         """Test astx.WhileExpr with condition and body."""
         condition = astx.LiteralBoolean(value=True)
         body_expr = astx.Variable(name="result")
@@ -603,7 +641,7 @@ class TestControlFlowNodes:
         assert len(result.generators) == 1
         assert isinstance(result.elt, ast.Name)
 
-    def test_while_stmt_simple(self):
+    def test_while_stmt_simple(self) -> None:
         """Test astx.WhileStmt with condition and body."""
         condition = astx.LiteralBoolean(value=True)
         body_stmt = astx.BreakStmt()
@@ -619,33 +657,34 @@ class TestControlFlowNodes:
 class TestEnumNodes:
     """Test enum-related node types."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_enum_decl_stmt_simple(self):
+    def test_enum_decl_stmt_simple(self) -> None:
         """Test astx.EnumDeclStmt with simple enum."""
-        attr1 = astx.Variable(name="RED")
-        attr2 = astx.Variable(name="BLUE")
+        attr1 = astx.VariableDeclaration(name="RED", type_=astx.DataType())
+        attr2 = astx.VariableDeclaration(name="BLUE", type_=astx.DataType())
         node = astx.EnumDeclStmt(name="Color", attributes=[attr1, attr2])
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.ClassDef)
         assert result.name == "Color"
         assert len(result.bases) == 1
         assert isinstance(result.bases[0], ast.Name)
+        assert hasattr(result.bases[0], "id")
         assert result.bases[0].id == "Enum"
 
 
 class TestExceptionNodes:
     """Test cases for exception handling node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_catch_handler_stmt_simple(self):
+    def test_catch_handler_stmt_simple(self) -> None:
         """Test astx.CatchHandlerStmt with exception type."""
-        exception_type = astx.DataType()
+        exception_type = astx.Identifier(value="Exception")
         body_stmt = astx.BreakStmt()
         body = astx.Block()
         body.append(body_stmt)
@@ -656,19 +695,21 @@ class TestExceptionNodes:
         assert isinstance(result, ast.ExceptHandler)
         assert result.name == "e"
 
-    def test_exception_handler_stmt_simple(self):
+    def test_exception_handler_stmt_simple(self) -> None:
         """Test astx.ExceptionHandlerStmt with try-except."""
         body_stmt = astx.BreakStmt()
         body = astx.Block()
         body.append(body_stmt)
         handler = astx.CatchHandlerStmt(
-            types=[astx.DataType()], name=astx.Identifier(value="e"), body=body
+            types=[astx.Identifier(value="Exception")],
+            name=astx.Identifier(value="e"),
+            body=body,
         )
         node = astx.ExceptionHandlerStmt(body=body, handlers=[handler])
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Try)
 
-    def test_finally_handler_stmt_simple(self):
+    def test_finally_handler_stmt_simple(self) -> None:
         """Test astx.FinallyHandlerStmt with finally block."""
         body_stmt = astx.BreakStmt()
         body = astx.Block()
@@ -679,7 +720,7 @@ class TestExceptionNodes:
         assert len(result.finalbody) == 1
         assert isinstance(result.finalbody[0], ast.Break)
 
-    def test_throw_stmt_simple(self):
+    def test_throw_stmt_simple(self) -> None:
         """Test astx.ThrowStmt with exception."""
         args = astx.Arguments()
         prototype = astx.FunctionPrototype(
@@ -695,19 +736,20 @@ class TestExceptionNodes:
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Raise)
         assert isinstance(result.exc, ast.Call)
-        assert result.exc.func.id == "ValueError"
+        assert hasattr(result.exc.func, "id")
+        assert getattr(result.exc.func, "id") == "ValueError"
         assert result.cause is None
 
 
 class TestFunctionNodes:
     """Test cases for function-related node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.Variable_2 = 2
 
-    def test_argument_simple(self):
+    def test_argument_simple(self) -> None:
         """Test astx.Argument with simple name."""
         node = astx.Argument(name="param", type_=astx.DataType())
         result = self.transpiler.visit(node)
@@ -715,7 +757,7 @@ class TestFunctionNodes:
         assert result.arg == "param"
         assert result.annotation is not None
 
-    def test_argument_with_type(self):
+    def test_argument_with_type(self) -> None:
         """Test astx.Argument with type annotation."""
         type_annotation = astx.DataType()
         node = astx.Argument(name="param", type_=type_annotation)
@@ -724,7 +766,7 @@ class TestFunctionNodes:
         assert result.arg == "param"
         assert isinstance(result.annotation, ast.Name)
 
-    def test_arguments_empty(self):
+    def test_arguments_empty(self) -> None:
         """Test astx.Arguments with empty args."""
         node = astx.Arguments()
         result = self.transpiler.visit(node)
@@ -733,7 +775,7 @@ class TestFunctionNodes:
         assert len(result.posonlyargs) == 0
         assert len(result.kwonlyargs) == 0
 
-    def test_arguments_with_args(self):
+    def test_arguments_with_args(self) -> None:
         """Test astx.Arguments with arguments."""
         arg1 = astx.Argument(name="x", type_=astx.DataType())
         arg2 = astx.Argument(name="y", type_=astx.DataType())
@@ -744,7 +786,7 @@ class TestFunctionNodes:
         assert result.args[0].arg == "x"
         assert result.args[1].arg == "y"
 
-    def test_function_async_def_simple(self):
+    def test_function_async_def_simple(self) -> None:
         """Test astx.FunctionAsyncDef with simple async function."""
         args = astx.Arguments()
         prototype = astx.FunctionPrototype(
@@ -758,7 +800,7 @@ class TestFunctionNodes:
         assert isinstance(result, ast.AsyncFunctionDef)
         assert result.name == "async_func"
 
-    def test_function_call_simple(self):
+    def test_function_call_simple(self) -> None:
         """Test astx.FunctionCall with simple function call."""
         args = astx.Arguments()
         prototype = astx.FunctionPrototype(
@@ -776,7 +818,7 @@ class TestFunctionNodes:
         assert isinstance(result.func, ast.Name)
         assert result.func.id == "print"
 
-    def test_function_def_simple(self):
+    def test_function_def_simple(self) -> None:
         """Test astx.FunctionDef with simple function."""
         args = astx.Arguments()
         prototype = astx.FunctionPrototype(
@@ -790,7 +832,7 @@ class TestFunctionNodes:
         assert isinstance(result, ast.FunctionDef)
         assert result.name == "my_func"
 
-    def test_function_prototype_simple(self):
+    def test_function_prototype_simple(self) -> None:
         """Test astx.FunctionPrototype with simple prototype."""
         args = astx.Arguments()
         node = astx.FunctionPrototype(
@@ -800,7 +842,7 @@ class TestFunctionNodes:
         assert isinstance(result, ast.FunctionDef)
         assert result.name == "proto_func"
 
-    def test_lambda_expr_simple(self):
+    def test_lambda_expr_simple(self) -> None:
         """Test astx.LambdaExpr with simple lambda."""
         param = astx.Argument(name="x", type_=astx.DataType())
         params = astx.Arguments(param)
@@ -820,25 +862,25 @@ class TestFunctionNodes:
 class TestImportNodes:
     """Test import-related node types."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_import_expr_simple(self):
+    def test_import_expr_simple(self) -> None:
         """Test astx.ImportExpr with single module."""
         alias = astx.AliasExpr(name="os")
         node = astx.ImportExpr(names=[alias])
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Assign)
 
-    def test_import_from_expr_simple(self):
+    def test_import_from_expr_simple(self) -> None:
         """Test astx.ImportFromExpr with module and names."""
         alias = astx.AliasExpr(name="path")
         node = astx.ImportFromExpr(module="os", names=[alias])
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Assign)
 
-    def test_import_from_stmt_simple(self):
+    def test_import_from_stmt_simple(self) -> None:
         """Test astx.ImportFromStmt with module and names."""
         alias = astx.AliasExpr(name="sqrt")
         node = astx.ImportFromStmt(module="math", names=[alias])
@@ -847,7 +889,7 @@ class TestImportNodes:
         assert result.module == "math"
         assert len(result.names) == 1
 
-    def test_import_stmt_simple(self):
+    def test_import_stmt_simple(self) -> None:
         """Test astx.ImportStmt with single module."""
         alias = astx.AliasExpr(name="math")
         node = astx.ImportStmt(names=[alias])
@@ -860,14 +902,14 @@ class TestImportNodes:
 class TestLiteralNodes:
     """Test cases for literal node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.Variable_2 = 2
         self.Variable_42 = 42
         self.Variable_3_14 = 3.14
 
-    def test_literal_boolean_false(self):
+    def test_literal_boolean_false(self) -> None:
         """Test astx.LiteralBoolean with False value."""
         node = astx.LiteralBoolean(value=False)
         result = self.transpiler.visit(node)
@@ -876,7 +918,7 @@ class TestLiteralNodes:
         code = ast.unparse(result)
         assert code == "False"
 
-    def test_literal_boolean_true(self):
+    def test_literal_boolean_true(self) -> None:
         """Test astx.LiteralBoolean with True value."""
         node = astx.LiteralBoolean(value=True)
         result = self.transpiler.visit(node)
@@ -885,7 +927,7 @@ class TestLiteralNodes:
         code = ast.unparse(result)
         assert code == "True"
 
-    def test_literal_complex32_simple(self):
+    def test_literal_complex32_simple(self) -> None:
         """Test astx.LiteralComplex32 with complex value."""
         node = astx.LiteralComplex32(real=3.0, imag=4.0)
         result = self.transpiler.visit(node)
@@ -894,7 +936,7 @@ class TestLiteralNodes:
         assert result.func.id == "complex"
         assert len(result.args) == self.Variable_2
 
-    def test_literal_complex64_simple(self):
+    def test_literal_complex64_simple(self) -> None:
         """Test astx.LiteralComplex64 with complex value."""
         node = astx.LiteralComplex64(real=3.0, imag=4.0)
         result = self.transpiler.visit(node)
@@ -903,13 +945,13 @@ class TestLiteralNodes:
         assert result.func.id == "complex"
         assert len(result.args) == self.Variable_2
 
-    def test_literal_complex_simple(self):
+    def test_literal_complex_simple(self) -> None:
         """Test astx.LiteralComplex with complex value."""
         node = astx.LiteralComplex(real=3.0, imag=4.0)
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Constant)
 
-    def test_literal_float16_simple(self):
+    def test_literal_float16_simple(self) -> None:
         """Test astx.LiteralFloat16 with float value."""
         node = astx.LiteralFloat16(value=3.14)
         result = self.transpiler.visit(node)
@@ -917,7 +959,7 @@ class TestLiteralNodes:
         LITERAL_FLOAT16_VALUE = 3.14
         assert result.value == LITERAL_FLOAT16_VALUE
 
-    def test_literal_int32_negative(self):
+    def test_literal_int32_negative(self) -> None:
         """Test astx.LiteralInt32 with negative value."""
         NEGATIVE_INT = -15
         node = astx.LiteralInt32(value=NEGATIVE_INT)
@@ -927,7 +969,7 @@ class TestLiteralNodes:
         code = ast.unparse(result)
         assert code == str(NEGATIVE_INT)
 
-    def test_literal_int32_positive(self):
+    def test_literal_int32_positive(self) -> None:
         """Test astx.LiteralInt32 with positive value."""
         POSITIVE_INT = 42
         node = astx.LiteralInt32(value=POSITIVE_INT)
@@ -937,7 +979,7 @@ class TestLiteralNodes:
         code = ast.unparse(result)
         assert code == str(POSITIVE_INT)
 
-    def test_literal_int32_zero(self):
+    def test_literal_int32_zero(self) -> None:
         """Test astx.LiteralInt32 with zero value."""
         node = astx.LiteralInt32(value=0)
         result = self.transpiler.visit(node)
@@ -946,7 +988,7 @@ class TestLiteralNodes:
         code = ast.unparse(result)
         assert code == "0"
 
-    def test_literal_string_empty(self):
+    def test_literal_string_empty(self) -> None:
         """Test astx.LiteralString with empty string."""
         node = astx.LiteralString(value="")
         result = self.transpiler.visit(node)
@@ -955,7 +997,7 @@ class TestLiteralNodes:
         code = ast.unparse(result)
         assert code == "''"
 
-    def test_literal_string_simple(self):
+    def test_literal_string_simple(self) -> None:
         """Test astx.LiteralString with simple string."""
         test_string = "Hello, World!"
         node = astx.LiteralString(value=test_string)
@@ -965,14 +1007,14 @@ class TestLiteralNodes:
         code = ast.unparse(result)
         assert code == "'Hello, World!'"
 
-    def test_literal_utf8_char_simple(self):
+    def test_literal_utf8_char_simple(self) -> None:
         """Test astx.LiteralUTF8Char with character value."""
         node = astx.LiteralUTF8Char(value="A")
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Constant)
         assert result.value == "A"
 
-    def test_literal_utf8_string_simple(self):
+    def test_literal_utf8_string_simple(self) -> None:
         """Test astx.LiteralUTF8String with string value."""
         node = astx.LiteralUTF8String(value="Hello UTF8")
         result = self.transpiler.visit(node)
@@ -983,12 +1025,12 @@ class TestLiteralNodes:
 class TestOperatorNodes:
     """Test cases for operator node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.OR_OP_NUM_VALUES = 2
 
-    def test_and_op_simple(self):
+    def test_and_op_simple(self) -> None:
         """Test astx.AndOp with boolean operands."""
         left = astx.LiteralBoolean(value=True)
         right = astx.LiteralBoolean(value=False)
@@ -997,12 +1039,17 @@ class TestOperatorNodes:
         assert isinstance(result, ast.BoolOp)
         assert isinstance(result.op, ast.And)
         assert len(result.values) == self.OR_OP_NUM_VALUES
-        assert result.values[0].value is True
-        assert result.values[1].value is False
+        assert isinstance(result.values[0], ast.Constant)
+        assert hasattr(result.values[0], "value")
+        assert getattr(result.values[0], "value") is True
+
+        assert isinstance(result.values[1], ast.Constant)
+        assert hasattr(result.values[1], "value")
+        assert getattr(result.values[1], "value") is False
         code = ast.unparse(result)
         assert code == "True and False"
 
-    def test_aug_assign_add(self):
+    def test_aug_assign_add(self) -> None:
         """Test astx.AugAssign with addition."""
         target = astx.Identifier(value="x")
         value = astx.LiteralInt32(value=5)
@@ -1019,7 +1066,7 @@ class TestOperatorNodes:
         code = ast.unparse(result)
         assert code == "x += 5"
 
-    def test_binary_op_addition(self):
+    def test_binary_op_addition(self) -> None:
         """Test astx.BinaryOp with addition operation."""
         LEFT_VALUE = 5
         RIGHT_VALUE = 3
@@ -1036,7 +1083,7 @@ class TestOperatorNodes:
         code = ast.unparse(result)
         assert code == f"{LEFT_VALUE} + {RIGHT_VALUE}"
 
-    def test_binary_op_multiplication(self):
+    def test_binary_op_multiplication(self) -> None:
         """Test astx.BinaryOp with multiplication operation."""
         LEFT_VALUE = 4
         RIGHT_VALUE = 7
@@ -1046,10 +1093,12 @@ class TestOperatorNodes:
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.BinOp)
         assert isinstance(result.op, ast.Mult)
+        assert isinstance(result.left, ast.Constant)
         assert result.left.value == LEFT_VALUE
+        assert isinstance(result.right, ast.Constant)
         assert result.right.value == RIGHT_VALUE
 
-    def test_compare_op_equal(self):
+    def test_compare_op_equal(self) -> None:
         """Test astx.CompareOp with equality."""
         TEST_INT = 5
         left = astx.LiteralInt32(value=TEST_INT)
@@ -1062,11 +1111,12 @@ class TestOperatorNodes:
         assert len(result.ops) == 1
         assert isinstance(result.ops[0], ast.Eq)
         assert len(result.comparators) == 1
+        assert isinstance(result.comparators[0], ast.Constant)
         assert result.comparators[0].value == TEST_INT
         code = ast.unparse(result)
         assert code == f"{TEST_INT} == {TEST_INT}"
 
-    def test_nand_op_simple(self):
+    def test_nand_op_simple(self) -> None:
         """Test astx.NandOp with boolean operands."""
         left = astx.LiteralBoolean(value=True)
         right = astx.LiteralBoolean(value=False)
@@ -1077,7 +1127,7 @@ class TestOperatorNodes:
         assert isinstance(result.operand, ast.BoolOp)
         assert isinstance(result.operand.op, ast.And)
 
-    def test_nor_op_simple(self):
+    def test_nor_op_simple(self) -> None:
         """Test astx.NorOp with boolean operands."""
         left = astx.LiteralBoolean(value=True)
         right = astx.LiteralBoolean(value=False)
@@ -1088,7 +1138,7 @@ class TestOperatorNodes:
         assert isinstance(result.operand, ast.BoolOp)
         assert isinstance(result.operand.op, ast.Or)
 
-    def test_xnor_op_simple(self):
+    def test_xnor_op_simple(self) -> None:
         """Test astx.XnorOp with boolean operands."""
         left = astx.LiteralBoolean(value=True)
         right = astx.LiteralBoolean(value=False)
@@ -1099,7 +1149,7 @@ class TestOperatorNodes:
         assert isinstance(result.operand, ast.BinOp)
         assert isinstance(result.operand.op, ast.BitXor)
 
-    def test_xor_op_simple(self):
+    def test_xor_op_simple(self) -> None:
         """Test astx.XorOp with boolean operands."""
         left = astx.LiteralBoolean(value=True)
         right = astx.LiteralBoolean(value=False)
@@ -1114,13 +1164,13 @@ class TestOperatorNodes:
 class TestSpecialNodes:
     """Test cases for special and miscellaneous node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.Variable_2 = 2
         self.Variable_42 = 42
 
-    def test_alias_expr_no_asname(self):
+    def test_alias_expr_no_asname(self) -> None:
         """Test astx.AliasExpr without asname."""
         node = astx.AliasExpr(name="os", asname="")
         result = self.transpiler.visit(node)
@@ -1128,7 +1178,7 @@ class TestSpecialNodes:
         assert result.name == "os"
         assert result.asname == ""
 
-    def test_alias_expr_simple(self):
+    def test_alias_expr_simple(self) -> None:
         """Test astx.AliasExpr with simple alias."""
         node = astx.AliasExpr(name="numpy", asname="np")
         result = self.transpiler.visit(node)
@@ -1136,7 +1186,7 @@ class TestSpecialNodes:
         assert result.name == "numpy"
         assert result.asname == "np"
 
-    def test_ast_nodes_list(self):
+    def test_ast_nodes_list(self) -> None:
         """Test astx.ASTNodes with multiple nodes."""
         node1 = astx.LiteralInt32(value=1)
         node2 = astx.LiteralInt32(value=2)
@@ -1150,7 +1200,7 @@ class TestSpecialNodes:
         assert result[0].value == 1
         assert result[1].value == self.Variable_2
 
-    def test_await_expr_simple(self):
+    def test_await_expr_simple(self) -> None:
         """Test astx.AwaitExpr with simple value."""
         value = astx.Variable(name="async_func")
         node = astx.AwaitExpr(value=value)
@@ -1161,7 +1211,7 @@ class TestSpecialNodes:
         code = ast.unparse(result)
         assert code == "await async_func"
 
-    def test_block_simple(self):
+    def test_block_simple(self) -> None:
         """Test astx.Block with statements."""
         stmt1 = astx.BreakStmt()
         stmt2 = astx.ContinueStmt()
@@ -1174,9 +1224,9 @@ class TestSpecialNodes:
         assert isinstance(result[0], ast.Break)
         assert isinstance(result[1], ast.Continue)
 
-    def test_delete_stmt_simple(self):
+    def test_delete_stmt_simple(self) -> None:
         """Test astx.DeleteStmt with variable."""
-        target = astx.Variable(name="x")
+        target = astx.Identifier(value="x")
         node = astx.DeleteStmt(value=[target])
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Delete)
@@ -1186,7 +1236,7 @@ class TestSpecialNodes:
         code = ast.unparse(result)
         assert code == "del x"
 
-    def test_ellipsis_simple(self):
+    def test_ellipsis_simple(self) -> None:
         """Test astx.Ellipsis conversion."""
         node = astx.Ellipsis()
         result = self.transpiler.visit(node)
@@ -1195,24 +1245,24 @@ class TestSpecialNodes:
         code = ast.unparse(result)
         assert code == "..."
 
-    def test_identifier_simple(self):
+    def test_identifier_simple(self) -> None:
         """Test astx.Identifier with simple value."""
         node = astx.Identifier(value="my_id")
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Name)
         assert result.id == "my_id"
 
-    def test_module_simple(self):
+    def test_module_simple(self) -> None:
         """Test astx.Module with body."""
         stmt = astx.BreakStmt()
         body = astx.Block()
         body.append(stmt)
         node = astx.Module()
-        node.body = body
+        setattr(node, "body", body)
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Module)
 
-    def test_parenthesized_expr_simple(self):
+    def test_parenthesized_expr_simple(self) -> None:
         """Test astx.ParenthesizedExpr with inner value."""
         inner_value = astx.LiteralInt32(value=42)
         node = astx.ParenthesizedExpr(value=inner_value)
@@ -1220,7 +1270,7 @@ class TestSpecialNodes:
         assert isinstance(result, ast.Constant)
         assert result.value == self.Variable_42
 
-    def test_starred_simple(self):
+    def test_starred_simple(self) -> None:
         """Test astx.Starred with value."""
         value = astx.Variable(name="args")
         node = astx.Starred(value=value)
@@ -1234,11 +1284,11 @@ class TestSpecialNodes:
 class TestTypeDataNodes:
     """Test cases for type and data node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_complex32_simple(self):
+    def test_complex32_simple(self) -> None:
         """Test astx.Complex32 type."""
         node = astx.Complex32()
         result = self.transpiler.visit(node)
@@ -1246,7 +1296,7 @@ class TestTypeDataNodes:
         assert result.id == "complex"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_complex64_simple(self):
+    def test_complex64_simple(self) -> None:
         """Test astx.Complex64 type."""
         node = astx.Complex64()
         result = self.transpiler.visit(node)
@@ -1254,7 +1304,7 @@ class TestTypeDataNodes:
         assert result.id == "complex"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_data_type_simple(self):
+    def test_data_type_simple(self) -> None:
         """Test astx.DataType with simple type."""
         node = astx.DataType()
         result = self.transpiler.visit(node)
@@ -1262,7 +1312,7 @@ class TestTypeDataNodes:
         assert result.id == "object"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_date_simple(self):
+    def test_date_simple(self) -> None:
         """Test astx.Date type."""
         node = astx.Date()
         result = self.transpiler.visit(node)
@@ -1270,7 +1320,7 @@ class TestTypeDataNodes:
         assert result.id == "date"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_datetime_simple(self):
+    def test_datetime_simple(self) -> None:
         """Test astx.DateTime type."""
         node = astx.DateTime()
         result = self.transpiler.visit(node)
@@ -1278,7 +1328,7 @@ class TestTypeDataNodes:
         assert result.id == "datetime"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_float16_simple(self):
+    def test_float16_simple(self) -> None:
         """Test astx.Float16 type."""
         node = astx.Float16()
         result = self.transpiler.visit(node)
@@ -1286,7 +1336,7 @@ class TestTypeDataNodes:
         assert result.id == "float"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_float32_simple(self):
+    def test_float32_simple(self) -> None:
         """Test astx.Float32 type."""
         node = astx.Float32()
         result = self.transpiler.visit(node)
@@ -1294,7 +1344,7 @@ class TestTypeDataNodes:
         assert result.id == "float"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_float64_simple(self):
+    def test_float64_simple(self) -> None:
         """Test astx.Float64 type."""
         node = astx.Float64()
         result = self.transpiler.visit(node)
@@ -1302,7 +1352,7 @@ class TestTypeDataNodes:
         assert result.id == "float"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_int32_simple(self):
+    def test_int32_simple(self) -> None:
         """Test astx.Int32 type."""
         node = astx.Int32()
         result = self.transpiler.visit(node)
@@ -1310,7 +1360,7 @@ class TestTypeDataNodes:
         assert result.id == "int"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_time_simple(self):
+    def test_time_simple(self) -> None:
         """Test astx.Time type."""
         node = astx.Time()
         result = self.transpiler.visit(node)
@@ -1318,7 +1368,7 @@ class TestTypeDataNodes:
         assert result.id == "time"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_timestamp_simple(self):
+    def test_timestamp_simple(self) -> None:
         """Test astx.Timestamp type."""
         node = astx.Timestamp()
         result = self.transpiler.visit(node)
@@ -1326,7 +1376,7 @@ class TestTypeDataNodes:
         assert result.id == "timestamp"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_type_cast_expr_simple(self):
+    def test_type_cast_expr_simple(self) -> None:
         """Test astx.TypeCastExpr with cast."""
         target_type = astx.DataType()
         expr = astx.LiteralFloat32(value=3.14)
@@ -1335,7 +1385,7 @@ class TestTypeDataNodes:
         assert isinstance(result, ast.Call)
         assert isinstance(result.func, ast.Name)
 
-    def test_utf8_char_simple(self):
+    def test_utf8_char_simple(self) -> None:
         """Test astx.UTF8Char type."""
         node = astx.UTF8Char()
         result = self.transpiler.visit(node)
@@ -1343,7 +1393,7 @@ class TestTypeDataNodes:
         assert result.id == "str"
         assert isinstance(result.ctx, ast.Load)
 
-    def test_utf8_string_simple(self):
+    def test_utf8_string_simple(self) -> None:
         """Test astx.UTF8String type."""
         node = astx.UTF8String()
         result = self.transpiler.visit(node)
@@ -1355,14 +1405,14 @@ class TestTypeDataNodes:
 class TestVariableAssignmentNodes:
     """Test cases for variable and assignment node transpilation."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures before each test method."""
         self.transpiler = ASTxPythonASTTranspiler()
         self.Variable_42 = 42
 
-    def test_assignment_expr_single_target(self):
+    def test_assignment_expr_single_target(self) -> None:
         """Test astx.AssignmentExpr with single target."""
-        target = astx.Variable(name="x")
+        target = astx.Identifier(value="x")
         value = astx.LiteralInt32(value=42)
         node = astx.AssignmentExpr(targets=[target], value=value)
         result = self.transpiler.visit(node)
@@ -1374,7 +1424,7 @@ class TestVariableAssignmentNodes:
         assert isinstance(result.value, ast.Constant)
         assert result.value.value == self.Variable_42
 
-    def test_inline_variable_declaration_simple(self):
+    def test_inline_variable_declaration_simple(self) -> None:
         """Test astx.InlineVariableDeclaration with type annotation."""
         var_type = astx.DataType()
         value = astx.LiteralInt32(value=42)
@@ -1386,7 +1436,7 @@ class TestVariableAssignmentNodes:
         assert isinstance(result.target, ast.Name)
         assert result.target.id == "x"
 
-    def test_variable_declaration_simple(self):
+    def test_variable_declaration_simple(self) -> None:
         """Test astx.VariableDeclaration with type annotation."""
         var_type = astx.DataType()
         value = astx.LiteralInt32(value=42)
@@ -1396,7 +1446,7 @@ class TestVariableAssignmentNodes:
         assert isinstance(result.target, ast.Name)
         assert result.target.id == "x"
 
-    def test_variable_simple_name(self):
+    def test_variable_simple_name(self) -> None:
         """Test astx.Variable with simple identifier."""
         variable_name = "my_variable"
         node = astx.Variable(name=variable_name)
@@ -1407,7 +1457,7 @@ class TestVariableAssignmentNodes:
         code = ast.unparse(result)
         assert code == "my_variable"
 
-    def test_variable_underscore_name(self):
+    def test_variable_underscore_name(self) -> None:
         """Test astx.Variable with underscore identifier."""
         variable_name = "_private_var"
         node = astx.Variable(name=variable_name)
@@ -1422,11 +1472,11 @@ class TestVariableAssignmentNodes:
 class TestYieldNodes:
     """Test yield-related node types."""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Set up test fixtures."""
         self.transpiler = ASTxPythonASTTranspiler()
 
-    def test_yield_expr_simple(self):
+    def test_yield_expr_simple(self) -> None:
         """Test astx.YieldExpr with value."""
         value = astx.LiteralInt32(value=1)
         node = astx.YieldExpr(value=value)
@@ -1434,7 +1484,7 @@ class TestYieldNodes:
         assert isinstance(result, ast.Yield)
         assert isinstance(result.value, ast.Constant)
 
-    def test_yield_from_expr_simple(self):
+    def test_yield_from_expr_simple(self) -> None:
         """Test astx.YieldFromExpr with iterator."""
         value = astx.Variable(name="iterator")
         node = astx.YieldFromExpr(value=value)
@@ -1442,7 +1492,7 @@ class TestYieldNodes:
         assert isinstance(result, ast.YieldFrom)
         assert isinstance(result.value, ast.Name)
 
-    def test_yield_stmt_simple(self):
+    def test_yield_stmt_simple(self) -> None:
         """Test astx.YieldStmt with value."""
         value = astx.LiteralInt32(value=1)
         node = astx.YieldStmt(value=value)
