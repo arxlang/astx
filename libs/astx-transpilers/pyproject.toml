@@ -1,6 +1,6 @@
 [project]
 name = "astx-transpilers"
-version = "0.21.1"  # semantic-release
+version = "0.22.0"  # semantic-release
 description = "ASTx is an agnostic expression structure for AST."
 readme = "README.md"
 authors = [
@@ -13,7 +13,7 @@ dependencies = [
   "plum-dispatch >= 2",
   "typeguard >= 4",
   "eval-type-backport >=0.2 ; python_version < '3.10'",
-  "astx == 0.21.1",  # semantic-release
+  "astx == 0.22.0",  # semantic-release
 ]
 
 [build-system]

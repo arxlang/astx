@@ -18,5 +18,5 @@ class AnyType(DataType):
 
 @public
 @typechecked
-class NoneType(DataType):
+class NoneType(AnyType):
     """NoneType data type expression."""

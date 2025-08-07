@@ -1,6 +1,21 @@
 # Release Notes
 ---
 
+# [0.22.0](https://github.com/arxlang/astx/compare/0.21.1...0.22.0) (2025-08-06)
+
+
+### Bug Fixes
+
+* Add reference to NoneType in the astx scope ([#280](https://github.com/arxlang/astx/issues/280)) ([95011da](https://github.com/arxlang/astx/commit/95011da4edc37d8d52b3bf0c3ca13526d5654456))
+
+
+### Features
+
+* Add basic ASTX to python transpiler ([#278](https://github.com/arxlang/astx/issues/278)) ([f5bb717](https://github.com/arxlang/astx/commit/f5bb717c3aa4a6c0270c73bb803655cb7cada03b))
+* add Starred operator implementation with tests ([#275](https://github.com/arxlang/astx/issues/275)) ([41c2610](https://github.com/arxlang/astx/commit/41c26107952115963220b803262bcc42a0c5048d))
+* Add the support for ellipse ([#267](https://github.com/arxlang/astx/issues/267)) ([fb2c49f](https://github.com/arxlang/astx/commit/fb2c49fa44125e66646a3ba3f7af9feca4091651))
+* **transpiler:** implement Python AST node support with basic tests ([#279](https://github.com/arxlang/astx/issues/279)) ([9a9ce00](https://github.com/arxlang/astx/commit/9a9ce009660458f1f7661ef75a384d620abcbe59))
+
 ## [0.21.1](https://github.com/arxlang/astx/compare/0.21.0...0.21.1) (2025-04-14)
 
 

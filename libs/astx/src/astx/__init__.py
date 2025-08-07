@@ -173,6 +173,7 @@ from astx.types import (
     Integer,
     ListType,
     NandOp,
+    NoneType,
     NorOp,
     NotOp,
     Number,
@@ -209,7 +210,7 @@ def get_version() -> str:
     try:
         return importlib_metadata.version(__name__)
     except importlib_metadata.PackageNotFoundError:  # pragma: no cover
-        return "0.21.1"  # semantic-release
+        return "0.22.0"  # semantic-release
 
 
 __all__ = [
@@ -322,6 +323,7 @@ __all__ = [
     "MutabilityKind",
     "NamedExpr",
     "NandOp",
+    "NoneType",
     "NorOp",
     "NotOp",
     "Number",
