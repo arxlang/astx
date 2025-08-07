@@ -260,7 +260,7 @@ class ASTxPythonTranspiler:
     def visit(self, node: astx.FunctionCall) -> str:
         """Handle FunctionCall nodes."""
         args = ", ".join([self.visit(arg) for arg in node.args])
-        return f"{node.fn.name}({args})"
+        return f"{node.fn}({args})"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionReturn) -> str:
