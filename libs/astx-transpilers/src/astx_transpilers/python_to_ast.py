@@ -771,7 +771,7 @@ class ASTxPythonASTTranspiler:
             or not hasattr(node, "args")
         ):
             return self._convert_using_unparse(node)
-        func = ast.Name(id=node.fn.name, ctx=ast.Load())
+        func = ast.Name(id=node.fn, ctx=ast.Load())
         args = [self.visit(arg) for arg in node.args]
         keywords = []
         return ast.Call(func=func, args=args, keywords=keywords)
