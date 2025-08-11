@@ -773,21 +773,11 @@ class ASTxPythonASTTranspiler:
         if hasattr(node.fn, "prototype") and hasattr(
             node.fn.prototype, "name"
         ):
-            func = ast.Name(id=node.fn.prototype.name, ctx=ast.Load())
-        elif hasattr(node.fn, "name"):
-            func = ast.Name(id=node.fn.name, ctx=ast.Load())
-        else:
-            visited_fn = self.visit(node.fn)
-            if isinstance(visited_fn, (ast.Name, ast.Attribute)):
-                func = visited_fn
-            else:
-                func = ast.Name(id="unknown_function", ctx=ast.Load())
-
-        args = []
-        if hasattr(node, "args") and node.args:
-            args = [self.visit(arg) for arg in node.args]
-
-        return ast.Call(func=func, args=args, keywords=[])
+            return self._convert_using_unparse(node)
+        func = ast.Name(id=node.fn, ctx=ast.Load())
+        args = [self.visit(arg) for arg in node.args]
+        keywords = []
+        return ast.Call(func=func, args=args, keywords=keywords)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionDef) -> ast.FunctionDef:

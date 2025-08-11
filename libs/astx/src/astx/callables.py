@@ -95,13 +95,13 @@ class Arguments(ASTNodes[Argument]):
 class FunctionCall(DataType):
     """AST class for function call."""
 
-    fn: FunctionDef
+    fn: str
     args: Iterable[DataType]
     type_: DataType = AnyType()
 
     def __init__(
         self,
-        fn: FunctionDef,
+        fn: FunctionDef | str,
         args: Iterable[DataType],
         type_: DataType = AnyType(),
         loc: SourceLocation = NO_SOURCE_LOCATION,
@@ -109,7 +109,7 @@ class FunctionCall(DataType):
     ) -> None:
         """Initialize the Call instance."""
         super().__init__(loc=loc, parent=parent)
-        self.fn = fn
+        self.fn = fn if not isinstance(fn, FunctionDef) else fn.name
         self.args = args
         self.kind = ASTKind.CallKind
         self.type_ = type_
@@ -126,7 +126,7 @@ class FunctionCall(DataType):
         for node in self.args:
             call_params.append(node.get_struct(simplified))
 
-        key = f"FUNCTION-CALL[{self.fn.name}]"
+        key = f"FUNCTION-CALL[{self.fn}]"
         value = cast(
             ReprStruct,
             {

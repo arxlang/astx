@@ -74,6 +74,7 @@ class ASTxPythonTranspiler:
         self.indent_level += 1
         result = self.visit(block)
         self.indent_level -= 1
+        return result
         if not result.strip():
             return self.indent_str * (self.indent_level + 1) + "pass"
         return result

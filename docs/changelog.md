@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.22.1](https://github.com/arxlang/astx/compare/0.22.0...0.22.1) (2025-08-07)
+
+
+### Bug Fixes
+
+* Allow the usage of string as function name with FunctionCall ([#281](https://github.com/arxlang/astx/issues/281)) ([5ce85dd](https://github.com/arxlang/astx/commit/5ce85dd7ef7450bce4127d057f31487ecad4f0eb))
+
 # [0.22.0](https://github.com/arxlang/astx/compare/0.21.1...0.22.0) (2025-08-06)
 
 
