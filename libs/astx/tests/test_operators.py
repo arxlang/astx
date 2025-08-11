@@ -14,7 +14,7 @@ from astx.operators import (
     VariableAssignment,
 )
 from astx.variables import Variable
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_assignment_expr() -> None:
@@ -27,7 +27,7 @@ def test_assignment_expr() -> None:
     assert str(assign_expr)
     assert assign_expr.get_struct()
     assert assign_expr.get_struct(simplified=True)
-    visualize(assign_expr.get_struct())
+    visualize_image(assign_expr.get_struct())
 
 
 def test_variable_assign() -> None:
@@ -38,7 +38,7 @@ def test_variable_assign() -> None:
     assert assign_a.get_struct()
     assert assign_a.get_struct(simplified=True)
 
-    visualize(assign_a.get_struct())
+    visualize_image(assign_a.get_struct())
 
 
 def test_and_op() -> None:
@@ -51,7 +51,7 @@ def test_and_op() -> None:
     assert op.get_struct()
     assert op.get_struct(simplified=True)
     assert op.get_struct() == (lhs & rhs).get_struct()
-    visualize(op.get_struct())
+    visualize_image(op.get_struct())
 
 
 def test_or_op() -> None:
@@ -64,7 +64,7 @@ def test_or_op() -> None:
     assert op.get_struct()
     assert op.get_struct(simplified=True)
     assert op.get_struct() == (lhs | rhs).get_struct()
-    visualize(op.get_struct())
+    visualize_image(op.get_struct())
 
 
 def test_xor_op() -> None:
@@ -77,7 +77,7 @@ def test_xor_op() -> None:
     assert op.get_struct()
     assert op.get_struct(simplified=True)
     assert op.get_struct() == (lhs ^ rhs).get_struct()
-    visualize(op.get_struct())
+    visualize_image(op.get_struct())
 
 
 def test_nand_op() -> None:
@@ -89,7 +89,7 @@ def test_nand_op() -> None:
     assert str(op)
     assert op.get_struct()
     assert op.get_struct(simplified=True)
-    visualize(op.get_struct())
+    visualize_image(op.get_struct())
 
 
 def test_nor_op() -> None:
@@ -101,7 +101,7 @@ def test_nor_op() -> None:
     assert str(op)
     assert op.get_struct()
     assert op.get_struct(simplified=True)
-    visualize(op.get_struct())
+    visualize_image(op.get_struct())
 
 
 def test_xnor_op() -> None:
@@ -113,7 +113,7 @@ def test_xnor_op() -> None:
     assert str(op)
     assert op.get_struct()
     assert op.get_struct(simplified=True)
-    visualize(op.get_struct())
+    visualize_image(op.get_struct())
 
 
 def test_not_op() -> None:
@@ -124,7 +124,7 @@ def test_not_op() -> None:
     assert str(op)
     assert op.get_struct()
     assert op.get_struct(simplified=True)
-    visualize(op.get_struct())
+    visualize_image(op.get_struct())
 
 
 @pytest.mark.parametrize(

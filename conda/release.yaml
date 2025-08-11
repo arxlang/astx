@@ -3,7 +3,7 @@ channels:
   - nodefaults
   - conda-forge
 dependencies:
-  - graphviz
+  - graphviz >=13
   - python >=3.9,<3.13
   - openjdk
   - poetry >=2

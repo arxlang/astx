@@ -3,7 +3,7 @@
 import astx
 
 from astx import ASTKind
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_list_comprehension() -> None:
@@ -36,7 +36,7 @@ def test_list_comprehension() -> None:
     assert str(list_compre)
     assert list_compre.get_struct()
     assert list_compre.get_struct(simplified=True)
-    visualize(list_compre.get_struct())
+    visualize_image(list_compre.get_struct())
 
 
 def test_generator_expr() -> None:
@@ -82,7 +82,7 @@ def test_generator_expr() -> None:
     assert str(gen_expr)
     assert gen_expr.get_struct()
     assert gen_expr.get_struct(simplified=True)
-    visualize(gen_expr.get_struct())
+    visualize_image(gen_expr.get_struct())
 
 
 def test_set_comprehension() -> None:

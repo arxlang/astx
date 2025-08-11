@@ -1,117 +1,60 @@
 """
 AST graphic representation Module.
 
-This module provides utilities for converting an Abstract Syntax Tree (AST),
-represented as a nested Python dictionary, to a Graphviz dot graph which
-can be displayed inline in a Jupyter notebook, or as an ascii representation
-directly in the console.
+This module provides utilities for converting an Abstract Syntax Tree (AST)
+to Mermaid for inline display in Jupyter (Lab ≥4.1 / NB ≥7.1) and to ASCII
+via the `mermaid-ascii` CLI.
 """
 
 from __future__ import annotations
 
-import re
-import types
+import hashlib
+import shutil
+import subprocess
 
-from typing import Optional, cast
+from typing import Literal, Optional, cast
 
-import requests
-
-from asciinet import (
-    Timeout,
-    _asciigraph,
-    _AsciiGraphProxy,
-)
-from graphviz import Digraph
-from IPython.display import Image, display
-from msgpack import dumps, loads
+from IPython.display import display as _display
 
 from astx.base import DictDataTypesStruct, ReprStruct
 
+Direction = Literal["TD", "LR"]
 
-def traverse_ast_ascii(
+
+def _stable_id(label: str, ref: str, content: object) -> str:
+    """Build a stable-ish node id from label/ref/content."""
+    h = hashlib.md5(
+        f"{label}|{ref}|{type(content).__name__}|{content!r}".encode(),
+        usedforsecurity=False,
+    ).hexdigest()
+    return f"N{h[:10]}"
+
+
+def _esc(s: str) -> str:
+    """Escape quotes for Mermaid labels."""
+    return str(s).replace('"', r"\"")
+
+
+def _traverse_ast_to_mermaid(
     ast: ReprStruct,
-    graph: Optional[Digraph] = None,
+    lines: Optional[list[str]] = None,
     parent: Optional[str] = None,
-    shape: str = "box",
-) -> Digraph:
-    """
-    Traverse the AST and build a Graphviz graph for ascii representation.
-
-    Parameters
-    ----------
-    ast : dict
-        The AST as a nested dictionary (full structure version).
-    graph : Digraph
-        The Graphviz graph object.
-    parent : str, optional
-        The identifier of the parent node in the graph, by default
-        it is an empty string
-    shape: str, options: ellipse, box, circle, diamond
-        The shape used for the nodes in the graph. Default "box".
-
-    Returns
-    -------
-    Digraph
-        Graphviz (dot) graph representation.
-    """
-    if not graph:
-        graph = Digraph()
-        graph.attr(rankdir="TB")
-
-    if isinstance(ast, list):
-        for item in ast:
-            traverse_ast_ascii(cast(ReprStruct, item), graph, parent, shape)
-    elif isinstance(ast, dict):
-        for key, value in ast.items():
-            if not parent:
-                node_name = f"{hash(key)}"
-            else:
-                if parent.find("_"):
-                    node_name = f"{parent[parent.find('_') + 1 :]}_{hash(key)}"
-                else:
-                    node_name = f"{parent}_{hash(key)}"
-                graph.edge(parent, node_name)
-
-            graph.node(node_name, label=key, shape=shape)
-            traverse_ast_ascii(
-                cast(ReprStruct, value), graph, node_name, shape
-            )
-    return graph
-
-
-def traverse_ast_to_graphviz(
-    ast: ReprStruct,
-    graph: Optional[Digraph] = None,
-    parent: Optional[str] = None,
-    shape: str = "box",
     edge_label: str = "",
-) -> Digraph:
+) -> list[str]:
     """
-    Traverse the AST and build a Graphviz graph for png representation.
+    DFS traversal that emits Mermaid node and edge lines.
 
-    Parameters
-    ----------
-    ast : dict
-        The AST as a nested dictionary (full structure version).
-    graph : Digraph
-        The Graphviz graph object.
-    parent : str, optional
-        The identifier of the parent node in the graph, by default
-        it is an empty string
-    shape: str, options: ellipse, box, circle, diamond
-        The shape used for the nodes in the graph. Default "box".
-
-    Returns
-    -------
-    Digraph
-        Graphviz (dot) graph representation.
+    Notes
+    -----
+      - Expects the caller to initialize `lines` with the graph header.
+      - Treats entries without 'metadata' as edge labels to their children.
     """
-    if not graph:
-        graph = Digraph()
-        graph.attr(rankdir="TB")
+    if lines is None:
+        # caller should pass the header; keep guard for safety
+        lines = ["graph TD"]
 
     if not isinstance(ast, dict):
-        return graph.unflatten(stagger=3)
+        return lines
 
     for key, full_value in ast.items():
         if not isinstance(full_value, dict):
@@ -119,274 +62,151 @@ def traverse_ast_to_graphviz(
 
         content = full_value.get("content", "")
         metadata = cast(DictDataTypesStruct, full_value.get("metadata", {}))
-        ref = ""
 
+        # Edge-only dict: carry the key as the edge label downward.
         if not metadata:
-            # if the node doesn't have a metadata, it is a edge
-            traverse_ast_to_graphviz(
-                full_value,
-                graph,
-                parent,
-                shape=shape,
-                edge_label=key,
-            )
+            _traverse_ast_to_mermaid(full_value, lines, parent, edge_label=key)
             continue
 
         ref = cast(str, metadata.get("ref", ""))
-
-        node_name = f"{hash(key)}_{hash(str(ref))}_{hash(str(content))}"
-        graph.node(node_name, key, shape=shape)
+        node_id = _stable_id(key, ref, content)
+        lines.append(f'{node_id}["{_esc(key)}"]')
 
         if parent:
-            graph_params = {"label": edge_label} if edge_label else {}
-            graph.edge(parent, node_name, **graph_params)
+            if edge_label:
+                lines.append(f'{parent} -- "{_esc(edge_label)}" --> {node_id}')
+            else:
+                lines.append(f"{parent} --> {node_id}")
 
         if isinstance(content, dict):
-            traverse_ast_to_graphviz(content, graph, node_name, shape=shape)
-            continue
-        elif not isinstance(content, list):
-            continue
+            _traverse_ast_to_mermaid(content, lines, parent=node_id)
+        elif isinstance(content, list):
+            for item in content:
+                if isinstance(item, dict):
+                    _traverse_ast_to_mermaid(item, lines, parent=node_id)
 
-        for item in content:
-            if isinstance(item, dict):
-                traverse_ast_to_graphviz(item, graph, node_name, shape=shape)
-    return graph
+    return lines
 
 
-def visualize(ast: ReprStruct, shape: str = "box") -> None:
+def ast_to_mermaid(ast: ReprStruct, direction: Direction = "TD") -> str:
     """
-    Visualize the abstract syntax tree (AST) using graphviz.
+    Convert an AST (ReprStruct) into a Mermaid graph definition.
 
     Parameters
     ----------
-    ast: dict
-            The AST as a nested dictionary
-    shape: str, options: ellipse, box, circle, diamond.
-        The shape used for the nodes in the graph. Default "box".
-    """
-    graph = traverse_ast_to_graphviz(ast, shape=shape)
-    image = Image(  # type: ignore[no-untyped-call]
-        graph.unflatten(stagger=3).pipe(format="png")
-    )
-    display(image)  # type: ignore[no-untyped-call]
-
-
-def make_node_box(modhash_label_mapping: list[tuple[str, str]]) -> str:
-    """
-    Make ascii representation for one-node ASTs.
-
-    Parameters
-    ----------
-    modhash_label_mapping : list
-        Mapping between node hash and label.
+    ast : ReprStruct
+        The AST structure.
+    direction : Literal["TD", "LR"]
+        Mermaid layout direction. Use "TD" (top-down) or "LR" (left-right).
 
     Returns
     -------
     str
-        The ascii graph representation as a string.
-
+        Mermaid source text starting with `graph TD` or `graph LR`.
     """
-    label = modhash_label_mapping[0][1]
-    box_width = len(label) + 2
-    space_before_box = " " * 4
-    box_upper = space_before_box + "┌" + "─" * box_width + "┐"
-    box_middle = space_before_box + "│ " + label + " │"
-    box_lower = space_before_box + "└" + "─" * box_width + "┘"
-    box = [box_upper, box_middle, box_lower]
-    node = "\n".join(box)
-    return node
+    if direction not in ("TD", "LR"):
+        raise ValueError('direction must be "TD" or "LR"')
+    lines: list[str] = [f"graph {direction}"]
+    _traverse_ast_to_mermaid(ast, lines=lines)
+    # ensure trailing newline so some parsers don't choke on last line
+    return "\n".join(lines) + "\n"
 
 
-def graph_to_ascii_overload(
-    self: _AsciiGraphProxy, graph: Digraph, timeout: int = 10
+def visualize_image(ast: ReprStruct, direction: Direction = "TD") -> None:
+    """
+    Display the AST as Mermaid inline in Jupyter (Lab ≥4.1 / NB ≥7.1).
+
+    Parameters
+    ----------
+    ast : ReprStruct
+        The AST structure.
+    direction : Literal["TD", "LR"]
+        Layout direction for the rendered graph.
+    """
+    _display(  # type: ignore
+        {"text/vnd.mermaid": ast_to_mermaid(ast, direction=direction)},
+        raw=True,
+    )
+
+
+def _find_mermaid_ascii() -> str:
+    """Resolve the `mermaid-ascii` CLI path or raise a clear error."""
+    exe = shutil.which("mermaid-ascii") or shutil.which("mermaid-ascii.exe")
+    if not exe:
+        raise RuntimeError(
+            "mermaid-ascii CLI not found. Install the PyPI package that ships "
+            "the binary, or put `mermaid-ascii` on PATH."
+        )
+    return exe
+
+
+def visualize_ascii(
+    ast: ReprStruct,
+    timeout: int = 10,
+    direction: Direction = "TD",
+    width: Optional[int] = None,
+    padding: Optional[int] = None,
+    ascii_only: bool = False,
 ) -> str:
     """
-    Overload asciinet.graph_to_ascii function.
-
-    Create an ascii representation of the abstract syntax tree (AST).
-    This function is suitable for usage with ASTs with multiple nodes
-    with the same label.
+    Render the AST to ASCII using the `mermaid-ascii` CLI.
 
     Parameters
     ----------
-    graph : Digraph
-        The Graphviz graph object.
+    ast : ReprStruct
+        The AST structure.
     timeout : int
-        Time limit in seconds for requests.post. Default is 10 seconds.
+        Subprocess timeout in seconds (default 10).
+    direction : Literal["TD", "LR"]
+        Layout direction passed via the Mermaid header.
+    width : Optional[int]
+        Extra horizontal spacing (maps to `-x` in mermaid-ascii). None default.
+    padding : Optional[int]
+        Box padding (maps to `-p` in mermaid-ascii). None = default.
+    ascii_only : bool
+        If True, add `--ascii` to force ASCII (no Unicode box characters).
 
     Returns
     -------
     str
-        The ascii graph representation as a string.
+        The ASCII diagram string.
 
+    Raises
+    ------
+    RuntimeError
+        If the `mermaid-ascii` process fails.
     """
-    try:
-        nodes_modhash, edges_modhash, modhash_label_mapping = get_hash_labels(
-            graph
-        )
+    exe = _find_mermaid_ascii()
+    src = ast_to_mermaid(ast, direction=direction)
 
-        # assuming there won't be more than one node with no edges
-        if not edges_modhash:
-            node = make_node_box(modhash_label_mapping)
-            return node
+    cmd = [exe]
+    if width is not None:
+        cmd += ["-x", str(width)]
+    if padding is not None:
+        cmd += ["-p", str(padding)]
+    if ascii_only:
+        cmd += ["--ascii"]
 
-        # Prepare the graph ascii repr
-        graph_repr = dumps({"vertices": nodes_modhash, "edges": edges_modhash})
-        response = requests.post(self._url, data=graph_repr, timeout=timeout)
-        success = 200
-        if response.status_code == success:
-            graph_str = loads(response.content)
-        else:
-            raise ValueError(
-                "Internal error: \n{0}".format(response.content.decode())
-            )
+    proc = subprocess.run(
+        cmd,
+        input=src,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=timeout,
+        check=False,
+    )
 
-        # substitute modhash by labels in the ascii representation
-        graph_list = list(graph_str)
-        for modhash, label in modhash_label_mapping:
-            start = graph_str.index(modhash)
-            end = graph_str.index(modhash) + (len(modhash))
-            graph_list[start:end] = label
+    if proc.returncode != 0:
+        # Provide a helpful hint if the header is wrong.
+        hint = ""
+        first = src.splitlines()[0].strip() if src else ""
+        if "first line should define the graph" in (proc.stderr or ""):
+            hint = f" (first line is {first!r}; try 'graph TD' or 'graph LR')"
+        raise RuntimeError((proc.stderr or "mermaid-ascii failed.") + hint)
 
-        graph = "".join(graph_list)
-        return graph  # type: ignore[no-any-return]
+    if proc.stderr:
+        # treat non-empty stderr as error; keeps behavior explicit
+        raise RuntimeError(proc.stderr.strip())
 
-    except (ConnectionError, Timeout):
-        self._restart()
-        raise ValueError("Could not convert graph to ASCII")
-
-
-def get_hash_labels(
-    graph: Digraph,
-) -> tuple[list[str], list[tuple[str, str]], list[tuple[str, str]]]:
-    """
-    Get hash and labels from Digraph for ascii AST representation.
-
-    Parameters
-    ----------
-    graph : Digraph
-        The Graphviz graph object.
-
-    Returns
-    -------
-    list
-        Hash for ascii representation nodes.
-    list
-        Hash for ascii representation edges.
-    list
-        Mapping between nodes hash and labels.
-    """
-    dot_lines = graph.source.splitlines()
-    nodes_modhash = []
-    edges_modhash = []
-    sources_hash = []
-    targets_hash = []
-    modhash_label_mapping = []
-    hash_modhash_mapping = []
-
-    for dot_line in dot_lines:
-        line = dot_line.strip().strip(";")
-        if "label" in line:
-            node_label = re.findall(r"(?<=label=).*(?= )", line)[0].replace(
-                '"', ""
-            )
-
-            # all labels must be at least 7 characters long
-            node_label = node_label.center(7, " ")
-            len_label = len(node_label)
-
-            # each node modhash will have the same length as the node label
-            # and will consist of parts of the hash from both the parent
-            # (if it exists) and child nodes, separated by underscore.
-            node_hash = line.split("[")[0].strip().replace('"', "")
-            if "_" not in node_hash:  # if it's the first node
-                if len_label <= len(node_hash):
-                    x = len_label
-                    node_modhash = node_hash[:x]
-                else:
-                    node_modhash = node_hash + " " * (
-                        len_label - len(node_hash)
-                    )
-            else:  # if it's connected before and after
-                hash1, hash2 = node_hash.split("_")
-                len_hash2 = len(hash2)
-                len_hash1 = len(hash1)
-                min_chars_hash1 = 3
-
-                standard_label_len = (min_chars_hash1 + len_hash2) + 1
-                long_label_len = len_hash1 + len_hash2 + 1
-                # short label:
-                # modhash will have 3 chars of hash1 and some part of hash2
-                if len_label <= standard_label_len:
-                    nchars_hash2 = len_label - (min_chars_hash1 + 1)
-                    node_modhash = (
-                        f"{hash1[:min_chars_hash1]}_{hash2[:nchars_hash2]}"
-                    )
-                # medium label:
-                # modhash will have more than 3 chars of hash1 and all of hash2
-                elif (len_label > standard_label_len) & (
-                    len_label <= long_label_len
-                ):
-                    nchars_hash1 = (
-                        len_label - standard_label_len + min_chars_hash1
-                    )
-                    node_modhash = f"{hash1[:nchars_hash1]}_{hash2}"
-                # long label:
-                # modhash will have all of hash1, all of hash2,
-                # plus some additional chars
-                else:
-                    nchars = len_label - long_label_len
-                    add_chars = "x" * nchars
-                    node_modhash = f"{hash1}_{hash2}{add_chars}"
-
-            nodes_modhash.append(node_modhash)
-            hash_modhash_mapping.append((node_hash, node_modhash))
-            modhash_label_mapping.append((node_modhash, node_label))
-
-        elif "->" in line:
-            source_hash, target_hash = line.split("->")
-            sources_hash.append(source_hash.strip().replace('"', ""))
-            targets_hash.append(target_hash.strip().replace('"', ""))
-
-    for source_hash, target_hash in zip(sources_hash, targets_hash):
-        source_modhash = next(
-            modhash
-            for hash_, modhash in hash_modhash_mapping
-            if source_hash == hash_
-        )
-        target_modhash = next(
-            modhash
-            for hash_, modhash in hash_modhash_mapping
-            if target_hash == hash_
-        )
-
-        edges_modhash.append((source_modhash, target_modhash))
-
-    return nodes_modhash, edges_modhash, modhash_label_mapping
-
-
-def graph_to_ascii(graph: Digraph, timeout: int = 10) -> str:
-    """
-    Wrap function for graph_to_ascii.
-
-    Create an ascii representation of the abstract syntax tree (AST).
-
-    Parameters
-    ----------
-    graph : Digraph
-        The Graphviz graph object.
-    timeout : int
-        Time limit in seconds for requests.post. Default is 10 seconds.
-    """
-    if not isinstance(graph, Digraph):
-        raise ValueError(
-            f"Graph must be a graphviz.Digraph (`{type(graph)}` was given.)"
-        )
-
-    result = _asciigraph.graph_to_ascii(graph, timeout=timeout)
-    return f"\n{result}\n"
-
-
-_asciigraph.graph_to_ascii = types.MethodType(
-    graph_to_ascii_overload, _asciigraph
-)
+    return proc.stdout

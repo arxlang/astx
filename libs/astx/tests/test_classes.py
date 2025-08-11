@@ -13,7 +13,7 @@ from astx.classes import (
 from astx.literals import LiteralInt32
 from astx.types.base import AnyType
 from astx.variables import Variable, VariableDeclaration
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_class_decl() -> None:
@@ -31,7 +31,7 @@ def test_class_decl() -> None:
     assert str(class_decl)
     assert class_decl.get_struct()
     assert class_decl.get_struct(simplified=True)
-    visualize(class_decl.get_struct())
+    visualize_image(class_decl.get_struct())
 
 
 def test_class_def() -> None:
@@ -65,7 +65,7 @@ def test_class_def() -> None:
     assert str(class_def)
     assert class_def.get_struct()
     assert class_def.get_struct(simplified=True)
-    visualize(class_def.get_struct())
+    visualize_image(class_def.get_struct())
 
 
 def test_enum_decl() -> None:
@@ -98,7 +98,7 @@ def test_enum_decl() -> None:
     assert str(enum_decl)
     assert enum_decl.get_struct()
     assert enum_decl.get_struct(simplified=True)
-    visualize(enum_decl.get_struct())
+    visualize_image(enum_decl.get_struct())
 
 
 def test_struct_decl() -> None:
@@ -120,7 +120,7 @@ def test_struct_decl() -> None:
     assert str(struct_decl)
     assert struct_decl.get_struct()
     assert struct_decl.get_struct(simplified=True)
-    visualize(struct_decl.get_struct())
+    visualize_image(struct_decl.get_struct())
 
 
 def test_struct_def() -> None:
@@ -143,4 +143,4 @@ def test_struct_def() -> None:
     assert str(struct_def)
     assert struct_def.get_struct()
     assert struct_def.get_struct(simplified=True)
-    visualize(struct_def.get_struct())
+    visualize_image(struct_def.get_struct())

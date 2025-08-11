@@ -144,24 +144,6 @@ doc = ["doc8", "sphinx (>=7.0.0)", "sphinx-autobuild", "sphinx-autodoc-typehints
 test = ["dateparser (==1.*)", "pre-commit", "pytest", "pytest-cov", "pytest-mock", "pytz (==2021.1)", "simplejson (==3.*)"]
 
 [[package]]
-name = "asciinet"
-version = "0.3.1"
-description = "A wrapper around the scala ascii-graphs library"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "asciinet-0.3.1-py3-none-any.whl", hash = "sha256:0aa8754ee9d9eff839f3f6dc3c25f79f486eea5bdd7c1aef4f88062b727b8dbd"},
-    {file = "asciinet-0.3.1.tar.gz", hash = "sha256:9830641c81c5b7930c442d7fee4add01fc0518fc4f2f5e5d53de866010074a41"},
-]
-
-[package.dependencies]
-msgpack-python = ">=0.4.2"
-natsort = ">=3.2.0"
-networkx = ">=1.9"
-requests = ">=2.3.0"
-
-[[package]]
 name = "asttokens"
 version = "3.0.0"
 description = "Annotate AST trees with source code positions"
@@ -179,7 +161,7 @@ test = ["astroid (>=2,<4)", "pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
 name = "astx"
-version = "0.20.0"
+version = "0.22.1"
 description = "ASTx is an agnostic expression structure for AST."
 optional = false
 python-versions = ">=3.9,<4"
@@ -188,10 +170,10 @@ files = []
 develop = true
 
 [package.dependencies]
-asciinet = ">=0.3.1"
 atpublic = ">=4.0"
 eval-type-backport = {version = ">=0.2", markers = "python_version < \"3.10\""}
-graphviz = ">=0.20.1"
+graphviz = ">=0.21"
+mermaid-ascii = ">=0.6.1"
 msgpack = ">=1"
 plum-dispatch = ">=2"
 typeguard = ">=4"
@@ -202,7 +184,7 @@ url = "libs/astx"
 
 [[package]]
 name = "astx-transpilers"
-version = "0.20.0"
+version = "0.22.1"
 description = "ASTx is an agnostic expression structure for AST."
 optional = false
 python-versions = ">=3.9,<4"
@@ -211,7 +193,7 @@ files = []
 develop = true
 
 [package.dependencies]
-astx = "0.20.0"
+astx = "0.22.1"
 atpublic = ">=4.0"
 eval-type-backport = {version = ">=0.2", markers = "python_version < \"3.10\""}
 plum-dispatch = ">=2"
@@ -459,7 +441,7 @@ version = "2025.1.31"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.6"
-groups = ["main", "dev"]
+groups = ["dev"]
 files = [
     {file = "certifi-2025.1.31-py3-none-any.whl", hash = "sha256:ca78db4565a652026a4db2bcdf68f2fb589ea80d0be70e03929ed730746b84fe"},
     {file = "certifi-2025.1.31.tar.gz", hash = "sha256:3d5da6925056f6f18f119200434a4780a94263f10d1c21d032a6f6b2baa20651"},
@@ -563,7 +545,7 @@ version = "3.4.1"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
 optional = false
 python-versions = ">=3.7"
-groups = ["main", "dev"]
+groups = ["dev"]
 files = [
     {file = "charset_normalizer-3.4.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:91b36a978b5ae0ee86c394f5a54d6ef44db1de0815eb43de826d41d21e4af3de"},
     {file = "charset_normalizer-3.4.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7461baadb4dc00fd9e0acbe254e3d7d2112e7f92ced2adc96e54ef6501c5f176"},
@@ -1031,19 +1013,19 @@ dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
 name = "graphviz"
-version = "0.20.3"
+version = "0.21"
 description = "Simple Python interface for Graphviz"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["main", "dev"]
 files = [
-    {file = "graphviz-0.20.3-py3-none-any.whl", hash = "sha256:81f848f2904515d8cd359cc611faba817598d2feaac4027b266aa3eda7b3dde5"},
-    {file = "graphviz-0.20.3.zip", hash = "sha256:09d6bc81e6a9fa392e7ba52135a9d49f1ed62526f96499325930e87ca1b5925d"},
+    {file = "graphviz-0.21-py3-none-any.whl", hash = "sha256:54f33de9f4f911d7e84e4191749cac8cc5653f815b06738c54db9a15ab8b1e42"},
+    {file = "graphviz-0.21.tar.gz", hash = "sha256:20743e7183be82aaaa8ad6c93f8893c923bd6658a04c32ee115edb3c8a835f78"},
 ]
 
 [package.extras]
-dev = ["flake8", "pep8-naming", "tox (>=3)", "twine", "wheel"]
-docs = ["sphinx (>=5,<7)", "sphinx-autodoc-typehints", "sphinx-rtd-theme"]
+dev = ["Flake8-pyproject", "build", "flake8", "pep8-naming", "tox (>=3)", "twine", "wheel"]
+docs = ["sphinx (>=5,<7)", "sphinx-autodoc-typehints", "sphinx-rtd-theme (>=0.2.5)"]
 test = ["coverage", "pytest (>=7,<8.1)", "pytest-cov", "pytest-mock (>=3)"]
 
 [[package]]
@@ -1229,7 +1211,7 @@ version = "3.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
 optional = false
 python-versions = ">=3.6"
-groups = ["main", "dev"]
+groups = ["dev"]
 files = [
     {file = "idna-3.10-py3-none-any.whl", hash = "sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3"},
     {file = "idna-3.10.tar.gz", hash = "sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"},
@@ -1831,14 +1813,14 @@ rapidfuzz = ">=3.9.0,<4.0.0"
 
 [[package]]
 name = "makim"
-version = "1.25.0"
-description = "Simplify the usage of containers"
+version = "1.27.0"
+description = "A tool that helps organize and simplify helper commands using YAML configuration"
 optional = false
 python-versions = "<4,>=3.9"
 groups = ["dev"]
 files = [
-    {file = "makim-1.25.0-py3-none-any.whl", hash = "sha256:c24a5b633445172c00fc46be3311f075b95f8755690f19644550d8bdcf8d30c0"},
-    {file = "makim-1.25.0.tar.gz", hash = "sha256:7c14c8797dd5f45d3d66326518f61d6aa14aeb5ab621613038e603adca43bd84"},
+    {file = "makim-1.27.0-py3-none-any.whl", hash = "sha256:df7f26d262ec7f4abc668584b055410c47eb737677a8eb1bfb21a3c1b48149d3"},
+    {file = "makim-1.27.0.tar.gz", hash = "sha256:10a5608d4ac836122f16b2e9e9b3eae6134715c88f0a6fb76d42d1961685df07"},
 ]
 
 [package.dependencies]
@@ -2042,6 +2024,18 @@ groups = ["dev"]
 files = [
     {file = "mergedeep-1.3.4-py3-none-any.whl", hash = "sha256:70775750742b25c0d8f36c55aed03d24c3384d17c951b3175d898bd778ef0307"},
     {file = "mergedeep-1.3.4.tar.gz", hash = "sha256:0096d52e9dad9939c3d975a774666af186eda617e6ca84df4c94dec30004f2a8"},
+]
+
+[[package]]
+name = "mermaid-ascii"
+version = "0.6.1"
+description = "Mermaid-ASCII (GoLang) wrapped in a Python Package"
+optional = false
+python-versions = "<4,>=3.9"
+groups = ["main"]
+files = [
+    {file = "mermaid_ascii-0.6.1-cp311-cp311-manylinux_2_39_x86_64.whl", hash = "sha256:477a79a3025bc98d402f9221443ed99199b67c0cfbd5664dbb14ca6b8adae01b"},
+    {file = "mermaid_ascii-0.6.1.tar.gz", hash = "sha256:fd48a7473444ea97e9f770b77752c6382a78f20ab37248248e632c2f90e135d2"},
 ]
 
 [[package]]
@@ -2374,17 +2368,6 @@ files = [
 ]
 
 [[package]]
-name = "msgpack-python"
-version = "0.5.6"
-description = "MessagePack (de)serializer."
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "msgpack-python-0.5.6.tar.gz", hash = "sha256:378cc8a6d3545b532dfd149da715abae4fda2a3adb6d74e525d0d5e51f46909b"},
-]
-
-[[package]]
 name = "mypy"
 version = "1.15.0"
 description = "Optional static typing for Python"
@@ -2449,22 +2432,6 @@ files = [
     {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
     {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
 ]
-
-[[package]]
-name = "natsort"
-version = "8.4.0"
-description = "Simple yet flexible natural sorting in Python."
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "natsort-8.4.0-py3-none-any.whl", hash = "sha256:4732914fb471f56b5cce04d7bae6f164a592c7712e1c85f9ef585e197299521c"},
-    {file = "natsort-8.4.0.tar.gz", hash = "sha256:45312c4a0e5507593da193dedd04abb1469253b601ecaf63445ad80f0a1ea581"},
-]
-
-[package.extras]
-fast = ["fastnumbers (>=2.0.0)"]
-icu = ["PyICU (>=1.0.0)"]
 
 [[package]]
 name = "nbclient"
@@ -2579,25 +2546,6 @@ files = [
     {file = "nest_asyncio-1.6.0-py3-none-any.whl", hash = "sha256:87af6efd6b5e897c81050477ef65c62e2b2f35d51703cae01aff2905b1852e1c"},
     {file = "nest_asyncio-1.6.0.tar.gz", hash = "sha256:6f172d5449aca15afd6c646851f4e31e02c598d553a667e38cafa997cfec55fe"},
 ]
-
-[[package]]
-name = "networkx"
-version = "3.2.1"
-description = "Python package for creating and manipulating graphs and networks"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "networkx-3.2.1-py3-none-any.whl", hash = "sha256:f18c69adc97877c42332c170849c96cefa91881c99a7cb3e95b7c659ebdc1ec2"},
-    {file = "networkx-3.2.1.tar.gz", hash = "sha256:9f1bb5cf3409bf324e0a722c20bdb4c20ee39bf1c30ce8ae499c8502b0b5e0c6"},
-]
-
-[package.extras]
-default = ["matplotlib (>=3.5)", "numpy (>=1.22)", "pandas (>=1.4)", "scipy (>=1.9,!=1.11.0,!=1.11.1)"]
-developer = ["changelist (==0.4)", "mypy (>=1.1)", "pre-commit (>=3.2)", "rtoml"]
-doc = ["nb2plots (>=0.7)", "nbconvert (<7.9)", "numpydoc (>=1.6)", "pillow (>=9.4)", "pydata-sphinx-theme (>=0.14)", "sphinx (>=7)", "sphinx-gallery (>=0.14)", "texext (>=0.6.7)"]
-extra = ["lxml (>=4.6)", "pydot (>=1.4.2)", "pygraphviz (>=1.11)", "sympy (>=1.10)"]
-test = ["pytest (>=7.2)", "pytest-cov (>=4.0)"]
 
 [[package]]
 name = "nodeenv"
@@ -3453,7 +3401,7 @@ version = "2.32.3"
 description = "Python HTTP for Humans."
 optional = false
 python-versions = ">=3.8"
-groups = ["main", "dev"]
+groups = ["dev"]
 files = [
     {file = "requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6"},
     {file = "requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"},
@@ -4195,7 +4143,7 @@ version = "2.3.0"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
 python-versions = ">=3.9"
-groups = ["main", "dev"]
+groups = ["dev"]
 files = [
     {file = "urllib3-2.3.0-py3-none-any.whl", hash = "sha256:1cee9ad369867bfdbbb48b7dd50374c0967a0bb7710050facf0dd6911440e3df"},
     {file = "urllib3-2.3.0.tar.gz", hash = "sha256:f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d"},
@@ -4406,4 +4354,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4"
-content-hash = "eb2bac405c30b7a2f4880e9e28c649b5c05a72f3dcad1ba496407613e96a6e82"
+content-hash = "e7914b13d39c04550555635f5e7d42a34f06c07bab2671750ee542922aa22a77"

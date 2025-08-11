@@ -23,7 +23,7 @@ from astx.modifiers import ScopeKind, VisibilityKind
 from astx.types.numeric import Int32
 from astx.types.operators import BinaryOp, UnaryOp
 from astx.variables import InlineVariableDeclaration, Variable
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_functiondef_creation_with_no_modifiers() -> None:
@@ -47,7 +47,7 @@ def test_functiondef_creation_with_no_modifiers() -> None:
     assert fn.get_struct()
     assert fn.get_struct(simplified=True)
 
-    visualize(fn.get_struct())
+    visualize_image(fn.get_struct())
 
 
 def test_functiondef_creation_with_modifiers() -> None:
@@ -68,7 +68,7 @@ def test_functiondef_creation_with_modifiers() -> None:
     assert fn.get_struct()
     assert fn.get_struct(simplified=True)
 
-    visualize(fn.get_struct())
+    visualize_image(fn.get_struct())
 
 
 def test_function_call() -> None:
@@ -145,7 +145,7 @@ def test_functionasync_creation_with_no_modifiers() -> None:
     assert fn.get_struct()
     assert fn.get_struct(simplified=True)
 
-    visualize(fn.get_struct())
+    visualize_image(fn.get_struct())
 
 
 def test_await_expr() -> None:
@@ -155,7 +155,7 @@ def test_await_expr() -> None:
     assert str(await_expr)
     assert await_expr.get_struct()
     assert await_expr.get_struct(simplified=True)
-    visualize(await_expr.get_struct())
+    visualize_image(await_expr.get_struct())
 
 
 def test_yield_expr() -> None:
@@ -165,7 +165,7 @@ def test_yield_expr() -> None:
     assert str(yield_expr)
     assert yield_expr.get_struct()
     assert yield_expr.get_struct(simplified=True)
-    visualize(yield_expr.get_struct())
+    visualize_image(yield_expr.get_struct())
 
 
 def test_yieldfrom_expr() -> None:
@@ -175,7 +175,7 @@ def test_yieldfrom_expr() -> None:
     assert str(yieldfrom_expr)
     assert yieldfrom_expr.get_struct()
     assert yieldfrom_expr.get_struct(simplified=True)
-    visualize(yieldfrom_expr.get_struct())
+    visualize_image(yieldfrom_expr.get_struct())
 
 
 def test_yield_stmt_basic() -> None:
@@ -185,7 +185,7 @@ def test_yield_stmt_basic() -> None:
     assert str(yield_stmt) == "YieldStmt"
     assert yield_stmt.get_struct()
     assert yield_stmt.get_struct(simplified=True)
-    visualize(yield_stmt.get_struct())
+    visualize_image(yield_stmt.get_struct())
 
 
 def test_yield_stmt_with_value() -> None:
@@ -195,7 +195,7 @@ def test_yield_stmt_with_value() -> None:
     assert str(yield_stmt)
     assert yield_stmt.get_struct()
     assert yield_stmt.get_struct(simplified=True)
-    visualize(yield_stmt.get_struct())
+    visualize_image(yield_stmt.get_struct())
 
 
 def test_yield_stmt_with_expression() -> None:
@@ -207,7 +207,7 @@ def test_yield_stmt_with_expression() -> None:
     assert str(yield_stmt)
     assert yield_stmt.get_struct()
     assert yield_stmt.get_struct(simplified=True)
-    visualize(yield_stmt.get_struct())
+    visualize_image(yield_stmt.get_struct())
 
 
 def test_yield_stmt_in_generator_block() -> None:
@@ -238,4 +238,4 @@ def test_yield_stmt_in_generator_block() -> None:
     assert len(gen_block) == EXPECTED_BLOCK_LENGTH
     assert isinstance(gen_block[1], WhileStmt)
     assert str(gen_block[1].body[0])
-    visualize(gen_block.get_struct())
+    visualize_image(gen_block.get_struct())

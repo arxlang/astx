@@ -3,7 +3,7 @@ channels:
   - nodefaults
   - conda-forge
 dependencies:
-  - graphviz
+  - graphviz >=13
   - openjdk # java is required by asciinet
   - python
   - poetry >=2
