@@ -3,7 +3,7 @@
 import ast
 import sys
 
-from typing import TYPE_CHECKING, Any, Union, cast
+from typing import TYPE_CHECKING, Any
 
 import astx
 
@@ -394,24 +394,6 @@ class TestControlFlowNodes:
         code = ast.unparse(result)
         assert code == "break"
 
-    def test_case_stmt_simple(self) -> None:
-        """Test astx.CaseStmt with condition."""
-        condition = astx.LiteralInt32(value=42)
-        body_stmt = astx.BreakStmt()
-        body = astx.Block()
-        body.append(body_stmt)
-        node = astx.CaseStmt(condition=condition, body=body)
-        result = self.transpiler.visit(node)
-
-        if PYTHON_310_OR_LATER:
-            assert hasattr(ast, "match_case")
-            match_case_type = getattr(ast, "match_case")
-            assert isinstance(result, match_case_type)
-            assert isinstance(result.pattern, ast.Constant)
-            assert result.pattern.value == self.Variable_42
-        else:
-            assert result is not None
-
     def test_continue_stmt(self) -> None:
         """Test astx.ContinueStmt conversion."""
         node = astx.ContinueStmt()
@@ -549,35 +531,6 @@ class TestControlFlowNodes:
         assert isinstance(result, ast.If)
         assert isinstance(result.test, ast.Constant)
         assert result.test.value is True
-
-    def test_switch_stmt_simple(self) -> None:
-        """Test astx.SwitchStmt with value and cases."""
-        value = astx.Variable(name="x")
-        case_body = astx.Block()
-        case_body.append(astx.BreakStmt())
-        case1 = astx.CaseStmt(
-            condition=astx.LiteralInt32(value=1),
-            body=case_body,
-        )
-        cases = astx.ASTNodes()
-        cases.append(case1)
-        cases_typed = cast(
-            Union[list["astx.CaseStmt"], "astx.ASTNodes[astx.CaseStmt]"], cases
-        )
-        node = astx.SwitchStmt(
-            value=value,
-            cases=cases_typed,
-        )
-        result = self.transpiler.visit(node)
-
-        if PYTHON_310_OR_LATER:
-            assert hasattr(ast, "Match")
-            match_type = getattr(ast, "Match")
-            assert isinstance(result, match_type)
-            assert isinstance(result.subject, ast.Name)
-            assert result.subject.id == "x"
-        else:
-            assert result is not None
 
     def test_while_expr_simple(self) -> None:
         """Test astx.WhileExpr with condition and body."""

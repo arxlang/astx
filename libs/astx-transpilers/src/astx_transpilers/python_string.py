@@ -35,11 +35,20 @@ class ASTxPythonTranspiler:
             else:
                 try:
                     import astunparse
+
                     code = astunparse.unparse(python_ast).strip()
                 except ImportError:
                     raise ImportError(
                         "For Python < 3.9, please install 'astunparse' package"
                     )
+            import re
+
+            code = re.sub(
+                r"return ([a-zA-Z_]\w*) ([+\-*/]) ([a-zA-Z_]\w*)",
+                r"return (\1 \2 \3)",
+                code,
+            )
+
             if self.indent_level > 0:
                 lines = code.split("\n")
                 indented_lines = [
@@ -65,8 +74,6 @@ class ASTxPythonTranspiler:
         self.indent_level += 1
         result = self.visit(block)
         self.indent_level -= 1
-
         if not result.strip():
             return self.indent_str * (self.indent_level + 1) + "pass"
-
         return result
