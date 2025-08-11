@@ -6,8 +6,6 @@ import textwrap
 def usage_demo() -> str:
     """Execute an exact copy of the code shown in README.md."""
     import astx
-
-    # Define a simple function `add(x, y): return x + y`
     args = astx.Arguments(
         astx.Argument(name="x", type_=astx.Int32()),
         astx.Argument(name="y", type_=astx.Int32()),
@@ -27,7 +25,7 @@ def usage_demo() -> str:
         body=fn_body,
     )
 
-    from astx_transpilers.python_string import ASTxPythonTranspiler
+    from astx_transpilers.python_string_new import ASTxPythonTranspiler
 
     # Transpile the AST to Python
     transpiler = ASTxPythonTranspiler()
