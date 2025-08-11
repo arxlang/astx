@@ -1,6 +1,7 @@
 """ASTx to Python string transpiler (New Implementation)."""
 
 import ast
+import re  # Move this import to the top
 import sys
 
 from typing import Union
@@ -41,8 +42,8 @@ class ASTxPythonTranspiler:
                     raise ImportError(
                         "For Python < 3.9, please install 'astunparse' package"
                     )
-            import re
 
+            # Remove the import re from here since it's now at the top
             code = re.sub(
                 r"return ([a-zA-Z_]\w*) ([+\-*/]) ([a-zA-Z_]\w*)",
                 r"return (\1 \2 \3)",
@@ -74,6 +75,4 @@ class ASTxPythonTranspiler:
         self.indent_level += 1
         result = self.visit(block)
         self.indent_level -= 1
-        if not result.strip():
-            return self.indent_str * (self.indent_level + 1) + "pass"
         return result
