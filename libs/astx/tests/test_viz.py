@@ -8,8 +8,8 @@ from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize_ascii
 
 
-def test_viz_graphviz() -> None:
-    """Test graphviz visualization method."""
+def test_viz_image() -> None:
+    """Test image visualization method."""
     var_a = Variable("a")
     var_b = Variable("b")
 

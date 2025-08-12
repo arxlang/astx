@@ -17,7 +17,6 @@ exclude = [
 package-mode = false
 
 [tool.poetry.dependencies]
-# directory
 astx = { path = "libs/astx/", develop = true }
 astx-transpilers= { path = "libs/astx-transpilers/", develop = true }
 

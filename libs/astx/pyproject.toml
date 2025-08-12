@@ -10,8 +10,6 @@ license = "BSD 3 Clause"
 requires-python = ">=3.9,<4"
 dependencies = [
   "atpublic >= 4.0",
-  "graphviz >= 0.21",
-  "msgpack >= 1",
   "plum-dispatch >= 2",
   "typeguard >= 4",
   "typing-extensions >=4 ; python_version < '3.9'",
