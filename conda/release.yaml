@@ -3,9 +3,7 @@ channels:
   - nodefaults
   - conda-forge
 dependencies:
-  - graphviz >=13
   - python >=3.9,<3.13
-  - openjdk
   - poetry >=2
   - nodejs >=18.17 # used by semantic-release
   - shellcheck
