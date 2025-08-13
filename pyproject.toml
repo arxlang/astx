@@ -91,6 +91,7 @@ ignore = [
   "PLR0911",  # Too many return statements
   "PLR0912",  # Too many branches
   "PLR0913",
+  "PLC0415",  # `import` should be at the top-level of a file
 ]
 select = [
   "E",   # pycodestyle
