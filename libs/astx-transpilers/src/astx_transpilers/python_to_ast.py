@@ -768,17 +768,23 @@ class ASTxPythonASTTranspiler:
                 args=[],
                 keywords=[],
             )
+
         if hasattr(node.fn, "prototype") and hasattr(
             node.fn.prototype, "name"
         ):
             func = ast.Name(id=node.fn.prototype.name, ctx=ast.Load())
         elif hasattr(node.fn, "name"):
             func = ast.Name(id=node.fn.name, ctx=ast.Load())
+        elif isinstance(node.fn, str):
+            func = ast.Name(id=node.fn, ctx=ast.Load())
         else:
-            visited_fn = self.visit(node.fn)
-            if isinstance(visited_fn, (ast.Name, ast.Attribute)):
-                func = visited_fn
-            else:
+            try:
+                visited_fn = self.visit(node.fn)
+                if isinstance(visited_fn, (ast.Name, ast.Attribute)):
+                    func = visited_fn
+                else:
+                    func = ast.Name(id="unknown_function", ctx=ast.Load())
+            except Exception:
                 func = ast.Name(id="unknown_function", ctx=ast.Load())
 
         args = []
@@ -1404,17 +1410,63 @@ class ASTxPythonASTTranspiler:
         exc = None
         if hasattr(node, "exception") and node.exception:
             try:
-                exc_node = self.visit(node.exception)
-                if isinstance(exc_node, ast.Call):
-                    exc = exc_node
-                elif isinstance(exc_node, ast.Name):
-                    exc = ast.Call(func=exc_node, args=[], keywords=[])
+                if hasattr(node.exception, "fn"):
+                    if hasattr(node.exception.fn, "prototype") and hasattr(
+                        node.exception.fn.prototype, "name"
+                    ):
+                        func_name = node.exception.fn.prototype.name
+                        args = []
+                        if (
+                            hasattr(node.exception, "args")
+                            and node.exception.args
+                        ):
+                            args = [
+                                self.visit(arg) for arg in node.exception.args
+                            ]
+                        exc = ast.Call(
+                            func=ast.Name(id=func_name, ctx=ast.Load()),
+                            args=args,
+                            keywords=[],
+                        )
+                    elif hasattr(node.exception.fn, "name"):
+                        func_name = node.exception.fn.name
+                        args = []
+                        if (
+                            hasattr(node.exception, "args")
+                            and node.exception.args
+                        ):
+                            args = [
+                                self.visit(arg) for arg in node.exception.args
+                            ]
+                        exc = ast.Call(
+                            func=ast.Name(id=func_name, ctx=ast.Load()),
+                            args=args,
+                            keywords=[],
+                        )
+                    else:
+                        exc_node = self.visit(node.exception)
+                        if isinstance(exc_node, ast.Call):
+                            exc = exc_node
+                        elif isinstance(exc_node, ast.Name):
+                            exc = ast.Call(func=exc_node, args=[], keywords=[])
+                        else:
+                            exc = ast.Call(
+                                func=ast.Name(id="Exception", ctx=ast.Load()),
+                                args=[ast.Constant(value="Unknown exception")],
+                                keywords=[],
+                            )
                 else:
-                    exc = ast.Call(
-                        func=ast.Name(id="Exception", ctx=ast.Load()),
-                        args=[ast.Constant(value="Unknown exception")],
-                        keywords=[],
-                    )
+                    exc_node = self.visit(node.exception)
+                    if isinstance(exc_node, ast.Call):
+                        exc = exc_node
+                    elif isinstance(exc_node, ast.Name):
+                        exc = ast.Call(func=exc_node, args=[], keywords=[])
+                    else:
+                        exc = ast.Call(
+                            func=ast.Name(id="Exception", ctx=ast.Load()),
+                            args=[ast.Constant(value="Unknown exception")],
+                            keywords=[],
+                        )
             except Exception:
                 exc = ast.Call(
                     func=ast.Name(id="Exception", ctx=ast.Load()),
