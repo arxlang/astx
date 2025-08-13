@@ -2,7 +2,7 @@
 
 import astx
 
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_variable() -> None:
@@ -13,7 +13,7 @@ def test_variable() -> None:
     assert var_a.get_struct()
     assert var_a.get_struct(simplified=True)
 
-    visualize(var_a.get_struct())
+    visualize_image(var_a.get_struct())
 
 
 def test_variable_decl() -> None:
@@ -26,7 +26,7 @@ def test_variable_decl() -> None:
     assert decl_a.get_struct()
     assert decl_a.get_struct(simplified=True)
 
-    visualize(decl_a.get_struct())
+    visualize_image(decl_a.get_struct())
 
 
 def test_inline_variable_decl() -> None:
@@ -39,7 +39,7 @@ def test_inline_variable_decl() -> None:
     assert decl_a.get_struct()
     assert decl_a.get_struct(simplified=True)
 
-    visualize(decl_a.get_struct())
+    visualize_image(decl_a.get_struct())
 
 
 def test_argument() -> None:
@@ -52,7 +52,7 @@ def test_argument() -> None:
     assert arg_a.get_struct()
     assert arg_a.get_struct(simplified=True)
 
-    visualize(arg_a.get_struct())
+    visualize_image(arg_a.get_struct())
 
 
 def test_arguments() -> None:
@@ -74,7 +74,7 @@ def test_arguments() -> None:
     assert args.get_struct()
     assert args.get_struct(simplified=True)
 
-    visualize(args.get_struct())
+    visualize_image(args.get_struct())
 
 
 def test_delete_stmt() -> None:
@@ -91,12 +91,12 @@ def test_delete_stmt() -> None:
     assert delete_stmt.get_struct(simplified=True)
 
     # Visualize for documentation
-    visualize(delete_stmt.get_struct())
+    visualize_image(delete_stmt.get_struct())
 
     # Test with a single value
     single_delete = astx.DeleteStmt(value=[var1])
     assert str(single_delete)
     assert single_delete.get_struct()
 
-    # Optional: visualize single value case too
-    visualize(single_delete.get_struct())
+    # Optional: visualize_image single value case too
+    visualize_image(single_delete.get_struct())

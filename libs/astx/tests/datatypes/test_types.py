@@ -5,7 +5,7 @@ from __future__ import annotations
 from astx.types.casting import TypeCastExpr
 from astx.types.numeric import Int32
 from astx.variables import Variable
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_typecastexpr() -> None:
@@ -23,4 +23,4 @@ def test_typecastexpr() -> None:
     assert cast_expr.get_struct()
     assert cast_expr.get_struct(simplified=True)
 
-    visualize(cast_expr.get_struct())
+    visualize_image(cast_expr.get_struct())

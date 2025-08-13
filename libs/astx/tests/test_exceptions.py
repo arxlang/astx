@@ -17,7 +17,7 @@ from astx.exceptions import (
 )
 from astx.literals import LiteralString
 from astx.types import String
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_throw_stmt() -> None:
@@ -31,7 +31,7 @@ def test_throw_stmt() -> None:
     assert str(throw_stmt)
     assert throw_stmt.get_struct()
     assert throw_stmt.get_struct(simplified=True)
-    visualize(throw_stmt.get_struct())
+    visualize_image(throw_stmt.get_struct())
 
 
 def fn_print(
@@ -63,7 +63,7 @@ def test_catchhandler_stmt_onetype() -> None:
     assert str(handler1)
     assert handler1.get_struct()
     assert handler1.get_struct(simplified=True)
-    visualize(handler1.get_struct())
+    visualize_image(handler1.get_struct())
 
 
 def test_catchhandler_stmt_multipletypes() -> None:
@@ -79,7 +79,7 @@ def test_catchhandler_stmt_multipletypes() -> None:
     assert str(handler1)
     assert handler1.get_struct()
     assert handler1.get_struct(simplified=True)
-    visualize(handler1.get_struct())
+    visualize_image(handler1.get_struct())
 
 
 def test_catchhandler_stmt_notypes() -> None:
@@ -92,7 +92,7 @@ def test_catchhandler_stmt_notypes() -> None:
     assert str(handler1)
     assert handler1.get_struct()
     assert handler1.get_struct(simplified=True)
-    visualize(handler1.get_struct())
+    visualize_image(handler1.get_struct())
 
 
 def test_catchhandler_stmt_notypes_noname() -> None:
@@ -105,7 +105,7 @@ def test_catchhandler_stmt_notypes_noname() -> None:
     assert str(handler1)
     assert handler1.get_struct()
     assert handler1.get_struct(simplified=True)
-    visualize(handler1.get_struct())
+    visualize_image(handler1.get_struct())
 
 
 def test_catchhandler_stmt_noname() -> None:
@@ -119,7 +119,7 @@ def test_catchhandler_stmt_noname() -> None:
     assert str(handler1)
     assert handler1.get_struct()
     assert handler1.get_struct(simplified=True)
-    visualize(handler1.get_struct())
+    visualize_image(handler1.get_struct())
 
 
 def test_exceptionhandler_stmt() -> None:
@@ -142,7 +142,7 @@ def test_exceptionhandler_stmt() -> None:
     assert str(exc_handler)
     assert exc_handler.get_struct()
     assert exc_handler.get_struct(simplified=True)
-    visualize(exc_handler.get_struct())
+    visualize_image(exc_handler.get_struct())
 
 
 def test_exceptionhandler_stmt_multiplehandlers() -> None:
@@ -174,7 +174,7 @@ def test_exceptionhandler_stmt_multiplehandlers() -> None:
     assert str(exc_handler)
     assert exc_handler.get_struct()
     assert exc_handler.get_struct(simplified=True)
-    visualize(exc_handler.get_struct())
+    visualize_image(exc_handler.get_struct())
 
 
 def test_finallyhandler_stmt_() -> None:
@@ -188,7 +188,7 @@ def test_finallyhandler_stmt_() -> None:
     assert str(finally_handler)
     assert finally_handler.get_struct()
     assert finally_handler.get_struct(simplified=True)
-    visualize(finally_handler.get_struct())
+    visualize_image(finally_handler.get_struct())
 
 
 def test_exceptionhandler_stmt_multiplehandlers_finally() -> None:
@@ -228,4 +228,4 @@ def test_exceptionhandler_stmt_multiplehandlers_finally() -> None:
     assert str(exc_handler)
     assert exc_handler.get_struct()
     assert exc_handler.get_struct(simplified=True)
-    visualize(exc_handler.get_struct())
+    visualize_image(exc_handler.get_struct())

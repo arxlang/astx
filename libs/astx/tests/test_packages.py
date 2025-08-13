@@ -15,7 +15,7 @@ from astx.packages import (
 from astx.types.numeric import Int32
 from astx.types.operators import BinaryOp
 from astx.variables import Variable, VariableDeclaration
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_module() -> None:
@@ -36,7 +36,7 @@ def test_module() -> None:
     assert module.get_struct()
     assert module.get_struct(simplified=True)
 
-    visualize(module.get_struct())
+    visualize_image(module.get_struct())
 
 
 def test_target() -> None:
@@ -49,7 +49,7 @@ def test_target() -> None:
     assert target.get_struct()
     assert target.get_struct(simplified=True)
 
-    visualize(target.get_struct())
+    visualize_image(target.get_struct())
 
 
 def test_packages() -> None:
@@ -66,7 +66,7 @@ def test_packages() -> None:
     assert package_main.get_struct()
     assert package_main.get_struct(simplified=True)
 
-    visualize(package_main.get_struct())
+    visualize_image(package_main.get_struct())
 
 
 def test_program() -> None:
@@ -93,7 +93,7 @@ def test_program() -> None:
     assert program.get_struct()
     assert program.get_struct(simplified=True)
 
-    visualize(program.get_struct())
+    visualize_image(program.get_struct())
 
 
 def test_multiple_imports_stmt() -> None:

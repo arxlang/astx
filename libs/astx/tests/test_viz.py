@@ -5,11 +5,11 @@ from astx.literals.numeric import LiteralInt32
 from astx.types.numeric import Int32
 from astx.types.operators import BinaryOp
 from astx.variables import Variable, VariableDeclaration
-from astx.viz import graph_to_ascii, traverse_ast_ascii
+from astx.viz import visualize_ascii
 
 
-def test_viz_graphviz() -> None:
-    """Test graphviz visualization method."""
+def test_viz_image() -> None:
+    """Test image visualization method."""
     var_a = Variable("a")
     var_b = Variable("b")
 
@@ -36,5 +36,4 @@ def test_viz_ascii() -> None:
     block.append(decl_b)
     block.append(sum_op)
 
-    graph = traverse_ast_ascii(block.get_struct(simplified=True))
-    graph_to_ascii(graph)
+    visualize_ascii(block.get_struct())

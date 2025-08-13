@@ -249,12 +249,14 @@ class AST(metaclass=ASTMeta):
 
     def __repr__(self) -> str:
         """Return an string that represents the object."""
-        if not is_using_jupyter_notebook():
-            from astx.viz import graph_to_ascii, traverse_ast_ascii
+        if is_using_jupyter_notebook():
+            return ""
 
-            graph = traverse_ast_ascii(self.get_struct(simplified=True))
-            return graph_to_ascii(graph)
-        return ""
+        from astx.viz import visualize_ascii
+
+        result = visualize_ascii(self.get_struct())
+
+        return result
 
     def _repr_png_(self) -> None:
         """
@@ -264,9 +266,9 @@ class AST(metaclass=ASTMeta):
         a Graphviz diagram inline.
         """
         # importing it here in order to avoid cyclic import issue
-        from astx.viz import visualize
+        from astx.viz import visualize_image
 
-        visualize(self.get_struct(simplified=False))
+        visualize_image(self.get_struct(simplified=False))
 
     def _update_parent(self) -> None:
         """Update the parent node."""

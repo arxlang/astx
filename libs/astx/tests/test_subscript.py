@@ -6,7 +6,7 @@ from astx.base import ASTKind, DictDataTypesStruct
 from astx.literals import LiteralInt32
 from astx.subscript import Ellipsis, SubscriptExpr
 from astx.variables import Variable
-from astx.viz import visualize
+from astx.viz import visualize_image
 
 
 def test_subscriptexpr_upper_lower() -> None:
@@ -25,7 +25,7 @@ def test_subscriptexpr_upper_lower() -> None:
     assert str(subscr_expr)
     assert subscr_expr.get_struct()
     assert subscr_expr.get_struct(simplified=True)
-    visualize(subscr_expr.get_struct())
+    visualize_image(subscr_expr.get_struct())
 
 
 def test_subscriptexpr_index() -> None:
@@ -42,7 +42,7 @@ def test_subscriptexpr_index() -> None:
     assert str(subscr_expr)
     assert subscr_expr.get_struct()
     assert subscr_expr.get_struct(simplified=True)
-    visualize(subscr_expr.get_struct())
+    visualize_image(subscr_expr.get_struct())
 
 
 def test_ellipsis_basic_properties() -> None:

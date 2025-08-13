@@ -17,7 +17,6 @@ exclude = [
 package-mode = false
 
 [tool.poetry.dependencies]
-# directory
 astx = { path = "libs/astx/", develop = true }
 astx-transpilers= { path = "libs/astx-transpilers/", develop = true }
 
@@ -41,11 +40,13 @@ mkdocs-macros-plugin = ">=0.7.0,<1"
 mkdocs-material = ">=9.1.15"
 mkdocstrings = {version=">=0.24.3", extras=["python"]}
 jupyterlab = ">=4.0.5"
-makim = "1.25.0"
+makim = "1.27.0"
 umlizer = ">=0.1.0"
 nbmake = ">=1.4.6"
 mkdocs-gen-files = ">=0.5.0"
 types-requests = ">=2.31.0.20240406"
+# note: https://github.com/pypa/virtualenv/issues/2944
+virtualenv = "<20.33.0"
 
 [build-system]
 requires = ["poetry-core>=2"]
@@ -90,6 +91,7 @@ ignore = [
   "PLR0911",  # Too many return statements
   "PLR0912",  # Too many branches
   "PLR0913",
+  "PLC0415",  # `import` should be at the top-level of a file
 ]
 select = [
   "E",   # pycodestyle
