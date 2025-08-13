@@ -15,7 +15,6 @@ if sys.version_info >= (3, 10):
     match_case = ast.match_case
     Match = ast.Match
 else:
-    # Fallback for older Python versions
     match_case = Any
     Match = Any
 
