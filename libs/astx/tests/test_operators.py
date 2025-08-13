@@ -1,7 +1,5 @@
 """Tests for operators."""
 
-from typing import cast
-
 import astx
 import pytest
 
@@ -130,18 +128,18 @@ def test_not_op() -> None:
 @pytest.mark.parametrize(
     "operator, value",
     [
-        (cast(OpCodeAugAssign, "+="), 10),
-        (cast(OpCodeAugAssign, "-="), 5),
-        (cast(OpCodeAugAssign, "*="), 3),
-        (cast(OpCodeAugAssign, "/="), 2),
-        (cast(OpCodeAugAssign, "//="), 2),
-        (cast(OpCodeAugAssign, "%="), 4),
-        (cast(OpCodeAugAssign, "**="), 2),
-        (cast(OpCodeAugAssign, "&="), 6),
-        (cast(OpCodeAugAssign, "|="), 3),
-        (cast(OpCodeAugAssign, "^="), 1),
-        (cast(OpCodeAugAssign, "<<="), 1),
-        (cast(OpCodeAugAssign, ">>="), 2),
+        ("+=", 10),
+        ("-=", 5),
+        ("*=", 3),
+        ("/=", 2),
+        ("//=", 2),
+        ("%=", 4),
+        ("**=", 2),
+        ("&=", 6),
+        ("|=", 3),
+        ("^=", 1),
+        ("<<=", 1),
+        (">>=", 2),
     ],
 )
 def test_aug_assign_operations(operator: OpCodeAugAssign, value: int) -> None:
