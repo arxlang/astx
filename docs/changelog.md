@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+# [0.23.0](https://github.com/arxlang/astx/compare/0.22.1...0.23.0) (2025-08-13)
+
+
+### Features
+
+* Replace graphviz and asciinet by mermaid and mermaid-ascii ([#283](https://github.com/arxlang/astx/issues/283)) ([324d4ac](https://github.com/arxlang/astx/commit/324d4ac9bf0c528af7c6a5e7d550939a4302370e))
+
 ## [0.22.1](https://github.com/arxlang/astx/compare/0.22.0...0.22.1) (2025-08-07)
 
 

@@ -1,6 +1,6 @@
 [project]
 name = "astx-dev"
-version = "0.22.1"  # semantic-release
+version = "0.23.0"  # semantic-release
 description = "ASTx is an agnostic expression structure for AST."
 readme = "docs/index.md"
 authors = [
