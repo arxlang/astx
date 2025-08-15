@@ -48,7 +48,6 @@ AUGASSIGN_OP_MAP = {
     "&=": ast.BitAnd(),
     "^=": ast.BitXor(),
 }
-
 COMPARE_OP_MAP = {
     "==": ast.Eq(),
     "!=": ast.NotEq(),
