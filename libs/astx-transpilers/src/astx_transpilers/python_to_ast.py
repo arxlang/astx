@@ -15,7 +15,6 @@ if sys.version_info >= (3, 10):
     match_case = ast.match_case
     Match = ast.Match
 else:
-    # Fallback for older Python versions
     match_case = Any
     Match = Any
 
@@ -87,26 +86,17 @@ class ASTxPythonASTTranspiler:
         self.indent_level = 0
 
     def _convert_using_unparse(self, node: astx.AST) -> ast.AST:
-        """Convert an ASTx node to a Python AST node using unparse."""
+        """Convert an ASTx node to a Python AST node using fallback."""
         try:
-            from astx_transpilers.python_string import ASTxPythonTranspiler
-
-            python_string = ASTxPythonTranspiler().visit(node)
-
-            module = ast.parse(python_string)
-
-            if module.body and isinstance(module.body[0], ast.Expr):
-                return module.body[0].value
-            elif module.body:
-                return module.body[0]
-            else:
-                return ast.Pass()
-
-        except Exception:
+            # Simple fallback without circular import
             if hasattr(node, "value"):
                 return ast.Constant(value=str(node.value))
+            elif hasattr(node, "name"):
+                return ast.Name(id=str(node.name), ctx=ast.Load())
             else:
                 return ast.Constant(value=f"<{type(node).__name__}>")
+        except Exception:
+            return ast.Constant(value=f"<{type(node).__name__}>")
 
     def _convert_block(
         self, block: Optional[Union[astx.ASTNodes, astx.Block]]
@@ -119,9 +109,9 @@ class ASTxPythonASTTranspiler:
             return [ast.Pass()]
 
         result = []
-        for node in block.nodes:
+        for astx_node in block.nodes:
             try:
-                converted = self.visit(node)
+                converted = self.visit(astx_node)
                 if isinstance(converted, list):
                     result.extend(converted)
                 elif isinstance(converted, ast.stmt):
@@ -286,8 +276,6 @@ class ASTxPythonASTTranspiler:
         if node.op_code not in BINARY_OP_MAP:
             lhs = self.visit(node.lhs)
             rhs = self.visit(node.rhs)
-
-            # Clean the operator code first
             op_code_clean = (
                 node.op_code.replace("@", "at")
                 .replace("&", "and")
@@ -303,7 +291,8 @@ class ASTxPythonASTTranspiler:
 
         lhs = self.visit(node.lhs)
         rhs = self.visit(node.rhs)
-        return ast.BinOp(left=lhs, op=BINARY_OP_MAP[node.op_code], right=rhs)
+        binop = ast.BinOp(left=lhs, op=BINARY_OP_MAP[node.op_code], right=rhs)
+        return binop
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Block) -> List[ast.stmt]:
@@ -317,27 +306,27 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CaseStmt) -> Any:
-        """Handle CaseStmt nodes."""
+        """Handle CaseStmt nodes - Python 3.10+ only."""
+        if sys.version_info < (3, 10):
+            raise NotImplementedError(
+                "CaseStmt requires Python 3.10 or higher"
+            )
+
         if not hasattr(node, "condition"):
             return self._convert_using_unparse(node)
 
-        if node.condition is None:
-            if sys.version_info >= (3, 10):
-                pattern = ast.MatchAs(name=None, pattern=None)
-            else:
-                return self._convert_using_unparse(node)
-        else:
-            pattern = self.visit(node.condition)
+        pattern = (
+            ast.MatchAs(name=None, pattern=None)
+            if node.condition is None
+            else self.visit(node.condition)
+        )
         body = (
             self._convert_block(node.body)
             if hasattr(node, "body")
             else [ast.Pass()]
         )
 
-        if sys.version_info >= (3, 10):
-            return ast.match_case(pattern=pattern, guard=None, body=body)
-        else:
-            return self._convert_using_unparse(node)
+        return ast.match_case(pattern=pattern, guard=None, body=body)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CatchHandlerStmt) -> ast.ExceptHandler:
@@ -424,35 +413,66 @@ class ASTxPythonASTTranspiler:
         )
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Complex32) -> ast.Name:
-        """Handle Complex32 nodes."""
-        return ast.Name(id="complex", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Complex64) -> ast.Name:
-        """Handle Complex64 nodes."""
-        return ast.Name(id="complex", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ContinueStmt) -> ast.Continue:
         """Handle ContinueStmt nodes."""
         return ast.Continue()
 
     @dispatch  # type: ignore[no-redef]
+    def visit(
+        self, node: Union[astx.Int8, astx.Int16, astx.Int32, astx.Int64]
+    ) -> ast.Name:
+        """Handle all integer type nodes."""
+        return ast.Name(id="int", ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(
+        self,
+        node: Union[
+            astx.UInt8, astx.UInt16, astx.UInt32, astx.UInt64, astx.UInt128
+        ],
+    ) -> ast.Name:
+        """Handle all unsigned integer type nodes."""
+        return ast.Name(id="int", ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(
+        self, node: Union[astx.Float16, astx.Float32, astx.Float64]
+    ) -> ast.Name:
+        """Handle all float type nodes."""
+        return ast.Name(id="float", ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Union[astx.Complex32, astx.Complex64]) -> ast.Name:
+        """Handle all complex type nodes."""
+        return ast.Name(id="complex", ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: Union[astx.UTF8Char, astx.UTF8String]) -> ast.Name:
+        """Handle UTF8 string type nodes."""
+        return ast.Name(id="str", ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(
+        self, node: Union[astx.Date, astx.DateTime, astx.Time, astx.Timestamp]
+    ) -> ast.Name:
+        """Handle all datetime type nodes."""
+        type_mapping = {
+            "Date": "date",
+            "DateTime": "datetime",
+            "Time": "time",
+            "Timestamp": "timestamp",
+        }
+        type_name = type_mapping.get(type(node).__name__, "datetime")
+        return ast.Name(id=type_name, ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DataType) -> ast.Name:
         """Handle DataType nodes."""
-        type_id = getattr(node, "id", "object")
+        if hasattr(node, "id") and node.id:
+            type_id = node.id
+        else:
+            type_id = "object"
         return ast.Name(id=type_id, ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Date) -> ast.Name:
-        """Handle Date nodes."""
-        return ast.Name(id="date", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.DateTime) -> ast.Name:
-        """Handle DateTime nodes."""
-        return ast.Name(id="datetime", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DeleteStmt) -> ast.Delete:
@@ -531,7 +551,6 @@ class ASTxPythonASTTranspiler:
         """Handle EnumDeclStmt nodes."""
         if not hasattr(node, "name") or not hasattr(node, "attributes"):
             return self._convert_using_unparse(node)
-
         body = []
         for attr in node.attributes:
             if isinstance(attr, astx.VariableDeclaration):
@@ -598,21 +617,6 @@ class ASTxPythonASTTranspiler:
         return ast.Try(
             body=[ast.Pass()], handlers=[], orelse=[], finalbody=finalbody
         )
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Float16) -> ast.Name:
-        """Handle Float16 nodes."""
-        return ast.Name(id="float", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Float32) -> ast.Name:
-        """Handle Float32 nodes."""
-        return ast.Name(id="float", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Float64) -> ast.Name:
-        """Handle Float64 nodes."""
-        return ast.Name(id="float", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForCountLoopStmt) -> ast.For:
@@ -758,64 +762,75 @@ class ASTxPythonASTTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionCall) -> ast.Call:
         """Handle FunctionCall nodes."""
-        if (
-            not hasattr(node, "fn")
-            or not hasattr(node.fn, "name")
-            or not hasattr(node, "args")
+        if not hasattr(node, "fn"):
+            return ast.Call(
+                func=ast.Name(id="unknown_function", ctx=ast.Load()),
+                args=[],
+                keywords=[],
+            )
+
+        if hasattr(node.fn, "prototype") and hasattr(
+            node.fn.prototype, "name"
         ):
-            return self._convert_using_unparse(node)
-        func = ast.Name(id=node.fn, ctx=ast.Load())
-        args = [self.visit(arg) for arg in node.args]
-        keywords = []
-        return ast.Call(func=func, args=args, keywords=keywords)
+            func = ast.Name(id=node.fn.prototype.name, ctx=ast.Load())
+        elif hasattr(node.fn, "name"):
+            func = ast.Name(id=node.fn.name, ctx=ast.Load())
+        elif isinstance(node.fn, str):
+            func = ast.Name(id=node.fn, ctx=ast.Load())
+        else:
+            try:
+                visited_fn = self.visit(node.fn)
+                if isinstance(visited_fn, (ast.Name, ast.Attribute)):
+                    func = visited_fn
+                else:
+                    func = ast.Name(id="unknown_function", ctx=ast.Load())
+            except Exception:
+                func = ast.Name(id="unknown_function", ctx=ast.Load())
+
+        args = []
+        if hasattr(node, "args") and node.args:
+            args = [self.visit(arg) for arg in node.args]
+
+        return ast.Call(func=func, args=args, keywords=[])
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionDef) -> ast.FunctionDef:
         """Handle FunctionDef nodes."""
-        if (
-            not hasattr(node, "name")
-            or not hasattr(node, "prototype")
-            or not hasattr(node.prototype, "args")
-        ):
+        if not hasattr(node, "prototype"):
             return self._convert_using_unparse(node)
-        args_nodes = []
-        if hasattr(node.prototype.args, "nodes"):
-            args_nodes = node.prototype.args.nodes
-        arguments = ast.arguments(
-            posonlyargs=[],
-            args=[
-                ast.arg(
-                    arg=arg.name if hasattr(arg, "name") else "arg",
-                    annotation=None,
-                )
-                for arg in args_nodes
-            ],
-            kwonlyargs=[],
-            kw_defaults=[],
-            defaults=[],
-            vararg=None,
-            kwarg=None,
-        )
-        returns = None
-        if (
-            hasattr(node.prototype, "return_type")
-            and node.prototype.return_type
-        ):
-            returns = self.visit(node.prototype.return_type)
-        body = (
-            self._convert_block(node.body)
-            if hasattr(node, "body")
-            else [ast.Pass()]
-        )
 
-        return ast.FunctionDef(
-            name=node.name,
-            args=arguments,
+        args = self.visit(node.prototype.args)
+        returns = (
+            self.visit(node.prototype.return_type)
+            if hasattr(node.prototype, "return_type")
+            and node.prototype.return_type
+            else None
+        )
+        body = self._convert_block(node.body)
+
+        func_def = ast.FunctionDef(
+            name=node.prototype.name,
+            args=args,
             body=body,
             decorator_list=[],
             returns=returns,
-            type_comment=None,
         )
+
+        # Ensure all required attributes are set
+        func_def.lineno = 1
+        func_def.col_offset = 0
+        func_def.end_lineno = 1
+        func_def.end_col_offset = 0
+
+        # Set attributes on args as well
+        if hasattr(args, "args"):
+            for i, arg in enumerate(args.args):
+                arg.lineno = 1
+                arg.col_offset = 0
+                arg.end_lineno = 1
+                arg.end_col_offset = 0
+
+        return func_def
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionPrototype) -> ast.FunctionDef:
@@ -1028,11 +1043,6 @@ class ASTxPythonASTTranspiler:
         )
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Int32) -> ast.Name:
-        """Handle Int32 nodes."""
-        return ast.Name(id="int", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LambdaExpr) -> ast.Lambda:
         """Handle LambdaExpr nodes."""
         if not hasattr(node, "body"):
@@ -1072,18 +1082,54 @@ class ASTxPythonASTTranspiler:
         return ast.Constant(value=node.value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralComplex) -> ast.Constant:
-        """Handle LiteralComplex nodes."""
-        if hasattr(node, "value"):
-            return ast.Constant(value=node.value)
-        elif hasattr(node, "real") and hasattr(node, "imag"):
-            return ast.Constant(value=complex(node.real, node.imag))
-        else:
-            return ast.Constant(value=0j)
+    def visit(
+        self,
+        node: Union[
+            astx.LiteralInt8,
+            astx.LiteralInt16,
+            astx.LiteralInt32,
+            astx.LiteralInt64,
+            astx.LiteralInt128,
+        ],
+    ) -> ast.Constant:
+        """Handle all integer literal nodes."""
+        if not hasattr(node, "value"):
+            return ast.Constant(value=0)
+        return ast.Constant(value=node.value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralComplex32) -> ast.Call:
-        """Handle LiteralComplex32 nodes."""
+    def visit(
+        self,
+        node: Union[
+            astx.LiteralUInt8,
+            astx.LiteralUInt16,
+            astx.LiteralUInt32,
+            astx.LiteralUInt64,
+            astx.LiteralUInt128,
+        ],
+    ) -> ast.Constant:
+        """Handle all unsigned integer literal nodes."""
+        if not hasattr(node, "value"):
+            return ast.Constant(value=0)
+        return ast.Constant(value=node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(
+        self,
+        node: Union[
+            astx.LiteralFloat16, astx.LiteralFloat32, astx.LiteralFloat64
+        ],
+    ) -> ast.Constant:
+        """Handle all float literal nodes."""
+        if not hasattr(node, "value"):
+            return ast.Constant(value=0.0)
+        return ast.Constant(value=node.value)
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(
+        self, node: Union[astx.LiteralComplex32, astx.LiteralComplex64]
+    ) -> ast.Call:
+        """Handle all complex literal nodes."""
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         real = ast.Constant(value=node.value[0])
@@ -1095,17 +1141,13 @@ class ASTxPythonASTTranspiler:
         )
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralComplex64) -> ast.Call:
-        """Handle LiteralComplex64 nodes."""
+    def visit(
+        self, node: Union[astx.LiteralUTF8Char, astx.LiteralUTF8String]
+    ) -> ast.Constant:
+        """Handle UTF8 string literal nodes."""
         if not hasattr(node, "value"):
-            return self._convert_using_unparse(node)
-        real = ast.Constant(value=node.value[0])
-        imag = ast.Constant(value=node.value[1])
-        return ast.Call(
-            func=ast.Name(id="complex", ctx=ast.Load()),
-            args=[real, imag],
-            keywords=[],
-        )
+            return ast.Constant(value="")
+        return ast.Constant(value=str(node.value))
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDate) -> ast.Call:
@@ -1134,22 +1176,24 @@ class ASTxPythonASTTranspiler:
         )
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralDateTime) -> ast.Call:
+    def visit(self, node: astx.LiteralDateTime) -> ast.Name:
         """Handle LiteralDateTime nodes."""
-        if not hasattr(node, "value"):
-            return self._convert_using_unparse(node)
-        return ast.Call(
-            func=ast.Attribute(
-                value=ast.Name(id="datetime", ctx=ast.Load()),
-                attr="strptime",
-                ctx=ast.Load(),
-            ),
-            args=[
-                ast.Constant(value=node.value),
-                ast.Constant(value="%Y-%m-%dT%H:%M:%S"),
-            ],
-            keywords=[],
-        )
+        return ast.Name(id="datetime", ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralTime) -> ast.Name:
+        """Handle LiteralTime nodes."""
+        return ast.Name(id="time", ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralTimestamp) -> ast.Name:
+        """Handle LiteralTimestamp nodes."""
+        return ast.Name(id="timestamp", ctx=ast.Load())
+
+    @dispatch  # type: ignore[no-redef]
+    def visit(self, node: astx.LiteralComplex) -> ast.Name:
+        """Handle LiteralComplex nodes."""
+        return ast.Name(id="complex", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDict) -> ast.Dict:
@@ -1159,53 +1203,6 @@ class ASTxPythonASTTranspiler:
         keys = [self.visit(key) for key in node.elements.keys()]
         values = [self.visit(value) for value in node.elements.values()]
         return ast.Dict(keys=keys, values=values)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralFloat16) -> ast.Constant:
-        """Handle LiteralFloat16 nodes."""
-        return ast.Constant(value=float(node.value))
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralFloat32) -> ast.Constant:
-        """Handle LiteralFloat32 nodes."""
-        if not hasattr(node, "value"):
-            return ast.Constant(value=0.0)
-        return ast.Constant(value=node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralFloat64) -> ast.Constant:
-        """Handle LiteralFloat64 nodes."""
-        if not hasattr(node, "value"):
-            return ast.Constant(value=0.0)
-        return ast.Constant(value=node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralInt8) -> ast.Constant:
-        """Handle LiteralInt8 nodes."""
-        if not hasattr(node, "value"):
-            return ast.Constant(value=0)
-        return ast.Constant(value=node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralInt16) -> ast.Constant:
-        """Handle LiteralInt16 nodes."""
-        if not hasattr(node, "value"):
-            return ast.Constant(value=0)
-        return ast.Constant(value=node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralInt32) -> ast.Constant:
-        """Handle LiteralInt32 nodes."""
-        if not hasattr(node, "value"):
-            return ast.Constant(value=0)
-        return ast.Constant(value=node.value)
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralInt64) -> ast.Constant:
-        """Handle LiteralInt64 nodes."""
-        if not hasattr(node, "value"):
-            return ast.Constant(value=0)
-        return ast.Constant(value=node.value)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralList) -> ast.List:
@@ -1236,66 +1233,12 @@ class ASTxPythonASTTranspiler:
         return ast.Constant(value=node.value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralTime) -> ast.Call:
-        """Handle LiteralTime nodes."""
-        if not hasattr(node, "value"):
-            return self._convert_using_unparse(node)
-        return ast.Call(
-            func=ast.Attribute(
-                value=ast.Call(
-                    func=ast.Attribute(
-                        value=ast.Name(id="datetime", ctx=ast.Load()),
-                        attr="strptime",
-                        ctx=ast.Load(),
-                    ),
-                    args=[
-                        ast.Constant(value=node.value),
-                        ast.Constant(value="%H:%M:%S"),
-                    ],
-                    keywords=[],
-                ),
-                attr="time",
-                ctx=ast.Load(),
-            ),
-            args=[],
-            keywords=[],
-        )
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralTimestamp) -> ast.Call:
-        """Handle LiteralTimestamp nodes."""
-        if not hasattr(node, "value"):
-            return self._convert_using_unparse(node)
-        return ast.Call(
-            func=ast.Attribute(
-                value=ast.Name(id="datetime", ctx=ast.Load()),
-                attr="strptime",
-                ctx=ast.Load(),
-            ),
-            args=[
-                ast.Constant(value=node.value),
-                ast.Constant(value="%Y-%m-%d %H:%M:%S"),
-            ],
-            keywords=[],
-        )
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTuple) -> ast.Tuple:
         """Handle LiteralTuple nodes."""
         if not hasattr(node, "elements"):
             return ast.Tuple(elts=[], ctx=ast.Load())
         elements = [self.visit(element) for element in node.elements]
         return ast.Tuple(elts=elements, ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralUTF8Char) -> ast.Constant:
-        """Handle LiteralUTF8Char nodes."""
-        return ast.Constant(value=str(node.value))
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.LiteralUTF8String) -> ast.Constant:
-        """Handle LiteralUTF8String nodes."""
-        return ast.Constant(value=str(node.value))
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Module) -> ast.Module:
@@ -1414,17 +1357,23 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> Any:
-        """Handle SwitchStmt nodes."""
+        """Handle SwitchStmt nodes - Python 3.10+ only."""
+        if sys.version_info < (3, 10):
+            raise NotImplementedError(
+                "SwitchStmt requires Python 3.10 or higher"
+            )
+
         if not hasattr(node, "value") or not hasattr(node, "cases"):
             return self._convert_using_unparse(node)
+
         subject = self.visit(node.value)
-        cases = []
-        if hasattr(node.cases, "nodes"):
-            cases = [self.visit(case) for case in node.cases.nodes]
-        if sys.version_info >= (3, 10):
-            return ast.Match(subject=subject, cases=cases)
-        else:
-            return self._convert_using_unparse(node)
+        cases = (
+            [self.visit(case) for case in node.cases.nodes]
+            if hasattr(node.cases, "nodes")
+            else []
+        )
+
+        return ast.Match(subject=subject, cases=cases)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SubscriptExpr) -> ast.Subscript:
@@ -1456,25 +1405,78 @@ class ASTxPythonASTTranspiler:
         return ast.Subscript(value=value, slice=slice_obj, ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Time) -> ast.Name:
-        """Handle Time nodes."""
-        return ast.Name(id="time", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Timestamp) -> ast.Name:
-        """Handle Timestamp nodes."""
-        return ast.Name(id="timestamp", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ThrowStmt) -> ast.Raise:
         """Handle ThrowStmt nodes."""
         exc = None
         if hasattr(node, "exception") and node.exception:
-            exc = self.visit(node.exception)
-        cause = None
-        if hasattr(node, "cause") and node.cause:
-            cause = self.visit(node.cause)
-        return ast.Raise(exc=exc, cause=cause)
+            try:
+                if hasattr(node.exception, "fn"):
+                    if hasattr(node.exception.fn, "prototype") and hasattr(
+                        node.exception.fn.prototype, "name"
+                    ):
+                        func_name = node.exception.fn.prototype.name
+                        args = []
+                        if (
+                            hasattr(node.exception, "args")
+                            and node.exception.args
+                        ):
+                            args = [
+                                self.visit(arg) for arg in node.exception.args
+                            ]
+                        exc = ast.Call(
+                            func=ast.Name(id=func_name, ctx=ast.Load()),
+                            args=args,
+                            keywords=[],
+                        )
+                    elif hasattr(node.exception.fn, "name"):
+                        func_name = node.exception.fn.name
+                        args = []
+                        if (
+                            hasattr(node.exception, "args")
+                            and node.exception.args
+                        ):
+                            args = [
+                                self.visit(arg) for arg in node.exception.args
+                            ]
+                        exc = ast.Call(
+                            func=ast.Name(id=func_name, ctx=ast.Load()),
+                            args=args,
+                            keywords=[],
+                        )
+                    else:
+                        exc_node = self.visit(node.exception)
+                        if isinstance(exc_node, ast.Call):
+                            exc = exc_node
+                        elif isinstance(exc_node, ast.Name):
+                            exc = ast.Call(func=exc_node, args=[], keywords=[])
+                        else:
+                            exc = ast.Call(
+                                func=ast.Name(id="Exception", ctx=ast.Load()),
+                                args=[ast.Constant(value="Unknown exception")],
+                                keywords=[],
+                            )
+                else:
+                    exc_node = self.visit(node.exception)
+                    if isinstance(exc_node, ast.Call):
+                        exc = exc_node
+                    elif isinstance(exc_node, ast.Name):
+                        exc = ast.Call(func=exc_node, args=[], keywords=[])
+                    else:
+                        exc = ast.Call(
+                            func=ast.Name(id="Exception", ctx=ast.Load()),
+                            args=[ast.Constant(value="Unknown exception")],
+                            keywords=[],
+                        )
+            except Exception:
+                exc = ast.Call(
+                    func=ast.Name(id="Exception", ctx=ast.Load()),
+                    args=[ast.Constant(value="Unknown exception")],
+                    keywords=[],
+                )
+        else:
+            exc = None
+
+        return ast.Raise(exc=exc, cause=None)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.TypeCastExpr) -> ast.Call:
@@ -1500,16 +1502,6 @@ class ASTxPythonASTTranspiler:
         return ast.UnaryOp(op=UNARY_OP_MAP[node.op_code], operand=operand)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.UTF8Char) -> ast.Name:
-        """Handle UTF8Char nodes."""
-        return ast.Name(id="str", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.UTF8String) -> ast.Name:
-        """Handle UTF8String nodes."""
-        return ast.Name(id="str", ctx=ast.Load())
-
-    @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Variable) -> ast.Name:
         """Handle Variable nodes."""
         if not hasattr(node, "name"):
@@ -1528,15 +1520,27 @@ class ASTxPythonASTTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableDeclaration) -> ast.AnnAssign:
         """Handle VariableDeclaration nodes."""
-        if not hasattr(node, "name") or not hasattr(node, "type"):
+        if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
+
         target = ast.Name(id=node.name, ctx=ast.Store())
-        annotation = self.visit(node.type)
-        value = (
-            self.visit(node.value)
-            if hasattr(node, "value") and node.value
-            else None
-        )
+        annotation = None
+        if hasattr(node, "type_") and node.type_:
+            annotation = self.visit(node.type_)
+        elif hasattr(node, "type") and node.type:
+            annotation = self.visit(node.type)
+        else:
+            annotation = ast.Name(id="object", ctx=ast.Load())
+
+        if not isinstance(
+            annotation, (ast.Name, ast.Attribute, ast.Subscript)
+        ):
+            annotation = ast.Name(id="object", ctx=ast.Load())
+
+        value = None
+        if hasattr(node, "value") and node.value is not None:
+            value = self.visit(node.value)
+
         return ast.AnnAssign(
             target=target,
             annotation=annotation,
