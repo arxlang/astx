@@ -1,6 +1,13 @@
 # Release Notes
 ---
 
+## [0.23.1](https://github.com/arxlang/astx/compare/0.23.0...0.23.1) (2025-08-20)
+
+
+### Bug Fixes
+
+* Fix issues with Identifier ([#286](https://github.com/arxlang/astx/issues/286)) ([b4e8fc0](https://github.com/arxlang/astx/commit/b4e8fc0f0dd662a04b40a3b5270fb5ae134725b8))
+
 # [0.23.0](https://github.com/arxlang/astx/compare/0.22.1...0.23.0) (2025-08-13)
 
 
