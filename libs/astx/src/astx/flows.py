@@ -12,14 +12,13 @@ from astx.base import (
     ASTNodes,
     DictDataTypesStruct,
     Expr,
-    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
+from astx.data import Identifier, InlineVariableDeclaration
 from astx.tools.typing import typechecked
-from astx.variables import InlineVariableDeclaration
 
 
 @public
@@ -734,11 +733,11 @@ class GotoStmt(StatementType):
 
     def __str__(self) -> str:
         """Return a string representation of the object."""
-        return f"Goto[{self.label.value}]"
+        return f"Goto[{self.label.name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
         """Return the AST structure of the object."""
-        key = f"GOTO-STMT[{self.label.value}]"
+        key = f"GOTO-STMT[{self.label.name}]"
         value: DictDataTypesStruct = {}
         return self._prepare_struct(key, value, simplified)
 

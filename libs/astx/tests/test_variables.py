@@ -79,8 +79,8 @@ def test_arguments() -> None:
 
 def test_delete_stmt() -> None:
     """Test DeleteStmt creation and properties."""
-    var1 = astx.Identifier(value="x")
-    var2 = astx.Identifier(value="y")
+    var1 = astx.Identifier(name="x")
+    var2 = astx.Identifier(name="y")
 
     # Create a DeleteStmt with multiple values
     delete_stmt = astx.DeleteStmt(value=[var1, var2])

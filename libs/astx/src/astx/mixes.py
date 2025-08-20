@@ -9,7 +9,7 @@ except ImportError:
 
 from astx.base import DataType
 from astx.callables import FunctionDef
-from astx.variables import Variable
+from astx.data import Variable
 
 __all__ = ["NamedExpr"]
 

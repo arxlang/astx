@@ -12,12 +12,12 @@ from astx.base import (
     ASTNodes,
     DataTypesStruct,
     Expr,
-    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
+from astx.data import Identifier
 
 
 @public

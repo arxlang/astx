@@ -7,6 +7,7 @@ from typing import Callable, Type
 import astx
 import pytest
 
+from astx.data import Variable
 from astx.literals.temporal import (
     LiteralDate,
     LiteralDateTime,
@@ -14,7 +15,6 @@ from astx.literals.temporal import (
     LiteralTimestamp,
 )
 from astx.types.operators import BinaryOp, UnaryOp
-from astx.variables import Variable
 
 VAR_A = Variable("a")
 

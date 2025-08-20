@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+from astx.data import Variable
 from astx.types.casting import TypeCastExpr
 from astx.types.numeric import Int32
-from astx.variables import Variable
 from astx.viz import visualize_image
 
 

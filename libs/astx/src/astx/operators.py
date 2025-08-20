@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Literal, Optional, cast
+from typing import TYPE_CHECKING, Iterable, Literal, Optional, cast
 
 from public import public
 from typing_extensions import TypeAlias
@@ -14,13 +14,15 @@ from astx.base import (
     DataType,
     DictDataTypesStruct,
     Expr,
-    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
 )
+from astx.data import Variable
 from astx.tools.typing import typechecked
-from astx.variables import Variable
+
+if TYPE_CHECKING:
+    from astx.data import Identifier
 
 
 @public

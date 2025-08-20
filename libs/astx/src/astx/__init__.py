@@ -7,13 +7,13 @@ from astx import (
     base,
     blocks,
     callables,
+    data,
     flows,
     literals,
     mixes,
     packages,
     symbol_table,
     types,
-    variables,
 )
 from astx.base import (
     AST,
@@ -22,7 +22,6 @@ from astx.base import (
     DataType,
     Expr,
     ExprType,
-    Identifier,
     OperatorType,
     ParenthesizedExpr,
     SourceLocation,
@@ -59,6 +58,13 @@ from astx.comprehensions import (
     GeneratorExpr,
     ListComprehension,
     SetComprehension,
+)
+from astx.data import (
+    DeleteStmt,
+    Identifier,
+    InlineVariableDeclaration,
+    Variable,
+    VariableDeclaration,
 )
 from astx.exceptions import (
     CatchHandlerStmt,
@@ -196,12 +202,6 @@ from astx.types import (
     UTF8String,
     XnorOp,
     XorOp,
-)
-from astx.variables import (
-    DeleteStmt,
-    InlineVariableDeclaration,
-    Variable,
-    VariableDeclaration,
 )
 
 
@@ -375,6 +375,7 @@ __all__ = [
     "base",
     "blocks",
     "callables",
+    "data",
     "datatypes",
     "flows",
     "get_version",
@@ -383,7 +384,6 @@ __all__ = [
     "packages",
     "symbol_table",
     "types",
-    "variables",
 ]
 
 

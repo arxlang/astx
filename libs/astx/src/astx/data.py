@@ -12,7 +12,6 @@ from astx.base import (
     ASTNodes,
     DataType,
     Expr,
-    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
@@ -120,11 +119,38 @@ class InlineVariableDeclaration(Expr):
 
 @public
 @typechecked
-class Variable(DataTypeOps):
-    """AST class for the variable usage."""
+class Identifier(DataTypeOps):
+    """AST class for identifiers."""
 
     name: str
     type_: DataType = AnyType()
+
+    def __init__(
+        self,
+        name: str,
+        loc: SourceLocation = NO_SOURCE_LOCATION,
+        parent: Optional[ASTNodes] = None,
+    ) -> None:
+        """Initialize the Identifier instance."""
+        super().__init__(loc=loc, parent=parent)
+        self.name = name
+        # note: necessary for data operations
+        self.type_ = AnyType()
+
+    def __str__(self) -> str:
+        """Return a string that represents the object."""
+        return f"{self.__class__.__name__}[{self.name}]"
+
+    def get_struct(self, simplified: bool = False) -> ReprStruct:
+        """Return a structure that represents the Identifier object."""
+        key = f"{self.__class__.__name__.upper()}[{self.name}]"
+        return self._prepare_struct(key, self.name, simplified)
+
+
+@public
+@typechecked
+class Variable(Identifier):
+    """AST class for the variable usage."""
 
     def __init__(
         self,
@@ -134,19 +160,8 @@ class Variable(DataTypeOps):
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """Initialize the Variable instance."""
-        super().__init__(loc=loc, parent=parent)
-        self.name = name
+        super().__init__(name=name, loc=loc, parent=parent)
         self.type_ = type_
-
-    def __str__(self) -> str:
-        """Return a string that represents the object."""
-        return f"Variable[{self.name}]"
-
-    def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
-        key = f"Variable[{self.name}]"
-        value = self.name
-        return self._prepare_struct(key, value, simplified)
 
 
 class DeleteStmt(StatementType):

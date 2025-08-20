@@ -77,14 +77,14 @@ COLUMN_NUMBER = 10
 def test_identifier_creation() -> None:
     """Test basic identifier creation."""
     ident = astx.Identifier("test_var")
-    assert ident.value == "test_var"
+    assert ident.name == "test_var"
 
 
 def test_identifier_with_location() -> None:
     """Test identifier with location."""
     loc = astx.SourceLocation(1, COLUMN_NUMBER)
     ident_with_loc = astx.Identifier("var2", loc=loc)
-    assert ident_with_loc.value == "var2"
+    assert ident_with_loc.name == "var2"
     assert ident_with_loc.loc.line == 1
     assert ident_with_loc.loc.col == COLUMN_NUMBER
 

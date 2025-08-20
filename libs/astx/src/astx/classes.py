@@ -20,9 +20,9 @@ from astx.base import (
 )
 from astx.blocks import Block
 from astx.callables import FunctionDef
+from astx.data import VariableDeclaration
 from astx.modifiers import VisibilityKind
 from astx.tools.typing import typechecked
-from astx.variables import VariableDeclaration
 
 
 @public

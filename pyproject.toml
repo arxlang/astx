@@ -47,6 +47,7 @@ mkdocs-gen-files = ">=0.5.0"
 types-requests = ">=2.31.0.20240406"
 # note: https://github.com/pypa/virtualenv/issues/2944
 virtualenv = "<20.33.0"
+pytest-xdist = "^3.8.0"
 
 [build-system]
 requires = ["poetry-core>=2"]

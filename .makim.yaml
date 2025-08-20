@@ -38,7 +38,7 @@ groups:
           params:
             help: Specify parameters to be used for tests
             type: string
-            default: "-vv"
+            default: "-vv -n auto"
         backend: bash
         run: |
           pytest \

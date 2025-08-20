@@ -3,7 +3,8 @@
 import astx
 import pytest
 
-from astx.base import ASTKind, Identifier
+from astx.base import ASTKind
+from astx.data import Identifier, Variable
 from astx.literals.numeric import LiteralInt32
 from astx.operators import (
     AssignmentExpr,
@@ -11,7 +12,6 @@ from astx.operators import (
     OpCodeAugAssign,
     VariableAssignment,
 )
-from astx.variables import Variable
 from astx.viz import visualize_image
 
 
@@ -144,7 +144,7 @@ def test_not_op() -> None:
 )
 def test_aug_assign_operations(operator: OpCodeAugAssign, value: int) -> None:
     """Test all augmented assignment operators using parametrize."""
-    var_x = astx.Identifier(value="x")
+    var_x = astx.Identifier(name="x")
     literal_value = LiteralInt32(value)
     aug_assign = AugAssign(var_x, operator, literal_value)
 

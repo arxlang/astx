@@ -277,7 +277,7 @@ class ASTxPythonTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Identifier) -> str:
         """Handle Identifier nodes."""
-        return f"{node.value}"
+        return f"{node.name}"
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> str:

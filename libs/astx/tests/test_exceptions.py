@@ -1,6 +1,5 @@
 """Tests for exceptions classes."""
 
-from astx.base import Identifier
 from astx.blocks import Block
 from astx.callables import (
     Argument,
@@ -9,6 +8,7 @@ from astx.callables import (
     FunctionDef,
     FunctionPrototype,
 )
+from astx.data import Identifier
 from astx.exceptions import (
     CatchHandlerStmt,
     ExceptionHandlerStmt,

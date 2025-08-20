@@ -13,12 +13,12 @@ from astx.base import (
     ASTNodes,
     DictDataTypesStruct,
     Expr,
-    Identifier,
     ReprStruct,
     SourceLocation,
     StatementType,
 )
 from astx.blocks import Block
+from astx.data import Identifier
 from astx.tools.typing import typechecked
 
 

@@ -492,7 +492,7 @@ class TestControlFlowNodes:
             comparators=[astx.LiteralInt32(value=10)],
         )
         update = astx.AugAssign(
-            target=astx.Identifier(value="i"),
+            target=astx.Identifier(name="i"),
             value=astx.LiteralInt32(value=1),
             op_code="+=",
         )
@@ -684,12 +684,12 @@ class TestExceptionNodes:
 
     def test_catch_handler_stmt_simple(self) -> None:
         """Test astx.CatchHandlerStmt with exception type."""
-        exception_type = astx.Identifier(value="Exception")
+        exception_type = astx.Identifier(name="Exception")
         body_stmt = astx.BreakStmt()
         body = astx.Block()
         body.append(body_stmt)
         node = astx.CatchHandlerStmt(
-            types=[exception_type], name=astx.Identifier(value="e"), body=body
+            types=[exception_type], name=astx.Identifier(name="e"), body=body
         )
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.ExceptHandler)
@@ -701,8 +701,8 @@ class TestExceptionNodes:
         body = astx.Block()
         body.append(body_stmt)
         handler = astx.CatchHandlerStmt(
-            types=[astx.Identifier(value="Exception")],
-            name=astx.Identifier(value="e"),
+            types=[astx.Identifier(name="Exception")],
+            name=astx.Identifier(name="e"),
             body=body,
         )
         node = astx.ExceptionHandlerStmt(body=body, handlers=[handler])
@@ -1051,7 +1051,7 @@ class TestOperatorNodes:
 
     def test_aug_assign_add(self) -> None:
         """Test astx.AugAssign with addition."""
-        target = astx.Identifier(value="x")
+        target = astx.Identifier(name="x")
         value = astx.LiteralInt32(value=5)
         node = astx.AugAssign(target=target, value=value, op_code="+=")
         result = self.transpiler.visit(node)
@@ -1226,7 +1226,7 @@ class TestSpecialNodes:
 
     def test_delete_stmt_simple(self) -> None:
         """Test astx.DeleteStmt with variable."""
-        target = astx.Identifier(value="x")
+        target = astx.Identifier(name="x")
         node = astx.DeleteStmt(value=[target])
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Delete)
@@ -1247,7 +1247,7 @@ class TestSpecialNodes:
 
     def test_identifier_simple(self) -> None:
         """Test astx.Identifier with simple value."""
-        node = astx.Identifier(value="my_id")
+        node = astx.Identifier(name="my_id")
         result = self.transpiler.visit(node)
         assert isinstance(result, ast.Name)
         assert result.id == "my_id"
@@ -1412,7 +1412,7 @@ class TestVariableAssignmentNodes:
 
     def test_assignment_expr_single_target(self) -> None:
         """Test astx.AssignmentExpr with single target."""
-        target = astx.Identifier(value="x")
+        target = astx.Identifier(name="x")
         value = astx.LiteralInt32(value=42)
         node = astx.AssignmentExpr(targets=[target], value=value)
         result = self.transpiler.visit(node)
