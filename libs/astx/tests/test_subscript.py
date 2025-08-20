@@ -3,9 +3,9 @@
 from typing import cast
 
 from astx.base import ASTKind, DictDataTypesStruct
+from astx.data import Variable
 from astx.literals import LiteralInt32
 from astx.subscript import Ellipsis, SubscriptExpr
-from astx.variables import Variable
 from astx.viz import visualize_image
 
 

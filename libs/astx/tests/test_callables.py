@@ -17,12 +17,12 @@ from astx.callables import (
     YieldFromExpr,
     YieldStmt,
 )
+from astx.data import InlineVariableDeclaration, Variable
 from astx.flows import WhileStmt
 from astx.literals.numeric import LiteralInt32
 from astx.modifiers import ScopeKind, VisibilityKind
 from astx.types.numeric import Int32
 from astx.types.operators import BinaryOp, UnaryOp
-from astx.variables import InlineVariableDeclaration, Variable
 from astx.viz import visualize_image
 
 

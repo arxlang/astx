@@ -3,10 +3,10 @@
 import pytest
 
 from astx.base import ASTKind
+from astx.data import Variable
 from astx.literals.numeric import LiteralInt32
 from astx.operators import CompareOp, WalrusOp
 from astx.types.operators import BinaryOp, UnaryOp
-from astx.variables import Variable
 
 EXPECTED_COMPARATORS_LENGTH = 2
 

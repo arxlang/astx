@@ -1188,8 +1188,8 @@ def test_transpiler_assignmentexpr() -> None:
 def test_transpiler_delete_stmt() -> None:
     """Test astx.DeleteStmt transpilation."""
     # Create identifiers to be deleted
-    var1 = astx.Identifier(value="x")
-    var2 = astx.Identifier(value="y")
+    var1 = astx.Identifier(name="x")
+    var2 = astx.Identifier(name="y")
 
     # Create a DeleteStmt with multiple targets
     delete_stmt = astx.DeleteStmt(value=[var1, var2])

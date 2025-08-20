@@ -347,8 +347,8 @@ class ASTxPythonASTTranspiler:
             type_ = self.visit(node.types[0])
         name = None
         if hasattr(node, "name") and node.name:
-            if hasattr(node.name, "value"):
-                name = node.name.value
+            if hasattr(node.name, "name"):
+                name = node.name.name
             elif isinstance(node.name, str):
                 name = node.name
             else:
@@ -867,9 +867,9 @@ class ASTxPythonASTTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Identifier) -> ast.Name:
         """Handle Identifier nodes."""
-        if not hasattr(node, "value"):
+        if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
-        return ast.Name(id=str(node.value), ctx=ast.Load())
+        return ast.Name(id=node.name, ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> ast.IfExp:

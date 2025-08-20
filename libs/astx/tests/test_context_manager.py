@@ -6,10 +6,10 @@ from astx import LiteralInt32
 from astx.base import (
     ASTKind,
     Expr,
-    Identifier,
 )
 from astx.blocks import Block
 from astx.context_manager import WithItem, WithStmt
+from astx.data import Identifier
 
 
 # Fixtures

@@ -3,6 +3,7 @@
 import pytest
 
 from astx.base import DataType
+from astx.data import Variable
 from astx.types.ttypes import (
     t_boolean,
     t_complex,
@@ -36,7 +37,6 @@ from astx.types.ttypes import (
     t_utf8_char,
     t_utf8_string,
 )
-from astx.variables import Variable
 
 ttypes = [
     t_boolean,

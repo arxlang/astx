@@ -1,8 +1,8 @@
 """Tests for Boolean data type."""
 
+from astx.data import VariableDeclaration
 from astx.literals.boolean import LiteralBoolean
 from astx.types.boolean import Boolean
-from astx.variables import VariableDeclaration
 
 
 def test_variable_boolean() -> None:

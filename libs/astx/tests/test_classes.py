@@ -10,9 +10,9 @@ from astx.classes import (
     StructDeclStmt,
     StructDefStmt,
 )
+from astx.data import Variable, VariableDeclaration
 from astx.literals import LiteralInt32
 from astx.types.base import AnyType
-from astx.variables import Variable, VariableDeclaration
 from astx.viz import visualize_image
 
 
