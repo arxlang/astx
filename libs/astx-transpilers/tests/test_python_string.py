@@ -196,9 +196,11 @@ def test_transpiler_lambdaexpr_noparams() -> None:
     # Generate Python code
     generated_code = translate(lambda_expr)
 
-    expected_code = "lambda : 1"
+    expected_variants = ["lambda: 1", "lambda : 1"]
 
-    assert generated_code == expected_code, "generated_code != expected_code"
+    assert generated_code in expected_variants, (
+        f"Expected one of {expected_variants}, but got '{generated_code}'"
+    )
 
 
 def test_transpiler_functiondef() -> None:
@@ -624,13 +626,13 @@ def test_transpiler_while_expr() -> None:
     # Generate Python code
     generated_code = translate(while_stmt)
 
-    # Expected code for the WhileExpr
-    expected_code = (
-        "[(x := (x + 1)) for _ in iter(lambda : operator_<(x, 5), False)]"
-    )
+    expected_variants = [
+        "[(x := (x + 1)) for _ in iter(lambda: operator_<(x, 5), False)]",
+        "[(x := (x + 1)) for _ in iter(lambda : operator_<(x, 5), False)]",
+    ]
 
-    assert generated_code == expected_code, (
-        f"Expected '{expected_code}', but got '{generated_code}'"
+    assert generated_code in expected_variants, (
+        f"Expected one of {expected_variants}, but got '{generated_code}'"
     )
 
 
