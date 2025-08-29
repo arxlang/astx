@@ -1168,10 +1168,7 @@ def test_transpiler_exception_handler_stmt() -> None:
     )
     generated_code = translate(try_except_stmt)
     expected_code = (
-        "try:\n"
-        "    print('passed')\n"
-        "except A as Identifier:\n"
-        "    print('failed')"
+        "try:\n    print('passed')\nexcept A as e:\n    print('failed')"
     )
 
     assert generated_code == expected_code, (
@@ -1210,7 +1207,7 @@ def test_transpiler_exception_handler_stmt_with_finally() -> None:
     expected_code = (
         "try:\n"
         "    print('passed')\n"
-        "except A as Identifier:\n"
+        "except A as e:\n"
         "    print('failed')\n"
         "finally:\n"
         "    print('run complete')"
