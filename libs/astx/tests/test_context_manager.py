@@ -2,14 +2,13 @@
 
 import pytest
 
-from astx import LiteralInt32
+from astx import Identifier, LiteralInt32
 from astx.base import (
     ASTKind,
     Expr,
 )
 from astx.blocks import Block
 from astx.context_manager import WithItem, WithStmt
-from astx.data import Identifier
 
 
 # Fixtures
@@ -40,11 +39,14 @@ class TestWithItem:
         """Test basic initialization of WithItem."""
         item = WithItem(context_expr, var_name)
         assert item.context_expr == context_expr
+        assert item.instance_name is not None
         assert item.instance_name == var_name
 
     def test_str_basic(self, context_expr: Expr, var_name: Identifier) -> None:
         """Test string representation."""
         item = WithItem(context_expr, var_name)
+        # Type assertion since we know var_name is not None in this test
+        assert var_name is not None  # This helps the type checker
         assert str(item) == f"{context_expr} as {var_name}"
 
     def test_get_struct_basic(
@@ -84,7 +86,8 @@ class TestWithStmt:
         """Test string representation."""
         item = WithItem(context_expr, var_name)
         stmt = WithStmt([item], empty_block)
-        assert str(stmt) == f"WithStmt[{context_expr} as {var_name}]"
+        expected = f"WithStmt[{context_expr} as {var_name}]"
+        assert str(stmt) == expected
 
     def test_get_struct_basic(
         self, context_expr: Expr, var_name: Identifier, empty_block: Block
