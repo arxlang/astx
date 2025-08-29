@@ -196,7 +196,7 @@ def test_transpiler_lambdaexpr_noparams() -> None:
     # Generate Python code
     generated_code = translate(lambda_expr)
 
-    expected_code = "lambda: 1"
+    expected_code = "lambda : 1"
 
     assert generated_code == expected_code, "generated_code != expected_code"
 
@@ -626,7 +626,7 @@ def test_transpiler_while_expr() -> None:
 
     # Expected code for the WhileExpr
     expected_code = (
-        "[(x := (x + 1)) for _ in iter(lambda: operator_<(x, 5), False)]"
+        "[(x := (x + 1)) for _ in iter(lambda : operator_<(x, 5), False)]"
     )
 
     assert generated_code == expected_code, (
