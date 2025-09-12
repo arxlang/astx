@@ -98,3 +98,8 @@ ENV/
 # IDE settings
 .vscode/
 .idea/
+
+# Ignore build artifacts and copied files
+dist/
+build/
+*.egg-info/

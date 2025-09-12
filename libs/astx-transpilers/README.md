@@ -133,6 +133,31 @@ example:
 >>> print(add_function.to_yaml())
 ```
 
+## Transpilers
+
+ASTx includes a powerful transpiler system to convert your AST structures into
+executable Python code. This is great for code generation, prototyping, or
+building custom language tools.
+
+```python
+from astx_transpilers.python_string import ASTxPythonTranspiler
+
+# Using the 'add_function' ASTx node from the example above
+transpiler = ASTxPythonTranspiler()
+python_code = transpiler.visit(add_function)
+print(python_code)
+```
+
+**Output:**
+
+```python
+def add(x: int, y: int) -> int:
+    return (x + y)
+```
+
+For a deep dive into the architecture and more hands-on examples, check out the
+**[full transpiler tutorial](docs/tutorials/astx_transpiler_refactor_tutorial.md)**.
+
 ---
 
 ## 📚 Documentation

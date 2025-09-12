@@ -47,6 +47,27 @@ to translate Abstract Syntax Trees (AST) into LLVM-IR. This showcases the
 library's adaptability and potential to serve as a foundational layer in various
 applications.
 
+---
+
+## New Transpiler System
+
+ASTx includes a powerful and redesigned transpiler system that allows you to
+convert ASTx nodes into Python code. The new architecture separates the process
+into two distinct steps:
+
+1. **ASTx → Python AST Objects**: Converts ASTx nodes into Python's built-in AST
+   objects.
+2. **ASTx → Python Source Code**: Converts ASTx nodes directly into executable
+   Python code.
+
+This separation improves maintainability, eliminates circular dependencies, and
+makes the transpiler system more extensible.
+
+For detailed usage instructions and examples, check out the
+**[Transpiler Tutorial](tutorials/astx_transpiler_refactor_tutorial.md)**.
+
+---
+
 ## Why Choose ASTx?
 
 ASTx is not just a library; it's a robust framework that fosters creativity and
