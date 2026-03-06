@@ -140,15 +140,9 @@ def visualize_image(ast: ReprStruct, direction: Direction = "TD") -> None:
     )
 
 
-def _find_mermaid_ascii() -> str:
-    """Resolve the `mermaid-ascii` CLI path or raise a clear error."""
-    exe = shutil.which("mermaid-ascii") or shutil.which("mermaid-ascii.exe")
-    if not exe:
-        raise RuntimeError(
-            "mermaid-ascii CLI not found. Install it with: "
-            "pip install 'astx[console]' or pip install 'astx[all]'"
-        )
-    return exe
+def _find_mermaid_ascii() -> Optional[str]:
+    """Resolve the `mermaid-ascii` CLI path or return None."""
+    return shutil.which("mermaid-ascii") or shutil.which("mermaid-ascii.exe")
 
 
 def visualize_ascii(
@@ -169,6 +163,11 @@ def visualize_ascii(
     - pipe-labeled edges (--> |label| ...)
     """
     exe = _find_mermaid_ascii()
+    if exe is None:
+        import yaml
+
+        return str(yaml.dump(ast, sort_keys=False))
+
     src = ast_to_mermaid_ascii(ast, direction=direction)
 
     cmd = [exe]
