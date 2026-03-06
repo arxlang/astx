@@ -32,11 +32,11 @@ jobs:
       fail-fast: false
       matrix:
         python_version:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
         os:
           - "ubuntu"
           - "macos"
@@ -99,7 +99,7 @@ jobs:
           activate-environment: astx
           auto-update-conda: true
           conda-solver: libmamba
-          python-version: "3.9"
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |

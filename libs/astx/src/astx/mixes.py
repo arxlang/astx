@@ -1,11 +1,6 @@
 """Module for mixing ASTx types from different modules."""
 
-from typing import Union
-
-try:
-    from typing import TypeAlias  # type: ignore
-except ImportError:
-    from typing_extensions import TypeAlias
+from typing import TypeAlias, Union
 
 from astx.base import DataType
 from astx.callables import FunctionDef

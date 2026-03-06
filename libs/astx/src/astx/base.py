@@ -14,27 +14,17 @@ from typing import (
     Iterator,
     List,
     Optional,
+    TypeAlias,
     Union,
     cast,
 )
 
-from astx.tools.typing import typechecked
-
-try:
-    from typing_extensions import TypeAlias
-except ImportError:
-    from typing import TypeAlias  # type: ignore[no-redef,attr-defined]
-
-
-try:
-    from typing_extensions import TypeVar
-except ImportError:
-    from typing import TypeVar  # type: ignore[assignment]
-
-
 import yaml
 
 from public import public
+from typing_extensions import TypeVar
+
+from astx.tools.typing import typechecked
 
 ASTType = TypeVar("ASTType", bound="AST", default="AST")
 
