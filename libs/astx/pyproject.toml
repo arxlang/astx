@@ -12,6 +12,7 @@ dependencies = [
   "atpublic >= 4.0",
   "plum-dispatch >= 2",
   "typeguard >= 4",
+  "typing-extensions >= 4",
 ]
 
 [project.optional-dependencies]

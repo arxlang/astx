@@ -15,7 +15,6 @@ from typing import (
     List,
     Optional,
     TypeAlias,
-    TypeVar,
     Union,
     cast,
 )
@@ -23,6 +22,7 @@ from typing import (
 import yaml
 
 from public import public
+from typing_extensions import TypeVar
 
 from astx.tools.typing import typechecked
 
