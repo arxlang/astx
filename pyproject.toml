@@ -7,7 +7,7 @@ authors = [
   {name = "Ivan Ogasawara", email = "ivan.ogasawara@gmail.com"}
 ]
 license = "BSD 3 Clause"
-requires-python = ">=3.9,<4"
+requires-python = ">=3.10,<4"
 
 [tool.poetry]
 exclude = [

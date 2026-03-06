@@ -145,8 +145,8 @@ def _find_mermaid_ascii() -> str:
     exe = shutil.which("mermaid-ascii") or shutil.which("mermaid-ascii.exe")
     if not exe:
         raise RuntimeError(
-            "mermaid-ascii CLI not found. Install the PyPI package that ships "
-            "the binary, or put `mermaid-ascii` on PATH."
+            "mermaid-ascii CLI not found. Install it with: "
+            "pip install 'astx[console]' or pip install 'astx[all]'"
         )
     return exe
 
