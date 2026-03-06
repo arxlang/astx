@@ -1,6 +1,18 @@
 # Release Notes
 ---
 
+# [0.24.0](https://github.com/arxlang/astx/compare/0.23.1...0.24.0) (2026-03-06)
+
+
+### Bug Fixes
+
+* Keep mermaid-ascii as an optional dependence ([#290](https://github.com/arxlang/astx/issues/290)) ([3fe2a6b](https://github.com/arxlang/astx/commit/3fe2a6b7fd0e6301dbe193dd3b93ecd1c5c368cc))
+
+
+### Features
+
+* ASTx to pythonAST transpiler implementation with fixes from Identifier Issues ([#287](https://github.com/arxlang/astx/issues/287)) ([3f91893](https://github.com/arxlang/astx/commit/3f91893f6e1c7b597fe054ca860d2476d437c7b4))
+
 ## [0.23.1](https://github.com/arxlang/astx/compare/0.23.0...0.23.1) (2025-08-20)
 
 
