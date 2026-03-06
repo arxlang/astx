@@ -11,6 +11,24 @@ $ pip install astx
 This is the preferred method to install ASTx, as it will always install the most
 recent stable release.
 
+### Optional dependencies
+
+For ASCII visualization of the AST in the console (using `mermaid-ascii`),
+install with the `console` extra:
+
+```bash
+$ pip install 'astx[console]'
+```
+
+Or install all optional dependencies at once:
+
+```bash
+$ pip install 'astx[all]'
+```
+
+Without the `console` extra, the console representation falls back to YAML
+output.
+
 If you don't have [pip](https://pip.pypa.io) installed, this
 [Python installation guide](http://docs.python-guide.org/en/latest/starting/installation/)
 can guide you through the process.

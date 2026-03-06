@@ -51,6 +51,19 @@ Install ASTx from PyPI:
 pip install astx
 ```
 
+For ASCII visualization in the console (via `mermaid-ascii`), install with the
+`console` extra:
+
+```bash
+pip install 'astx[console]'
+```
+
+Or install all optional dependencies:
+
+```bash
+pip install 'astx[all]'
+```
+
 ---
 
 ## 📖 Overview
@@ -123,7 +136,8 @@ def add(x: int, y: int) -> int:
 - Graphical visualization (PNG or ASCII)
 
 In a Jupyter Notebook, the default graphical visualization is **PNG**, while in
-a console, the default is **ASCII**.
+a console, the default is **ASCII** (requires `pip install 'astx[console]'`).
+Without the `console` extra, console output falls back to **YAML**.
 
 You can also print the AST structure in **JSON** or **YAML** format. For
 example:
