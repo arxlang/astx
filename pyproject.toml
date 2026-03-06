@@ -41,14 +41,12 @@ mkdocs-material = ">=8"
 mkdocstrings = {version=">=0.19.0", extras=["python"]}
 mkdocstrings-python = "<2"
 mkdocs-gen-files = ">=0.5.0"
-jupyterlab = ">=4.0.5"
+jupyterlab = ">=4.0.7"
 makim = "1.27.0"
-umlizer = ">=0.1.0"
-nbmake = ">=1.4.6"
+nbmake = ">=1.5.3"
 types-requests = ">=2.31.0.20240406"
-# note: https://github.com/pypa/virtualenv/issues/2944
-virtualenv = "<20.33.0"
-pytest-xdist = "^3.8.0"
+pytest-xdist = ">=3.8.0"
+douki = ">=0.11.0"
 
 [build-system]
 requires = ["poetry-core>=2"]
