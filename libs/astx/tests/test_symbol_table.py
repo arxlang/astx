@@ -1,11 +1,15 @@
-"""Test classes and functions about Symbol Table."""
+"""
+title: Test classes and functions about Symbol Table.
+"""
 
 from astx import Variable
 from astx.symbol_table import SymbolTable
 
 
 def test_symbol_table() -> None:
-    """Test SymbolTable class."""
+    """
+    title: Test SymbolTable class.
+    """
     symtable = SymbolTable()
 
     var_a = Variable("var_a")
@@ -16,7 +20,9 @@ def test_symbol_table() -> None:
 
 
 def test_scope() -> None:
-    """Test Scope class."""
+    """
+    title: Test Scope class.
+    """
     symtable = SymbolTable()
 
     var_a = Variable("var_a")

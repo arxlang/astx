@@ -1,4 +1,6 @@
-"""Tests for control flow statements."""
+"""
+title: Tests for control flow statements.
+"""
 
 from typing import Any, cast
 
@@ -34,7 +36,9 @@ from astx.viz import visualize_image
 
 
 def test_if_stmt() -> None:
-    """Test `if` statement."""
+    """
+    title: Test `if` statement.
+    """
     op = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
     then_block = Block()
     if_stmt = IfStmt(condition=op, then=then_block)
@@ -46,7 +50,9 @@ def test_if_stmt() -> None:
 
 
 def test_if_else_stmt() -> None:
-    """Test `if`/`else` statement."""
+    """
+    title: Test `if`/`else` statement.
+    """
     cond = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
     then_block = Block()
     else_block = Block()
@@ -59,7 +65,9 @@ def test_if_else_stmt() -> None:
 
 
 def test_if_expr() -> None:
-    """Test `if` expression."""
+    """
+    title: Test `if` expression.
+    """
     op = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
     then_block = Block()
     if_expr = IfExpr(condition=op, then=then_block)
@@ -71,7 +79,9 @@ def test_if_expr() -> None:
 
 
 def test_if_else_expr() -> None:
-    """Test `if`/`else` expression."""
+    """
+    title: Test `if`/`else` expression.
+    """
     cond = BinaryOp(op_code=">", lhs=LiteralInt32(1), rhs=LiteralInt32(2))
     then_block = Block()
     else_block = Block()
@@ -84,7 +94,9 @@ def test_if_else_expr() -> None:
 
 
 def test_for_range_loop_expr() -> None:
-    """Test `For Range Loop` expression`."""
+    """
+    title: Test `For Range Loop` expression`.
+    """
     decl_a = InlineVariableDeclaration(
         "a", type_=Int32(), value=LiteralInt32(-1)
     )
@@ -104,7 +116,9 @@ def test_for_range_loop_expr() -> None:
 
 
 def test_for_range_loop_stmt() -> None:
-    """Test `For Range Loop` statement."""
+    """
+    title: Test `For Range Loop` statement.
+    """
     decl_a = InlineVariableDeclaration(
         "a", type_=Int32(), value=LiteralInt32(-1)
     )
@@ -124,7 +138,9 @@ def test_for_range_loop_stmt() -> None:
 
 
 def test_for_count_loop_stmt() -> None:
-    """Test `For Count Loop` statement."""
+    """
+    title: Test `For Count Loop` statement.
+    """
     decl_a = InlineVariableDeclaration(
         "a", type_=Int32(), value=LiteralInt32(0)
     )
@@ -144,7 +160,9 @@ def test_for_count_loop_stmt() -> None:
 
 
 def test_for_count_loop_expr() -> None:
-    """Test `For Count Loop` expression."""
+    """
+    title: Test `For Count Loop` expression.
+    """
     decl_a = InlineVariableDeclaration(
         "a", type_=Int32(), value=LiteralInt32(0)
     )
@@ -164,7 +182,9 @@ def test_for_count_loop_expr() -> None:
 
 
 def test_break_stmt() -> None:
-    """Test BreakStmt class."""
+    """
+    title: Test BreakStmt class.
+    """
     break_stmt = BreakStmt()
 
     assert str(break_stmt) == "BreakStmt"
@@ -180,7 +200,9 @@ def test_break_stmt() -> None:
 
 
 def test_continue_stmt() -> None:
-    """Test ContinueStmt class."""
+    """
+    title: Test ContinueStmt class.
+    """
     continue_stmt = ContinueStmt()
 
     assert str(continue_stmt) == "ContinueStmt"
@@ -196,7 +218,9 @@ def test_continue_stmt() -> None:
 
 
 def test_async_for_range_loop_expr() -> None:
-    """Test `Async For Range Loop` expression`."""
+    """
+    title: Test `Async For Range Loop` expression`.
+    """
     decl_a = InlineVariableDeclaration(
         "a", type_=Int32(), value=LiteralInt32(-1)
     )
@@ -216,7 +240,9 @@ def test_async_for_range_loop_expr() -> None:
 
 
 def test_async_for_range_loop_stmt() -> None:
-    """Test `Async For Range Loop` statement."""
+    """
+    title: Test `Async For Range Loop` statement.
+    """
     decl_a = InlineVariableDeclaration(
         "a", type_=Int32(), value=LiteralInt32(-1)
     )
@@ -236,7 +262,9 @@ def test_async_for_range_loop_stmt() -> None:
 
 
 def test_while_expr() -> None:
-    """Test `WhileExpr` class."""
+    """
+    title: Test `WhileExpr` class.
+    """
     # Define a condition: x < 5
     x_var = Variable(name="x")
     condition = BinaryOp(
@@ -260,7 +288,9 @@ def test_while_expr() -> None:
 
 
 def test_while_stmt() -> None:
-    """Test `WhileStmt` class."""
+    """
+    title: Test `WhileStmt` class.
+    """
     # Define a condition: x < 5
     x_var = Variable(name="x")
     condition = BinaryOp(
@@ -284,7 +314,9 @@ def test_while_stmt() -> None:
 
 
 def test_case_stmt() -> None:
-    """Test `CaseStmt` class."""
+    """
+    title: Test `CaseStmt` class.
+    """
     condition1 = LiteralInt32(value=1)
     body1 = astx.Block()
     body1.append(LiteralString(value="one"))
@@ -297,7 +329,9 @@ def test_case_stmt() -> None:
 
 
 def test_case_stmt_error1() -> None:
-    """Test `CaseStmt` class for default/condition inconsistency (1)."""
+    """
+    title: Test `CaseStmt` class for default/condition inconsistency (1).
+    """
     # should raise error - mustn't have condition since default=True
     with pytest.raises(ValueError):
         condition1 = LiteralInt32(value=1)
@@ -311,7 +345,9 @@ def test_case_stmt_error1() -> None:
 
 
 def test_case_stmt_error2() -> None:
-    """Test `CaseStmt` class for default/condition inconsistency (2)."""
+    """
+    title: Test `CaseStmt` class for default/condition inconsistency (2).
+    """
     # should raise error - must have condition since deault=False
     with pytest.raises(ValueError):
         body1 = astx.Block()
@@ -320,7 +356,9 @@ def test_case_stmt_error2() -> None:
 
 
 def test_switch_stmt() -> None:
-    """Test `SwitchStmt` class."""
+    """
+    title: Test `SwitchStmt` class.
+    """
     # The expression to match
     value_expr = Variable(name="x")
 
@@ -354,7 +392,9 @@ def test_switch_stmt() -> None:
 
 
 def test_goto_stmt() -> None:
-    """Test `GotoStmt` class."""
+    """
+    title: Test `GotoStmt` class.
+    """
     goto_stmt = astx.GotoStmt(astx.Identifier("label1"))
 
     assert str(goto_stmt)
@@ -364,7 +404,9 @@ def test_goto_stmt() -> None:
 
 
 def test_comprehension() -> None:
-    """Test generic comphrehension."""
+    """
+    title: Test generic comphrehension.
+    """
     target = astx.LiteralString("x")
     iterable = astx.LiteralString("range(10)")
     condition = astx.LiteralString("x > 5")
@@ -383,7 +425,9 @@ def test_comprehension() -> None:
 
 
 def test_do_while_expr() -> None:
-    """Test `DoWhileExpr` class."""
+    """
+    title: Test `DoWhileExpr` class.
+    """
     # Define a condition: x < 5
     x_var = Variable(name="x")
     condition = BinaryOp(
@@ -404,7 +448,9 @@ def test_do_while_expr() -> None:
 
 
 def test_do_while_stmt() -> None:
-    """Test `DoWhileStmt` class."""
+    """
+    title: Test `DoWhileStmt` class.
+    """
     # Define a condition: x < 5
     x_var = Variable(name="x")
     condition = BinaryOp(

@@ -1,4 +1,6 @@
-"""ASTx Data Types module."""
+"""
+title: ASTx Data Types module.
+"""
 
 from __future__ import annotations
 
@@ -11,4 +13,6 @@ from astx.types.base import AnyType
 @public
 @typechecked
 class Boolean(AnyType):
-    """Boolean data type expression."""
+    """
+    title: Boolean data type expression.
+    """

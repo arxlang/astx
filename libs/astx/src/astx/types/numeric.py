@@ -1,4 +1,6 @@
-"""ASTx Data Types module."""
+"""
+title: ASTx Data Types module.
+"""
 
 from __future__ import annotations
 
@@ -11,31 +13,44 @@ from astx.types.base import AnyType
 @public
 @typechecked
 class Number(AnyType):
-    """Number data type expression."""
+    """
+    title: Number data type expression.
+    """
 
 
 @public
 @typechecked
 class Integer(AnyType):
-    """Integer number data type expression."""
+    """
+    title: Integer number data type expression.
+    """
 
 
 @public
 @typechecked
 class UnsignedInteger(Integer):
-    """Unsigned integer number data type expression."""
+    """
+    title: Unsigned integer number data type expression.
+    """
 
 
 @public
 @typechecked
 class SignedInteger(Integer):
-    """Signed integer number data type expression."""
+    """
+    title: Signed integer number data type expression.
+    """
 
 
 @public
 @typechecked
 class Int8(SignedInteger):
-    """Int8 data type expression."""
+    """
+    title: Int8 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 1
 
@@ -43,7 +58,12 @@ class Int8(SignedInteger):
 @public
 @typechecked
 class Int16(SignedInteger):
-    """Int16 data type expression."""
+    """
+    title: Int16 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 2
 
@@ -51,7 +71,12 @@ class Int16(SignedInteger):
 @public
 @typechecked
 class Int32(SignedInteger):
-    """Int32 data type expression."""
+    """
+    title: Int32 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 4
 
@@ -59,7 +84,12 @@ class Int32(SignedInteger):
 @public
 @typechecked
 class Int64(SignedInteger):
-    """Int64 data type expression."""
+    """
+    title: Int64 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 8
 
@@ -67,7 +97,12 @@ class Int64(SignedInteger):
 @public
 @typechecked
 class Int128(SignedInteger):
-    """Int128 data type expression."""
+    """
+    title: Int128 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 16
 
@@ -75,7 +110,12 @@ class Int128(SignedInteger):
 @public
 @typechecked
 class UInt8(UnsignedInteger):
-    """UInt8 data type expression."""
+    """
+    title: UInt8 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 1
 
@@ -83,7 +123,12 @@ class UInt8(UnsignedInteger):
 @public
 @typechecked
 class UInt16(UnsignedInteger):
-    """UInt16 data type expression."""
+    """
+    title: UInt16 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 2
 
@@ -91,7 +136,12 @@ class UInt16(UnsignedInteger):
 @public
 @typechecked
 class UInt32(UnsignedInteger):
-    """UInt32 data type expression."""
+    """
+    title: UInt32 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 4
 
@@ -99,7 +149,12 @@ class UInt32(UnsignedInteger):
 @public
 @typechecked
 class UInt64(UnsignedInteger):
-    """UInt64 data type expression."""
+    """
+    title: UInt64 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 8
 
@@ -107,7 +162,12 @@ class UInt64(UnsignedInteger):
 @public
 @typechecked
 class UInt128(UnsignedInteger):
-    """UInt128 data type expression."""
+    """
+    title: UInt128 data type expression.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 16
 
@@ -115,37 +175,52 @@ class UInt128(UnsignedInteger):
 @public
 @typechecked
 class Floating(Number):
-    """AST for the literal float number."""
+    """
+    title: AST for the literal float number.
+    """
 
 
 @public
 @typechecked
 class Float16(Floating):
-    """Float16 data type expression."""
+    """
+    title: Float16 data type expression.
+    """
 
 
 @public
 @typechecked
 class Float32(Floating):
-    """Float32 data type expression."""
+    """
+    title: Float32 data type expression.
+    """
 
 
 @public
 @typechecked
 class Float64(Floating):
-    """Float64 data type expression."""
+    """
+    title: Float64 data type expression.
+    """
 
 
 @public
 @typechecked
 class Complex(Number):
-    """Base class for complex numbers."""
+    """
+    title: Base class for complex numbers.
+    """
 
 
 @public
 @typechecked
 class Complex32(Complex):
-    """Complex32 data type class."""
+    """
+    title: Complex32 data type class.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 8
 
@@ -153,6 +228,11 @@ class Complex32(Complex):
 @public
 @typechecked
 class Complex64(Complex):
-    """Complex64 data type class."""
+    """
+    title: Complex64 data type class.
+    attributes:
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 16

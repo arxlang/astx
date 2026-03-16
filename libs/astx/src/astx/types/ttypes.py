@@ -1,4 +1,6 @@
-"""Constant objects."""
+"""
+title: Constant objects.
+"""
 
 from __future__ import annotations
 

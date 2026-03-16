@@ -1,8 +1,10 @@
-"""Tests for complex number data types."""
+"""
+title: Tests for complex number data types.
+"""
 
 from __future__ import annotations
 
-from typing import Callable, Type
+from typing import Callable
 
 import astx
 import pytest
@@ -19,7 +21,9 @@ COMPLEX_LITERAL_CLASSES = [
 
 
 def test_variable() -> None:
-    """Test variable complex."""
+    """
+    title: Test variable complex.
+    """
     var_a = Variable("a")
     var_b = Variable("b")
 
@@ -27,8 +31,13 @@ def test_variable() -> None:
 
 
 @pytest.mark.parametrize("literal_class", COMPLEX_LITERAL_CLASSES)
-def test_literal(literal_class: Type[astx.Literal]) -> None:
-    """Test complex literals."""
+def test_literal(literal_class: type[astx.Literal]) -> None:
+    """
+    title: Test complex literals.
+    parameters:
+      literal_class:
+        type: type[astx.Literal]
+    """
     lit_a = literal_class(1.5, 2.5)
     lit_b = literal_class(3.0, -4.0)
     BinaryOp(op_code="+", lhs=lit_a, rhs=lit_b)
@@ -47,11 +56,20 @@ def test_literal(literal_class: Type[astx.Literal]) -> None:
 )
 @pytest.mark.parametrize("literal_class", COMPLEX_LITERAL_CLASSES)
 def test_bin_ops(
-    literal_class: Type[astx.Literal],
-    fn_bin_op: Callable[[Type[astx.Literal]], BinaryOp],
+    literal_class: type[astx.Literal],
+    fn_bin_op: Callable[[type[astx.Literal]], BinaryOp],
     op_code: str,
 ) -> None:
-    """Test binary operations on complex numbers."""
+    """
+    title: Test binary operations on complex numbers.
+    parameters:
+      literal_class:
+        type: type[astx.Literal]
+      fn_bin_op:
+        type: Callable[[type[astx.Literal]], BinaryOp]
+      op_code:
+        type: str
+    """
     bin_op = fn_bin_op(literal_class)
     assert bin_op.op_code == op_code
     assert str(bin_op) != ""
@@ -69,11 +87,20 @@ def test_bin_ops(
 )
 @pytest.mark.parametrize("literal_class", COMPLEX_LITERAL_CLASSES)
 def test_unary_ops(
-    literal_class: Type[astx.Literal],
-    fn_unary_op: Callable[[Type[astx.Literal]], UnaryOp],
+    literal_class: type[astx.Literal],
+    fn_unary_op: Callable[[type[astx.Literal]], UnaryOp],
     op_code: str,
 ) -> None:
-    """Test unary operations on complex numbers."""
+    """
+    title: Test unary operations on complex numbers.
+    parameters:
+      literal_class:
+        type: type[astx.Literal]
+      fn_unary_op:
+        type: Callable[[type[astx.Literal]], UnaryOp]
+      op_code:
+        type: str
+    """
     unary_op = fn_unary_op(literal_class)
     assert unary_op.op_code == op_code
     assert str(unary_op) != ""

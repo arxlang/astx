@@ -1,4 +1,6 @@
-"""AST comprehension classes and functions."""
+"""
+title: AST comprehension classes and functions.
+"""
 
 from __future__ import annotations
 
@@ -24,7 +26,22 @@ from astx.tools.typing import typechecked
 @public
 @typechecked
 class ComprehensionClause(Expr):
-    """AST node for generic comprehensions."""
+    """
+    title: AST node for generic comprehensions.
+    attributes:
+      kind:
+        type: ASTKind
+      target:
+        type: Expr
+      iterable:
+        type: Expr
+      conditions:
+        type: ASTNodes[Expr]
+      is_async:
+        type: bool
+    """
+
+    kind: ASTKind
 
     target: Expr
     iterable: Expr
@@ -56,11 +73,22 @@ class ComprehensionClause(Expr):
             self.conditions = ASTNodes[Expr]()
 
     def __str__(self) -> str:
-        """Return a string representation of the object."""
+        """
+        title: Return a string representation of the object.
+        returns:
+          type: str
+        """
         return f"COMPREHENSION[is_async={self.is_async}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         conditions = (
             {"conditions": self.conditions.get_struct(simplified)}
             if self.conditions.nodes
@@ -80,7 +108,12 @@ class ComprehensionClause(Expr):
 @public
 @typechecked
 class Comprehension(Expr):
-    """AST Comprehension class."""
+    """
+    title: AST Comprehension class.
+    attributes:
+      generators:
+        type: ASTNodes[ComprehensionClause]
+    """
 
     generators: ASTNodes[ComprehensionClause]
 
@@ -103,7 +136,14 @@ class Comprehension(Expr):
 
     @abstractmethod
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         value: ReprStruct = {
             "generators": self.generators.get_struct(simplified),
         }
@@ -114,7 +154,14 @@ class Comprehension(Expr):
 @public
 @typechecked
 class ListComprehension(Comprehension):
-    """ListComprehension class."""
+    """
+    title: ListComprehension class.
+    attributes:
+      generators:
+        type: ASTNodes[ComprehensionClause]
+      element:
+        type: Expr
+    """
 
     element: Expr
 
@@ -126,12 +173,30 @@ class ListComprehension(Comprehension):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the GeneratorExpr instance."""
+        """
+        title: Initialize the GeneratorExpr instance.
+        parameters:
+          element:
+            type: Expr
+          generators:
+            type: ASTNodes[ComprehensionClause] | Iterable[ComprehensionClause]
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(generators=generators, loc=loc, parent=parent)
         self.element = element
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"{self}"
         key += f"#{id(self)}" if simplified else ""
 
@@ -151,7 +216,18 @@ class ListComprehension(Comprehension):
 @public
 @typechecked
 class SetComprehension(Comprehension):
-    """AST node representing set comprehension expressions."""
+    """
+    title: AST node representing set comprehension expressions.
+    attributes:
+      generators:
+        type: ASTNodes[ComprehensionClause]
+      kind:
+        type: ASTKind
+      element:
+        type: Expr
+    """
+
+    kind: ASTKind
 
     element: Expr
 
@@ -163,17 +239,39 @@ class SetComprehension(Comprehension):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the SetComprehension instance."""
+        """
+        title: Initialize the SetComprehension instance.
+        parameters:
+          element:
+            type: Expr
+          generators:
+            type: ASTNodes[ComprehensionClause] | Iterable[ComprehensionClause]
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(generators=generators, loc=loc, parent=parent)
         self.element = element
         self.kind = ASTKind.SetComprehensionKind
 
     def __str__(self) -> str:
-        """Return a string representation of the object."""
+        """
+        title: Return a string representation of the object.
+        returns:
+          type: str
+        """
         return "SET-COMPREHENSION"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         generators = (
             {"generators": self.generators.get_struct(simplified)}
             if self.generators.nodes
@@ -191,7 +289,18 @@ class SetComprehension(Comprehension):
 @public
 @typechecked
 class GeneratorExpr(Comprehension):
-    """AST class for generator expressions."""
+    """
+    title: AST class for generator expressions.
+    attributes:
+      generators:
+        type: ASTNodes[ComprehensionClause]
+      kind:
+        type: ASTKind
+      element:
+        type: Expr
+    """
+
+    kind: ASTKind
 
     element: Expr
 
@@ -203,13 +312,31 @@ class GeneratorExpr(Comprehension):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the GeneratorExpr instance."""
+        """
+        title: Initialize the GeneratorExpr instance.
+        parameters:
+          element:
+            type: Expr
+          generators:
+            type: Iterable[ComprehensionClause] | ASTNodes[ComprehensionClause]
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(generators=generators, loc=loc, parent=parent)
         self.element = element
         self.kind = ASTKind.GeneratorExprKind
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"GENERATOR-EXPR#{id(self)}" if simplified else "GENERATOR-EXPR"
         value: ReprStruct = {
             "element": self.element.get_struct(simplified),

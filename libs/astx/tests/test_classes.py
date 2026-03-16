@@ -1,4 +1,6 @@
-"""Tests for classes statements."""
+"""
+title: Tests for classes statements.
+"""
 
 from astx.base import DataType
 from astx.blocks import Block
@@ -17,7 +19,9 @@ from astx.viz import visualize_image
 
 
 def test_class_decl() -> None:
-    """Test `ClassDeclStmt` class."""
+    """
+    title: Test `ClassDeclStmt` class.
+    """
     # Decorators
     decorator1 = Variable(name="decorator_one")
 
@@ -35,7 +39,9 @@ def test_class_decl() -> None:
 
 
 def test_class_def() -> None:
-    """Test `ClassDefStmt` class."""
+    """
+    title: Test `ClassDefStmt` class.
+    """
     # class attribute
     var_decl = VariableDeclaration(
         name="my_variable",
@@ -69,7 +75,9 @@ def test_class_def() -> None:
 
 
 def test_enum_decl() -> None:
-    """Test `EnumDeclStmt` class."""
+    """
+    title: Test `EnumDeclStmt` class.
+    """
     # Enum attributes
     var_r = VariableDeclaration(
         name="RED",
@@ -102,7 +110,9 @@ def test_enum_decl() -> None:
 
 
 def test_struct_decl() -> None:
-    """Test `StructDeclStmt` class."""
+    """
+    title: Test `StructDeclStmt` class.
+    """
     # Define struct attributes
     attr1 = VariableDeclaration(name="id", type_=DataType())
     attr2 = VariableDeclaration(name="value", type_=DataType())
@@ -124,7 +134,9 @@ def test_struct_decl() -> None:
 
 
 def test_struct_def() -> None:
-    """Test `StructDefStmt` class."""
+    """
+    title: Test `StructDefStmt` class.
+    """
     # Define struct fields
     attr1 = VariableDeclaration(name="id", type_=DataType())
 

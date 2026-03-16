@@ -1,15 +1,15 @@
 """
-Symbol Table module for ASTx.
+title: Symbol Table module for ASTx.
+summary: |-
 
-The `SymbolTable` class offered here allows the definition
-of scopes, so the variable or function would be available in
-specifics scopes.
-
+  The `SymbolTable` class offered here allows the definition
+  of scopes, so the variable or function would be available in
+  specifics scopes.
 """
 
 from __future__ import annotations
 
-from typing import Optional, Type
+from typing import Optional
 
 from public import public
 
@@ -20,7 +20,18 @@ from astx.tools.typing import typechecked
 @public
 @typechecked
 class ScopeNodeBase:
-    """ScopeNodeBase is the base used for the nodes (levels) in the scope."""
+    """
+    title: ScopeNodeBase is the base used for the nodes (levels) in the scope.
+    attributes:
+      name:
+        type: str
+      parent:
+        type: Optional[ScopeNodeBase]
+      default_parent:
+        type: Optional[ScopeNodeBase]
+      named_expr:
+        type: dict[str, NamedExpr]
+    """
 
     name: str
     parent: Optional[ScopeNodeBase]
@@ -30,7 +41,14 @@ class ScopeNodeBase:
     def __init__(
         self, name: str, parent: Optional[ScopeNodeBase] = None
     ) -> None:
-        """Initialize ScopeNodeBase."""
+        """
+        title: Initialize ScopeNodeBase.
+        parameters:
+          name:
+            type: str
+          parent:
+            type: Optional[ScopeNodeBase]
+        """
         self.parent: Optional[ScopeNodeBase] = (
             parent or ScopeNodeBase.default_parent
         )
@@ -41,7 +59,18 @@ class ScopeNodeBase:
 @public
 @typechecked
 class ScopeNode(ScopeNodeBase):
-    """Scope node organize the scope in different levels in the stack."""
+    """
+    title: Scope node organize the scope in different levels in the stack.
+    attributes:
+      name:
+        type: str
+      parent:
+        type: Optional[ScopeNodeBase]
+      default_parent:
+        type: Optional[ScopeNodeBase]
+      named_expr:
+        type: dict[str, NamedExpr]
+    """
 
     ...
 
@@ -49,18 +78,34 @@ class ScopeNode(ScopeNodeBase):
 @public
 @typechecked
 class Scope:
-    """Organize the ASTx objects according to the scope."""
+    """
+    title: Organize the ASTx objects according to the scope.
+    attributes:
+      nodes:
+        type: dict[int, ScopeNodeBase]
+      current:
+        type: Optional[ScopeNodeBase]
+      previous:
+        type: Optional[ScopeNodeBase]
+      scope_node_class:
+        type: type[ScopeNodeBase]
+    """
 
     nodes: dict[int, ScopeNodeBase]
     current: Optional[ScopeNodeBase]
     previous: Optional[ScopeNodeBase]
-    scope_node_class: Type[ScopeNodeBase]
+    scope_node_class: type[ScopeNodeBase]
 
     def __init__(
         self,
-        scope_node_class: Type[ScopeNodeBase] = ScopeNode,
+        scope_node_class: type[ScopeNodeBase] = ScopeNode,
     ) -> None:
-        """Initialize the scope."""
+        """
+        title: Initialize the scope.
+        parameters:
+          scope_node_class:
+            type: type[ScopeNodeBase]
+        """
         self.nodes: dict[int, ScopeNodeBase] = {}
         self.current = None
         self.previous = None
@@ -76,7 +121,18 @@ class Scope:
         parent: Optional[ScopeNodeBase] = None,
         change_current: bool = True,
     ) -> ScopeNodeBase:
-        """Add a new node in the scope."""
+        """
+        title: Add a new node in the scope.
+        parameters:
+          name:
+            type: str
+          parent:
+            type: Optional[ScopeNodeBase]
+          change_current:
+            type: bool
+        returns:
+          type: ScopeNodeBase
+        """
         node = self.scope_node_class(name, parent)
 
         # The use of id(node) as keys in the nodes dictionary is generally
@@ -93,30 +149,53 @@ class Scope:
         return node
 
     def get_first(self) -> ScopeNodeBase:
-        """Get the first node in the scope."""
+        """
+        title: Get the first node in the scope.
+        returns:
+          type: ScopeNodeBase
+        """
         node_id = next(iter(self.nodes.keys()))
         return self.nodes[node_id]
 
     def get_last(self) -> ScopeNodeBase:
-        """Get the latest node in the scope."""
+        """
+        title: Get the latest node in the scope.
+        returns:
+          type: ScopeNodeBase
+        """
         node_id = list(self.nodes.keys())[-1]
         return self.nodes[node_id]
 
     def destroy(self, node: ScopeNodeBase) -> None:
-        """Destroy the current scope."""
+        """
+        title: Destroy the current scope.
+        parameters:
+          node:
+            type: ScopeNodeBase
+        """
         del self.nodes[id(node)]
         self.current = self.previous
         self.previous = None
 
     def set_default_parent(self, node: ScopeNodeBase) -> None:
-        """Set default parent for the current scope."""
+        """
+        title: Set default parent for the current scope.
+        parameters:
+          node:
+            type: ScopeNodeBase
+        """
         self.scope_node_class.default_parent = node
 
 
 @public
 @typechecked
 class SymbolTable:
-    """Symbol Table for ASTx."""
+    """
+    title: Symbol Table for ASTx.
+    attributes:
+      scopes:
+        type: Scope
+    """
 
     scopes: Scope
 
@@ -124,16 +203,25 @@ class SymbolTable:
         self.scopes = Scope()
 
     def define(self, expr: NamedExpr) -> None:
-        """Define a new named expression inside the scoped stack."""
+        """
+        title: Define a new named expression inside the scoped stack.
+        parameters:
+          expr:
+            type: NamedExpr
+        """
         if not self.scopes.current:
             raise Exception("SymbolTable: No scope active.")
         self.scopes.current.named_expr[expr.name] = expr
 
     def update(self, expr: NamedExpr) -> None:
         """
-        Update the expression on the SymbolTable.
+        title: Update the expression on the SymbolTable.
+        summary: |-
 
-        It is useful mainly for updating the comment of the expression.
+          It is useful mainly for updating the comment of the expression.
+        parameters:
+          expr:
+            type: NamedExpr
         """
         if not self.scopes.current:
             raise Exception("SymbolTable: No scope active.")
@@ -142,7 +230,14 @@ class SymbolTable:
         self.scopes.current.named_expr[expr.name] = expr
 
     def lookup(self, name: str) -> NamedExpr:
-        """Get a named expression from the scope stack."""
+        """
+        title: Get a named expression from the scope stack.
+        parameters:
+          name:
+            type: str
+        returns:
+          type: NamedExpr
+        """
         scope = self.scopes.current
         while scope is not None:
             if name in scope.named_expr:

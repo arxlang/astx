@@ -1,1 +1,3 @@
-"""Test with real examples."""
+"""
+title: Test with real examples.
+"""

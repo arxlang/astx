@@ -1,4 +1,6 @@
-"""Tests for context manager related AST nodes."""
+"""
+title: Tests for context manager related AST nodes.
+"""
 
 import pytest
 
@@ -14,36 +16,64 @@ from astx.context_manager import WithItem, WithStmt
 # Fixtures
 @pytest.fixture
 def context_expr() -> Expr:
-    """Fixture providing a basic Expr instance."""
+    """
+    title: Fixture providing a basic Expr instance.
+    returns:
+      type: Expr
+    """
     return LiteralInt32(42)
 
 
 @pytest.fixture
 def var_name() -> Identifier:
-    """Fixture providing a basic Identifier instance."""
+    """
+    title: Fixture providing a basic Identifier instance.
+    returns:
+      type: Identifier
+    """
     return Identifier("x")
 
 
 @pytest.fixture
 def empty_block() -> Block:
-    """Fixture providing an empty Block instance."""
+    """
+    title: Fixture providing an empty Block instance.
+    returns:
+      type: Block
+    """
     return Block(name="empty_block")
 
 
 class TestWithItem:
-    """Test suite for WithItem class."""
+    """
+    title: Test suite for WithItem class.
+    """
 
     def test_init_basic(
         self, context_expr: Expr, var_name: Identifier
     ) -> None:
-        """Test basic initialization of WithItem."""
+        """
+        title: Test basic initialization of WithItem.
+        parameters:
+          context_expr:
+            type: Expr
+          var_name:
+            type: Identifier
+        """
         item = WithItem(context_expr, var_name)
         assert item.context_expr == context_expr
         assert item.instance_name is not None
         assert item.instance_name == var_name
 
     def test_str_basic(self, context_expr: Expr, var_name: Identifier) -> None:
-        """Test string representation."""
+        """
+        title: Test string representation.
+        parameters:
+          context_expr:
+            type: Expr
+          var_name:
+            type: Identifier
+        """
         item = WithItem(context_expr, var_name)
         # Type assertion since we know var_name is not None in this test
         assert var_name is not None  # This helps the type checker
@@ -52,7 +82,14 @@ class TestWithItem:
     def test_get_struct_basic(
         self, context_expr: Expr, var_name: Identifier
     ) -> None:
-        """Test basic structure representation."""
+        """
+        title: Test basic structure representation.
+        parameters:
+          context_expr:
+            type: Expr
+          var_name:
+            type: Identifier
+        """
         item = WithItem(context_expr, var_name)
         struct = item.get_struct()
         expected_key = f"CONTEXT[{context_expr}]"
@@ -68,12 +105,23 @@ class TestWithItem:
 
 
 class TestWithStmt:
-    """Test suite for WithStmt class."""
+    """
+    title: Test suite for WithStmt class.
+    """
 
     def test_init_basic(
         self, context_expr: Expr, var_name: Identifier, empty_block: Block
     ) -> None:
-        """Test basic initialization of WithStmt."""
+        """
+        title: Test basic initialization of WithStmt.
+        parameters:
+          context_expr:
+            type: Expr
+          var_name:
+            type: Identifier
+          empty_block:
+            type: Block
+        """
         item = WithItem(context_expr, var_name)
         stmt = WithStmt([item], empty_block)
         assert stmt.items == [item]
@@ -83,7 +131,16 @@ class TestWithStmt:
     def test_str_basic(
         self, context_expr: Expr, var_name: Identifier, empty_block: Block
     ) -> None:
-        """Test string representation."""
+        """
+        title: Test string representation.
+        parameters:
+          context_expr:
+            type: Expr
+          var_name:
+            type: Identifier
+          empty_block:
+            type: Block
+        """
         item = WithItem(context_expr, var_name)
         stmt = WithStmt([item], empty_block)
         expected = f"WithStmt[{context_expr} as {var_name}]"
@@ -92,7 +149,16 @@ class TestWithStmt:
     def test_get_struct_basic(
         self, context_expr: Expr, var_name: Identifier, empty_block: Block
     ) -> None:
-        """Test basic structure representation."""
+        """
+        title: Test basic structure representation.
+        parameters:
+          context_expr:
+            type: Expr
+          var_name:
+            type: Identifier
+          empty_block:
+            type: Block
+        """
         item = WithItem(context_expr, var_name)
         stmt = WithStmt([item], empty_block)
         struct = stmt.get_struct()

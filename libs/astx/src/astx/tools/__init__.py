@@ -1,1 +1,3 @@
-"""Package for astx helper tools."""
+"""
+title: Package for astx helper tools.
+"""

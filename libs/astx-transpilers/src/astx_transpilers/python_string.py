@@ -1,10 +1,10 @@
-"""ASTx to Python string transpiler (New Implementation)."""
+"""
+title: ASTx to Python string transpiler (New Implementation).
+"""
 
 import ast
 import re
 import sys
-
-from typing import Union
 
 import astx
 
@@ -16,19 +16,31 @@ from astx_transpilers.python_to_ast import ASTxPythonASTTranspiler
 @typechecked
 class ASTxPythonTranspiler:
     """
-    Transpiler that converts ASTx nodes to Python source code strings.
+    title: Transpiler that converts ASTx nodes to Python source code strings.
+    summary: |-
 
-    This transpiler uses the AST-based approach by first converting ASTx to
-    Python AST and then using ast.unparse() to generate the string
-    representation.
+      This transpiler uses the AST-based approach by first converting ASTx to
+      Python AST and then using ast.unparse() to generate the string
+      representation.
+    attributes:
+      indent_level:
+        type: int
+      indent_str:
+        type: str
+      _ast_transpiler:
+        type: ASTxPythonASTTranspiler
     """
+
+    indent_level: int
+    indent_str: str
+    _ast_transpiler: ASTxPythonASTTranspiler
 
     def __init__(self) -> None:
         self.indent_level = 0
         self.indent_str = "    "
         self._ast_transpiler = ASTxPythonASTTranspiler()
 
-    def visit(self, node: Union[astx.AST, astx.ASTNodes]) -> str:  # noqa: D102
+    def visit(self, node: astx.AST | astx.ASTNodes) -> str:
         try:
             python_ast = self._ast_transpiler.visit(node)
             if sys.version_info >= (3, 9):
@@ -65,7 +77,7 @@ class ASTxPythonTranspiler:
         except Exception as e:
             return f"# Error converting {type(node).__name__!s}: {e!s}"
 
-    def set_indent(self, level: int, indent_str: str = "    ") -> None:  # noqa: D102
+    def set_indent(self, level: int, indent_str: str = "    ") -> None:
         self.indent_level = level
         self.indent_str = indent_str
 

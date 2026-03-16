@@ -1,4 +1,6 @@
-"""Module for Exceptions."""
+"""
+title: Module for Exceptions.
+"""
 
 from __future__ import annotations
 
@@ -25,7 +27,16 @@ from astx.tools.typing import typechecked
 @public
 @typechecked
 class ThrowStmt(StatementType):
-    """AST class for throw statements."""
+    """
+    title: AST class for throw statements.
+    attributes:
+      kind:
+        type: ASTKind
+      exception:
+        type: Optional[Expr]
+    """
+
+    kind: ASTKind
 
     exception: Optional[Expr]
 
@@ -35,20 +46,40 @@ class ThrowStmt(StatementType):
         parent: Optional[ASTNodes] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize the instance."""
+        """
+        title: Initialize the instance.
+        parameters:
+          exception:
+            type: Optional[Expr]
+          parent:
+            type: Optional[ASTNodes]
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc=loc, parent=parent)
         self.exception = exception
         self.kind = ASTKind.ThrowStmtKind
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         throw_str = (
             f"ThrowStmt[{self.exception}]" if self.exception else "ThrowStmt"
         )
         return throw_str
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"THROW-STMT[{id(self)}]" if simplified else "THROW-STMT"
         value = self.exception.get_struct(simplified) if self.exception else ""
         return self._prepare_struct(key, value, simplified)
@@ -57,7 +88,20 @@ class ThrowStmt(StatementType):
 @public
 @typechecked
 class CatchHandlerStmt(StatementType):
-    """AST class for catch statements."""
+    """
+    title: AST class for catch statements.
+    attributes:
+      kind:
+        type: ASTKind
+      body:
+        type: Block[AST]
+      name:
+        type: Optional[Identifier]
+      types:
+        type: Optional[ASTNodes[Identifier]]
+    """
+
+    kind: ASTKind
 
     body: Block[AST]
     name: Optional[Identifier]
@@ -71,7 +115,20 @@ class CatchHandlerStmt(StatementType):
         parent: Optional[ASTNodes] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize the instance."""
+        """
+        title: Initialize the instance.
+        parameters:
+          body:
+            type: Block[AST]
+          name:
+            type: Optional[Identifier]
+          types:
+            type: Optional[Iterable[Identifier] | ASTNodes[Identifier]]
+          parent:
+            type: Optional[ASTNodes]
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc=loc, parent=parent)
         self.body = body
         self.name = name
@@ -89,11 +146,22 @@ class CatchHandlerStmt(StatementType):
         self.kind = ASTKind.CatchHandlerStmtKind
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return f"CatchHandlerStmt[{self.name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = (
             f"CATCH-HANDLER-STMT[{id(self)}]"
             if simplified
@@ -118,7 +186,20 @@ class CatchHandlerStmt(StatementType):
 @public
 @typechecked
 class ExceptionHandlerStmt(StatementType):
-    """AST class for try statements."""
+    """
+    title: AST class for try statements.
+    attributes:
+      kind:
+        type: ASTKind
+      body:
+        type: Block[AST]
+      handlers:
+        type: ASTNodes[CatchHandlerStmt]
+      finally_handler:
+        type: Optional[FinallyHandlerStmt]
+    """
+
+    kind: ASTKind
 
     body: Block[AST]
     handlers: ASTNodes[CatchHandlerStmt]
@@ -132,7 +213,20 @@ class ExceptionHandlerStmt(StatementType):
         parent: Optional[ASTNodes] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize the instance."""
+        """
+        title: Initialize the instance.
+        parameters:
+          body:
+            type: Block[AST]
+          handlers:
+            type: Iterable[CatchHandlerStmt] | ASTNodes[CatchHandlerStmt]
+          finally_handler:
+            type: Optional[FinallyHandlerStmt]
+          parent:
+            type: Optional[ASTNodes]
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc=loc, parent=parent)
         self.body = body
 
@@ -148,11 +242,22 @@ class ExceptionHandlerStmt(StatementType):
         self.kind = ASTKind.ExceptionHandlerStmtKind
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return "ExceptionHandlerStmt"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = (
             f"EXCEPTION-HANDLER-STMT[{id(self)}]"
             if simplified
@@ -178,7 +283,16 @@ class ExceptionHandlerStmt(StatementType):
 @public
 @typechecked
 class FinallyHandlerStmt(StatementType):
-    """AST class for finally statements."""
+    """
+    title: AST class for finally statements.
+    attributes:
+      kind:
+        type: ASTKind
+      body:
+        type: Block[AST]
+    """
+
+    kind: ASTKind
 
     body: Block[AST]
 
@@ -188,17 +302,37 @@ class FinallyHandlerStmt(StatementType):
         parent: Optional[ASTNodes] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize the instance."""
+        """
+        title: Initialize the instance.
+        parameters:
+          body:
+            type: Block[AST]
+          parent:
+            type: Optional[ASTNodes]
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc=loc, parent=parent)
         self.body = body
         self.kind = ASTKind.FinallyHandlerStmtKind
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return "FinallyStmt"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"FINALLY-STMT[{id(self)}]" if simplified else "FINALLY-STMT"
         value: DictDataTypesStruct = {"body": self.body.get_struct(simplified)}
 

@@ -1,4 +1,6 @@
-"""Tests visualization methods."""
+"""
+title: Tests visualization methods.
+"""
 
 from astx.blocks import Block
 from astx.data import Variable, VariableDeclaration
@@ -9,7 +11,9 @@ from astx.viz import visualize_ascii
 
 
 def test_viz_image() -> None:
-    """Test image visualization method."""
+    """
+    title: Test image visualization method.
+    """
     var_a = Variable("a")
     var_b = Variable("b")
 
@@ -25,7 +29,9 @@ def test_viz_image() -> None:
 
 
 def test_viz_ascii() -> None:
-    """Test ascii representation."""
+    """
+    title: Test ascii representation.
+    """
     block = Block()
     decl_a = VariableDeclaration("a", type_=Int32(), value=LiteralInt32(1))
     decl_b = VariableDeclaration("b", type_=Int32(), value=LiteralInt32(2))

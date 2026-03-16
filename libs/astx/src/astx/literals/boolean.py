@@ -1,4 +1,6 @@
-"""ASTx Data Types module."""
+"""
+title: ASTx Data Types module.
+"""
 
 from __future__ import annotations
 
@@ -16,14 +18,33 @@ from astx.types.boolean import Boolean
 @public
 @typechecked
 class LiteralBoolean(Literal):
-    """LiteralBoolean data type class."""
+    """
+    title: LiteralBoolean data type class.
+    attributes:
+      type_:
+        type: Boolean
+      loc:
+        type: SourceLocation
+      value:
+        type: bool
+    """
+
+    type_: Boolean
+    loc: SourceLocation
 
     value: bool
 
     def __init__(
         self, value: bool, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralBoolean."""
+        """
+        title: Initialize LiteralBoolean.
+        parameters:
+          value:
+            type: bool
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Boolean()

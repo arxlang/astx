@@ -1,8 +1,8 @@
-"""Test cases for collection data types."""
+"""
+title: Test cases for collection data types.
+"""
 
 from __future__ import annotations
-
-from typing import Dict, List, Set, Tuple
 
 from astx.literals.base import Literal
 from astx.literals.collections import (
@@ -17,8 +17,10 @@ from astx.types.operators import BinaryOp, UnaryOp
 
 
 def test_literal_list_creation() -> None:
-    """Test creation of LiteralList."""
-    elements: List[Literal] = [
+    """
+    title: Test creation of LiteralList.
+    """
+    elements: list[Literal] = [
         LiteralInt32(1),
         LiteralInt32(2),
         LiteralInt32(3),
@@ -30,8 +32,10 @@ def test_literal_list_creation() -> None:
 
 
 def test_literal_tuple_creation() -> None:
-    """Test creation of LiteralTuple."""
-    elements: Tuple[Literal, ...] = (
+    """
+    title: Test creation of LiteralTuple.
+    """
+    elements: tuple[Literal, ...] = (
         LiteralInt32(1),
         LiteralInt32(2),
         LiteralInt32(3),
@@ -43,8 +47,10 @@ def test_literal_tuple_creation() -> None:
 
 
 def test_literal_set_creation() -> None:
-    """Test creation of LiteralSet."""
-    elements: Set[Literal] = {
+    """
+    title: Test creation of LiteralSet.
+    """
+    elements: set[Literal] = {
         LiteralInt32(1),
         LiteralInt32(2),
         LiteralInt32(3),
@@ -56,8 +62,10 @@ def test_literal_set_creation() -> None:
 
 
 def test_literal_dict_creation() -> None:
-    """Test creation of LiteralDict."""
-    elements: Dict[Literal, Literal] = {
+    """
+    title: Test creation of LiteralDict.
+    """
+    elements: dict[Literal, Literal] = {
         LiteralInt32(1): LiteralInt32(10),
         LiteralInt32(2): LiteralInt32(20),
     }
@@ -68,9 +76,11 @@ def test_literal_dict_creation() -> None:
 
 
 def test_literal_list_binary_addition() -> None:
-    """Test binary addition operation on LiteralList."""
-    elements1: List[Literal] = [LiteralInt32(1), LiteralInt32(2)]
-    elements2: List[Literal] = [LiteralInt32(3), LiteralInt32(4)]
+    """
+    title: Test binary addition operation on LiteralList.
+    """
+    elements1: list[Literal] = [LiteralInt32(1), LiteralInt32(2)]
+    elements2: list[Literal] = [LiteralInt32(3), LiteralInt32(4)]
     lit_list1 = LiteralList(elements1)
     lit_list2 = LiteralList(elements2)
     combined = BinaryOp("+", lit_list1, lit_list2)
@@ -81,8 +91,10 @@ def test_literal_list_binary_addition() -> None:
 
 
 def test_literal_list_unary_negation() -> None:
-    """Test unary negation operation on LiteralList."""
-    elements: List[Literal] = [
+    """
+    title: Test unary negation operation on LiteralList.
+    """
+    elements: list[Literal] = [
         LiteralInt32(1),
         LiteralInt32(2),
         LiteralInt32(3),
@@ -95,9 +107,11 @@ def test_literal_list_unary_negation() -> None:
 
 
 def test_literal_set_binary_union() -> None:
-    """Test binary union operation on LiteralSet."""
-    elements1: Set[Literal] = {LiteralInt32(1), LiteralInt32(2)}
-    elements2: Set[Literal] = {LiteralInt32(3), LiteralInt32(4)}
+    """
+    title: Test binary union operation on LiteralSet.
+    """
+    elements1: set[Literal] = {LiteralInt32(1), LiteralInt32(2)}
+    elements2: set[Literal] = {LiteralInt32(3), LiteralInt32(4)}
     lit_set1 = LiteralSet(elements1)
     lit_set2 = LiteralSet(elements2)
     union_set = BinaryOp("|", lit_set1, lit_set2)
@@ -108,9 +122,11 @@ def test_literal_set_binary_union() -> None:
 
 
 def test_literal_dict_binary_merge() -> None:
-    """Test binary merge operation on LiteralDict."""
-    elements1: Dict[Literal, Literal] = {LiteralInt32(1): LiteralInt32(10)}
-    elements2: Dict[Literal, Literal] = {LiteralInt32(2): LiteralInt32(20)}
+    """
+    title: Test binary merge operation on LiteralDict.
+    """
+    elements1: dict[Literal, Literal] = {LiteralInt32(1): LiteralInt32(10)}
+    elements2: dict[Literal, Literal] = {LiteralInt32(2): LiteralInt32(20)}
     lit_dict1 = LiteralDict(elements1)
     lit_dict2 = LiteralDict(elements2)
     merged_dict = BinaryOp("**", lit_dict1, lit_dict2)

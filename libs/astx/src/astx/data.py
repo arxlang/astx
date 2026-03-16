@@ -1,4 +1,6 @@
-"""Module for Variables."""
+"""
+title: Module for Variables.
+"""
 
 from __future__ import annotations
 
@@ -28,7 +30,26 @@ UNDEFINED = Undefined()
 @public
 @typechecked
 class VariableDeclaration(StatementType):
-    """AST class for variable declaration."""
+    """
+    title: AST class for variable declaration.
+    attributes:
+      kind:
+        type: ASTKind
+      mutability:
+        type: MutabilityKind
+      visibility:
+        type: VisibilityKind
+      scope:
+        type: ScopeKind
+      name:
+        type: str
+      type_:
+        type: DataType
+      value:
+        type: Expr
+    """
+
+    kind: ASTKind
 
     mutability: MutabilityKind
     visibility: VisibilityKind
@@ -48,7 +69,26 @@ class VariableDeclaration(StatementType):
         parent: Optional[ASTNodes] = None,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize the VarExprAST instance."""
+        """
+        title: Initialize the VarExprAST instance.
+        parameters:
+          name:
+            type: str
+          type_:
+            type: DataType
+          mutability:
+            type: MutabilityKind
+          visibility:
+            type: VisibilityKind
+          scope:
+            type: ScopeKind
+          value:
+            type: Expr
+          parent:
+            type: Optional[ASTNodes]
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc=loc, parent=parent)
         self.mutability = mutability
         self.scope = scope
@@ -59,12 +99,23 @@ class VariableDeclaration(StatementType):
         self.kind = ASTKind.VarDeclKind
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         type_ = self.type_.__class__.__name__
         return f"VariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
@@ -74,10 +125,30 @@ class VariableDeclaration(StatementType):
 @typechecked
 class InlineVariableDeclaration(Expr):
     """
-    AST class for inline variable declaration expression.
+    title: AST class for inline variable declaration expression.
+    summary: |-
 
-    Can be used in expressions like for loops.
+      Can be used in expressions like for loops.
+    attributes:
+      scope:
+        type: ScopeKind
+      visibility:
+        type: VisibilityKind
+      kind:
+        type: ASTKind
+      mutability:
+        type: MutabilityKind
+      name:
+        type: str
+      type_:
+        type: DataType
+      value:
+        type: Expr
     """
+
+    scope: ScopeKind
+    visibility: VisibilityKind
+    kind: ASTKind
 
     mutability: MutabilityKind
     name: str
@@ -95,7 +166,26 @@ class InlineVariableDeclaration(Expr):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the VarExprAST instance."""
+        """
+        title: Initialize the VarExprAST instance.
+        parameters:
+          name:
+            type: str
+          type_:
+            type: DataType
+          mutability:
+            type: MutabilityKind
+          visibility:
+            type: VisibilityKind
+          scope:
+            type: ScopeKind
+          value:
+            type: Expr
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(loc=loc, parent=parent)
         self.mutability = mutability
         self.scope = scope
@@ -106,12 +196,23 @@ class InlineVariableDeclaration(Expr):
         self.kind = ASTKind.VarDeclKind
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         type_ = self.type_.__class__.__name__
         return f"InlineVariableDeclaration[{self.name}, {type_}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = str(self)
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)
@@ -120,7 +221,14 @@ class InlineVariableDeclaration(Expr):
 @public
 @typechecked
 class Identifier(DataTypeOps):
-    """AST class for identifiers."""
+    """
+    title: AST class for identifiers.
+    attributes:
+      name:
+        type: str
+      type_:
+        type: DataType
+    """
 
     name: str
     type_: DataType = AnyType()
@@ -131,18 +239,38 @@ class Identifier(DataTypeOps):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the Identifier instance."""
+        """
+        title: Initialize the Identifier instance.
+        parameters:
+          name:
+            type: str
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(loc=loc, parent=parent)
         self.name = name
         # note: necessary for data operations
         self.type_ = AnyType()
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return f"{self.__class__.__name__}[{self.name}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a structure that represents the Identifier object."""
+        """
+        title: Return a structure that represents the Identifier object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"{self.__class__.__name__.upper()}[{self.name}]"
         return self._prepare_struct(key, self.name, simplified)
 
@@ -150,7 +278,16 @@ class Identifier(DataTypeOps):
 @public
 @typechecked
 class Variable(Identifier):
-    """AST class for the variable usage."""
+    """
+    title: AST class for the variable usage.
+    attributes:
+      name:
+        type: str
+      type_:
+        type: DataType
+    """
+
+    type_: DataType
 
     def __init__(
         self,
@@ -159,13 +296,33 @@ class Variable(Identifier):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the Variable instance."""
+        """
+        title: Initialize the Variable instance.
+        parameters:
+          name:
+            type: str
+          type_:
+            type: DataType
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(name=name, loc=loc, parent=parent)
         self.type_ = type_
 
 
 class DeleteStmt(StatementType):
-    """AST class for 'del' statements."""
+    """
+    title: AST class for 'del' statements.
+    attributes:
+      kind:
+        type: ASTKind
+      value:
+        type: Iterable[Identifier]
+    """
+
+    kind: ASTKind
 
     value: Iterable[Identifier]
 
@@ -175,18 +332,38 @@ class DeleteStmt(StatementType):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the DeleteStmt instance."""
+        """
+        title: Initialize the DeleteStmt instance.
+        parameters:
+          value:
+            type: Iterable[Identifier]
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(loc=loc, parent=parent)
         self.value = value
         self.kind = ASTKind.DeleteStmtKind
 
     def __str__(self) -> str:
-        """Return a string representation of the object."""
+        """
+        title: Return a string representation of the object.
+        returns:
+          type: str
+        """
         value_str = ", ".join(str(value) for value in self.value)
         return f"DeleteStmt[{value_str}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = "DELETE"
 
         value: ReprStruct = {

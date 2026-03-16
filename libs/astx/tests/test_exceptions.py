@@ -1,4 +1,6 @@
-"""Tests for exceptions classes."""
+"""
+title: Tests for exceptions classes.
+"""
 
 from astx.blocks import Block
 from astx.callables import (
@@ -21,7 +23,9 @@ from astx.viz import visualize_image
 
 
 def test_throw_stmt() -> None:
-    """Test `ThrowStmt` class."""
+    """
+    title: Test `ThrowStmt` class.
+    """
     # specify the exception to be thrown
     exc = Identifier("exception_message")
 
@@ -37,7 +41,14 @@ def test_throw_stmt() -> None:
 def fn_print(
     arg: LiteralString,
 ) -> FunctionCall:
-    """Return a FunctionCall to print a string."""
+    """
+    title: Return a FunctionCall to print a string.
+    parameters:
+      arg:
+        type: LiteralString
+    returns:
+      type: FunctionCall
+    """
     proto = FunctionPrototype(
         name="print",
         args=Arguments(Argument("_", type_=String())),
@@ -51,7 +62,9 @@ def fn_print(
 
 
 def test_catchhandler_stmt_onetype() -> None:
-    """Test `CatchHandler` class with one type."""
+    """
+    title: Test `CatchHandler` class with one type.
+    """
     # Create the "except" block
     exception_types = [Identifier("A")]
     except_body1 = Block()
@@ -67,7 +80,9 @@ def test_catchhandler_stmt_onetype() -> None:
 
 
 def test_catchhandler_stmt_multipletypes() -> None:
-    """Test `CatchHandler` class with multiple types."""
+    """
+    title: Test `CatchHandler` class with multiple types.
+    """
     # Create the "except" block
     exception_types = [Identifier("A"), Identifier("B")]
     except_body1 = Block()
@@ -83,7 +98,9 @@ def test_catchhandler_stmt_multipletypes() -> None:
 
 
 def test_catchhandler_stmt_notypes() -> None:
-    """Test `CatchHandler` class without types."""
+    """
+    title: Test `CatchHandler` class without types.
+    """
     # Create the "except" block
     except_body1 = Block()
     except_body1.append(fn_print(LiteralString(value="passed")))
@@ -96,7 +113,9 @@ def test_catchhandler_stmt_notypes() -> None:
 
 
 def test_catchhandler_stmt_notypes_noname() -> None:
-    """Test `CatchHandler` class without types or names."""
+    """
+    title: Test `CatchHandler` class without types or names.
+    """
     # Create the "except" block
     except_body1 = Block()
     except_body1.append(fn_print(LiteralString(value="passed")))
@@ -109,7 +128,9 @@ def test_catchhandler_stmt_notypes_noname() -> None:
 
 
 def test_catchhandler_stmt_noname() -> None:
-    """Test `CatchHandler` class without name."""
+    """
+    title: Test `CatchHandler` class without name.
+    """
     # Create the "except" block
     exception_types = [Identifier("A")]
     except_body1 = Block()
@@ -123,7 +144,9 @@ def test_catchhandler_stmt_noname() -> None:
 
 
 def test_exceptionhandler_stmt() -> None:
-    """Test `ExceptionHandlerStmt` class with one handler."""
+    """
+    title: Test `ExceptionHandlerStmt` class with one handler.
+    """
     exception_types = [Identifier("A")]
 
     # Create the "except" block
@@ -146,7 +169,9 @@ def test_exceptionhandler_stmt() -> None:
 
 
 def test_exceptionhandler_stmt_multiplehandlers() -> None:
-    """Test `ExceptionHandlerStmt` class with multiple handlers."""
+    """
+    title: Test `ExceptionHandlerStmt` class with multiple handlers.
+    """
     # Create the "except" block
     exception1_types = [Identifier("A")]
     except_body1 = Block()
@@ -178,7 +203,9 @@ def test_exceptionhandler_stmt_multiplehandlers() -> None:
 
 
 def test_finallyhandler_stmt_() -> None:
-    """Test `FinallyHandlerStmt` class."""
+    """
+    title: Test `FinallyHandlerStmt` class.
+    """
     # Create the "finally" block
     finally_body = Block()
     finally_body.append(fn_print(LiteralString(value="run complete")))
@@ -192,7 +219,10 @@ def test_finallyhandler_stmt_() -> None:
 
 
 def test_exceptionhandler_stmt_multiplehandlers_finally() -> None:
-    """Test `ExceptionHandlerStmt` class with multiple handlers and finally."""
+    """
+    title: >-
+      Test `ExceptionHandlerStmt` class with multiple handlers and finally.
+    """
     # Create the "except" block
     exception1_types = [Identifier("A")]
     except_body1 = Block()
