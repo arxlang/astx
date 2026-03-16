@@ -10,13 +10,14 @@ from abc import abstractmethod
 from enum import Enum
 from hashlib import sha256
 from typing import (
-    TYPE_CHECKING,
-    Any,
     ClassVar,
+    Dict,
     Generic,
     Iterator,
+    List,
     Optional,
     TypeAlias,
+    Union,
     cast,
 )
 
@@ -585,23 +586,24 @@ class Undefined(Expr):
         return self._prepare_struct(key, value, simplified)
 
 
-if TYPE_CHECKING:
-    PrimitivesStruct: TypeAlias = int | str | float | bool | Undefined
-    DataTypesStruct: TypeAlias = (
-        PrimitivesStruct
-        | dict[str, "DataTypesStruct"]
-        | list["DataTypesStruct"]
-    )
-    DictDataTypesStruct: TypeAlias = dict[str, DataTypesStruct]
-    ReprStruct: TypeAlias = (
-        list[DataTypesStruct] | DictDataTypesStruct | Undefined
-    )
-else:
-    # Typeguard on Python 3.10 does not resolve this recursive alias reliably.
-    PrimitivesStruct = Any
-    DataTypesStruct = Any
-    DictDataTypesStruct = dict[str, Any]
-    ReprStruct = Any
+PrimitivesStruct: TypeAlias = Union[
+    int,
+    str,
+    float,
+    bool,
+    Undefined,
+]
+DataTypesStruct: TypeAlias = Union[
+    PrimitivesStruct,
+    Dict[str, "DataTypesStruct"],
+    List["DataTypesStruct"],
+]
+DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
+ReprStruct: TypeAlias = Union[
+    List[DataTypesStruct],
+    DictDataTypesStruct,
+    Undefined,
+]
 
 
 @public
