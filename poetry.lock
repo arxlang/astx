@@ -168,7 +168,7 @@ test = ["astroid (>=2,<5)", "pytest (<9.0)", "pytest-cov", "pytest-xdist"]
 
 [[package]]
 name = "astx"
-version = "0.23.1"
+version = "0.24.0"
 description = "ASTx is an agnostic expression structure for AST."
 optional = false
 python-versions = ">=3.10,<4"
@@ -192,7 +192,7 @@ url = "libs/astx"
 
 [[package]]
 name = "astx-transpilers"
-version = "0.23.1"
+version = "0.24.0"
 description = "ASTx is an agnostic expression structure for AST."
 optional = false
 python-versions = ">=3.10,<4"
@@ -201,7 +201,7 @@ files = []
 develop = true
 
 [package.dependencies]
-astx = "0.23.1"
+astx = "0.24.0"
 atpublic = ">=4.0"
 plum-dispatch = ">=2"
 typeguard = ">=4"
