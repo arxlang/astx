@@ -1,4 +1,6 @@
-"""Test fibonnaci with astx."""
+"""
+title: Test fibonnaci with astx.
+"""
 
 from __future__ import annotations
 
@@ -6,7 +8,9 @@ import astx
 
 
 def test_function_call_fibonacci() -> None:
-    """Test the FunctionCall class with fibonacci."""
+    """
+    title: Test the FunctionCall class with fibonacci.
+    """
     # Initialize the ASTx module
     module = astx.Module()
 

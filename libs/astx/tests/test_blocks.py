@@ -1,4 +1,6 @@
-"""Module for testing different kind of ASTx blocks."""
+"""
+title: Module for testing different kind of ASTx blocks.
+"""
 
 from astx.blocks import Block
 from astx.data import Variable, VariableDeclaration
@@ -8,7 +10,9 @@ from astx.types.operators import BinaryOp
 
 
 def test_block() -> None:
-    """Test ASTx block."""
+    """
+    title: Test ASTx block.
+    """
     block = Block()
 
     decl_a = VariableDeclaration("a", type_=Int32(), value=LiteralInt32(1))

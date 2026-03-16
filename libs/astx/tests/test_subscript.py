@@ -1,4 +1,6 @@
-"""Tests for subscripts."""
+"""
+title: Tests for subscripts.
+"""
 
 from typing import cast
 
@@ -10,7 +12,9 @@ from astx.viz import visualize_image
 
 
 def test_subscriptexpr_upper_lower() -> None:
-    """Test `SubscriptExpr` class - slice of an array."""
+    """
+    title: Test `SubscriptExpr` class - slice of an array.
+    """
     # Variable
     a_var = Variable(name="a")
 
@@ -29,7 +33,9 @@ def test_subscriptexpr_upper_lower() -> None:
 
 
 def test_subscriptexpr_index() -> None:
-    """Test `SubscriptExpr` class - index of an array."""
+    """
+    title: Test `SubscriptExpr` class - index of an array.
+    """
     # Variable
     a_var = Variable(name="a")
 
@@ -46,7 +52,9 @@ def test_subscriptexpr_index() -> None:
 
 
 def test_ellipsis_basic_properties() -> None:
-    """Test basic properties of the Ellipsis class."""
+    """
+    title: Test basic properties of the Ellipsis class.
+    """
     ellip = Ellipsis()
     assert ellip.kind == ASTKind.EllipsisKind
     assert str(ellip) == "Ellipsis"
@@ -56,7 +64,9 @@ def test_ellipsis_basic_properties() -> None:
 
 
 def test_ellipsis_in_various_slice_positions() -> None:
-    """Test Ellipsis used in different positions in subscript expressions."""
+    """
+    title: Test Ellipsis used in different positions in subscript expressions.
+    """
     arr = Variable(name="array")
     # Case 1:upper bound
     slice_upper = SubscriptExpr(
@@ -84,7 +94,9 @@ def test_ellipsis_in_various_slice_positions() -> None:
 
 
 def test_ellipsis_as_standalone_index() -> None:
-    """Test using Ellipsis as a standalone index - array[...]."""
+    """
+    title: Test using Ellipsis as a standalone index - array[...].
+    """
     arr = Variable(name="data")
     subscr = SubscriptExpr(
         value=arr,
@@ -102,7 +114,9 @@ def test_ellipsis_as_standalone_index() -> None:
 
 
 def test_ellipsis_nested_expressions() -> None:
-    """Test Ellipsis in more complex nested expressions."""
+    """
+    title: Test Ellipsis in more complex nested expressions.
+    """
     inner_arr = Variable(name="vector")
     inner_subscr = SubscriptExpr(
         value=inner_arr,

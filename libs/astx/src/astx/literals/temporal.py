@@ -1,4 +1,6 @@
-"""ASTx Data Types module."""
+"""
+title: ASTx Data Types module.
+"""
 
 from __future__ import annotations
 
@@ -22,23 +24,54 @@ from astx.types.temporal import (
 @public
 @typechecked
 class LiteralDate(Literal):
-    """LiteralDate data type class."""
+    """
+    title: LiteralDate data type class.
+    attributes:
+      value:
+        type: str
+      type_:
+        type: Date
+      loc:
+        type: SourceLocation
+    """
+
+    value: str
+    type_: Date
+    loc: SourceLocation
 
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralDate."""
+        """
+        title: Initialize LiteralDate.
+        parameters:
+          value:
+            type: str
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Date()
         self.loc = loc
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return f"LiteralDate[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the LiteralDate object."""
+        """
+        title: Return the structure of the LiteralDate object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"LiteralDate: {self.value}"
         return self._prepare_struct(key, self.value, simplified)
 
@@ -46,23 +79,54 @@ class LiteralDate(Literal):
 @public
 @typechecked
 class LiteralTime(Literal):
-    """LiteralTime data type class."""
+    """
+    title: LiteralTime data type class.
+    attributes:
+      value:
+        type: str
+      type_:
+        type: Time
+      loc:
+        type: SourceLocation
+    """
+
+    value: str
+    type_: Time
+    loc: SourceLocation
 
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralTime."""
+        """
+        title: Initialize LiteralTime.
+        parameters:
+          value:
+            type: str
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Time()
         self.loc = loc
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return f"LiteralTime[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the LiteralTime object."""
+        """
+        title: Return the structure of the LiteralTime object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"LiteralTime: {self.value}"
         return self._prepare_struct(key, self.value, simplified)
 
@@ -70,23 +134,54 @@ class LiteralTime(Literal):
 @public
 @typechecked
 class LiteralTimestamp(Literal):
-    """LiteralTimestamp data type class."""
+    """
+    title: LiteralTimestamp data type class.
+    attributes:
+      value:
+        type: str
+      type_:
+        type: Timestamp
+      loc:
+        type: SourceLocation
+    """
+
+    value: str
+    type_: Timestamp
+    loc: SourceLocation
 
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralTimestamp."""
+        """
+        title: Initialize LiteralTimestamp.
+        parameters:
+          value:
+            type: str
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Timestamp()
         self.loc = loc
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return f"LiteralTimestamp[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the LiteralTimestamp object."""
+        """
+        title: Return the structure of the LiteralTimestamp object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"LiteralTimestamp: {self.value}"
         return self._prepare_struct(key, self.value, simplified)
 
@@ -94,22 +189,53 @@ class LiteralTimestamp(Literal):
 @public
 @typechecked
 class LiteralDateTime(Literal):
-    """LiteralDateTime data type class."""
+    """
+    title: LiteralDateTime data type class.
+    attributes:
+      value:
+        type: str
+      type_:
+        type: DateTime
+      loc:
+        type: SourceLocation
+    """
+
+    value: str
+    type_: DateTime
+    loc: SourceLocation
 
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralDateTime."""
+        """
+        title: Initialize LiteralDateTime.
+        parameters:
+          value:
+            type: str
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = DateTime()
         self.loc = loc
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return f"LiteralDateTime[{self.value}]"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the LiteralDateTime object."""
+        """
+        title: Return the structure of the LiteralDateTime object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"LiteralDateTime: {self.value}"
         return self._prepare_struct(key, self.value, simplified)

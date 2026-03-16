@@ -1,5 +1,7 @@
 # mypy: disable-error-code="attr-defined"
-"""ASTx."""
+"""
+title: ASTx.
+"""
 
 from importlib import metadata as importlib_metadata
 
@@ -206,7 +208,11 @@ from astx.types import (
 
 
 def get_version() -> str:
-    """Return the program version."""
+    """
+    title: Return the program version.
+    returns:
+      type: str
+    """
     try:
         return importlib_metadata.version(__name__)
     except importlib_metadata.PackageNotFoundError:  # pragma: no cover

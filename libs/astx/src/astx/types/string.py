@@ -1,4 +1,6 @@
-"""ASTx Data Types module."""
+"""
+title: ASTx Data Types module.
+"""
 
 from __future__ import annotations
 
@@ -11,16 +13,22 @@ from astx.types.base import AnyType
 @public
 @typechecked
 class String(AnyType):
-    """Base class for strings."""
+    """
+    title: Base class for strings.
+    """
 
 
 @public
 @typechecked
-class UTF8String(AnyType):
-    """Class for UTF-8 encoded strings."""
+class UTF8String(String):
+    """
+    title: Class for UTF-8 encoded strings.
+    """
 
 
 @public
 @typechecked
-class UTF8Char(AnyType):
-    """Class for UTF-8 encoded characters."""
+class UTF8Char(String):
+    """
+    title: Class for UTF-8 encoded characters.
+    """

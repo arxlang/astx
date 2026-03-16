@@ -1,9 +1,11 @@
-"""ASTx to Python AST transpiler."""
+"""
+title: ASTx to Python AST transpiler.
+"""
 
 import ast
 import sys
 
-from typing import Any, List, Optional, Union
+from typing import Any, Optional
 
 import astx
 
@@ -72,20 +74,36 @@ UNARY_OP_MAP = {
 @typechecked
 class ASTxPythonASTTranspiler:
     """
-    Transpiler that converts ASTx nodes to Python AST nodes.
+    title: Transpiler that converts ASTx nodes to Python AST nodes.
+    summary: |-
 
-    Notes
-    -----
-    Please keep the visit method in alphabet order according to the node type.
-    The visit method for astx.AST should be the first one.
+      Notes
+      -----
+      Please keep the visit method in alphabet order according to the node
+      type.
+      The visit method for astx.AST should be the first one.
+    attributes:
+      indent_level:
+        type: int
     """
 
+    indent_level: int
+
     def __init__(self) -> None:
-        """Initialize the transpiler."""
+        """
+        title: Initialize the transpiler.
+        """
         self.indent_level = 0
 
     def _convert_using_unparse(self, node: astx.AST) -> ast.AST:
-        """Convert an ASTx node to a Python AST node using fallback."""
+        """
+        title: Convert an ASTx node to a Python AST node using fallback.
+        parameters:
+          node:
+            type: astx.AST
+        returns:
+          type: ast.AST
+        """
         try:
             # Simple fallback without circular import
             if hasattr(node, "value"):
@@ -98,9 +116,16 @@ class ASTxPythonASTTranspiler:
             return ast.Constant(value=f"<{type(node).__name__}>")
 
     def _convert_block(
-        self, block: Optional[Union[astx.ASTNodes, astx.Block]]
-    ) -> List[ast.stmt]:
-        """Convert a block of statements to Python AST nodes."""
+        self, block: Optional[astx.ASTNodes | astx.Block]
+    ) -> list[ast.stmt]:
+        """
+        title: Convert a block of statements to Python AST nodes.
+        parameters:
+          block:
+            type: Optional[astx.ASTNodes | astx.Block]
+        returns:
+          type: list[ast.stmt]
+        """
         if not block:
             return [ast.Pass()]
 
@@ -126,12 +151,26 @@ class ASTxPythonASTTranspiler:
 
     @dispatch.abstract
     def visit(self, expr: astx.AST) -> ast.AST:
-        """Translate an ASTx node to a Python AST node."""
+        """
+        title: Translate an ASTx node to a Python AST node.
+        parameters:
+          expr:
+            type: astx.AST
+        returns:
+          type: ast.AST
+        """
         raise Exception(f"Not implemented yet ({expr}).")
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AliasExpr) -> ast.alias:
-        """Handle AliasExpr nodes."""
+        """
+        title: Handle AliasExpr nodes.
+        parameters:
+          node:
+            type: astx.AliasExpr
+        returns:
+          type: ast.alias
+        """
         if not hasattr(node, "name"):
             return ast.alias(name="", asname=None)
         return ast.alias(
@@ -141,7 +180,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AndOp) -> ast.BoolOp:
-        """Handle AndOp nodes."""
+        """
+        title: Handle AndOp nodes.
+        parameters:
+          node:
+            type: astx.AndOp
+        returns:
+          type: ast.BoolOp
+        """
         if not hasattr(node, "lhs") or not hasattr(node, "rhs"):
             return self._convert_using_unparse(node)
         return ast.BoolOp(
@@ -150,7 +196,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Argument) -> ast.arg:
-        """Handle Argument nodes."""
+        """
+        title: Handle Argument nodes.
+        parameters:
+          node:
+            type: astx.Argument
+        returns:
+          type: ast.arg
+        """
         if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
         annotation = None
@@ -160,7 +213,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Arguments) -> ast.arguments:
-        """Handle Arguments nodes."""
+        """
+        title: Handle Arguments nodes.
+        parameters:
+          node:
+            type: astx.Arguments
+        returns:
+          type: ast.arguments
+        """
         if not hasattr(node, "nodes"):
             return self._convert_using_unparse(node)
         args = [self.visit(arg) for arg in node.nodes]
@@ -176,7 +236,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AssignmentExpr) -> ast.Assign:
-        """Handle AssignmentExpr nodes."""
+        """
+        title: Handle AssignmentExpr nodes.
+        parameters:
+          node:
+            type: astx.AssignmentExpr
+        returns:
+          type: ast.Assign
+        """
         if not hasattr(node, "targets") or not node.targets:
             return self._convert_using_unparse(node)
 
@@ -194,15 +261,29 @@ class ASTxPythonASTTranspiler:
         return ast.Assign(targets=targets, value=value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.ASTNodes) -> List[ast.AST]:
-        """Handle ASTNodes nodes."""
+    def visit(self, node: astx.ASTNodes) -> list[ast.AST]:
+        """
+        title: Handle ASTNodes nodes.
+        parameters:
+          node:
+            type: astx.ASTNodes
+        returns:
+          type: list[ast.AST]
+        """
         if not hasattr(node, "nodes"):
             return [self._convert_using_unparse(node)]
         return [self.visit(n) for n in node.nodes]
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AsyncForRangeLoopExpr) -> ast.ListComp:
-        """Handle AsyncForRangeLoopExpr nodes."""
+        """
+        title: Handle AsyncForRangeLoopExpr nodes.
+        parameters:
+          node:
+            type: astx.AsyncForRangeLoopExpr
+        returns:
+          type: ast.ListComp
+        """
         if not hasattr(node, "variable") or not hasattr(node, "body"):
             return self._convert_using_unparse(node)
         target = ast.Name(id=node.variable.name, ctx=ast.Store())
@@ -235,7 +316,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AugAssign) -> ast.AugAssign:
-        """Handle AugAssign nodes."""
+        """
+        title: Handle AugAssign nodes.
+        parameters:
+          node:
+            type: astx.AugAssign
+        returns:
+          type: ast.AugAssign
+        """
         if (
             not hasattr(node, "target")
             or not hasattr(node, "value")
@@ -256,15 +344,29 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.AwaitExpr) -> ast.Await:
-        """Handle AwaitExpr nodes."""
+        """
+        title: Handle AwaitExpr nodes.
+        parameters:
+          node:
+            type: astx.AwaitExpr
+        returns:
+          type: ast.Await
+        """
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         value = self.visit(node.value)
         return ast.Await(value=value)
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.BinaryOp) -> Union[ast.BinOp, ast.Call]:
-        """Handle BinaryOp nodes."""
+    def visit(self, node: astx.BinaryOp) -> ast.BinOp | ast.Call:
+        """
+        title: Handle BinaryOp nodes.
+        parameters:
+          node:
+            type: astx.BinaryOp
+        returns:
+          type: ast.BinOp | ast.Call
+        """
         if (
             not hasattr(node, "lhs")
             or not hasattr(node, "rhs")
@@ -294,18 +396,39 @@ class ASTxPythonASTTranspiler:
         return binop
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: astx.Block) -> List[ast.stmt]:
-        """Handle Block nodes."""
+    def visit(self, node: astx.Block) -> list[ast.stmt]:
+        """
+        title: Handle Block nodes.
+        parameters:
+          node:
+            type: astx.Block
+        returns:
+          type: list[ast.stmt]
+        """
         return self._convert_block(node)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.BreakStmt) -> ast.Break:
-        """Handle BreakStmt nodes."""
+        """
+        title: Handle BreakStmt nodes.
+        parameters:
+          node:
+            type: astx.BreakStmt
+        returns:
+          type: ast.Break
+        """
         return ast.Break()
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CaseStmt) -> Any:
-        """Handle CaseStmt nodes - Python 3.10+ only."""
+        """
+        title: Handle CaseStmt nodes - Python 3.10+ only.
+        parameters:
+          node:
+            type: astx.CaseStmt
+        returns:
+          type: Any
+        """
         if sys.version_info < (3, 10):
             raise NotImplementedError(
                 "CaseStmt requires Python 3.10 or higher"
@@ -329,7 +452,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CatchHandlerStmt) -> ast.ExceptHandler:
-        """Handle CatchHandlerStmt nodes."""
+        """
+        title: Handle CatchHandlerStmt nodes.
+        parameters:
+          node:
+            type: astx.CatchHandlerStmt
+        returns:
+          type: ast.ExceptHandler
+        """
         type_ = None
         if hasattr(node, "types") and node.types:
             type_ = self.visit(node.types[0])
@@ -350,7 +480,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ClassDefStmt) -> ast.ClassDef:
-        """Handle ClassDefStmt nodes."""
+        """
+        title: Handle ClassDefStmt nodes.
+        parameters:
+          node:
+            type: astx.ClassDefStmt
+        returns:
+          type: ast.ClassDef
+        """
         if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
 
@@ -376,7 +513,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.CompareOp) -> ast.Compare:
-        """Handle CompareOp nodes."""
+        """
+        title: Handle CompareOp nodes.
+        parameters:
+          node:
+            type: astx.CompareOp
+        returns:
+          type: ast.Compare
+        """
         if (
             not hasattr(node, "left")
             or not hasattr(node, "ops")
@@ -395,7 +539,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ComprehensionClause) -> ast.comprehension:
-        """Handle ComprehensionClause nodes."""
+        """
+        title: Handle ComprehensionClause nodes.
+        parameters:
+          node:
+            type: astx.ComprehensionClause
+        returns:
+          type: ast.comprehension
+        """
         if not hasattr(node, "target") or not hasattr(node, "iterable"):
             return self._convert_using_unparse(node)
         target = self.visit(node.target)
@@ -413,48 +564,101 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ContinueStmt) -> ast.Continue:
-        """Handle ContinueStmt nodes."""
+        """
+        title: Handle ContinueStmt nodes.
+        parameters:
+          node:
+            type: astx.ContinueStmt
+        returns:
+          type: ast.Continue
+        """
         return ast.Continue()
 
     @dispatch  # type: ignore[no-redef]
     def visit(
-        self, node: Union[astx.Int8, astx.Int16, astx.Int32, astx.Int64]
+        self, node: astx.Int8 | astx.Int16 | astx.Int32 | astx.Int64
     ) -> ast.Name:
-        """Handle all integer type nodes."""
+        """
+        title: Handle all integer type nodes.
+        parameters:
+          node:
+            type: astx.Int8 | astx.Int16 | astx.Int32 | astx.Int64
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="int", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(
         self,
-        node: Union[
-            astx.UInt8, astx.UInt16, astx.UInt32, astx.UInt64, astx.UInt128
-        ],
+        node: astx.UInt8
+        | astx.UInt16
+        | astx.UInt32
+        | astx.UInt64
+        | astx.UInt128,
     ) -> ast.Name:
-        """Handle all unsigned integer type nodes."""
+        """
+        title: Handle all unsigned integer type nodes.
+        parameters:
+          node:
+            type: >-
+              astx.UInt8 | astx.UInt16 | astx.UInt32 | astx.UInt64 |
+              astx.UInt128
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="int", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(
-        self, node: Union[astx.Float16, astx.Float32, astx.Float64]
+        self, node: astx.Float16 | astx.Float32 | astx.Float64
     ) -> ast.Name:
-        """Handle all float type nodes."""
+        """
+        title: Handle all float type nodes.
+        parameters:
+          node:
+            type: astx.Float16 | astx.Float32 | astx.Float64
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="float", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Union[astx.Complex32, astx.Complex64]) -> ast.Name:
-        """Handle all complex type nodes."""
+    def visit(self, node: astx.Complex32 | astx.Complex64) -> ast.Name:
+        """
+        title: Handle all complex type nodes.
+        parameters:
+          node:
+            type: astx.Complex32 | astx.Complex64
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="complex", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
-    def visit(self, node: Union[astx.UTF8Char, astx.UTF8String]) -> ast.Name:
-        """Handle UTF8 string type nodes."""
+    def visit(self, node: astx.UTF8Char | astx.UTF8String) -> ast.Name:
+        """
+        title: Handle UTF8 string type nodes.
+        parameters:
+          node:
+            type: astx.UTF8Char | astx.UTF8String
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="str", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(
-        self, node: Union[astx.Date, astx.DateTime, astx.Time, astx.Timestamp]
+        self, node: astx.Date | astx.DateTime | astx.Time | astx.Timestamp
     ) -> ast.Name:
-        """Handle all datetime type nodes."""
+        """
+        title: Handle all datetime type nodes.
+        parameters:
+          node:
+            type: astx.Date | astx.DateTime | astx.Time | astx.Timestamp
+        returns:
+          type: ast.Name
+        """
         type_mapping = {
             "Date": "date",
             "DateTime": "datetime",
@@ -466,7 +670,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DataType) -> ast.Name:
-        """Handle DataType nodes."""
+        """
+        title: Handle DataType nodes.
+        parameters:
+          node:
+            type: astx.DataType
+        returns:
+          type: ast.Name
+        """
         if hasattr(node, "id") and node.id:
             type_id = node.id
         else:
@@ -475,7 +686,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DeleteStmt) -> ast.Delete:
-        """Handle DeleteStmt nodes."""
+        """
+        title: Handle DeleteStmt nodes.
+        parameters:
+          node:
+            type: astx.DeleteStmt
+        returns:
+          type: ast.Delete
+        """
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         targets = [self.visit(target) for target in node.value]
@@ -483,7 +701,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DoWhileExpr) -> ast.ListComp:
-        """Handle DoWhileExpr nodes."""
+        """
+        title: Handle DoWhileExpr nodes.
+        parameters:
+          node:
+            type: astx.DoWhileExpr
+        returns:
+          type: ast.ListComp
+        """
         if not hasattr(node, "body") or not hasattr(node, "condition"):
             return self._convert_using_unparse(node)
         element = (
@@ -522,7 +747,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.DoWhileStmt) -> ast.While:
-        """Handle DoWhileStmt nodes."""
+        """
+        title: Handle DoWhileStmt nodes.
+        parameters:
+          node:
+            type: astx.DoWhileStmt
+        returns:
+          type: ast.While
+        """
         if not hasattr(node, "body") or not hasattr(node, "condition"):
             return self._convert_using_unparse(node)
         body = (
@@ -542,12 +774,26 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Ellipsis) -> ast.Constant:
-        """Handle Ellipsis nodes."""
+        """
+        title: Handle Ellipsis nodes.
+        parameters:
+          node:
+            type: astx.Ellipsis
+        returns:
+          type: ast.Constant
+        """
         return ast.Constant(value=...)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.EnumDeclStmt) -> ast.ClassDef:
-        """Handle EnumDeclStmt nodes."""
+        """
+        title: Handle EnumDeclStmt nodes.
+        parameters:
+          node:
+            type: astx.EnumDeclStmt
+        returns:
+          type: ast.ClassDef
+        """
         if not hasattr(node, "name") or not hasattr(node, "attributes"):
             return self._convert_using_unparse(node)
         body = []
@@ -586,7 +832,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ExceptionHandlerStmt) -> ast.Try:
-        """Handle ExceptionHandlerStmt nodes."""
+        """
+        title: Handle ExceptionHandlerStmt nodes.
+        parameters:
+          node:
+            type: astx.ExceptionHandlerStmt
+        returns:
+          type: ast.Try
+        """
         if not hasattr(node, "body"):
             return self._convert_using_unparse(node)
 
@@ -607,7 +860,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FinallyHandlerStmt) -> ast.Try:
-        """Handle FinallyHandlerStmt nodes."""
+        """
+        title: Handle FinallyHandlerStmt nodes.
+        parameters:
+          node:
+            type: astx.FinallyHandlerStmt
+        returns:
+          type: ast.Try
+        """
         if not hasattr(node, "body"):
             return self._convert_using_unparse(node)
 
@@ -619,7 +879,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForCountLoopStmt) -> ast.For:
-        """Handle ForCountLoopStmt nodes."""
+        """
+        title: Handle ForCountLoopStmt nodes.
+        parameters:
+          node:
+            type: astx.ForCountLoopStmt
+        returns:
+          type: ast.For
+        """
         if (
             not hasattr(node, "initializer")
             or not hasattr(node, "condition")
@@ -656,7 +923,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopExpr) -> ast.ListComp:
-        """Handle ForRangeLoopExpr nodes."""
+        """
+        title: Handle ForRangeLoopExpr nodes.
+        parameters:
+          node:
+            type: astx.ForRangeLoopExpr
+        returns:
+          type: ast.ListComp
+        """
         if not hasattr(node, "variable") or not hasattr(node, "body"):
             return self._convert_using_unparse(node)
         target = ast.Name(id=node.variable.name, ctx=ast.Store())
@@ -689,7 +963,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ForRangeLoopStmt) -> ast.For:
-        """Handle ForRangeLoopStmt nodes."""
+        """
+        title: Handle ForRangeLoopStmt nodes.
+        parameters:
+          node:
+            type: astx.ForRangeLoopStmt
+        returns:
+          type: ast.For
+        """
         if not hasattr(node, "variable") or not hasattr(node, "start"):
             return self._convert_using_unparse(node)
         target = ast.Name(id=node.variable.name, ctx=ast.Store())
@@ -713,7 +994,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionAsyncDef) -> ast.AsyncFunctionDef:
-        """Handle FunctionAsyncDef nodes."""
+        """
+        title: Handle FunctionAsyncDef nodes.
+        parameters:
+          node:
+            type: astx.FunctionAsyncDef
+        returns:
+          type: ast.AsyncFunctionDef
+        """
         if (
             not hasattr(node, "name")
             or not hasattr(node, "prototype")
@@ -760,7 +1048,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionCall) -> ast.Call:
-        """Handle FunctionCall nodes."""
+        """
+        title: Handle FunctionCall nodes.
+        parameters:
+          node:
+            type: astx.FunctionCall
+        returns:
+          type: ast.Call
+        """
         if not hasattr(node, "fn"):
             return ast.Call(
                 func=ast.Name(id="unknown_function", ctx=ast.Load()),
@@ -794,7 +1089,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionDef) -> ast.FunctionDef:
-        """Handle FunctionDef nodes."""
+        """
+        title: Handle FunctionDef nodes.
+        parameters:
+          node:
+            type: astx.FunctionDef
+        returns:
+          type: ast.FunctionDef
+        """
         if not hasattr(node, "prototype"):
             return self._convert_using_unparse(node)
 
@@ -833,7 +1135,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionPrototype) -> ast.FunctionDef:
-        """Handle FunctionPrototype nodes."""
+        """
+        title: Handle FunctionPrototype nodes.
+        parameters:
+          node:
+            type: astx.FunctionPrototype
+        returns:
+          type: ast.FunctionDef
+        """
         if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
         args_nodes = []
@@ -863,7 +1172,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.FunctionReturn) -> ast.Return:
-        """Handle FunctionReturn nodes."""
+        """
+        title: Handle FunctionReturn nodes.
+        parameters:
+          node:
+            type: astx.FunctionReturn
+        returns:
+          type: ast.Return
+        """
         value = None
         if hasattr(node, "value") and node.value:
             value = self.visit(node.value)
@@ -871,7 +1187,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.GeneratorExpr) -> ast.GeneratorExp:
-        """Handle GeneratorExpr nodes."""
+        """
+        title: Handle GeneratorExpr nodes.
+        parameters:
+          node:
+            type: astx.GeneratorExpr
+        returns:
+          type: ast.GeneratorExp
+        """
         if not hasattr(node, "element") or not hasattr(node, "generators"):
             return self._convert_using_unparse(node)
         element = self.visit(node.element)
@@ -880,7 +1203,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Identifier) -> ast.Name:
-        """Handle Identifier nodes."""
+        """
+        title: Handle Identifier nodes.
+        parameters:
+          node:
+            type: astx.Identifier
+        returns:
+          type: ast.Name
+        """
         # Get the identifier name from the node
         if hasattr(node, "name"):
             identifier_name = node.name
@@ -900,7 +1230,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfExpr) -> ast.IfExp:
-        """Handle IfExpr nodes."""
+        """
+        title: Handle IfExpr nodes.
+        parameters:
+          node:
+            type: astx.IfExpr
+        returns:
+          type: ast.IfExp
+        """
         if not hasattr(node, "condition"):
             return self._convert_using_unparse(node)
         then_value = None
@@ -926,7 +1263,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.IfStmt) -> ast.If:
-        """Handle IfStmt nodes."""
+        """
+        title: Handle IfStmt nodes.
+        parameters:
+          node:
+            type: astx.IfStmt
+        returns:
+          type: ast.If
+        """
         if not hasattr(node, "condition"):
             return self._convert_using_unparse(node)
         then_body = (
@@ -945,7 +1289,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportExpr) -> ast.Assign:
-        """Handle ImportExpr nodes."""
+        """
+        title: Handle ImportExpr nodes.
+        parameters:
+          node:
+            type: astx.ImportExpr
+        returns:
+          type: ast.Assign
+        """
         if not hasattr(node, "names"):
             return self._convert_using_unparse(node)
         import_calls = []
@@ -974,7 +1325,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromExpr) -> ast.Assign:
-        """Handle ImportFromExpr nodes."""
+        """
+        title: Handle ImportFromExpr nodes.
+        parameters:
+          node:
+            type: astx.ImportFromExpr
+        returns:
+          type: ast.Assign
+        """
         if not hasattr(node, "names") or not hasattr(node, "module"):
             return self._convert_using_unparse(node)
         import_calls = []
@@ -1020,7 +1378,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportFromStmt) -> ast.ImportFrom:
-        """Handle ImportFromStmt nodes."""
+        """
+        title: Handle ImportFromStmt nodes.
+        parameters:
+          node:
+            type: astx.ImportFromStmt
+        returns:
+          type: ast.ImportFrom
+        """
         if not hasattr(node, "names") or not hasattr(node, "module"):
             return self._convert_using_unparse(node)
         names = [self.visit(name) for name in node.names]
@@ -1029,7 +1394,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ImportStmt) -> ast.Import:
-        """Handle ImportStmt nodes."""
+        """
+        title: Handle ImportStmt nodes.
+        parameters:
+          node:
+            type: astx.ImportStmt
+        returns:
+          type: ast.Import
+        """
         if not hasattr(node, "names"):
             return ast.Import(names=[ast.alias(name="", asname=None)])
         names = [self.visit(name) for name in node.names]
@@ -1037,7 +1409,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.InlineVariableDeclaration) -> ast.AnnAssign:
-        """Handle InlineVariableDeclaration nodes."""
+        """
+        title: Handle InlineVariableDeclaration nodes.
+        parameters:
+          node:
+            type: astx.InlineVariableDeclaration
+        returns:
+          type: ast.AnnAssign
+        """
         if not hasattr(node, "name") or not hasattr(node, "type_"):
             return self._convert_using_unparse(node)
         target = ast.Name(id=node.name, ctx=ast.Store())
@@ -1056,7 +1435,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LambdaExpr) -> ast.Lambda:
-        """Handle LambdaExpr nodes."""
+        """
+        title: Handle LambdaExpr nodes.
+        parameters:
+          node:
+            type: astx.LambdaExpr
+        returns:
+          type: ast.Lambda
+        """
         if not hasattr(node, "body"):
             return self._convert_using_unparse(node)
         args = []
@@ -1079,7 +1465,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ListComprehension) -> ast.ListComp:
-        """Handle ListComprehension nodes."""
+        """
+        title: Handle ListComprehension nodes.
+        parameters:
+          node:
+            type: astx.ListComprehension
+        returns:
+          type: ast.ListComp
+        """
         if not hasattr(node, "element") or not hasattr(node, "generators"):
             return self._convert_using_unparse(node)
         element = self.visit(node.element)
@@ -1088,7 +1481,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralBoolean) -> ast.Constant:
-        """Handle LiteralBoolean nodes."""
+        """
+        title: Handle LiteralBoolean nodes.
+        parameters:
+          node:
+            type: astx.LiteralBoolean
+        returns:
+          type: ast.Constant
+        """
         if not hasattr(node, "value"):
             return ast.Constant(value=False)
         return ast.Constant(value=node.value)
@@ -1096,15 +1496,22 @@ class ASTxPythonASTTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(
         self,
-        node: Union[
-            astx.LiteralInt8,
-            astx.LiteralInt16,
-            astx.LiteralInt32,
-            astx.LiteralInt64,
-            astx.LiteralInt128,
-        ],
+        node: astx.LiteralInt8
+        | astx.LiteralInt16
+        | astx.LiteralInt32
+        | astx.LiteralInt64
+        | astx.LiteralInt128,
     ) -> ast.Constant:
-        """Handle all integer literal nodes."""
+        """
+        title: Handle all integer literal nodes.
+        parameters:
+          node:
+            type: >-
+              astx.LiteralInt8 | astx.LiteralInt16 | astx.LiteralInt32 |
+              astx.LiteralInt64 | astx.LiteralInt128
+        returns:
+          type: ast.Constant
+        """
         if not hasattr(node, "value"):
             return ast.Constant(value=0)
         return ast.Constant(value=node.value)
@@ -1112,15 +1519,22 @@ class ASTxPythonASTTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(
         self,
-        node: Union[
-            astx.LiteralUInt8,
-            astx.LiteralUInt16,
-            astx.LiteralUInt32,
-            astx.LiteralUInt64,
-            astx.LiteralUInt128,
-        ],
+        node: astx.LiteralUInt8
+        | astx.LiteralUInt16
+        | astx.LiteralUInt32
+        | astx.LiteralUInt64
+        | astx.LiteralUInt128,
     ) -> ast.Constant:
-        """Handle all unsigned integer literal nodes."""
+        """
+        title: Handle all unsigned integer literal nodes.
+        parameters:
+          node:
+            type: >-
+              astx.LiteralUInt8 | astx.LiteralUInt16 | astx.LiteralUInt32 |
+              astx.LiteralUInt64 | astx.LiteralUInt128
+        returns:
+          type: ast.Constant
+        """
         if not hasattr(node, "value"):
             return ast.Constant(value=0)
         return ast.Constant(value=node.value)
@@ -1128,20 +1542,33 @@ class ASTxPythonASTTranspiler:
     @dispatch  # type: ignore[no-redef]
     def visit(
         self,
-        node: Union[
-            astx.LiteralFloat16, astx.LiteralFloat32, astx.LiteralFloat64
-        ],
+        node: astx.LiteralFloat16 | astx.LiteralFloat32 | astx.LiteralFloat64,
     ) -> ast.Constant:
-        """Handle all float literal nodes."""
+        """
+        title: Handle all float literal nodes.
+        parameters:
+          node:
+            type: >-
+              astx.LiteralFloat16 | astx.LiteralFloat32 | astx.LiteralFloat64
+        returns:
+          type: ast.Constant
+        """
         if not hasattr(node, "value"):
             return ast.Constant(value=0.0)
         return ast.Constant(value=node.value)
 
     @dispatch  # type: ignore[no-redef]
     def visit(
-        self, node: Union[astx.LiteralComplex32, astx.LiteralComplex64]
+        self, node: astx.LiteralComplex32 | astx.LiteralComplex64
     ) -> ast.Call:
-        """Handle all complex literal nodes."""
+        """
+        title: Handle all complex literal nodes.
+        parameters:
+          node:
+            type: astx.LiteralComplex32 | astx.LiteralComplex64
+        returns:
+          type: ast.Call
+        """
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         real = ast.Constant(value=node.value[0])
@@ -1154,16 +1581,30 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(
-        self, node: Union[astx.LiteralUTF8Char, astx.LiteralUTF8String]
+        self, node: astx.LiteralUTF8Char | astx.LiteralUTF8String
     ) -> ast.Constant:
-        """Handle UTF8 string literal nodes."""
+        """
+        title: Handle UTF8 string literal nodes.
+        parameters:
+          node:
+            type: astx.LiteralUTF8Char | astx.LiteralUTF8String
+        returns:
+          type: ast.Constant
+        """
         if not hasattr(node, "value"):
             return ast.Constant(value="")
         return ast.Constant(value=str(node.value))
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDate) -> ast.Call:
-        """Handle LiteralDate nodes."""
+        """
+        title: Handle LiteralDate nodes.
+        parameters:
+          node:
+            type: astx.LiteralDate
+        returns:
+          type: ast.Call
+        """
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         return ast.Call(
@@ -1189,27 +1630,62 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDateTime) -> ast.Name:
-        """Handle LiteralDateTime nodes."""
+        """
+        title: Handle LiteralDateTime nodes.
+        parameters:
+          node:
+            type: astx.LiteralDateTime
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="datetime", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTime) -> ast.Name:
-        """Handle LiteralTime nodes."""
+        """
+        title: Handle LiteralTime nodes.
+        parameters:
+          node:
+            type: astx.LiteralTime
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="time", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTimestamp) -> ast.Name:
-        """Handle LiteralTimestamp nodes."""
+        """
+        title: Handle LiteralTimestamp nodes.
+        parameters:
+          node:
+            type: astx.LiteralTimestamp
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="timestamp", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralComplex) -> ast.Name:
-        """Handle LiteralComplex nodes."""
+        """
+        title: Handle LiteralComplex nodes.
+        parameters:
+          node:
+            type: astx.LiteralComplex
+        returns:
+          type: ast.Name
+        """
         return ast.Name(id="complex", ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralDict) -> ast.Dict:
-        """Handle LiteralDict nodes."""
+        """
+        title: Handle LiteralDict nodes.
+        parameters:
+          node:
+            type: astx.LiteralDict
+        returns:
+          type: ast.Dict
+        """
         if not hasattr(node, "elements"):
             return ast.Dict(keys=[], values=[])
         keys = [self.visit(key) for key in node.elements.keys()]
@@ -1218,7 +1694,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralList) -> ast.List:
-        """Handle LiteralList nodes."""
+        """
+        title: Handle LiteralList nodes.
+        parameters:
+          node:
+            type: astx.LiteralList
+        returns:
+          type: ast.List
+        """
         if not hasattr(node, "elements"):
             return ast.List(elts=[], ctx=ast.Load())
         elements = [self.visit(element) for element in node.elements]
@@ -1226,12 +1709,26 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralNone) -> ast.Constant:
-        """Handle LiteralNone nodes."""
+        """
+        title: Handle LiteralNone nodes.
+        parameters:
+          node:
+            type: astx.LiteralNone
+        returns:
+          type: ast.Constant
+        """
         return ast.Constant(value=None)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralSet) -> ast.Set:
-        """Handle LiteralSet nodes."""
+        """
+        title: Handle LiteralSet nodes.
+        parameters:
+          node:
+            type: astx.LiteralSet
+        returns:
+          type: ast.Set
+        """
         if not hasattr(node, "elements"):
             return ast.Set(elts=[])
         elements = [self.visit(element) for element in node.elements]
@@ -1239,14 +1736,28 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralString) -> ast.Constant:
-        """Handle LiteralString nodes."""
+        """
+        title: Handle LiteralString nodes.
+        parameters:
+          node:
+            type: astx.LiteralString
+        returns:
+          type: ast.Constant
+        """
         if not hasattr(node, "value"):
             return ast.Constant(value="")
         return ast.Constant(value=node.value)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.LiteralTuple) -> ast.Tuple:
-        """Handle LiteralTuple nodes."""
+        """
+        title: Handle LiteralTuple nodes.
+        parameters:
+          node:
+            type: astx.LiteralTuple
+        returns:
+          type: ast.Tuple
+        """
         if not hasattr(node, "elements"):
             return ast.Tuple(elts=[], ctx=ast.Load())
         elements = [self.visit(element) for element in node.elements]
@@ -1254,7 +1765,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Module) -> ast.Module:
-        """Handle Module nodes."""
+        """
+        title: Handle Module nodes.
+        parameters:
+          node:
+            type: astx.Module
+        returns:
+          type: ast.Module
+        """
         if not hasattr(node, "body"):
             return ast.Module(body=[ast.Pass()], type_ignores=[])
 
@@ -1263,7 +1781,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.NandOp) -> ast.UnaryOp:
-        """Handle NandOp nodes."""
+        """
+        title: Handle NandOp nodes.
+        parameters:
+          node:
+            type: astx.NandOp
+        returns:
+          type: ast.UnaryOp
+        """
         if not hasattr(node, "lhs") or not hasattr(node, "rhs"):
             return self._convert_using_unparse(node)
         lhs = self.visit(node.lhs)
@@ -1274,7 +1799,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.NorOp) -> ast.UnaryOp:
-        """Handle NorOp nodes."""
+        """
+        title: Handle NorOp nodes.
+        parameters:
+          node:
+            type: astx.NorOp
+        returns:
+          type: ast.UnaryOp
+        """
         if not hasattr(node, "lhs") or not hasattr(node, "rhs"):
             return self._convert_using_unparse(node)
         lhs = self.visit(node.lhs)
@@ -1285,7 +1817,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.NotOp) -> ast.UnaryOp:
-        """Handle NotOp nodes."""
+        """
+        title: Handle NotOp nodes.
+        parameters:
+          node:
+            type: astx.NotOp
+        returns:
+          type: ast.UnaryOp
+        """
         if not hasattr(node, "operand"):
             return self._convert_using_unparse(node)
 
@@ -1294,7 +1833,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.OrOp) -> ast.BoolOp:
-        """Handle OrOp nodes."""
+        """
+        title: Handle OrOp nodes.
+        parameters:
+          node:
+            type: astx.OrOp
+        returns:
+          type: ast.BoolOp
+        """
         if not hasattr(node, "lhs") or not hasattr(node, "rhs"):
             return self._convert_using_unparse(node)
         return ast.BoolOp(
@@ -1303,14 +1849,28 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ParenthesizedExpr) -> ast.AST:
-        """Handle ParenthesizedExpr nodes."""
+        """
+        title: Handle ParenthesizedExpr nodes.
+        parameters:
+          node:
+            type: astx.ParenthesizedExpr
+        returns:
+          type: ast.AST
+        """
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         return self.visit(node.value)
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SetComprehension) -> ast.SetComp:
-        """Handle SetComprehension nodes."""
+        """
+        title: Handle SetComprehension nodes.
+        parameters:
+          node:
+            type: astx.SetComprehension
+        returns:
+          type: ast.SetComp
+        """
         if not hasattr(node, "element") or not hasattr(node, "generators"):
             return self._convert_using_unparse(node)
         element = self.visit(node.element)
@@ -1319,7 +1879,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Starred) -> ast.Starred:
-        """Handle Starred nodes."""
+        """
+        title: Handle Starred nodes.
+        parameters:
+          node:
+            type: astx.Starred
+        returns:
+          type: ast.Starred
+        """
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
 
@@ -1328,7 +1895,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.StructDeclStmt) -> ast.ClassDef:
-        """Handle StructDeclStmt nodes."""
+        """
+        title: Handle StructDeclStmt nodes.
+        parameters:
+          node:
+            type: astx.StructDeclStmt
+        returns:
+          type: ast.ClassDef
+        """
         if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
         decorators = [ast.Name(id="dataclass", ctx=ast.Load())]
@@ -1348,7 +1922,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.StructDefStmt) -> ast.ClassDef:
-        """Handle StructDefStmt nodes."""
+        """
+        title: Handle StructDefStmt nodes.
+        parameters:
+          node:
+            type: astx.StructDefStmt
+        returns:
+          type: ast.ClassDef
+        """
         if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
         decorators = [ast.Name(id="dataclass", ctx=ast.Load())]
@@ -1369,7 +1950,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SwitchStmt) -> Any:
-        """Handle SwitchStmt nodes - Python 3.10+ only."""
+        """
+        title: Handle SwitchStmt nodes - Python 3.10+ only.
+        parameters:
+          node:
+            type: astx.SwitchStmt
+        returns:
+          type: Any
+        """
         if sys.version_info < (3, 10):
             raise NotImplementedError(
                 "SwitchStmt requires Python 3.10 or higher"
@@ -1389,7 +1977,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.SubscriptExpr) -> ast.Subscript:
-        """Handle SubscriptExpr nodes."""
+        """
+        title: Handle SubscriptExpr nodes.
+        parameters:
+          node:
+            type: astx.SubscriptExpr
+        returns:
+          type: ast.Subscript
+        """
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         value = self.visit(node.value)
@@ -1418,7 +2013,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.ThrowStmt) -> ast.Raise:
-        """Handle ThrowStmt nodes."""
+        """
+        title: Handle ThrowStmt nodes.
+        parameters:
+          node:
+            type: astx.ThrowStmt
+        returns:
+          type: ast.Raise
+        """
         exc = None
         if hasattr(node, "exception") and node.exception:
             try:
@@ -1492,7 +2094,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.TypeCastExpr) -> ast.Call:
-        """Handle TypeCastExpr nodes."""
+        """
+        title: Handle TypeCastExpr nodes.
+        parameters:
+          node:
+            type: astx.TypeCastExpr
+        returns:
+          type: ast.Call
+        """
         if not hasattr(node, "target_type") or not hasattr(node, "expr"):
             return self._convert_using_unparse(node)
         target_type = self.visit(node.target_type)
@@ -1505,7 +2114,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.UnaryOp) -> ast.UnaryOp:
-        """Handle UnaryOp nodes."""
+        """
+        title: Handle UnaryOp nodes.
+        parameters:
+          node:
+            type: astx.UnaryOp
+        returns:
+          type: ast.UnaryOp
+        """
         if not hasattr(node, "op_code") or not hasattr(node, "operand"):
             return self._convert_using_unparse(node)
         if node.op_code not in UNARY_OP_MAP:
@@ -1515,14 +2131,28 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.Variable) -> ast.Name:
-        """Handle Variable nodes."""
+        """
+        title: Handle Variable nodes.
+        parameters:
+          node:
+            type: astx.Variable
+        returns:
+          type: ast.Name
+        """
         if not hasattr(node, "name"):
             return ast.Name(id="undefined", ctx=ast.Load())
         return ast.Name(id=node.name, ctx=ast.Load())
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableAssignment) -> ast.Assign:
-        """Handle VariableAssignment nodes."""
+        """
+        title: Handle VariableAssignment nodes.
+        parameters:
+          node:
+            type: astx.VariableAssignment
+        returns:
+          type: ast.Assign
+        """
         if not hasattr(node, "name") or not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         target = ast.Name(id=node.name, ctx=ast.Store())
@@ -1531,7 +2161,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.VariableDeclaration) -> ast.AnnAssign:
-        """Handle VariableDeclaration nodes."""
+        """
+        title: Handle VariableDeclaration nodes.
+        parameters:
+          node:
+            type: astx.VariableDeclaration
+        returns:
+          type: ast.AnnAssign
+        """
         if not hasattr(node, "name"):
             return self._convert_using_unparse(node)
 
@@ -1562,7 +2199,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WalrusOp) -> ast.NamedExpr:
-        """Handle WalrusOp nodes."""
+        """
+        title: Handle WalrusOp nodes.
+        parameters:
+          node:
+            type: astx.WalrusOp
+        returns:
+          type: ast.NamedExpr
+        """
         if not hasattr(node, "lhs") or not hasattr(node, "rhs"):
             return self._convert_using_unparse(node)
         target = self.visit(node.lhs)
@@ -1573,7 +2217,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileExpr) -> ast.ListComp:
-        """Handle WhileExpr nodes."""
+        """
+        title: Handle WhileExpr nodes.
+        parameters:
+          node:
+            type: astx.WhileExpr
+        returns:
+          type: ast.ListComp
+        """
         if not hasattr(node, "condition") or not hasattr(node, "body"):
             return self._convert_using_unparse(node)
         element = (
@@ -1611,7 +2262,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.WhileStmt) -> ast.While:
-        """Handle WhileStmt nodes."""
+        """
+        title: Handle WhileStmt nodes.
+        parameters:
+          node:
+            type: astx.WhileStmt
+        returns:
+          type: ast.While
+        """
         if not hasattr(node, "condition"):
             return self._convert_using_unparse(node)
 
@@ -1626,7 +2284,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.XnorOp) -> ast.UnaryOp:
-        """Handle XnorOp nodes."""
+        """
+        title: Handle XnorOp nodes.
+        parameters:
+          node:
+            type: astx.XnorOp
+        returns:
+          type: ast.UnaryOp
+        """
         if not hasattr(node, "lhs") or not hasattr(node, "rhs"):
             return self._convert_using_unparse(node)
         lhs = self.visit(node.lhs)
@@ -1636,7 +2301,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.XorOp) -> ast.BinOp:
-        """Handle XorOp nodes."""
+        """
+        title: Handle XorOp nodes.
+        parameters:
+          node:
+            type: astx.XorOp
+        returns:
+          type: ast.BinOp
+        """
         if not hasattr(node, "lhs") or not hasattr(node, "rhs"):
             return self._convert_using_unparse(node)
         lhs = self.visit(node.lhs)
@@ -1645,7 +2317,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.YieldExpr) -> ast.Yield:
-        """Handle YieldExpr nodes."""
+        """
+        title: Handle YieldExpr nodes.
+        parameters:
+          node:
+            type: astx.YieldExpr
+        returns:
+          type: ast.Yield
+        """
         value = None
         if hasattr(node, "value") and node.value:
             value = self.visit(node.value)
@@ -1653,7 +2332,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.YieldFromExpr) -> ast.YieldFrom:
-        """Handle YieldFromExpr nodes."""
+        """
+        title: Handle YieldFromExpr nodes.
+        parameters:
+          node:
+            type: astx.YieldFromExpr
+        returns:
+          type: ast.YieldFrom
+        """
         if not hasattr(node, "value"):
             return self._convert_using_unparse(node)
         value = self.visit(node.value)
@@ -1661,7 +2347,14 @@ class ASTxPythonASTTranspiler:
 
     @dispatch  # type: ignore[no-redef]
     def visit(self, node: astx.YieldStmt) -> ast.Expr:
-        """Handle YieldStmt nodes."""
+        """
+        title: Handle YieldStmt nodes.
+        parameters:
+          node:
+            type: astx.YieldStmt
+        returns:
+          type: ast.Expr
+        """
         value = None
         if hasattr(node, "value") and node.value:
             value = self.visit(node.value)

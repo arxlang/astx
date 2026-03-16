@@ -1,4 +1,6 @@
-"""Test callable ASTx objects."""
+"""
+title: Test callable ASTx objects.
+"""
 
 import astx
 
@@ -6,7 +8,9 @@ from astx.viz import visualize_image
 
 
 def test_variable() -> None:
-    """Test function creation with modifiers."""
+    """
+    title: Test function creation with modifiers.
+    """
     var_a = astx.Variable("a")
 
     assert str(var_a)
@@ -17,7 +21,9 @@ def test_variable() -> None:
 
 
 def test_variable_decl() -> None:
-    """Test function creation with modifiers."""
+    """
+    title: Test function creation with modifiers.
+    """
     decl_a = astx.VariableDeclaration(
         "a", type_=astx.Int32(), value=astx.LiteralInt32(1)
     )
@@ -30,7 +36,9 @@ def test_variable_decl() -> None:
 
 
 def test_inline_variable_decl() -> None:
-    """Test function creation with modifiers."""
+    """
+    title: Test function creation with modifiers.
+    """
     decl_a = astx.InlineVariableDeclaration(
         "a", type_=astx.Int32(), value=astx.LiteralInt32(1)
     )
@@ -43,7 +51,9 @@ def test_inline_variable_decl() -> None:
 
 
 def test_argument() -> None:
-    """Test function creation with modifiers."""
+    """
+    title: Test function creation with modifiers.
+    """
     arg_a = astx.Argument(
         "a", type_=astx.Int32(), default=astx.LiteralInt32(1)
     )
@@ -56,7 +66,9 @@ def test_argument() -> None:
 
 
 def test_arguments() -> None:
-    """Test function creation with modifiers."""
+    """
+    title: Test function creation with modifiers.
+    """
     arg_a = astx.Argument(
         "a", type_=astx.Int32(), default=astx.LiteralInt32(1)
     )
@@ -78,7 +90,9 @@ def test_arguments() -> None:
 
 
 def test_delete_stmt() -> None:
-    """Test DeleteStmt creation and properties."""
+    """
+    title: Test DeleteStmt creation and properties.
+    """
     var1 = astx.Identifier(name="x")
     var2 = astx.Identifier(name="y")
 

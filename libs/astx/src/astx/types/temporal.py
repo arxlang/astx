@@ -1,4 +1,6 @@
-"""ASTx Data Types module."""
+"""
+title: ASTx Data Types module.
+"""
 
 from __future__ import annotations
 
@@ -11,28 +13,39 @@ from astx.types.base import AnyType
 @public
 @typechecked
 class Temporal(AnyType):
-    """Base class for temporal data types (date, time, timestamp, datetime)."""
+    """
+    title: >-
+      Base class for temporal data types (date, time, timestamp, datetime).
+    """
 
 
 @public
 @typechecked
 class Date(Temporal):
-    """Date data type expression."""
+    """
+    title: Date data type expression.
+    """
 
 
 @public
 @typechecked
 class Time(Temporal):
-    """Time data type expression."""
+    """
+    title: Time data type expression.
+    """
 
 
 @public
 @typechecked
 class Timestamp(Temporal):
-    """Timestamp data type expression."""
+    """
+    title: Timestamp data type expression.
+    """
 
 
 @public
 @typechecked
 class DateTime(Temporal):
-    """DateTime data type expression."""
+    """
+    title: DateTime data type expression.
+    """

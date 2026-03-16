@@ -1,4 +1,6 @@
-"""AST classes and functions."""
+"""
+title: AST classes and functions.
+"""
 
 from __future__ import annotations
 
@@ -9,13 +11,10 @@ from enum import Enum
 from hashlib import sha256
 from typing import (
     ClassVar,
-    Dict,
     Generic,
     Iterator,
-    List,
     Optional,
     TypeAlias,
-    Union,
     cast,
 )
 
@@ -39,7 +38,11 @@ __all__ = [
 
 
 def is_using_jupyter_notebook() -> bool:
-    """Check if it is executed in a jupyter notebook."""
+    """
+    title: Check if it is executed in a jupyter notebook.
+    returns:
+      type: bool
+    """
     try:
         from IPython import get_ipython  # type: ignore
 
@@ -73,7 +76,9 @@ NO_SOURCE_LOCATION = SourceLocation(-1, -1)
 @public
 @typechecked
 class ASTKind(Enum):
-    """The expression kind class used for downcasting."""
+    """
+    title: The expression kind class used for downcasting.
+    """
 
     GenericKind = -100
     ModuleKind = -101
@@ -201,14 +206,31 @@ class ASTKind(Enum):
 
 class ASTMeta(type):
     def __str__(cls) -> str:
-        """Return an string that represents the object."""
+        """
+        title: Return an string that represents the object.
+        returns:
+          type: str
+        """
         return cls.__name__
 
 
 @public
 @typechecked
 class AST(metaclass=ASTMeta):
-    """AST main expression class."""
+    """
+    title: AST main expression class.
+    attributes:
+      loc:
+        type: SourceLocation
+      kind:
+        type: ASTKind
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+    """
 
     loc: SourceLocation
     kind: ASTKind
@@ -221,7 +243,14 @@ class AST(metaclass=ASTMeta):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the AST instance."""
+        """
+        title: Initialize the AST instance.
+        parameters:
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         self.kind = ASTKind.GenericKind
         self.loc = loc
         self.ref = ""
@@ -234,11 +263,19 @@ class AST(metaclass=ASTMeta):
         return int.from_bytes(value, "big")
 
     def __str__(self) -> str:
-        """Return an string that represents the object."""
+        """
+        title: Return an string that represents the object.
+        returns:
+          type: str
+        """
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
-        """Return an string that represents the object."""
+        """
+        title: Return an string that represents the object.
+        returns:
+          type: str
+        """
         if is_using_jupyter_notebook():
             return ""
 
@@ -250,10 +287,11 @@ class AST(metaclass=ASTMeta):
 
     def _repr_png_(self) -> None:
         """
-        Return PNG representation of the Graphviz object.
+        title: Return PNG representation of the Graphviz object.
+        summary: |-
 
-        This method is specially recognized by Jupyter Notebook to display
-        a Graphviz diagram inline.
+          This method is specially recognized by Jupyter Notebook to display
+          a Graphviz diagram inline.
         """
         # importing it here in order to avoid cyclic import issue
         from astx.viz import visualize_image
@@ -261,12 +299,18 @@ class AST(metaclass=ASTMeta):
         visualize_image(self.get_struct(simplified=False))
 
     def _update_parent(self) -> None:
-        """Update the parent node."""
+        """
+        title: Update the parent node.
+        """
         if self.parent is not None:
             self.parent.append(self)
 
     def _get_metadata(self) -> ReprStruct:
-        """Return the metadata for the requested AST."""
+        """
+        title: Return the metadata for the requested AST.
+        returns:
+          type: ReprStruct
+        """
         metadata = {
             "loc": {"line": self.loc.line, "col": self.loc.col},
             "comment": self.comment,
@@ -278,7 +322,7 @@ class AST(metaclass=ASTMeta):
     def _prepare_struct(
         self,
         key: str,
-        value: Union[PrimitivesStruct, ReprStruct],
+        value: PrimitivesStruct | ReprStruct,
         simplified: bool,
     ) -> ReprStruct:
         struct: ReprStruct = (
@@ -295,23 +339,63 @@ class AST(metaclass=ASTMeta):
 
     @abstractmethod
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a structure that represents the node object."""
+        """
+        title: Return a structure that represents the node object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
 
     def to_yaml(self, simplified: bool = False) -> str:
-        """Return an yaml string that represents the object."""
+        """
+        title: Return an yaml string that represents the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: str
+        """
         return str(
             yaml.dump(self.get_struct(simplified=simplified), sort_keys=False)
         )
 
     def to_json(self, simplified: bool = False) -> str:
-        """Return an json string that represents the object."""
+        """
+        title: Return an json string that represents the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: str
+        """
         return json.dumps(self.get_struct(simplified=simplified), indent=2)
 
 
 @public
 @typechecked
 class ASTNodes(Generic[ASTType], AST):
-    """AST with a list of nodes, supporting type-specific elements."""
+    """
+    title: AST with a list of nodes, supporting type-specific elements.
+    attributes:
+      loc:
+        type: SourceLocation
+      kind:
+        type: ASTKind
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+      name:
+        type: str
+      nodes:
+        type: list[ASTType]
+      position:
+        type: int
+    """
 
     name: str
     nodes: list[ASTType]
@@ -323,19 +407,36 @@ class ASTNodes(Generic[ASTType], AST):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the AST instance."""
+        """
+        title: Initialize the AST instance.
+        parameters:
+          name:
+            type: str
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(loc=loc, parent=parent)
         self.name = name
         self.nodes: list[ASTType] = []
         self.position: int = 0
 
     def __iter__(self) -> Iterator[ASTType]:
-        """Overload `iter` magic function."""
+        """
+        title: Overload `iter` magic function.
+        returns:
+          type: Iterator[ASTType]
+        """
         self.position = 0  # Reset position for fresh iteration
         return self
 
     def __next__(self) -> ASTType:
-        """Overload `next` magic function."""
+        """
+        title: Overload `next` magic function.
+        returns:
+          type: ASTType
+        """
         if self.position >= len(self.nodes):
             self.position = 0
             raise StopIteration()
@@ -345,19 +446,42 @@ class ASTNodes(Generic[ASTType], AST):
         return self.nodes[i]
 
     def append(self, value: ASTType) -> None:
-        """Append a new node to the stack."""
+        """
+        title: Append a new node to the stack.
+        parameters:
+          value:
+            type: ASTType
+        """
         self.nodes.append(value)
 
     def __getitem__(self, index: int) -> ASTType:
-        """Support subscripting to get nodes by index."""
+        """
+        title: Support subscripting to get nodes by index.
+        parameters:
+          index:
+            type: int
+        returns:
+          type: ASTType
+        """
         return self.nodes[index]
 
     def __len__(self) -> int:
-        """Return the number of nodes, supports len function."""
+        """
+        title: Return the number of nodes, supports len function.
+        returns:
+          type: int
+        """
         return len(self.nodes)
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         args_nodes = []
 
         for node in self.nodes:
@@ -371,7 +495,22 @@ class ASTNodes(Generic[ASTType], AST):
 @public
 @typechecked
 class Expr(AST):
-    """AST main expression class."""
+    """
+    title: AST main expression class.
+    attributes:
+      loc:
+        type: SourceLocation
+      kind:
+        type: ASTKind
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 0
 
@@ -379,49 +518,104 @@ class Expr(AST):
 @public
 @typechecked
 class ExprType(Expr):
-    """ExprType expression class."""
+    """
+    title: ExprType expression class.
+    attributes:
+      loc:
+        type: SourceLocation
+      kind:
+        type: ASTKind
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+      nbytes:
+        type: int
+    """
 
     nbytes: int = 0
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a structure that represents the node object."""
+        """
+        title: Return a structure that represents the node object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         return {"Type": self.__class__.__name__}
 
 
 @public
 @typechecked
 class Undefined(Expr):
-    """Undefined expression class."""
+    """
+    title: Undefined expression class.
+    attributes:
+      loc:
+        type: SourceLocation
+      kind:
+        type: ASTKind
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+      nbytes:
+        type: int
+    """
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a simple structure that represents the object."""
+        """
+        title: Return a simple structure that represents the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         value = "UNDEFINED"
         key = "UNDEFINED"
         return self._prepare_struct(key, value, simplified)
 
 
-PrimitivesStruct: TypeAlias = Union[
-    int,
-    str,
-    float,
-    bool,
-    Undefined,
-]
-DataTypesStruct: TypeAlias = Union[
-    PrimitivesStruct, Dict[str, "DataTypesStruct"], List["DataTypesStruct"]
-]
-DictDataTypesStruct: TypeAlias = Dict[str, DataTypesStruct]
-ReprStruct: TypeAlias = Union[
-    List[DataTypesStruct],
-    DictDataTypesStruct,
-    Undefined,
-]
+PrimitivesStruct: TypeAlias = int | str | float | bool | Undefined
+DataTypesStruct: TypeAlias = (
+    PrimitivesStruct | dict[str, "DataTypesStruct"] | list["DataTypesStruct"]
+)
+DictDataTypesStruct: TypeAlias = dict[str, DataTypesStruct]
+ReprStruct: TypeAlias = list[DataTypesStruct] | DictDataTypesStruct | Undefined
 
 
 @public
 @typechecked
 class DataType(ExprType):
-    """AST main expression class."""
+    """
+    title: AST main expression class.
+    attributes:
+      loc:
+        type: SourceLocation
+      kind:
+        type: ASTKind
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+      nbytes:
+        type: int
+      type_:
+        type: ExprType
+      name:
+        type: str
+      _tmp_id:
+        type: ClassVar[int]
+    """
 
     type_: ExprType
     name: str
@@ -439,11 +633,22 @@ class DataType(ExprType):
         self.type_: ExprType = ExprType()
 
     def __str__(self) -> str:
-        """Return an string that represents the object."""
+        """
+        title: Return an string that represents the object.
+        returns:
+          type: str
+        """
         return f"{self.__class__.__name__}: {self.name}"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return a simple structure that represents the object."""
+        """
+        title: Return a simple structure that represents the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"DATA-TYPE[{self.__class__.__name__}]"
         value = self.name
         return self._prepare_struct(key, value, simplified)
@@ -452,19 +657,79 @@ class DataType(ExprType):
 @public
 @typechecked
 class OperatorType(DataType):
-    """AST main expression class."""
+    """
+    title: AST main expression class.
+    attributes:
+      loc:
+        type: SourceLocation
+      kind:
+        type: ASTKind
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+      nbytes:
+        type: int
+      type_:
+        type: ExprType
+      name:
+        type: str
+      _tmp_id:
+        type: ClassVar[int]
+    """
 
 
 @public
 @typechecked
 class StatementType(AST):
-    """AST main expression class."""
+    """
+    title: AST main expression class.
+    attributes:
+      loc:
+        type: SourceLocation
+      kind:
+        type: ASTKind
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+    """
 
 
 @public
 @typechecked
 class ParenthesizedExpr(DataType):
-    """AST class for explicitly grouped expressions (parentheses retained)."""
+    """
+    title: AST class for explicitly grouped expressions (parentheses retained).
+    attributes:
+      loc:
+        type: SourceLocation
+      comment:
+        type: str
+      parent:
+        type: Optional[ASTNodes]
+      ref:
+        type: str
+      nbytes:
+        type: int
+      name:
+        type: str
+      _tmp_id:
+        type: ClassVar[int]
+      type_:
+        type: DataType
+      kind:
+        type: ASTKind
+      value:
+        type: Expr
+    """
+
+    type_: DataType
+    kind: ASTKind
 
     value: Expr
 
@@ -474,18 +739,38 @@ class ParenthesizedExpr(DataType):
         loc: SourceLocation = NO_SOURCE_LOCATION,
         parent: Optional[ASTNodes] = None,
     ) -> None:
-        """Initialize the ParenthesizedExpr instance."""
+        """
+        title: Initialize the ParenthesizedExpr instance.
+        parameters:
+          value:
+            type: Expr
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
+        """
         super().__init__(loc=loc, parent=parent)
         self.type_ = getattr(value, "type_", DataType())
         self.value = value
         self.kind = ASTKind.ParenthesizedExprKind
 
     def __str__(self) -> str:
-        """Return a string representation of the object with parentheses."""
+        """
+        title: Return a string representation of the object with parentheses.
+        returns:
+          type: str
+        """
         return f"ParenthesizedExpr({self.value})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = "PARENTHESIZED-EXPR"
         value = self.value.get_struct(simplified)
         return self._prepare_struct(key, value, simplified)

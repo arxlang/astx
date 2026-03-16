@@ -1,4 +1,6 @@
-"""Tests for control flow statements."""
+"""
+title: Tests for control flow statements.
+"""
 
 import astx
 
@@ -7,7 +9,9 @@ from astx.viz import visualize_image
 
 
 def test_list_comprehension() -> None:
-    """Test ListComprehension."""
+    """
+    title: Test ListComprehension.
+    """
     list_compre = astx.ListComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
@@ -40,7 +44,9 @@ def test_list_comprehension() -> None:
 
 
 def test_generator_expr() -> None:
-    """Test `GeneratorExpr` class with conditions of Iterable type."""
+    """
+    title: Test `GeneratorExpr` class with conditions of Iterable type.
+    """
     comp_1 = astx.ComprehensionClause(
         target=astx.Variable("x"),
         iterable=astx.Variable("my_list"),
@@ -86,7 +92,9 @@ def test_generator_expr() -> None:
 
 
 def test_set_comprehension() -> None:
-    """Test SetComprehension."""
+    """
+    title: Test SetComprehension.
+    """
     set_comp = astx.SetComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")

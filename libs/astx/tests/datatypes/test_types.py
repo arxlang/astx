@@ -1,4 +1,6 @@
-"""Tests for classes in types.py."""
+"""
+title: Tests for classes in types.py.
+"""
 
 from __future__ import annotations
 
@@ -9,7 +11,9 @@ from astx.viz import visualize_image
 
 
 def test_typecastexpr() -> None:
-    """Test TypeCastExpr."""
+    """
+    title: Test TypeCastExpr.
+    """
     # Expression to cast
     expr = Variable(name="x")
 

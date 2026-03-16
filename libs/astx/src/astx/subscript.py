@@ -1,4 +1,6 @@
-"""Module for subscripts definitions/declarations."""
+"""
+title: Module for subscripts definitions/declarations.
+"""
 
 from typing import Optional, cast
 
@@ -20,7 +22,24 @@ from astx.tools.typing import typechecked
 @public
 @typechecked
 class SubscriptExpr(Expr):
-    """AST class for subscript expressions."""
+    """
+    title: AST class for subscript expressions.
+    attributes:
+      kind:
+        type: ASTKind
+      value:
+        type: Expr
+      index:
+        type: Expr
+      lower:
+        type: Expr
+      upper:
+        type: Expr
+      step:
+        type: Expr
+    """
+
+    kind: ASTKind
 
     value: Expr
     index: Expr
@@ -39,25 +58,41 @@ class SubscriptExpr(Expr):
         parent: Optional[ASTNodes] = None,
     ) -> None:
         """
-        Initialize the SubscriptExpr instance.
+        title: Initialize the SubscriptExpr instance.
+        summary: |-
 
-        Parameters
-        ----------
-        value: Expr
-            The expression representing the object being indexed (e.g.,
-        an array or list).
-        index (optional): Expr
-            The index of the variable.
-        lower (optional): Expr
-            The lower bound of the slice (inclusive).
-        upper (optional): Expr
-            The upper bound of the slice (exclusive).
-        step (optional): Expr
-            The step size for the slice.
-        loc: SourceLocation
-            The source location of the expression.
-        parent (optional): ASTNodes
-            The parent AST node.
+          Parameters
+          ----------
+          value: Expr
+          The expression representing the object being indexed (e.g.,
+          an array or list).
+          index (optional): Expr
+          The index of the variable.
+          lower (optional): Expr
+          The lower bound of the slice (inclusive).
+          upper (optional): Expr
+          The upper bound of the slice (exclusive).
+          step (optional): Expr
+          The step size for the slice.
+          loc: SourceLocation
+          The source location of the expression.
+          parent (optional): ASTNodes
+          The parent AST node.
+        parameters:
+          value:
+            type: Expr
+          index:
+            type: Optional[Expr]
+          lower:
+            type: Optional[Expr]
+          upper:
+            type: Optional[Expr]
+          step:
+            type: Optional[Expr]
+          loc:
+            type: SourceLocation
+          parent:
+            type: Optional[ASTNodes]
         """
         super().__init__(loc=loc, parent=parent)
         self.value: Expr = value if value is not None else LiteralNone()
@@ -68,7 +103,11 @@ class SubscriptExpr(Expr):
         self.kind = ASTKind.SubscriptExprKind
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         lower_str = (
             str(self.lower)
             if not isinstance(self.lower, LiteralNone)
@@ -88,7 +127,14 @@ class SubscriptExpr(Expr):
         return f"SubscriptExpr({self.value}[{lower_str}{upper_str}{step_str}])"
 
     def _get_struct_wrapper(self, simplified: bool) -> DictDataTypesStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: DictDataTypesStruct
+        """
         value_dict: ReprStruct = {"indexed": self.value.get_struct(simplified)}
 
         lower_key = "index" if isinstance(self.lower, LiteralNone) else "lower"
@@ -116,7 +162,14 @@ class SubscriptExpr(Expr):
         return value
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = "SubscriptExpr"
         value = self._get_struct_wrapper(simplified)
 
@@ -126,7 +179,14 @@ class SubscriptExpr(Expr):
 @public
 @typechecked
 class Ellipsis(Expr):
-    """AST class for Ellipsis expressions."""
+    """
+    title: AST class for Ellipsis expressions.
+    attributes:
+      kind:
+        type: ASTKind
+    """
+
+    kind: ASTKind
 
     def __init__(
         self,
@@ -137,7 +197,14 @@ class Ellipsis(Expr):
         self.kind = ASTKind.EllipsisKind
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = str(self)
         value: DictDataTypesStruct = {}
         return self._prepare_struct(key, value, simplified)

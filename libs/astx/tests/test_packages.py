@@ -1,4 +1,6 @@
-"""Module for testing different kind of ASTx blocks."""
+"""
+title: Module for testing different kind of ASTx blocks.
+"""
 
 from astx.data import Variable, VariableDeclaration
 from astx.literals.numeric import LiteralInt32
@@ -19,7 +21,9 @@ from astx.viz import visualize_image
 
 
 def test_module() -> None:
-    """Test ASTx module."""
+    """
+    title: Test ASTx module.
+    """
     module = Module()
 
     decl_a = VariableDeclaration("a", type_=Int32(), value=LiteralInt32(1))
@@ -40,7 +44,9 @@ def test_module() -> None:
 
 
 def test_target() -> None:
-    """Test ASTx module."""
+    """
+    title: Test ASTx module.
+    """
     target = Target(
         datalayout="e-m:e-i64:64-f80:128-n8:16:32:64-S128",
         triple="x86_64-pc-linux-gnu",
@@ -53,7 +59,9 @@ def test_target() -> None:
 
 
 def test_packages() -> None:
-    """Test ASTx package."""
+    """
+    title: Test ASTx package.
+    """
     package_main = Package()
     package_child = Package()
     module_main = Module()
@@ -70,7 +78,9 @@ def test_packages() -> None:
 
 
 def test_program() -> None:
-    """Test ASTx program."""
+    """
+    title: Test ASTx program.
+    """
     target = Target(
         datalayout="e-m:e-i64:64-f80:128-n8:16:32:64-S128",
         triple="x86_64-pc-linux-gnu",
@@ -97,7 +107,9 @@ def test_program() -> None:
 
 
 def test_multiple_imports_stmt() -> None:
-    """Test ImportStmt multiple imports."""
+    """
+    title: Test ImportStmt multiple imports.
+    """
     alias1 = AliasExpr(name="math")
     alias2 = AliasExpr(name="matplotlib", asname="mtlb")
 
@@ -109,7 +121,9 @@ def test_multiple_imports_stmt() -> None:
 
 
 def test_import_from_stmt() -> None:
-    """Test ImportFromStmt importing from module."""
+    """
+    title: Test ImportFromStmt importing from module.
+    """
     alias = AliasExpr(name="pyplot", asname="plt")
 
     import_from_stmt = ImportFromStmt(
@@ -121,7 +135,9 @@ def test_import_from_stmt() -> None:
 
 
 def test_wildcard_import_from_stmt() -> None:
-    """Test ImportFromStmt wildcard import from module."""
+    """
+    title: Test ImportFromStmt wildcard import from module.
+    """
     alias = AliasExpr(name="*")
 
     import_from_stmt = ImportFromStmt(module="matplotlib", names=[alias])
@@ -131,7 +147,9 @@ def test_wildcard_import_from_stmt() -> None:
 
 
 def test_future_import_from_stmt() -> None:
-    """Test ImportFromStmt from future import."""
+    """
+    title: Test ImportFromStmt from future import.
+    """
     alias = AliasExpr(name="division")
 
     import_from_stmt = ImportFromStmt(module="__future__", names=[alias])
@@ -140,7 +158,9 @@ def test_future_import_from_stmt() -> None:
 
 
 def test_multiple_imports_expr() -> None:
-    """Test ImportExpr multiple imports."""
+    """
+    title: Test ImportExpr multiple imports.
+    """
     alias1 = AliasExpr(name="sqrt", asname="square_root")
     alias2 = AliasExpr(name="pi")
 
@@ -151,7 +171,9 @@ def test_multiple_imports_expr() -> None:
 
 
 def test_import_from_expr() -> None:
-    """Test ImportFromExpr importing from module."""
+    """
+    title: Test ImportFromExpr importing from module.
+    """
     alias1 = AliasExpr(name="sqrt", asname="square_root")
 
     import_from_expr = ImportFromExpr(module="math", names=[alias1])
@@ -161,7 +183,9 @@ def test_import_from_expr() -> None:
 
 
 def test_wildcard_import_from_expr() -> None:
-    """Test ImportFromExpr wildcard import from module."""
+    """
+    title: Test ImportFromExpr wildcard import from module.
+    """
     alias1 = AliasExpr(name="*")
 
     import_from_expr = ImportFromExpr(module="math", names=[alias1])
@@ -171,7 +195,9 @@ def test_wildcard_import_from_expr() -> None:
 
 
 def test_future_import_from_expr() -> None:
-    """Test ImportFromExpr from future import."""
+    """
+    title: Test ImportFromExpr from future import.
+    """
     alias1 = AliasExpr(name="division")
 
     import_from_expr = ImportFromExpr(module="__future__", names=[alias1])
@@ -181,7 +207,9 @@ def test_future_import_from_expr() -> None:
 
 
 def test_relative_import_from_expr() -> None:
-    """Test ImportFromExpr relative imports."""
+    """
+    title: Test ImportFromExpr relative imports.
+    """
     alias1 = AliasExpr(name="division")
     alias2 = AliasExpr(name="matplotlib", asname="mtlb")
 

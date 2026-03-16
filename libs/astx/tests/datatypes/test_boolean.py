@@ -1,4 +1,6 @@
-"""Tests for Boolean data type."""
+"""
+title: Tests for Boolean data type.
+"""
 
 from astx.data import VariableDeclaration
 from astx.literals.boolean import LiteralBoolean
@@ -6,7 +8,9 @@ from astx.types.boolean import Boolean
 
 
 def test_variable_boolean() -> None:
-    """Test variable boolean."""
+    """
+    title: Test variable boolean.
+    """
     decl_a = VariableDeclaration(
         name="a", type_=Boolean(), value=LiteralBoolean(value=True)
     )
@@ -15,7 +19,9 @@ def test_variable_boolean() -> None:
 
 
 def test_literal_boolean() -> None:
-    """Test literal boolean."""
+    """
+    title: Test literal boolean.
+    """
     lit_a = LiteralBoolean(value=True)
     assert isinstance(lit_a, LiteralBoolean)
     assert lit_a.get_struct()

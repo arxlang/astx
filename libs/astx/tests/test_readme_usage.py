@@ -1,10 +1,16 @@
-"""Test to see if the usage demo in README.md still works."""
+"""
+title: Test to see if the usage demo in README.md still works.
+"""
 
 import textwrap
 
 
 def usage_demo() -> str:
-    """Execute an exact copy of the code shown in README.md."""
+    """
+    title: Execute an exact copy of the code shown in README.md.
+    returns:
+      type: str
+    """
     import astx
 
     # Define a simple function `add(x, y): return x + y`
@@ -37,7 +43,9 @@ def usage_demo() -> str:
 
 
 def test_readme_usage() -> None:
-    """Test usage demo as shown in README.md."""
+    """
+    title: Test usage demo as shown in README.md.
+    """
     expected = """\
                 def add(x: int, y: int) -> int:
                     return (x + y)

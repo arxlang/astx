@@ -1,4 +1,6 @@
-"""ASTx Data Types module."""
+"""
+title: ASTx Data Types module.
+"""
 
 from __future__ import annotations
 
@@ -17,25 +19,55 @@ from astx.types.string import String, UTF8Char, UTF8String
 @public
 @typechecked
 class LiteralString(Literal):
-    """LiteralString data type class."""
+    """
+    title: LiteralString data type class.
+    attributes:
+      type_:
+        type: String
+      loc:
+        type: SourceLocation
+      value:
+        type: str
+    """
+
+    type_: String
+    loc: SourceLocation
 
     value: str
 
     def __init__(
         self, value: str, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralString."""
+        """
+        title: Initialize LiteralString.
+        parameters:
+          value:
+            type: str
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = String()
         self.loc = loc
 
     def __str__(self) -> str:
-        """Return a string representation of the object."""
+        """
+        title: Return a string representation of the object.
+        returns:
+          type: str
+        """
         return f"LiteralString({self.value})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"LiteralString: {self.value}"
         value = self.value
         return self._prepare_struct(key, value, simplified)
@@ -44,7 +76,19 @@ class LiteralString(Literal):
 @public
 @typechecked
 class LiteralUTF8String(LiteralString):
-    """Literal class for UTF-8 strings."""
+    """
+    title: Literal class for UTF-8 strings.
+    attributes:
+      loc:
+        type: SourceLocation
+      type_:
+        type: UTF8String
+      value:
+        type: str
+    """
+
+    loc: SourceLocation
+    type_: UTF8String
 
     value: str
 
@@ -55,11 +99,22 @@ class LiteralUTF8String(LiteralString):
         self.type_ = UTF8String()
 
     def __str__(self) -> str:
-        """Return a string representation of the object."""
+        """
+        title: Return a string representation of the object.
+        returns:
+          type: str
+        """
         return f"LiteralUTF8String({self.value})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the object in a simplified."""
+        """
+        title: Return the structure of the object in a simplified.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"LiteralUTF8String: {self.value}"
         value = self.value
         return self._prepare_struct(key, value, simplified)
@@ -68,7 +123,19 @@ class LiteralUTF8String(LiteralString):
 @public
 @typechecked
 class LiteralUTF8Char(LiteralString):
-    """Literal class for UTF-8 characters."""
+    """
+    title: Literal class for UTF-8 characters.
+    attributes:
+      loc:
+        type: SourceLocation
+      type_:
+        type: UTF8Char
+      value:
+        type: str
+    """
+
+    loc: SourceLocation
+    type_: UTF8Char
 
     value: str
 
@@ -79,11 +146,22 @@ class LiteralUTF8Char(LiteralString):
         self.type_ = UTF8Char()
 
     def __str__(self) -> str:
-        """Return a string representation of the object."""
+        """
+        title: Return a string representation of the object.
+        returns:
+          type: str
+        """
         return f"LiteralUTF8Char({self.value})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the structure of the object in a simplified."""
+        """
+        title: Return the structure of the object in a simplified.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"LiteralUTF8Char: {self.value}"
         value = self.value
         return self._prepare_struct(key, value, simplified)

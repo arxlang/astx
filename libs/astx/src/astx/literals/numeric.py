@@ -1,4 +1,6 @@
-"""ASTx Data Types module."""
+"""
+title: ASTx Data Types module.
+"""
 
 from __future__ import annotations
 
@@ -34,14 +36,33 @@ from astx.types.numeric import (
 @public
 @typechecked
 class LiteralInt8(Literal):
-    """LiteralInt8 data type class."""
+    """
+    title: LiteralInt8 data type class.
+    attributes:
+      type_:
+        type: Int8
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: Int8
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralInt8."""
+        """
+        title: Initialize LiteralInt8.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Int8()
@@ -51,14 +72,33 @@ class LiteralInt8(Literal):
 @public
 @typechecked
 class LiteralInt16(Literal):
-    """LiteralInt16 data type class."""
+    """
+    title: LiteralInt16 data type class.
+    attributes:
+      type_:
+        type: Int16
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: Int16
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralInt16."""
+        """
+        title: Initialize LiteralInt16.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Int16()
@@ -68,14 +108,33 @@ class LiteralInt16(Literal):
 @public
 @typechecked
 class LiteralInt32(Literal):
-    """LiteralInt32 data type class."""
+    """
+    title: LiteralInt32 data type class.
+    attributes:
+      type_:
+        type: Int32
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: Int32
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralInt32."""
+        """
+        title: Initialize LiteralInt32.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Int32()
@@ -85,14 +144,33 @@ class LiteralInt32(Literal):
 @public
 @typechecked
 class LiteralInt64(Literal):
-    """LiteralInt64 data type class."""
+    """
+    title: LiteralInt64 data type class.
+    attributes:
+      type_:
+        type: Int64
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: Int64
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralInt64."""
+        """
+        title: Initialize LiteralInt64.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Int64()
@@ -102,14 +180,33 @@ class LiteralInt64(Literal):
 @public
 @typechecked
 class LiteralInt128(Literal):
-    """LiteralInt128 data type class."""
+    """
+    title: LiteralInt128 data type class.
+    attributes:
+      type_:
+        type: Int128
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: Int128
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralInt128."""
+        """
+        title: Initialize LiteralInt128.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Int128()
@@ -119,14 +216,33 @@ class LiteralInt128(Literal):
 @public
 @typechecked
 class LiteralUInt8(Literal):
-    """LiteralUInt8 data type class."""
+    """
+    title: LiteralUInt8 data type class.
+    attributes:
+      type_:
+        type: UInt8
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: UInt8
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralUInt8."""
+        """
+        title: Initialize LiteralUInt8.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = UInt8()
@@ -136,14 +252,33 @@ class LiteralUInt8(Literal):
 @public
 @typechecked
 class LiteralUInt16(Literal):
-    """LiteralUInt16 data type class."""
+    """
+    title: LiteralUInt16 data type class.
+    attributes:
+      type_:
+        type: UInt16
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: UInt16
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralUInt16."""
+        """
+        title: Initialize LiteralUInt16.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = UInt16()
@@ -153,14 +288,33 @@ class LiteralUInt16(Literal):
 @public
 @typechecked
 class LiteralUInt32(Literal):
-    """LiteralUInt32 data type class."""
+    """
+    title: LiteralUInt32 data type class.
+    attributes:
+      type_:
+        type: UInt32
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: UInt32
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralUInt32."""
+        """
+        title: Initialize LiteralUInt32.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = UInt32()
@@ -170,14 +324,33 @@ class LiteralUInt32(Literal):
 @public
 @typechecked
 class LiteralUInt64(Literal):
-    """LiteralUInt64 data type class."""
+    """
+    title: LiteralUInt64 data type class.
+    attributes:
+      type_:
+        type: UInt64
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: UInt64
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralUInt64."""
+        """
+        title: Initialize LiteralUInt64.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = UInt64()
@@ -187,14 +360,33 @@ class LiteralUInt64(Literal):
 @public
 @typechecked
 class LiteralUInt128(Literal):
-    """LiteralUInt128 data type class."""
+    """
+    title: LiteralUInt128 data type class.
+    attributes:
+      type_:
+        type: UInt128
+      loc:
+        type: SourceLocation
+      value:
+        type: int
+    """
+
+    type_: UInt128
+    loc: SourceLocation
 
     value: int
 
     def __init__(
         self, value: int, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralUInt128."""
+        """
+        title: Initialize LiteralUInt128.
+        parameters:
+          value:
+            type: int
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = UInt128()
@@ -204,14 +396,33 @@ class LiteralUInt128(Literal):
 @public
 @typechecked
 class LiteralFloat16(Literal):
-    """LiteralFloat16 data type class."""
+    """
+    title: LiteralFloat16 data type class.
+    attributes:
+      type_:
+        type: Float16
+      loc:
+        type: SourceLocation
+      value:
+        type: float
+    """
+
+    type_: Float16
+    loc: SourceLocation
 
     value: float
 
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralFloat16."""
+        """
+        title: Initialize LiteralFloat16.
+        parameters:
+          value:
+            type: float
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Float16()
@@ -221,14 +432,33 @@ class LiteralFloat16(Literal):
 @public
 @typechecked
 class LiteralFloat32(Literal):
-    """LiteralFloat32 data type class."""
+    """
+    title: LiteralFloat32 data type class.
+    attributes:
+      type_:
+        type: Float32
+      loc:
+        type: SourceLocation
+      value:
+        type: float
+    """
+
+    type_: Float32
+    loc: SourceLocation
 
     value: float
 
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralFloat32."""
+        """
+        title: Initialize LiteralFloat32.
+        parameters:
+          value:
+            type: float
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Float32()
@@ -238,14 +468,33 @@ class LiteralFloat32(Literal):
 @public
 @typechecked
 class LiteralFloat64(Literal):
-    """LiteralFloat64 data type class."""
+    """
+    title: LiteralFloat64 data type class.
+    attributes:
+      type_:
+        type: Float64
+      loc:
+        type: SourceLocation
+      value:
+        type: float
+    """
+
+    type_: Float64
+    loc: SourceLocation
 
     value: float
 
     def __init__(
         self, value: float, loc: SourceLocation = NO_SOURCE_LOCATION
     ) -> None:
-        """Initialize LiteralFloat64."""
+        """
+        title: Initialize LiteralFloat64.
+        parameters:
+          value:
+            type: float
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = value
         self.type_ = Float64()
@@ -255,7 +504,14 @@ class LiteralFloat64(Literal):
 @public
 @typechecked
 class LiteralComplex(Literal):
-    """Base class for literal complex numbers."""
+    """
+    title: Base class for literal complex numbers.
+    attributes:
+      type_:
+        type: Complex
+      value:
+        type: tuple[float, float]
+    """
 
     type_: Complex
     value: tuple[float, float]
@@ -266,16 +522,36 @@ class LiteralComplex(Literal):
         imag: float,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize a generic complex number."""
+        """
+        title: Initialize a generic complex number.
+        parameters:
+          real:
+            type: float
+          imag:
+            type: float
+          loc:
+            type: SourceLocation
+        """
         super().__init__(loc)
         self.value = real, imag
 
     def __str__(self) -> str:
-        """Return a string that represents the object."""
+        """
+        title: Return a string that represents the object.
+        returns:
+          type: str
+        """
         return f"LiteralComplex({self.value[0]} + {self.value[1]}j)"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST representation for the complex literal."""
+        """
+        title: Return the AST representation for the complex literal.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = f"{self.__class__.__name__}: {self.value}"
         value: ReprStruct = {
             "real": self.value[0],
@@ -287,7 +563,16 @@ class LiteralComplex(Literal):
 @public
 @typechecked
 class LiteralComplex32(LiteralComplex):
-    """LiteralComplex32 data type class."""
+    """
+    title: LiteralComplex32 data type class.
+    attributes:
+      value:
+        type: tuple[float, float]
+      type_:
+        type: Complex32
+    """
+
+    type_: Complex32
 
     def __init__(
         self,
@@ -295,7 +580,16 @@ class LiteralComplex32(LiteralComplex):
         imag: float,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize LiteralComplex32."""
+        """
+        title: Initialize LiteralComplex32.
+        parameters:
+          real:
+            type: float
+          imag:
+            type: float
+          loc:
+            type: SourceLocation
+        """
         super().__init__(real, imag, loc)
         self.type_ = Complex32()
 
@@ -303,7 +597,16 @@ class LiteralComplex32(LiteralComplex):
 @public
 @typechecked
 class LiteralComplex64(LiteralComplex):
-    """LiteralComplex64 data type class."""
+    """
+    title: LiteralComplex64 data type class.
+    attributes:
+      value:
+        type: tuple[float, float]
+      type_:
+        type: Complex64
+    """
+
+    type_: Complex64
 
     def __init__(
         self,
@@ -311,6 +614,15 @@ class LiteralComplex64(LiteralComplex):
         imag: float,
         loc: SourceLocation = NO_SOURCE_LOCATION,
     ) -> None:
-        """Initialize LiteralComplex64."""
+        """
+        title: Initialize LiteralComplex64.
+        parameters:
+          real:
+            type: float
+          imag:
+            type: float
+          loc:
+            type: SourceLocation
+        """
         super().__init__(real, imag, loc)
         self.type_ = Complex64()

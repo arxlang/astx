@@ -1,4 +1,6 @@
-"""Test Python Transpiler."""
+"""
+title: Test Python Transpiler.
+"""
 
 import ast
 import sys
@@ -12,19 +14,33 @@ transpiler = astx2py.ASTxPythonTranspiler()
 
 
 def translate(node: astx.AST) -> str:
-    """Translate from ASTx to Python source."""
+    """
+    title: Translate from ASTx to Python source.
+    parameters:
+      node:
+        type: astx.AST
+    returns:
+      type: str
+    """
     code = str(transpiler.visit(node))
     ast.parse(code)
     return code
 
 
 def check_transpilation(code: str) -> None:
-    """Check Transpilation with Python ast lib."""
+    """
+    title: Check Transpilation with Python ast lib.
+    parameters:
+      code:
+        type: str
+    """
     ast.parse(code)
 
 
 def test_transpiler_multiple_imports_stmt() -> None:
-    """Test astx.ImportStmt multiple imports."""
+    """
+    title: Test astx.ImportStmt multiple imports.
+    """
     alias1 = astx.AliasExpr(name="math")
     alias2 = astx.AliasExpr(name="matplotlib", asname="mtlb")
 
@@ -40,7 +56,9 @@ def test_transpiler_multiple_imports_stmt() -> None:
 
 
 def test_transpiler_import_from_stmt() -> None:
-    """Test astx.ImportFromStmt importing from module."""
+    """
+    title: Test astx.ImportFromStmt importing from module.
+    """
     alias = astx.AliasExpr(name="pyplot", asname="plt")
 
     import_from_stmt = astx.ImportFromStmt(
@@ -56,7 +74,9 @@ def test_transpiler_import_from_stmt() -> None:
 
 
 def test_transpiler_wildcard_import_from_stmt() -> None:
-    """Test astx.ImportFromStmt wildcard import from module."""
+    """
+    title: Test astx.ImportFromStmt wildcard import from module.
+    """
     alias = astx.AliasExpr(name="*")
 
     import_from_stmt = astx.ImportFromStmt(module="matplotlib", names=[alias])
@@ -70,7 +90,9 @@ def test_transpiler_wildcard_import_from_stmt() -> None:
 
 
 def test_transpiler_future_import_from_stmt() -> None:
-    """Test astx.ImportFromStmt from future import."""
+    """
+    title: Test astx.ImportFromStmt from future import.
+    """
     alias = astx.AliasExpr(name="division")
 
     import_from_stmt = astx.ImportFromStmt(module="__future__", names=[alias])
@@ -84,7 +106,9 @@ def test_transpiler_future_import_from_stmt() -> None:
 
 
 def test_transpiler_multiple_imports_expr() -> None:
-    """Test astx.ImportExpr multiple imports."""
+    """
+    title: Test astx.ImportExpr multiple imports.
+    """
     alias1 = astx.AliasExpr(name="sqrt", asname="square_root")
     alias2 = astx.AliasExpr(name="pi")
 
@@ -102,7 +126,9 @@ def test_transpiler_multiple_imports_expr() -> None:
 
 
 def test_transpiler_import_from_expr() -> None:
-    """Test astx.ImportFromExpr importing from module."""
+    """
+    title: Test astx.ImportFromExpr importing from module.
+    """
     alias1 = astx.AliasExpr(name="sqrt", asname="square_root")
 
     import_from_expr = astx.ImportFromExpr(module="math", names=[alias1])
@@ -119,7 +145,9 @@ def test_transpiler_import_from_expr() -> None:
 
 
 def test_transpiler_wildcard_import_from_expr() -> None:
-    """Test astx.ImportFromExpr wildcard import from module."""
+    """
+    title: Test astx.ImportFromExpr wildcard import from module.
+    """
     alias1 = astx.AliasExpr(name="*")
 
     import_from_expr = astx.ImportFromExpr(module="math", names=[alias1])
@@ -136,7 +164,9 @@ def test_transpiler_wildcard_import_from_expr() -> None:
 
 
 def test_transpiler_future_import_from_expr() -> None:
-    """Test astx.ImportFromExpr from future import."""
+    """
+    title: Test astx.ImportFromExpr from future import.
+    """
     alias1 = astx.AliasExpr(name="division")
 
     import_from_expr = astx.ImportFromExpr(module="__future__", names=[alias1])
@@ -153,7 +183,9 @@ def test_transpiler_future_import_from_expr() -> None:
 
 
 def test_transpiler_relative_import_from_expr() -> None:
-    """Test astx.ImportFromExpr relative imports."""
+    """
+    title: Test astx.ImportFromExpr relative imports.
+    """
     alias1 = astx.AliasExpr(name="division")
     alias2 = astx.AliasExpr(name="matplotlib", asname="mtlb")
 
@@ -171,7 +203,9 @@ def test_transpiler_relative_import_from_expr() -> None:
 
 
 def test_transpiler_lambdaexpr() -> None:
-    """Test astx.LambdaExpr."""
+    """
+    title: Test astx.LambdaExpr.
+    """
     params = astx.Arguments(astx.Argument(name="x", type_=astx.Int32()))
     body = astx.BinaryOp(
         op_code="+", lhs=astx.Variable(name="x"), rhs=astx.LiteralInt32(1)
@@ -188,7 +222,9 @@ def test_transpiler_lambdaexpr() -> None:
 
 
 def test_transpiler_lambdaexpr_noparams() -> None:
-    """Test astx.LambdaExpr without params."""
+    """
+    title: Test astx.LambdaExpr without params.
+    """
     body = astx.LiteralInt32(1)
 
     lambda_expr = astx.LambdaExpr(body=body)
@@ -204,7 +240,9 @@ def test_transpiler_lambdaexpr_noparams() -> None:
 
 
 def test_transpiler_functiondef() -> None:
-    """Test astx.FunctionDef."""
+    """
+    title: Test astx.FunctionDef.
+    """
     # Function parameters
     args = astx.Arguments(
         astx.Argument(name="x", type_=astx.Int32()),
@@ -254,7 +292,9 @@ def test_transpiler_functiondef() -> None:
 
 
 def test_literal_int32() -> None:
-    """Test astx.LiteralInt32."""
+    """
+    title: Test astx.LiteralInt32.
+    """
     # Create a LiteralInt32 node
     literal_int32_node = astx.LiteralInt32(value=42)
 
@@ -266,7 +306,9 @@ def test_literal_int32() -> None:
 
 
 def test_literal_float16() -> None:
-    """Test astx.LiteralFloat16."""
+    """
+    title: Test astx.LiteralFloat16.
+    """
     # Create a LiteralFloat16 node
     literal_float16_node = astx.LiteralFloat16(value=3.14)
 
@@ -278,7 +320,9 @@ def test_literal_float16() -> None:
 
 
 def test_literal_float32() -> None:
-    """Test astx.LiteralFloat32."""
+    """
+    title: Test astx.LiteralFloat32.
+    """
     # Create a LiteralFloat32 node
     literal_float32_node = astx.LiteralFloat32(value=2.718)
 
@@ -290,7 +334,9 @@ def test_literal_float32() -> None:
 
 
 def test_literal_float64() -> None:
-    """Test astx.LiteralFloat64."""
+    """
+    title: Test astx.LiteralFloat64.
+    """
     # Create a LiteralFloat64 node
     literal_float64_node = astx.LiteralFloat64(value=1.414)
 
@@ -302,7 +348,9 @@ def test_literal_float64() -> None:
 
 
 def test_literal_complex32() -> None:
-    """Test astx.LiteralComplex32."""
+    """
+    title: Test astx.LiteralComplex32.
+    """
     # Create a LiteralComplex32 node
     literal_complex32_node = astx.LiteralComplex32(real=1, imag=2.8)
 
@@ -316,7 +364,9 @@ def test_literal_complex32() -> None:
 
 
 def test_literal_complex64() -> None:
-    """Test astx.LiteralComplex64."""
+    """
+    title: Test astx.LiteralComplex64.
+    """
     # Create a LiteralComplex64 node
     literal_complex64_node = astx.LiteralComplex64(real=3.5, imag=4)
 
@@ -330,7 +380,9 @@ def test_literal_complex64() -> None:
 
 
 def test_transpiler_typecastexpr() -> None:
-    """Test astx.TypeCastExpr."""
+    """
+    title: Test astx.TypeCastExpr.
+    """
     # Expression to cast
     expr = astx.Variable(name="x")
     # Target type for casting
@@ -347,7 +399,9 @@ def test_transpiler_typecastexpr() -> None:
 
 
 def test_transpiler_utf8_char() -> None:
-    """Test astx.Utf8Char."""
+    """
+    title: Test astx.Utf8Char.
+    """
     # Create a Utf8Char node
     utf8_char_node = astx.LiteralUTF8Char(value="c")
 
@@ -361,7 +415,9 @@ def test_transpiler_utf8_char() -> None:
 
 
 def test_transpiler_utf8_string() -> None:
-    """Test astx.Utf8String."""
+    """
+    title: Test astx.Utf8String.
+    """
     # Create a Utf8String node
     utf8_string_node = astx.LiteralUTF8String(value="hello")
 
@@ -375,7 +431,9 @@ def test_transpiler_utf8_string() -> None:
 
 
 def test_transpiler_literal_utf8_char() -> None:
-    """Test astx.LiteralUtf8Char."""
+    """
+    title: Test astx.LiteralUtf8Char.
+    """
     # Create a LiteralUtf8Char node
     literal_utf8_char_node = astx.LiteralUTF8Char(value="a")
 
@@ -389,7 +447,9 @@ def test_transpiler_literal_utf8_char() -> None:
 
 
 def test_transpiler_literal_utf8_string() -> None:
-    """Test astx.LiteralUtf8String."""
+    """
+    title: Test astx.LiteralUtf8String.
+    """
     # Create a LiteralUtf8String node
     literal_utf8_string_node = astx.LiteralUTF8String(value="world")
 
@@ -403,7 +463,9 @@ def test_transpiler_literal_utf8_string() -> None:
 
 
 def test_transpiler_for_range_loop_expr() -> None:
-    """Test `For Range Loop` expression`."""
+    """
+    title: Test `For Range Loop` expression`.
+    """
     decl_a = astx.InlineVariableDeclaration(
         "a", type_=astx.Int32(), value=astx.LiteralInt32(-1)
     )
@@ -426,7 +488,9 @@ def test_transpiler_for_range_loop_expr() -> None:
 
 
 def test_transpiler_async_for_range_loop_expr() -> None:
-    """Test `Async For Range Loop` expression`."""
+    """
+    title: Test `Async For Range Loop` expression`.
+    """
     decl_a = astx.InlineVariableDeclaration(
         "a", type_=astx.Int32(), value=astx.LiteralInt32(-1)
     )
@@ -449,7 +513,9 @@ def test_transpiler_async_for_range_loop_expr() -> None:
 
 
 def test_transpiler_break_stmt() -> None:
-    """Test astx.BreakStmt transpilation."""
+    """
+    title: Test astx.BreakStmt transpilation.
+    """
     # Create a simple loop structure (e.g., WhileStmt)
     x_var = astx.Variable(name="x")
     condition = astx.BinaryOp(op_code="<", lhs=x_var, rhs=astx.LiteralInt32(5))
@@ -472,7 +538,9 @@ def test_transpiler_break_stmt() -> None:
 
 
 def test_transpiler_continue_stmt() -> None:
-    """Test astx.ContinueStmt transpilation."""
+    """
+    title: Test astx.ContinueStmt transpilation.
+    """
     # Create a simple loop structure (e.g., WhileStmt)
     x_var = astx.Variable(name="x")
     condition = astx.BinaryOp(op_code="<", lhs=x_var, rhs=astx.LiteralInt32(5))
@@ -495,7 +563,9 @@ def test_transpiler_continue_stmt() -> None:
 
 
 def test_transpiler_binary_op() -> None:
-    """Test astx.BinaryOp for addition operation."""
+    """
+    title: Test astx.BinaryOp for addition operation.
+    """
     # Create a BinaryOp node for the expression "x + y"
     lhs = astx.Variable(name="x")
     rhs = astx.Variable(name="y")
@@ -513,7 +583,9 @@ def test_transpiler_binary_op() -> None:
 
 
 def test_transpiler_while_stmt() -> None:
-    """Test astx.WhileStmt."""
+    """
+    title: Test astx.WhileStmt.
+    """
     # Define a condition: x < 5
     x_var = astx.Variable(name="x")
     condition = astx.BinaryOp(
@@ -560,7 +632,9 @@ def test_transpiler_while_stmt() -> None:
 
 
 def test_transpiler_ifexpr_with_else() -> None:
-    """Test astx.IfExpr with else block."""
+    """
+    title: Test astx.IfExpr with else block.
+    """
     # determine condition
     cond = astx.BinaryOp(
         op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
@@ -591,7 +665,9 @@ def test_transpiler_ifexpr_with_else() -> None:
 
 
 def test_transpiler_while_expr() -> None:
-    """Test astx.WhileExpr."""
+    """
+    title: Test astx.WhileExpr.
+    """
     # Define a condition: x < 5
     x_var = astx.Variable(name="x")
     condition = astx.BinaryOp(
@@ -637,7 +713,9 @@ def test_transpiler_while_expr() -> None:
 
 
 def test_transpiler_ifexpr_without_else() -> None:
-    """Test astx.IfExpr without else block."""
+    """
+    title: Test astx.IfExpr without else block.
+    """
     # determine condition
     cond = astx.BinaryOp(
         op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
@@ -665,7 +743,9 @@ def test_transpiler_ifexpr_without_else() -> None:
 
 
 def test_transpiler_ifstmt_with_else() -> None:
-    """Test astx.IfStmt with else block."""
+    """
+    title: Test astx.IfStmt with else block.
+    """
     # determine condition
     cond = astx.BinaryOp(
         op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
@@ -702,7 +782,9 @@ def test_transpiler_ifstmt_with_else() -> None:
 
 
 def test_transpiler_ifstmt_without_else() -> None:
-    """Test astx.IfStmt without else block."""
+    """
+    title: Test astx.IfStmt without else block.
+    """
     # determine condition
     cond = astx.BinaryOp(
         op_code=">", lhs=astx.LiteralInt32(1), rhs=astx.LiteralInt32(2)
@@ -736,7 +818,9 @@ def test_transpiler_ifstmt_without_else() -> None:
 
 
 def test_transpiler_date_type() -> None:
-    """Test Type[astx.Date]."""
+    """
+    title: Test Type[astx.Date].
+    """
     # Generate Python code for the type
     generated_code = translate(astx.Date())
     expected_code = "date"
@@ -747,7 +831,9 @@ def test_transpiler_date_type() -> None:
 
 
 def test_transpiler_time_type() -> None:
-    """Test Type[astx.Time]."""
+    """
+    title: Test Type[astx.Time].
+    """
     # Generate Python code for the type
     generated_code = translate(astx.Time())
     expected_code = "time"
@@ -758,7 +844,9 @@ def test_transpiler_time_type() -> None:
 
 
 def test_transpiler_timestamp_type() -> None:
-    """Test Type[astx.Timestamp]."""
+    """
+    title: Test Type[astx.Timestamp].
+    """
     # Generate Python code for the type
     generated_code = translate(astx.Timestamp())
     expected_code = "timestamp"
@@ -769,7 +857,9 @@ def test_transpiler_timestamp_type() -> None:
 
 
 def test_transpiler_datetime_type() -> None:
-    """Test Type[astx.DateTime]."""
+    """
+    title: Test Type[astx.DateTime].
+    """
     # Generate Python code for the type
     generated_code = translate(astx.DateTime())
     expected_code = "datetime"
@@ -780,7 +870,9 @@ def test_transpiler_datetime_type() -> None:
 
 
 def test_transpiler_literal_date() -> None:
-    """Test astx.LiteralDate."""
+    """
+    title: Test astx.LiteralDate.
+    """
     # Create a LiteralDate node
     literal_date_node = astx.LiteralDate(value="2024-11-24")
 
@@ -794,7 +886,9 @@ def test_transpiler_literal_date() -> None:
 
 
 def test_transpiler_literal_time() -> None:
-    """Test astx.LiteralTime."""
+    """
+    title: Test astx.LiteralTime.
+    """
     # Create a LiteralTime node
     literal_time_node = astx.LiteralTime(value="14:30:00")
 
@@ -808,7 +902,9 @@ def test_transpiler_literal_time() -> None:
 
 
 def test_transpiler_literal_timestamp() -> None:
-    """Test astx.LiteralTimestamp."""
+    """
+    title: Test astx.LiteralTimestamp.
+    """
     literal_timestamp_node = astx.LiteralTimestamp(value="2024-11-24 14:30:00")
     generated_code = translate(literal_timestamp_node)
     expected_code = "timestamp"
@@ -819,7 +915,9 @@ def test_transpiler_literal_timestamp() -> None:
 
 
 def test_transpiler_literal_datetime() -> None:
-    """Test astx.LiteralDateTime."""
+    """
+    title: Test astx.LiteralDateTime.
+    """
     literal_datetime_node = astx.LiteralDateTime(value="2024-11-24T14:30:00")
 
     generated_code = translate(literal_datetime_node)
@@ -831,7 +929,9 @@ def test_transpiler_literal_datetime() -> None:
 
 
 def test_transpiler_classdefstmt() -> None:
-    """Test astx.ClassDefStmt."""
+    """
+    title: Test astx.ClassDefStmt.
+    """
     class_body = astx.Block(name="MyClass_body")
     var1 = astx.Variable(name="var1")
     class_body.append(var1)
@@ -849,7 +949,9 @@ def test_transpiler_classdefstmt() -> None:
 
 
 def test_transpiler_enumdeclstmt() -> None:
-    """Test astx.ClassDeclStmt."""
+    """
+    title: Test astx.ClassDeclStmt.
+    """
     var_r = astx.VariableDeclaration(
         name="RED",
         type_=astx.DataType(),
@@ -880,7 +982,9 @@ def test_transpiler_enumdeclstmt() -> None:
 
 
 def test_transpiler_variabledeclaration() -> None:
-    """Test astx.VariableDeclaration."""
+    """
+    title: Test astx.VariableDeclaration.
+    """
     var_r = astx.VariableDeclaration(
         name="RED",
         type_=astx.DataType(),
@@ -897,7 +1001,9 @@ def test_transpiler_variabledeclaration() -> None:
 
 
 def test_transpiler_structdeclstmt() -> None:
-    """Test astx.StructDeclStmt."""
+    """
+    title: Test astx.StructDeclStmt.
+    """
     # Define struct attributes
     attr1 = astx.VariableDeclaration(
         name="id",
@@ -933,7 +1039,9 @@ def test_transpiler_structdeclstmt() -> None:
 
 
 def test_transpiler_structdefstmt() -> None:
-    """Test astx.StructDefStmt."""
+    """
+    title: Test astx.StructDefStmt.
+    """
     attr1 = astx.VariableDeclaration(
         name="id",
         type_=astx.DataType(),
@@ -963,7 +1071,9 @@ def test_transpiler_structdefstmt() -> None:
 
 
 def test_transpiler_subscriptexpr_upper_lower() -> None:
-    """Test astx.SubscriptExpr (slice)."""
+    """
+    title: Test astx.SubscriptExpr (slice).
+    """
     a_var = astx.Variable(name="a")
     subscr_expr = astx.SubscriptExpr(
         value=a_var,
@@ -980,7 +1090,9 @@ def test_transpiler_subscriptexpr_upper_lower() -> None:
 
 
 def test_transpiler_subscriptexpr_index() -> None:
-    """Test astx.SubscriptExpr (index)."""
+    """
+    title: Test astx.SubscriptExpr (index).
+    """
     a_var = astx.Variable(name="a")
     subscr_expr = astx.SubscriptExpr(
         value=a_var,
@@ -997,7 +1109,14 @@ def test_transpiler_subscriptexpr_index() -> None:
 def fn_print(
     arg: astx.LiteralString,
 ) -> astx.FunctionCall:
-    """Return a FunctionCall to print a string."""
+    """
+    title: Return a FunctionCall to print a string.
+    parameters:
+      arg:
+        type: astx.LiteralString
+    returns:
+      type: astx.FunctionCall
+    """
     proto = astx.FunctionPrototype(
         name="print",
         args=astx.Arguments(astx.Argument("_", type_=astx.String())),
@@ -1012,7 +1131,9 @@ def fn_print(
 
 @pytest.mark.skipif(sys.version_info < (3, 10), reason="requires python>=3.10")
 def test_transpiler_switchstmt() -> None:
-    """Test astx.SwitchStmt (2 cases + default)."""
+    """
+    title: Test astx.SwitchStmt (2 cases + default).
+    """
     value_expr = astx.Variable(name="x")
     condition1 = astx.LiteralInt32(value=1)
     body1 = astx.Block()
@@ -1048,7 +1169,9 @@ def test_transpiler_switchstmt() -> None:
 
 
 def test_transpiler_yieldexpr_whilestmt() -> None:
-    """Test astx.YieldExpr (using WhileStmt)."""
+    """
+    title: Test astx.YieldExpr (using WhileStmt).
+    """
     while_cond = astx.LiteralBoolean(True)
     while_body = astx.Block()
     yield_expr = astx.YieldExpr(value=astx.LiteralInt32(1))
@@ -1067,7 +1190,9 @@ def test_transpiler_yieldexpr_whilestmt() -> None:
 
 
 def test_transpiler_yieldstmt_whilestmt() -> None:
-    """Test astx.YieldStmt (using WhileStmt)."""
+    """
+    title: Test astx.YieldStmt (using WhileStmt).
+    """
     while_cond = astx.LiteralBoolean(True)
     while_body = astx.Block()
     yield_stmt = astx.YieldExpr(value=astx.LiteralInt32(1))
@@ -1085,7 +1210,9 @@ def test_transpiler_yieldstmt_whilestmt() -> None:
 
 
 def test_transpiler_yieldfromexpr_whilestmt() -> None:
-    """Test astx.YieldFromExpr (using WhileStmt)."""
+    """
+    title: Test astx.YieldFromExpr (using WhileStmt).
+    """
     while_cond = astx.LiteralBoolean(True)
     while_body = astx.Block()
     yieldfrom_expr = astx.YieldFromExpr(value=astx.Variable("x"))
@@ -1104,7 +1231,9 @@ def test_transpiler_yieldfromexpr_whilestmt() -> None:
 
 
 def test_transpiler_assignmentexpr() -> None:
-    """Test astx.AssignmentExpr."""
+    """
+    title: Test astx.AssignmentExpr.
+    """
     var_a = astx.Variable(name="a")
     var_b = astx.Variable(name="b")
     assign_expr = astx.AssignmentExpr(
@@ -1122,7 +1251,9 @@ def test_transpiler_assignmentexpr() -> None:
 
 
 def test_transpiler_delete_stmt() -> None:
-    """Test astx.DeleteStmt transpilation."""
+    """
+    title: Test astx.DeleteStmt transpilation.
+    """
     var1 = astx.Variable(name="x")
     var2 = astx.Variable(name="y")
     delete_stmt = astx.DeleteStmt(value=[var1, var2])
@@ -1142,7 +1273,9 @@ def test_transpiler_delete_stmt() -> None:
 
 
 def test_transpiler_throwstmt() -> None:
-    """Test astx.ThrowStmt."""
+    """
+    title: Test astx.ThrowStmt.
+    """
     throw_stmt = astx.ThrowStmt()
     generated_code = translate(throw_stmt)
     expected_code = "raise"
@@ -1153,7 +1286,9 @@ def test_transpiler_throwstmt() -> None:
 
 
 def test_transpiler_exception_handler_stmt() -> None:
-    """Test astx.ExceptionHandlerStmt."""
+    """
+    title: Test astx.ExceptionHandlerStmt.
+    """
     try_body = astx.Block()
     try_body.append(fn_print(astx.LiteralString(value="passed")))
     exception_types = [astx.Identifier("A")]
@@ -1179,7 +1314,9 @@ def test_transpiler_exception_handler_stmt() -> None:
 
 
 def test_transpiler_exception_handler_stmt_with_finally() -> None:
-    """Test astx.ExceptionHandlerStmt with FinallyHandler."""
+    """
+    title: Test astx.ExceptionHandlerStmt with FinallyHandler.
+    """
     try_body = astx.Block()
     try_body.append(fn_print(astx.LiteralString(value="passed")))
 
@@ -1221,7 +1358,9 @@ def test_transpiler_exception_handler_stmt_with_finally() -> None:
 
 
 def test_transpiler_and_op() -> None:
-    """Test transpiler for AndOp."""
+    """
+    title: Test transpiler for AndOp.
+    """
     lhs = astx.Variable(name="x")
     rhs = astx.Variable(name="y")
     op = astx.AndOp(lhs=lhs, rhs=rhs)
@@ -1236,7 +1375,9 @@ def test_transpiler_and_op() -> None:
 
 
 def test_transpiler_or_op() -> None:
-    """Test transpiler for OrOp."""
+    """
+    title: Test transpiler for OrOp.
+    """
     lhs = astx.Variable(name="x")
     rhs = astx.Variable(name="y")
     op = astx.OrOp(lhs=lhs, rhs=rhs)
@@ -1250,7 +1391,9 @@ def test_transpiler_or_op() -> None:
 
 
 def test_transpiler_xor_op() -> None:
-    """Test transpiler for XorOp."""
+    """
+    title: Test transpiler for XorOp.
+    """
     lhs = astx.Variable(name="x")
     rhs = astx.Variable(name="y")
     op = astx.XorOp(lhs=lhs, rhs=rhs)
@@ -1264,7 +1407,9 @@ def test_transpiler_xor_op() -> None:
 
 
 def test_transpiler_nand_op() -> None:
-    """Test transpiler for NandOp."""
+    """
+    title: Test transpiler for NandOp.
+    """
     lhs = astx.Variable(name="x")
     rhs = astx.Variable(name="y")
     op = astx.NandOp(lhs=lhs, rhs=rhs)
@@ -1278,7 +1423,9 @@ def test_transpiler_nand_op() -> None:
 
 
 def test_transpiler_nor_op() -> None:
-    """Test transpiler for NorOp."""
+    """
+    title: Test transpiler for NorOp.
+    """
     lhs = astx.Variable(name="x")
     rhs = astx.Variable(name="y")
     op = astx.NorOp(lhs=lhs, rhs=rhs)
@@ -1290,7 +1437,9 @@ def test_transpiler_nor_op() -> None:
 
 
 def test_transpiler_xnor_op() -> None:
-    """Test transpiler for XnorOp."""
+    """
+    title: Test transpiler for XnorOp.
+    """
     lhs = astx.Variable(name="x")
     rhs = astx.Variable(name="y")
     op = astx.XnorOp(lhs=lhs, rhs=rhs)
@@ -1302,7 +1451,9 @@ def test_transpiler_xnor_op() -> None:
 
 
 def test_group_expr() -> None:
-    """Test struct representation."""
+    """
+    title: Test struct representation.
+    """
     grp = astx.ParenthesizedExpr(
         astx.AndOp(astx.LiteralBoolean(True), astx.LiteralBoolean(False))
     )
@@ -1314,7 +1465,9 @@ def test_group_expr() -> None:
 
 
 def test_transpiler_functionasyncdef() -> None:
-    """Test astx.FunctionAsyncDef."""
+    """
+    title: Test astx.FunctionAsyncDef.
+    """
     arg_a = astx.Argument(
         "a", type_=astx.Int32(), default=astx.LiteralInt32(1)
     )
@@ -1339,7 +1492,9 @@ def test_transpiler_functionasyncdef() -> None:
 
 
 def test_transpiler_await_expr_() -> None:
-    """Test astx.AwaitExpr."""
+    """
+    title: Test astx.AwaitExpr.
+    """
     var_a = astx.Variable("a")
     await_expr = astx.AwaitExpr(value=var_a)
     generated_code = translate(await_expr)
@@ -1350,7 +1505,9 @@ def test_transpiler_await_expr_() -> None:
 
 
 def test_transpiler_literal_list() -> None:
-    """Test astx.LiteralList."""
+    """
+    title: Test astx.LiteralList.
+    """
     lit_list = astx.LiteralList(
         [astx.LiteralInt32(1), astx.LiteralInt32(2), astx.LiteralInt32(3)]
     )
@@ -1362,7 +1519,9 @@ def test_transpiler_literal_list() -> None:
 
 
 def test_transpiler_literal_tuple() -> None:
-    """Test astx.LiteralTuple."""
+    """
+    title: Test astx.LiteralTuple.
+    """
     lit_tuple = astx.LiteralTuple((astx.LiteralInt32(1), astx.LiteralInt32(2)))
 
     generated_code = transpiler.visit(lit_tuple)
@@ -1373,7 +1532,9 @@ def test_transpiler_literal_tuple() -> None:
 
 
 def test_transpiler_literal_set() -> None:
-    """Test astx.LiteralSet."""
+    """
+    title: Test astx.LiteralSet.
+    """
     lit_set = astx.LiteralSet(
         {astx.LiteralInt32(1), astx.LiteralInt32(2), astx.LiteralInt32(3)}
     )
@@ -1388,7 +1549,9 @@ def test_transpiler_literal_set() -> None:
 
 
 def test_transpiler_literal_dict() -> None:
-    """Test astx.LiteralDict."""
+    """
+    title: Test astx.LiteralDict.
+    """
     lit_dict = astx.LiteralDict(
         {
             astx.LiteralInt32(1): astx.LiteralInt32(10),
@@ -1405,7 +1568,9 @@ def test_transpiler_literal_dict() -> None:
 
 
 def test_transpiler_do_while_stmt() -> None:
-    """Test astx.DoWhileStmt."""
+    """
+    title: Test astx.DoWhileStmt.
+    """
     x_var = astx.Variable(name="x")
     condition = astx.BinaryOp(
         op_code="<",
@@ -1443,7 +1608,9 @@ def test_transpiler_do_while_stmt() -> None:
 
 
 def test_transpiler_do_while_expr() -> None:
-    """Test astx.DoWhileExpr."""
+    """
+    title: Test astx.DoWhileExpr.
+    """
     x_var = astx.Variable(name="x")
     condition = astx.BinaryOp(
         op_code="<",
@@ -1481,7 +1648,9 @@ def test_transpiler_do_while_expr() -> None:
 
 
 def test_transpiler_generator_expr() -> None:
-    """Test astx.GeneratorExpr."""
+    """
+    title: Test astx.GeneratorExpr.
+    """
     comp_1 = astx.ComprehensionClause(
         target=astx.Variable("x"),
         iterable=astx.Variable("list_1"),
@@ -1531,7 +1700,9 @@ def test_transpiler_generator_expr() -> None:
 
 
 def test_transpiler_list_comprehension() -> None:
-    """Test ListComprehension."""
+    """
+    title: Test ListComprehension.
+    """
     gen_expr = astx.ListComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
@@ -1566,7 +1737,9 @@ def test_transpiler_list_comprehension() -> None:
 
 
 def test_transpiler_set_comprehension() -> None:
-    """Test SetComprehension code generation."""
+    """
+    title: Test SetComprehension code generation.
+    """
     set_comp = astx.SetComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("x")
@@ -1601,7 +1774,9 @@ def test_transpiler_set_comprehension() -> None:
 
 
 def test_transpiler_set_comprehension_no_conditions() -> None:
-    """Test SetComprehension without conditions."""
+    """
+    title: Test SetComprehension without conditions.
+    """
     set_comp = astx.SetComprehension(
         element=astx.Variable("x"),
         generators=[
@@ -1620,7 +1795,9 @@ def test_transpiler_set_comprehension_no_conditions() -> None:
 
 
 def test_transpiler_nested_set_comprehension() -> None:
-    """Test nested SetComprehension."""
+    """
+    title: Test nested SetComprehension.
+    """
     set_comp = astx.SetComprehension(
         element=astx.BinaryOp(
             op_code="+", lhs=astx.Variable("x"), rhs=astx.Variable("y")
@@ -1645,7 +1822,9 @@ def test_transpiler_nested_set_comprehension() -> None:
 
 
 def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
-    """Test SetComprehension with multiple conditions."""
+    """
+    title: Test SetComprehension with multiple conditions.
+    """
     set_comp = astx.SetComprehension(
         element=astx.Variable("x"),
         generators=[
@@ -1676,7 +1855,9 @@ def test_transpiler_set_comprehension_with_multiple_conditions() -> None:
 
 
 def test_transpiler_ellipsis() -> None:
-    """Test transpilation of Ellipsis nodes."""
+    """
+    title: Test transpilation of Ellipsis nodes.
+    """
     ellipsis = astx.Ellipsis()
 
     generated_code = transpiler.visit(ellipsis)
@@ -1688,7 +1869,9 @@ def test_transpiler_ellipsis() -> None:
 
 
 def test_transpiler_ellipsis_in_context() -> None:
-    """Test Ellipsis transpilation within expressions."""
+    """
+    title: Test Ellipsis transpilation within expressions.
+    """
     ellipsis = astx.Ellipsis()
     simple_code = transpiler.visit(ellipsis)
     assert simple_code == "..."
@@ -1699,7 +1882,9 @@ def test_transpiler_ellipsis_in_context() -> None:
 
 
 def test_transpiler_starred_simple() -> None:
-    """Test simple starred expression transpilation."""
+    """
+    title: Test simple starred expression transpilation.
+    """
     var = astx.Variable(name="args")
     starred = astx.Starred(value=var)
     generated_code = translate(starred)
@@ -1708,7 +1893,9 @@ def test_transpiler_starred_simple() -> None:
 
 
 def test_transpiler_starred_in_list() -> None:
-    """Test starred expression within a list literal transpilation."""
+    """
+    title: Test starred expression within a list literal transpilation.
+    """
     var = astx.Variable(name="items")
     starred = astx.Starred(value=var)
     lit_1 = astx.LiteralInt32(1)
@@ -1721,7 +1908,9 @@ def test_transpiler_starred_in_list() -> None:
 
 
 def test_transpiler_multiple_starred() -> None:
-    """Test multiple starred expressions transpilation."""
+    """
+    title: Test multiple starred expressions transpilation.
+    """
     var1 = astx.Variable(name="args1")
     var2 = astx.Variable(name="args2")
     starred1 = astx.Starred(value=var1)

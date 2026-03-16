@@ -1,4 +1,6 @@
-"""Test callable ASTx objects."""
+"""
+title: Test callable ASTx objects.
+"""
 
 import pytest
 
@@ -27,7 +29,9 @@ from astx.viz import visualize_image
 
 
 def test_functiondef_creation_with_no_modifiers() -> None:
-    """Test function creation with no modifiers."""
+    """
+    title: Test function creation with no modifiers.
+    """
     var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
     var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
 
@@ -51,7 +55,9 @@ def test_functiondef_creation_with_no_modifiers() -> None:
 
 
 def test_functiondef_creation_with_modifiers() -> None:
-    """Test function creation with modifiers."""
+    """
+    title: Test function creation with modifiers.
+    """
     var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
     var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
     proto = FunctionPrototype(
@@ -72,7 +78,9 @@ def test_functiondef_creation_with_modifiers() -> None:
 
 
 def test_function_call() -> None:
-    """Test the FunctionCall class."""
+    """
+    title: Test the FunctionCall class.
+    """
     var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
     var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
     proto = FunctionPrototype(
@@ -95,7 +103,9 @@ def test_function_call() -> None:
 
 
 def test_function_return() -> None:
-    """Test the FunctionReturn class."""
+    """
+    title: Test the FunctionReturn class.
+    """
     fn_return = FunctionReturn(LiteralInt32(0))
 
     assert str(fn_return)
@@ -104,7 +114,9 @@ def test_function_return() -> None:
 
 
 def test_lambdaexpr() -> None:
-    """Test the LambdaExpr class."""
+    """
+    title: Test the LambdaExpr class.
+    """
     params = Arguments(Argument(name="x", type_=Int32()))
     body = BinaryOp(op_code="+", lhs=Variable(name="x"), rhs=LiteralInt32(1))
     lambda_expr = LambdaExpr(params=params, body=body)
@@ -115,7 +127,9 @@ def test_lambdaexpr() -> None:
 
 
 def test_lambdaexpr_noparams() -> None:
-    """Test the LambdaExpr class without params."""
+    """
+    title: Test the LambdaExpr class without params.
+    """
     body = LiteralInt32(1)
     lambda_expr = LambdaExpr(body=body)
 
@@ -125,7 +139,9 @@ def test_lambdaexpr_noparams() -> None:
 
 
 def test_functionasync_creation_with_no_modifiers() -> None:
-    """Test async function creation with no modifiers."""
+    """
+    title: Test async function creation with no modifiers.
+    """
     var_a = Argument("a", type_=Int32(), default=LiteralInt32(1))
     var_b = Argument("b", type_=Int32(), default=LiteralInt32(1))
 
@@ -149,7 +165,9 @@ def test_functionasync_creation_with_no_modifiers() -> None:
 
 
 def test_await_expr() -> None:
-    """Test `AwaitExpr` class."""
+    """
+    title: Test `AwaitExpr` class.
+    """
     await_expr = AwaitExpr(value=LiteralInt32(1))
 
     assert str(await_expr)
@@ -159,7 +177,9 @@ def test_await_expr() -> None:
 
 
 def test_yield_expr() -> None:
-    """Test `YieldExpr` class."""
+    """
+    title: Test `YieldExpr` class.
+    """
     yield_expr = YieldExpr(value=LiteralInt32(1))
 
     assert str(yield_expr)
@@ -169,7 +189,9 @@ def test_yield_expr() -> None:
 
 
 def test_yieldfrom_expr() -> None:
-    """Test `YieldFromExpr` class."""
+    """
+    title: Test `YieldFromExpr` class.
+    """
     yieldfrom_expr = YieldFromExpr(value=LiteralInt32(1))
 
     assert str(yieldfrom_expr)
@@ -179,7 +201,9 @@ def test_yieldfrom_expr() -> None:
 
 
 def test_yield_stmt_basic() -> None:
-    """Test basic YieldStmt without a value."""
+    """
+    title: Test basic YieldStmt without a value.
+    """
     yield_stmt = YieldStmt()
 
     assert str(yield_stmt) == "YieldStmt"
@@ -189,7 +213,9 @@ def test_yield_stmt_basic() -> None:
 
 
 def test_yield_stmt_with_value() -> None:
-    """Test YieldStmt with a literal value."""
+    """
+    title: Test YieldStmt with a literal value.
+    """
     yield_stmt = YieldStmt(value=LiteralInt32(42))
 
     assert str(yield_stmt)
@@ -199,7 +225,9 @@ def test_yield_stmt_with_value() -> None:
 
 
 def test_yield_stmt_with_expression() -> None:
-    """Test YieldStmt with a complex expression."""
+    """
+    title: Test YieldStmt with a complex expression.
+    """
     var_x = Variable("x")
     expr = BinaryOp(op_code="+", lhs=var_x, rhs=LiteralInt32(1))
     yield_stmt = YieldStmt(value=expr)
@@ -211,7 +239,9 @@ def test_yield_stmt_with_expression() -> None:
 
 
 def test_yield_stmt_in_generator_block() -> None:
-    """Test YieldStmt as part of a generator function block."""
+    """
+    title: Test YieldStmt as part of a generator function block.
+    """
     EXPECTED_BLOCK_LENGTH = 2
 
     gen_block = Block(name="generator_body")

@@ -1,4 +1,6 @@
-"""Tests for operators."""
+"""
+title: Tests for operators.
+"""
 
 import astx
 import pytest
@@ -16,7 +18,9 @@ from astx.viz import visualize_image
 
 
 def test_assignment_expr() -> None:
-    """Test `AssignmentExpr` class."""
+    """
+    title: Test `AssignmentExpr` class.
+    """
     var_a = Variable(name="a")
     var_b = Variable(name="b")
 
@@ -29,7 +33,9 @@ def test_assignment_expr() -> None:
 
 
 def test_variable_assign() -> None:
-    """Test function creation with modifiers."""
+    """
+    title: Test function creation with modifiers.
+    """
     assign_a = VariableAssignment("a", value=LiteralInt32(1))
 
     assert str(assign_a)
@@ -40,7 +46,9 @@ def test_variable_assign() -> None:
 
 
 def test_and_op() -> None:
-    """Test AndOp."""
+    """
+    title: Test AndOp.
+    """
     lhs = astx.LiteralBoolean(True)
     rhs = astx.LiteralBoolean(False)
     op = astx.AndOp(lhs=lhs, rhs=rhs)
@@ -53,7 +61,9 @@ def test_and_op() -> None:
 
 
 def test_or_op() -> None:
-    """Test OrOp."""
+    """
+    title: Test OrOp.
+    """
     lhs = astx.LiteralBoolean(True)
     rhs = astx.LiteralBoolean(False)
     op = astx.OrOp(lhs=lhs, rhs=rhs)
@@ -66,7 +76,9 @@ def test_or_op() -> None:
 
 
 def test_xor_op() -> None:
-    """Test XorOp."""
+    """
+    title: Test XorOp.
+    """
     lhs = astx.LiteralBoolean(True)
     rhs = astx.LiteralBoolean(False)
     op = astx.XorOp(lhs=lhs, rhs=rhs)
@@ -79,7 +91,9 @@ def test_xor_op() -> None:
 
 
 def test_nand_op() -> None:
-    """Test NandOp."""
+    """
+    title: Test NandOp.
+    """
     lhs = astx.LiteralBoolean(True)
     rhs = astx.LiteralBoolean(False)
     op = astx.NandOp(lhs=lhs, rhs=rhs)
@@ -91,7 +105,9 @@ def test_nand_op() -> None:
 
 
 def test_nor_op() -> None:
-    """Test NorOp."""
+    """
+    title: Test NorOp.
+    """
     lhs = astx.LiteralBoolean(True)
     rhs = astx.LiteralBoolean(False)
     op = astx.NorOp(lhs=lhs, rhs=rhs)
@@ -103,7 +119,9 @@ def test_nor_op() -> None:
 
 
 def test_xnor_op() -> None:
-    """Test XnorOp."""
+    """
+    title: Test XnorOp.
+    """
     lhs = astx.LiteralBoolean(True)
     rhs = astx.LiteralBoolean(False)
     op = astx.XnorOp(lhs=lhs, rhs=rhs)
@@ -115,7 +133,9 @@ def test_xnor_op() -> None:
 
 
 def test_not_op() -> None:
-    """Test NotOp."""
+    """
+    title: Test NotOp.
+    """
     operand = astx.LiteralBoolean(True)
     op = astx.NotOp(operand=operand)
 
@@ -143,7 +163,14 @@ def test_not_op() -> None:
     ],
 )
 def test_aug_assign_operations(operator: OpCodeAugAssign, value: int) -> None:
-    """Test all augmented assignment operators using parametrize."""
+    """
+    title: Test all augmented assignment operators using parametrize.
+    parameters:
+      operator:
+        type: OpCodeAugAssign
+      value:
+        type: int
+    """
     var_x = astx.Identifier(name="x")
     literal_value = LiteralInt32(value)
     aug_assign = AugAssign(var_x, operator, literal_value)
@@ -154,7 +181,9 @@ def test_aug_assign_operations(operator: OpCodeAugAssign, value: int) -> None:
 
 
 def test_starred_creation() -> None:
-    """Test creating a Starred operator."""
+    """
+    title: Test creating a Starred operator.
+    """
     var = astx.Variable(name="args")
     starred = astx.Starred(value=var)
     assert starred.value == var
@@ -169,7 +198,9 @@ def test_starred_creation() -> None:
 
 
 def test_starred_with_different_expressions() -> None:
-    """Test Starred with different types of expressions."""
+    """
+    title: Test Starred with different types of expressions.
+    """
     # Test with Identifier
     ident = Identifier("a")
     starred_ident = astx.Starred(value=ident)

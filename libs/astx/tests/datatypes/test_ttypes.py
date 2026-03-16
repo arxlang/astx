@@ -1,4 +1,6 @@
-"""Test type objects."""
+"""
+title: Test type objects.
+"""
 
 import pytest
 
@@ -75,5 +77,10 @@ ttypes = [
 
 @pytest.mark.parametrize("ttype", ttypes)
 def test_ttypes(ttype: DataType) -> None:
-    """Test ttypes."""
+    """
+    title: Test ttypes.
+    parameters:
+      ttype:
+        type: DataType
+    """
     Variable("a", type_=ttype)

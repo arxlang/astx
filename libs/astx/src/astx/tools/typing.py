@@ -1,4 +1,6 @@
-"""Tools for typing support helper."""
+"""
+title: Tools for typing support helper.
+"""
 
 from typing import Any, Callable, TypeVar
 
@@ -20,7 +22,16 @@ __all__ = ["typechecked"]
 
 @public
 def skip_unused(*args: Any, **kwargs: Any) -> None:
-    """Referencing variables to pacify static analyzers."""
+    """
+    title: Referencing variables to pacify static analyzers.
+    parameters:
+      args:
+        type: Any
+        variadic: positional
+      kwargs:
+        type: Any
+        variadic: keyword
+    """
     for arg in args:
         pass
     for key in kwargs:
@@ -29,7 +40,14 @@ def skip_unused(*args: Any, **kwargs: Any) -> None:
 
 @public
 def copy_type(f: _T) -> Callable[[Any], _T]:
-    """Copy types for args, kwargs from parent class."""
+    """
+    title: Copy types for args, kwargs from parent class.
+    parameters:
+      f:
+        type: _T
+    returns:
+      type: Callable[[Any], _T]
+    """
     skip_unused(f)
     return lambda x: x
 

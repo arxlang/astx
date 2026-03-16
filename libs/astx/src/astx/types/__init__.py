@@ -1,4 +1,6 @@
-"""Collection of ASTx nodes used for types."""
+"""
+title: Collection of ASTx nodes used for types.
+"""
 
 from astx.types.base import (
     AnyType,

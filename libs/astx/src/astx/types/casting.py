@@ -1,4 +1,6 @@
-"""AST types module."""
+"""
+title: AST types module.
+"""
 
 from __future__ import annotations
 
@@ -21,7 +23,18 @@ from astx.tools.typing import typechecked
 @public
 @typechecked
 class TypeCastExpr(Expr):
-    """AST class for type casting expressions."""
+    """
+    title: AST class for type casting expressions.
+    attributes:
+      kind:
+        type: ASTKind
+      expr:
+        type: Expr
+      target_type:
+        type: DataType
+    """
+
+    kind: ASTKind
 
     expr: Expr
     target_type: DataType
@@ -39,11 +52,22 @@ class TypeCastExpr(Expr):
         self.kind = ASTKind.TypeCastExprKind
 
     def __str__(self) -> str:
-        """Return a string representation of the TypeCast expression."""
+        """
+        title: Return a string representation of the TypeCast expression.
+        returns:
+          type: str
+        """
         return f"TypeCastExpr ({self.expr}, {self.target_type})"
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the TypeCast expression."""
+        """
+        title: Return the AST structure of the TypeCast expression.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         key = "TypeCastExpr"
         value: ReprStruct = {
             "expression": self.expr.get_struct(simplified),

@@ -1,4 +1,6 @@
-"""Module for different kind of ASTx blocks."""
+"""
+title: Module for different kind of ASTx blocks.
+"""
 
 from __future__ import annotations
 
@@ -17,10 +19,19 @@ from astx.tools.typing import typechecked
 @public
 @typechecked
 class Block(ASTNodes[ASTType]):
-    """The AST tree."""
+    """
+    title: The AST tree.
+    """
 
     def get_struct(self, simplified: bool = False) -> ReprStruct:
-        """Return the AST structure of the object."""
+        """
+        title: Return the AST structure of the object.
+        parameters:
+          simplified:
+            type: bool
+        returns:
+          type: ReprStruct
+        """
         block_nodes = []
 
         for node in self.nodes:

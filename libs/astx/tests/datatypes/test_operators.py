@@ -1,4 +1,6 @@
-"""Module for testing operators."""
+"""
+title: Module for testing operators.
+"""
 
 import pytest
 
@@ -39,18 +41,29 @@ lit_3 = LiteralInt32(3)
     ],
 )
 def test_binary_op(explicit: BinaryOp, implicit: BinaryOp) -> None:
-    """Test binary operator."""
+    """
+    title: Test binary operator.
+    parameters:
+      explicit:
+        type: BinaryOp
+      implicit:
+        type: BinaryOp
+    """
     assert implicit.get_struct() == explicit.get_struct()
 
 
 def test_unary_op() -> None:
-    """Test unary operator."""
+    """
+    title: Test unary operator.
+    """
     lit_a = LiteralInt32(1)
     UnaryOp(op_code="+", operand=lit_a)
 
 
 def test_walrus_op_init() -> None:
-    """Test WalrusOp initialization and properties."""
+    """
+    title: Test WalrusOp initialization and properties.
+    """
     lhs = Variable("x")
     rhs = lit_1
     walrus = WalrusOp(lhs=lhs, rhs=rhs)
@@ -61,7 +74,9 @@ def test_walrus_op_init() -> None:
 
 
 def test_walrus_op_get_struct() -> None:
-    """Test WalrusOp get_struct method."""
+    """
+    title: Test WalrusOp get_struct method.
+    """
     lhs = Variable("x")
     rhs = lit_1
     walrus = WalrusOp(lhs=lhs, rhs=rhs)
@@ -70,7 +85,9 @@ def test_walrus_op_get_struct() -> None:
 
 
 def test_compare_op_init() -> None:
-    """Test CompareOp initialization with single operator."""
+    """
+    title: Test CompareOp initialization with single operator.
+    """
     compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
     assert compare.kind == ASTKind.CompareOpKind
     assert compare.ops == ["=="]
@@ -80,7 +97,9 @@ def test_compare_op_init() -> None:
 
 
 def test_compare_op_get_struct() -> None:
-    """Test CompareOp get_struct returns correct structure."""
+    """
+    title: Test CompareOp get_struct returns correct structure.
+    """
     compare = CompareOp(left=lit_1, ops=["=="], comparators=[lit_2])
     struct = compare.get_struct(simplified=False)
 
@@ -98,7 +117,9 @@ def test_compare_op_get_struct() -> None:
 
 
 def test_compare_op_with_variables() -> None:
-    """Test CompareOp with variables."""
+    """
+    title: Test CompareOp with variables.
+    """
     var = Variable("x")
     compare = CompareOp(left=var, ops=[">"], comparators=[lit_1])
     assert str(compare) == "Compare[>]"
@@ -107,7 +128,9 @@ def test_compare_op_with_variables() -> None:
 
 
 def test_chained_compare_op() -> None:
-    """Test CompareOp with multiple chained comparisons."""
+    """
+    title: Test CompareOp with multiple chained comparisons.
+    """
     var_a = Variable("a")
     var_b = Variable("b")
     var_c = Variable("c")

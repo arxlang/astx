@@ -1,4 +1,6 @@
-"""AST nodes for literals."""
+"""
+title: AST nodes for literals.
+"""
 
 from astx.literals.base import (
     Literal,
